@@ -82,7 +82,7 @@ export default function Home() {
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative -mt-[7.75rem] overflow-hidden pt-[7.75rem] sm:-mt-[9.25rem] sm:pt-[9.25rem]">
+      <section id="top" className="relative overflow-hidden md:-mt-[7.75rem] md:pt-[7.75rem] lg:-mt-[9.25rem] lg:pt-[9.25rem]">
 
         {/* Van background image */}
         <div className="absolute inset-0 z-0">
@@ -117,7 +117,7 @@ export default function Home() {
 
             <div className="space-y-5">
               <h1 className="max-w-4xl text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 max-[390px]:text-[1.95rem] sm:text-6xl">
-               Tavarakuljetukset, muutot  &amp; siirtopalvelut <br />
+                Tavarakuljetukset, muutot &amp; siirtopalvelut <br />
                 <span className="text-blue-600"> yhdestä paikasta</span>
               </h1>
               <p className="max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-lg sm:leading-8">

@@ -36,8 +36,8 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="relative z-50 bg-transparent px-3 pt-3 pb-2 sm:px-5 sm:pt-4 sm:pb-3 md:sticky md:top-0 lg:px-8">
-      <div className={`mx-auto max-w-7xl rounded-2xl px-4 py-3 transition-all duration-200 sm:px-6 sm:py-3.5 ${
+    <header className="relative z-50 bg-transparent px-3 pt-0 pb-2 sm:px-5 sm:pt-0 sm:pb-3 md:sticky md:top-0 lg:px-8">
+      <div className={`w-full rounded-2xl px-4 py-3 transition-all duration-200 sm:px-6 sm:py-3.5 ${
         scrolled
           ? "border border-slate-200/90 bg-white/75 shadow-[0_2px_16px_rgba(0,0,0,0.08)] backdrop-blur-xl"
           : "border border-transparent bg-transparent shadow-none"
