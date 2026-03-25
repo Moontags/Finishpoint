@@ -14,19 +14,24 @@ const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-5 shadow
 
 function DistanceSlider({
   label,
+  fieldName,
   value,
   onChange,
   max = 500,
 }: {
   label: string;
+  fieldName: string;
   value: number;
   onChange: (value: number) => void;
   max?: number;
 }) {
+  const sliderId = `${fieldName}-range`;
+  const numberId = `${fieldName}-value`;
+
   return (
     <div className="rounded-xl border border-slate-200 bg-white/5 p-4 shadow-sm backdrop-blur-sm sm:p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <label className="text-[13px] font-semibold text-slate-700">{label}</label>
+        <label htmlFor={sliderId} className="text-[13px] font-semibold text-slate-700">{label}</label>
         <span className="inline-flex w-fit items-center rounded-lg border border-slate-200 bg-white/10 px-3 py-1 text-[13px] font-semibold text-slate-900">
           {value} km
         </span>
@@ -35,6 +40,8 @@ function DistanceSlider({
       <div className="mt-4 grid gap-4 sm:grid-cols-[minmax(0,1fr)_110px] sm:items-center">
         <div>
           <input
+            id={sliderId}
+            name={sliderId}
             type="range"
             min={0}
             max={max}
@@ -49,7 +56,12 @@ function DistanceSlider({
           </div>
         </div>
 
+        <label htmlFor={numberId} className="sr-only">
+          {label} kilometrit
+        </label>
         <input
+          id={numberId}
+          name={numberId}
           type="number"
           min={0}
           max={max}
@@ -78,9 +90,11 @@ export function AjoneuvoPriceCalculator() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <DistanceSlider label="Kokonaismatka" value={km} onChange={setKm} />
-        <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
+        <DistanceSlider label="Kokonaismatka" fieldName="ajoneuvo-kokonaismatka" value={km} onChange={setKm} />
+        <label htmlFor="ajoneuvo-monipysahdys" className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
           <input
+            id="ajoneuvo-monipysahdys"
+            name="ajoneuvoMonipysahdys"
             type="checkbox"
             checked={monipysahdys}
             onChange={(event) => setMonipysahdys(event.target.checked)}
@@ -124,10 +138,12 @@ export function KappaletavaraPriceCalculator() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <DistanceSlider label="Matka" value={km} onChange={setKm} />
-        <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <DistanceSlider label="Matka" fieldName="kappaletavara-matka" value={km} onChange={setKm} />
+        <label htmlFor="kappaletavara-kerros-nouto" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Kerros noudossa
           <input
+            id="kappaletavara-kerros-nouto"
+            name="kappaletavaraKerrosNouto"
             type="number"
             min={0}
             value={kerrosNouto}
@@ -137,9 +153,11 @@ export function KappaletavaraPriceCalculator() {
             className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
           />
         </label>
-        <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <label htmlFor="kappaletavara-kerros-toimitus" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Kerros toimituksessa
           <input
+            id="kappaletavara-kerros-toimitus"
+            name="kappaletavaraKerrosToimitus"
             type="number"
             min={0}
             value={kerrosToimitus}
@@ -150,8 +168,10 @@ export function KappaletavaraPriceCalculator() {
           />
         </label>
         <div className="grid gap-3">
-          <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
+          <label htmlFor="kappaletavara-hissiton" className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
             <input
+              id="kappaletavara-hissiton"
+              name="kappaletavaraHissiton"
               type="checkbox"
               checked={hissiton}
               onChange={(event) => setHissiton(event.target.checked)}
@@ -159,8 +179,10 @@ export function KappaletavaraPriceCalculator() {
             />
             Hissiton talo
           </label>
-          <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
+          <label htmlFor="kappaletavara-pakkaus" className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
             <input
+              id="kappaletavara-pakkaus"
+              name="kappaletavaraPakkaus"
               type="checkbox"
               checked={pakkaus}
               onChange={(event) => setPakkaus(event.target.checked)}
@@ -202,9 +224,11 @@ export function ProjektiPriceCalculator() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Palvelutyyppi
           <select
+            id="projekti-tyyppi"
+            name="projektiTyyppi"
             value={tyyppi}
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
             className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
@@ -218,9 +242,11 @@ export function ProjektiPriceCalculator() {
         </label>
 
         {tyyppi === "tunti" ? (
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="projekti-tunnit" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Tunnit
             <input
+              id="projekti-tunnit"
+              name="projektiTunnit"
               type="number"
               min={0}
               value={tunnit}
@@ -231,9 +257,11 @@ export function ProjektiPriceCalculator() {
         ) : null}
 
         {tyyppi === "kierratys_lisa" ? (
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Lisakuormat
             <input
+              id="projekti-lisakuormat"
+              name="projektiLisakuormat"
               type="number"
               min={0}
               value={lisakuormat}
@@ -246,13 +274,15 @@ export function ProjektiPriceCalculator() {
         ) : null}
 
         {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-          <DistanceSlider label="Kierratysreitin matka" value={kierratysKm} onChange={setKierratysKm} max={300} />
+          <DistanceSlider label="Kierratysreitin matka" fieldName="projekti-kierratysmatka" value={kierratysKm} onChange={setKierratysKm} max={300} />
         ) : null}
 
         {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="projekti-kierratysmaksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Kierratysmaksu
             <select
+              id="projekti-kierratysmaksu"
+              name="projektiKierratysmaksu"
               value={kierratysMaksu}
               onChange={(event) => setKierratysMaksu(Number(event.target.value))}
               className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"

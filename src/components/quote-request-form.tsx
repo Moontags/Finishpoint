@@ -112,22 +112,26 @@ export function QuoteRequestForm() {
       {/* Right – form */}
       <form className="grid w-full gap-4" onSubmit={handleSubmit}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="quote-name" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Nimi
             <input
+              id="quote-name"
               required
               name="name"
+              autoComplete="name"
               value={formData.name}
               onChange={handleChange}
               className={inputClass}
             />
           </label>
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="quote-phone" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Puhelin
             <input
+              id="quote-phone"
               required
               name="phone"
               type="tel"
+              autoComplete="tel"
               value={formData.phone}
               onChange={handleChange}
               className={inputClass}
@@ -136,20 +140,23 @@ export function QuoteRequestForm() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="quote-email" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Sähköposti
             <input
+              id="quote-email"
               required
               name="email"
               type="email"
+              autoComplete="email"
               value={formData.email}
               onChange={handleChange}
               className={inputClass}
             />
           </label>
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="quote-service-type" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Palvelutyyppi
             <select
+              id="quote-service-type"
               name="serviceType"
               value={formData.serviceType}
               onChange={handleChange}
@@ -165,22 +172,26 @@ export function QuoteRequestForm() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="quote-pickup-address" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Nouto osoite
             <input
+              id="quote-pickup-address"
               required
               name="pickupAddress"
+              autoComplete="street-address"
               placeholder="Katuosoite, kaupunki"
               value={formData.pickupAddress}
               onChange={handleChange}
               className={inputClass}
             />
           </label>
-          <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="quote-delivery-address" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             Toimitusosoite
             <input
+              id="quote-delivery-address"
               required
               name="deliveryAddress"
+              autoComplete="street-address"
               placeholder="Katuosoite, kaupunki"
               value={formData.deliveryAddress}
               onChange={handleChange}
@@ -189,9 +200,10 @@ export function QuoteRequestForm() {
           </label>
         </div>
 
-        <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <label htmlFor="quote-message" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Lisätietoja
           <textarea
+            id="quote-message"
             name="message"
             rows={4}
             value={formData.message}

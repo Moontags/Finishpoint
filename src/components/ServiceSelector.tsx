@@ -42,9 +42,11 @@ export default function ServiceSelector({
       </p>
 
       <div className="mt-5 sm:hidden">
-        <label className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <label htmlFor="service-category-select" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Palvelutyyppi
           <select
+            id="service-category-select"
+            name="serviceCategory"
             value={active}
             onChange={(event) => setActive(parseCategory(event.target.value) ?? "ajoneuvo")}
             className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"

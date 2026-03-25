@@ -28,14 +28,14 @@ export function SiteFooter() {
           <p className="pt-1 text-[12px] text-slate-600">
             Hinnat ALV 0 %, ALV 25,5 % lisätään kokonaissummaan.
           </p>
-          <Link
+          <a
             href="/images/sopimusehdot.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-[12px] text-slate-700 underline transition hover:text-blue-600"
           >
             Sopimusehdot
-          </Link>
+          </a>
         </div>
 
         <div className="grid gap-4">
