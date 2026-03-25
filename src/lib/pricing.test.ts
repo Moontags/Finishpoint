@@ -15,8 +15,16 @@ describe("ajoneuvohinta", () => {
     expect(ajoneuvohinta(60, false)).toBe(180);
   });
 
-  it("100 km -> 140 euroa", () => {
-    expect(ajoneuvohinta(100, false)).toBe(140);
+  it("80 km -> 180 euroa", () => {
+    expect(ajoneuvohinta(80, false)).toBe(180);
+  });
+
+  it("81 km -> 181,40 euroa", () => {
+    expect(ajoneuvohinta(81, false)).toBe(181.4);
+  });
+
+  it("100 km -> 208 euroa", () => {
+    expect(ajoneuvohinta(100, false)).toBe(208);
   });
 
   it("monipysahdys kayttaa km-hintaa", () => {
@@ -27,16 +35,28 @@ describe("ajoneuvohinta", () => {
 describe("kappaletavaraHinta", () => {
   it("0-kerros ilman lisia -> lisa 0", () => {
     const result = kappaletavaraHinta(30, 0, 0, false, false);
-    expect(result.perusHinta).toBe(140);
+    expect(result.perusHinta).toBe(99);
     expect(result.lisat).toBe(0);
-    expect(result.yhteensa).toBe(140);
+    expect(result.yhteensa).toBe(99);
+  });
+
+  it("40 km -> 99 euroa", () => {
+    const result = kappaletavaraHinta(40, 0, 0, false, false);
+    expect(result.perusHinta).toBe(99);
+    expect(result.yhteensa).toBe(99);
+  });
+
+  it("41 km -> 100,40 euroa", () => {
+    const result = kappaletavaraHinta(41, 0, 0, false, false);
+    expect(result.perusHinta).toBe(100.4);
+    expect(result.yhteensa).toBe(100.4);
   });
 
   it("laskee kerroslisat molemmista paista", () => {
     const result = kappaletavaraHinta(50, 2, 3, false, false);
-    expect(result.perusHinta).toBe(200);
+    expect(result.perusHinta).toBe(113);
     expect(result.lisat).toBe(100);
-    expect(result.yhteensa).toBe(300);
+    expect(result.yhteensa).toBe(213);
   });
 
   it("hissiton lisa lisataan vain yli 1. kerroksessa", () => {
@@ -52,7 +72,7 @@ describe("kappaletavaraHinta", () => {
   it("pakkausapu lisa lisataan", () => {
     const result = kappaletavaraHinta(20, 0, 0, false, true);
     expect(result.lisat).toBe(25);
-    expect(result.yhteensa).toBe(165);
+    expect(result.yhteensa).toBe(124);
   });
 });
 

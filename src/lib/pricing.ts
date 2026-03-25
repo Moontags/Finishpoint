@@ -11,7 +11,7 @@ export function ajoneuvohinta(km: number, monipysahdys: boolean): number {
   if (monipysahdys) return km * 1.4;
   if (km <= 40) return 120;
   if (km <= 80) return 180;
-  return km * 1.4;
+  return 180 + (km - 80) * 1.4;
 }
 
 // Kategoria B
@@ -24,8 +24,7 @@ export function kappaletavaraHinta(
 ): { perusHinta: number; lisat: number; yhteensa: number } {
   let perus: number;
   if (km <= 40) perus = 99;
-  else if (km <= 80) perus = 200;
-  else perus = km * 1.6;
+  else perus = 99 + (km - 40) * 1.4;
 
   let lisat = (kerrosNouto + kerrosToimitus) * 20;
   if (hissiton && (kerrosNouto > 1 || kerrosToimitus > 1)) lisat += 30;
