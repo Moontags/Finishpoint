@@ -54,6 +54,6 @@ Required variables:
 ## Contact
 
 - Company: Finishpoint
-- Owner: Jari Peltola
+- Owner: Mediasata
 - Phone: 050 354 7763
 - Email: kuljetus@finishpoint.fi
