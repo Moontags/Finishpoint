@@ -81,7 +81,7 @@ export function AjoneuvoPriceCalculator() {
   const hinta = useMemo(() => ajoneuvohinta(km, monipysahdys), [km, monipysahdys]);
 
   return (
-    <section className={cardClass}>
+    <section className="rounded-2xl bg-transparent p-5 sm:p-8">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Ajoneuvokuljetukset
       </h2>
