@@ -82,7 +82,7 @@ export default function Home() {
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative overflow-hidden md:-mt-[7.75rem] md:pt-[7.75rem] lg:-mt-[9.25rem] lg:pt-[9.25rem]">
+      <section id="top" className="relative overflow-hidden md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
 
         {/* Van background image */}
         <div className="absolute inset-0 z-0">
@@ -93,20 +93,20 @@ export default function Home() {
             className="object-cover object-center"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/65 to-white/20" />
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#f5f6f8] to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-[#f5f6f8] to-transparent" />
         </div>
 
         {/* Dot pattern */}
         <div
-          className="pointer-events-none absolute inset-0 z-[1] opacity-[0.025]"
+          className="pointer-events-none absolute inset-0 z-1 opacity-[0.025]"
           style={{
             backgroundImage: "radial-gradient(circle, #1e40af 1px, transparent 1px)",
             backgroundSize: "28px 28px",
           }}
         />
 
-        <div className="relative z-[2] mx-auto grid max-w-7xl gap-12 px-4 py-16 max-[390px]:gap-10 max-[390px]:px-3 max-[390px]:py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-28">
+        <div className="relative z-2 mx-auto grid max-w-7xl gap-12 px-4 py-16 max-[390px]:gap-10 max-[390px]:px-3 max-[390px]:py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-28">
 
           {/* Left */}
           <div className="min-w-0 space-y-7">
@@ -234,12 +234,12 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-[repeat(3,minmax(0,1fr))]">
+          <div className="grid gap-5 md:grid-cols-3">
             {services.map(({ title, description, accent, featured, href, backgroundImage }) => (
               <a
                 key={title}
                 href={href}
-                className={`group relative flex min-h-[300px] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-[340px] ${
+                className={`group relative flex min-h-75 min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-85 ${
                   featured
                     ? "border-2 border-blue-500 shadow-[0_0_0_4px_rgba(37,99,235,0.15),0_14px_32px_rgba(15,23,42,0.22)]"
                     : "border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-lg"
@@ -253,14 +253,14 @@ export default function Home() {
                   className="object-cover object-center opacity-80"
                 />
                 <div className="absolute inset-0 bg-linear-to-b from-slate-900/20 via-slate-900/55 to-slate-900/85" />
-                <div className="relative z-[1] mt-auto">
+                <div className="relative z-1 mt-auto">
                   <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-200 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
                     {accent}
                   </p>
-                  <h3 className="mt-2 break-words text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+                  <h3 className="mt-2 wrap-break-word text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
                     {title}
                   </h3>
-                  <p className="mt-3 break-words text-[14px] leading-[1.7] text-slate-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
+                  <p className="mt-3 wrap-break-word text-[14px] leading-[1.7] text-slate-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
                     {description}
                   </p>
                 </div>
