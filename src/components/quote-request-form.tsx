@@ -16,7 +16,7 @@ const serviceOptions = [
 ];
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-[3px] focus:ring-blue-200";
+  "w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white focus:ring-[3px] focus:ring-blue-200";
 
 export function QuoteRequestForm() {
   const [formData, setFormData] = useState({
@@ -89,7 +89,7 @@ export function QuoteRequestForm() {
         <h2 className="text-[1.85rem] font-bold tracking-tight text-slate-900 sm:text-4xl">
           Lisää tiedot ja tilaa
         </h2>
-        <p className="max-w-xl text-[14px] leading-[1.75] text-slate-500 sm:text-base">
+        <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           Täytä Yhteistietosi ja valitse palvelutyyppi. Lähetyspainike avaa sähköpostin valmiiksi täytetyllä
           tarjouspyynnöllä, jotta saat kaiken olennaisen yhdellä kertaa mukaan.
         </p>
@@ -101,7 +101,7 @@ export function QuoteRequestForm() {
             "Hinnat ilmoitetaan ALV 0 %",
             "ALV 25,5 % lisätään kokonaissummaan",
           ].map((line) => (
-            <div key={line} className="flex items-start gap-2 text-[13px] text-slate-500">
+            <div key={line} className="flex items-start gap-2 text-[13px] text-slate-700">
               <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
               {line}
             </div>

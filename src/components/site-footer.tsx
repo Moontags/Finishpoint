@@ -23,16 +23,16 @@ export function SiteFooter() {
     <footer className="border-t border-slate-200 bg-white/90">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_auto] lg:px-8">
         <div className="min-w-0 space-y-1.5">
-          <p className="text-[13px] text-slate-500">050 354 7763</p>
-          <p className="break-all text-[13px] text-slate-500">kuljetus@finishpoint.fi</p>
-          <p className="pt-1 text-[12px] text-slate-400">
+          <p className="text-[13px] text-slate-700">050 354 7763</p>
+          <p className="break-all text-[13px] text-slate-700">kuljetus@finishpoint.fi</p>
+          <p className="pt-1 text-[12px] text-slate-600">
             Hinnat ALV 0 %, ALV 25,5 % lisätään kokonaissummaan.
           </p>
           <Link
             href="/images/sopimusehdot.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-[12px] text-slate-500 underline transition hover:text-blue-600"
+            className="inline-block text-[12px] text-slate-700 underline transition hover:text-blue-600"
           >
             Sopimusehdot
           </Link>
@@ -40,8 +40,8 @@ export function SiteFooter() {
 
         <div className="grid gap-4">
           <div>
-            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">Palvelut</p>
-            <div className="grid grid-cols-2 gap-2 text-[12px] text-slate-500">
+            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">Palvelut</p>
+            <div className="grid grid-cols-2 gap-2 text-[12px] text-slate-700">
             {footerServiceLinks.map(({ href, label }) => (
               <Link
                 key={href}

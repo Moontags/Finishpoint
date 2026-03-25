@@ -43,7 +43,7 @@ function DistanceSlider({
             onChange={(event) => onChange(Math.max(0, Number(event.target.value) || 0))}
             className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-blue-600"
           />
-          <div className="mt-2 flex justify-between text-[11px] font-medium text-slate-400">
+          <div className="mt-2 flex justify-between text-[11px] font-medium text-slate-600">
             <span>0 km</span>
             <span>{max} km</span>
           </div>
@@ -73,7 +73,7 @@ export function AjoneuvoPriceCalculator() {
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Ajoneuvokuljetukset
       </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-500 sm:text-[15px]">
+      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
         Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. Kiinteä hinta 0-80 km, sen jälkeen 1,40 €/km.
       </p>
 
@@ -119,7 +119,7 @@ export function KappaletavaraPriceCalculator() {
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Kappaletavarakuljetukset
       </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-500 sm:text-[15px]">
+      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
         Pesukone, sohva ja sanky. Rappuslisa lasketaan molemmista paista.
       </p>
 
@@ -171,7 +171,7 @@ export function KappaletavaraPriceCalculator() {
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[13px] text-slate-600">
+      <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[13px] text-slate-700">
         <p>Perushinta: {laskelma.perusHinta.toFixed(2)} €</p>
         <p>Lisat: {laskelma.lisat.toFixed(2)} €</p>
       </div>
@@ -197,7 +197,7 @@ export function ProjektiPriceCalculator() {
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Projektikuljetukset
       </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-500 sm:text-[15px]">
+      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
         Muutot ja kierratys. Suuri muutto arvioidaan aina tarjouksena.
       </p>
 
@@ -266,7 +266,7 @@ export function ProjektiPriceCalculator() {
       </div>
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-        <p className="mt-3 text-[13px] text-slate-500">
+        <p className="mt-3 text-[13px] text-slate-700">
           Kierratyksen hinta muodostuu perusnoutohinnasta, kilometreista ja valitusta kierratysmaksusta.
         </p>
       ) : null}

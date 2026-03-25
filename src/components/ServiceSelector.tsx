@@ -37,7 +37,7 @@ export default function ServiceSelector({
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Valitse palvelutyyppi
       </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-500 sm:text-[15px]">
+      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
         Valitse ensin kategoria. Saat hinta-arvion aina ALV 0 % ja sis. ALV 25,5 %.
       </p>
 

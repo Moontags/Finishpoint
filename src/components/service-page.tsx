@@ -41,7 +41,7 @@ export function ServicePage({
           <h2 className={`text-2xl font-bold tracking-tight sm:text-4xl ${service.heroBackgroundImage ? "text-white" : "text-slate-900"}`}>
             {service.valueProposition}
           </h2>
-          <p className={`max-w-xl text-[14px] leading-[1.75] sm:text-base ${service.heroBackgroundImage ? "text-slate-200" : "text-slate-500"}`}>
+          <p className={`max-w-xl text-[14px] leading-[1.75] sm:text-base ${service.heroBackgroundImage ? "text-slate-200" : "text-slate-600"}`}>
             Palvelemme joustavasti myös viikonloppuisin. Kerro tarpeesi, niin ehdotamme sinulle
             sopivan aikataulun ja kuljetusratkaisun.
           </p>
@@ -74,7 +74,7 @@ export function ServicePage({
 
       <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{service.pricingTitle}</h2>
-        <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-500 sm:text-base">
+        <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           {service.pricingDescription}
         </p>
         <div className="mt-6">

@@ -26,7 +26,7 @@ export function ProcessSteps({
           className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
         >
           <h3 className="text-[15px] font-bold text-slate-900">{step.title}</h3>
-          <p className="mt-2 text-[14px] leading-6 text-slate-500">{step.description}</p>
+          <p className="mt-2 text-[14px] leading-6 text-slate-600">{step.description}</p>
         </article>
       ))}
     </div>

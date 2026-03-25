@@ -120,7 +120,7 @@ export default function Home() {
                Tavarakuljetukset, muutot  &amp; siirtopalvelut <br />
                 <span className="text-blue-600"> yhdestä paikasta</span>
               </h1>
-              <p className="max-w-2xl text-[15px] leading-7 text-slate-500 sm:text-lg sm:leading-8">
+              <p className="max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-lg sm:leading-8">
                 FP-pikakuljetus hoitaa kuljetukset puolestasi alusta loppuun.
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function Home() {
             </div>
 
             {/* Trust row */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] font-medium text-slate-400">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] font-medium text-slate-600">
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 ALV 0 % hinnat
@@ -168,7 +168,7 @@ export default function Home() {
                 className="group flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/10 px-5 py-4 shadow-sm backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-300 hover:bg-white/20 hover:shadow-md"
               >
                 <div className="min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-700">
                     {label}
                   </p>
                   <p className="mt-1.5 truncate text-[1.05rem] font-semibold text-slate-900">
@@ -182,9 +182,9 @@ export default function Home() {
             ))}
 
             {/* Payment + pricing info card */}
-            <div className="rounded-2xl border border-slate-200 bg-white/10 px-5 py-4 text-[13px] leading-6 text-slate-500 shadow-sm backdrop-blur-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white/10 px-5 py-4 text-[13px] leading-6 text-slate-700 shadow-sm backdrop-blur-sm">
               <p className="mb-3 font-semibold text-slate-800">Hinnoittelu & maksutavat</p>
-              <p className="mb-3 text-[12px] text-slate-600">Hinnat ALV 0 %, kokonaissummaan lisätään ALV 25,5 %.</p>
+              <p className="mb-3 text-[12px] text-slate-700">Hinnat ALV 0 %, kokonaissummaan lisätään ALV 25,5 %.</p>
               <div className="grid grid-cols-2 gap-2">
                 {paymentMethods.map(({ icon: Icon, label, desc }) => (
                   <div
@@ -196,7 +196,7 @@ export default function Home() {
                     </span>
                     <div className="min-w-0">
                       <p className="text-[12px] font-semibold text-slate-800">{label}</p>
-                      <p className="text-[11px] text-slate-500">{desc}</p>
+                      <p className="text-[11px] text-slate-700">{desc}</p>
                     </div>
                   </div>
                 ))}
@@ -239,7 +239,7 @@ export default function Home() {
               <a
                 key={title}
                 href={href}
-                className={`relative flex min-h-[300px] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-[340px] ${
+                className={`group relative flex min-h-[300px] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-[340px] ${
                   featured
                     ? "border-2 border-blue-500 shadow-[0_0_0_4px_rgba(37,99,235,0.15),0_14px_32px_rgba(15,23,42,0.22)]"
                     : "border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-lg"
@@ -249,7 +249,8 @@ export default function Home() {
                   src={backgroundImage}
                   alt=""
                   fill
-                  className="object-cover object-center transition duration-500 hover:scale-105"
+                  sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                  className="object-cover object-center opacity-80"
                 />
                 <div className="absolute inset-0 bg-linear-to-b from-slate-900/20 via-slate-900/55 to-slate-900/85" />
                 <div className="relative z-[1] mt-auto">

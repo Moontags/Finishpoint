@@ -4,7 +4,7 @@ export function CTA({ title, description }: { title: string; description: string
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{title}</h2>
-      <p className="mt-3 max-w-2xl text-[14px] leading-[1.75] text-slate-500 sm:text-base">
+      <p className="mt-3 max-w-2xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
         {description}
       </p>
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">

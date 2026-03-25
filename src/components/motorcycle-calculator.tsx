@@ -61,7 +61,7 @@ export function MotorcycleCalculator() {
           <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             Laske kuljetuksen hinta
           </h2>
-          <p className="max-w-lg text-[14px] leading-[1.75] text-slate-500">
+          <p className="max-w-lg text-[14px] leading-[1.75] text-slate-600">
             Lyhyet 0–40 km: 120 €, aluelähdöt 40–80 km: 180 €, pitkät reitit 1,40 €/km.
             Monipysähdysreitit kokonaismatkan mukaan.
           </p>
@@ -69,7 +69,7 @@ export function MotorcycleCalculator() {
 
         {/* Price display */}
         <div className="shrink-0 rounded-xl border border-slate-200 bg-transparent px-5 py-4 text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-600">
             Hinta ALV 0 %
           </p>
           <p className="mt-2 text-3xl font-bold text-slate-900">
@@ -114,11 +114,11 @@ export function MotorcycleCalculator() {
                   className={`rounded-xl border px-4 py-4 text-left shadow-sm backdrop-blur-sm transition active:scale-[0.98] ${
                     routeMode === mode
                       ? "border-blue-300 bg-white/10 text-slate-900 ring-1 ring-blue-200/70"
-                      : "border-slate-200 bg-white/5 text-slate-600 hover:border-blue-200 hover:bg-white/10"
+                      : "border-slate-200 bg-white/5 text-slate-700 hover:border-blue-200 hover:bg-white/10"
                   }`}
                 >
                   <p className="text-[13px] font-semibold">{title}</p>
-                  <p className="mt-1.5 text-[12px] leading-[1.6] text-slate-500">{desc}</p>
+                  <p className="mt-1.5 text-[12px] leading-[1.6] text-slate-700">{desc}</p>
                 </button>
               ))}
             </div>
@@ -144,7 +144,7 @@ export function MotorcycleCalculator() {
               onChange={(e) => setKilometers(Number(e.target.value))}
               className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-blue-600"
             />
-            <div className="mt-2.5 flex justify-between text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400">
+            <div className="mt-2.5 flex justify-between text-[11px] font-medium uppercase tracking-[0.18em] text-slate-600">
               <span>0 km</span>
               <span>500 km</span>
             </div>
@@ -172,7 +172,7 @@ export function MotorcycleCalculator() {
                 className={`flex items-center justify-between rounded-xl border px-4 py-3 text-[13px] shadow-sm backdrop-blur-sm transition ${
                   active
                     ? "border-blue-300 bg-white/10 text-slate-900 ring-1 ring-blue-200/70"
-                    : "border-transparent bg-white/5 text-slate-400"
+                    : "border-transparent bg-white/5 text-slate-500"
                 }`}
               >
                 <span>{range}</span>
@@ -181,7 +181,7 @@ export function MotorcycleCalculator() {
             ))}
           </div>
 
-          <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[12px] text-slate-500">
+          <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[12px] text-slate-700">
             Hintoihin lisätään ALV 25,5 %.
           </div>
         </div>
