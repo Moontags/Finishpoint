@@ -30,6 +30,7 @@ export function ServicePage({
               src={service.heroBackgroundImage}
               alt=""
               fill
+              sizes="(max-width: 1023px) 100vw, 42vw"
               className="object-cover object-center"
               priority
             />
@@ -37,7 +38,7 @@ export function ServicePage({
           </>
         ) : null}
 
-        <div className="relative z-[1] space-y-4">
+        <div className="relative z-1 space-y-4">
           <h2 className={`text-2xl font-bold tracking-tight sm:text-4xl ${service.heroBackgroundImage ? "text-white" : "text-slate-900"}`}>
             {service.valueProposition}
           </h2>
@@ -62,7 +63,7 @@ export function ServicePage({
           </div>
         </div>
 
-        <div className={`relative z-[1] rounded-xl border p-5 ${service.heroBackgroundImage ? "border-white/30 bg-white/10 backdrop-blur-sm" : "border-slate-200 bg-slate-50"}`}>
+        <div className={`relative z-1 rounded-xl border p-5 ${service.heroBackgroundImage ? "border-white/30 bg-white/10 backdrop-blur-sm" : "border-slate-200 bg-slate-50"}`}>
           <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${service.heroBackgroundImage ? "text-blue-200" : "text-blue-500"}`}>
             Sisältää
           </p>

@@ -90,6 +90,7 @@ export default function Home() {
             src="/images/paku2.png"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover object-center"
             priority
           />
@@ -213,6 +214,7 @@ export default function Home() {
             src="/images/paku1.png"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-white/60" />
@@ -282,6 +284,7 @@ export default function Home() {
             src="/images/paku5.png"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-white/65" />
