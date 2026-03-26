@@ -15,7 +15,7 @@ import { SiteHeader } from "@/components/site-header";
 
 const services = [
   {
-    title: "Moottoripyöräkuljetukset",
+    title: "Ajoneuvokuljetukset",
     description:
       "Kuljetuspalvelu moottoripyörille, mopoille ja mönkijöille. Lähtöhinta 120 € (ALV 0 %).",
     accent: "Siirtopalvelu",
