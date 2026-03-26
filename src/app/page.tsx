@@ -208,21 +208,7 @@ export default function Home() {
       </section>
 
       {/* ── Services ─────────────────────────────────────────────── */}
-      <section id="services" className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <Image
-            src="/images/paku1.png"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-white/60" />
-          <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#f5f6f8] to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#f5f6f8] to-transparent" />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-7xl overflow-x-clip px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
+      <section id="services" className="mx-auto max-w-7xl overflow-x-clip px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
           <div className="mb-8 flex flex-col gap-3">
             <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-blue-500">
               Palvelut
@@ -265,7 +251,6 @@ export default function Home() {
               </a>
             ))}
           </div>
-        </div>
       </section>
 
       {/* ── Calculator ───────────────────────────────────────────── */}
