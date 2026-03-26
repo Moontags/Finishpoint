@@ -207,8 +207,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Services + calculator background ───────────────────── */}
-      <section className="relative overflow-hidden">
+      {/* ── Services ─────────────────────────────────────────────── */}
+      <section id="services" className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0">
           <Image
             src="/images/paku1.png"
@@ -222,11 +222,7 @@ export default function Home() {
           <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#f5f6f8] to-transparent" />
         </div>
 
-        {/* ── Services ─────────────────────────────────────────────── */}
-        <section
-          id="services"
-          className="relative z-10 mx-auto max-w-7xl overflow-x-clip px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10"
-        >
+        <div className="relative z-10 mx-auto max-w-7xl overflow-x-clip px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
           <div className="mb-8 flex flex-col gap-3">
             <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-blue-500">
               Palvelut
@@ -269,12 +265,12 @@ export default function Home() {
               </a>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── Calculator ───────────────────────────────────────────── */}
-        <section className="relative z-10 mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
-          <ServiceSelector />
-        </section>
+      {/* ── Calculator ───────────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
+        <ServiceSelector />
       </section>
 
       {/* ── Quote form background ───────────────────────────────── */}
