@@ -32,7 +32,6 @@ export function ServicePage({
               fill
               sizes="(max-width: 1023px) 100vw, 42vw"
               className="object-cover object-center"
-              priority
             />
             <div className="absolute inset-0 bg-slate-900/55" />
           </>
