@@ -39,28 +39,28 @@ describe("ajoneuvohinta", () => {
 describe("kappaletavaraHinta", () => {
   it("0-kerros ilman lisia -> lisa 0", () => {
     const result = kappaletavaraHinta(30, 0, 0, false, false);
-    expect(result.perusHinta).toBe(86.85);
+    expect(result.perusHinta).toBe(70.92);
     expect(result.lisat).toBe(0);
-    expect(result.yhteensa).toBe(86.85);
+    expect(result.yhteensa).toBe(70.92);
   });
 
-  it("40 km -> 86,85 euroa", () => {
+  it("40 km -> 70,92 euroa", () => {
     const result = kappaletavaraHinta(40, 0, 0, false, false);
-    expect(result.perusHinta).toBe(86.85);
-    expect(result.yhteensa).toBe(86.85);
+    expect(result.perusHinta).toBe(70.92);
+    expect(result.yhteensa).toBe(70.92);
   });
 
-  it("41 km -> 87,88 euroa", () => {
+  it("41 km -> 71,95 euroa", () => {
     const result = kappaletavaraHinta(41, 0, 0, false, false);
-    expect(result.perusHinta).toBe(87.88);
-    expect(result.yhteensa).toBe(87.88);
+    expect(result.perusHinta).toBe(71.95);
+    expect(result.yhteensa).toBe(71.95);
   });
 
   it("laskee kerroslisat molemmista paista", () => {
     const result = kappaletavaraHinta(50, 2, 3, false, false);
-    expect(result.perusHinta).toBe(97.15);
+    expect(result.perusHinta).toBe(81.22);
     expect(result.lisat).toBe(59.75);
-    expect(result.yhteensa).toBe(156.9);
+    expect(result.yhteensa).toBe(140.97);
   });
 
   it("hissiton lisa lisataan aina, kun valittu", () => {
@@ -76,7 +76,7 @@ describe("kappaletavaraHinta", () => {
   it("pakkausapu lisa lisataan", () => {
     const result = kappaletavaraHinta(20, 0, 0, false, true);
     expect(result.lisat).toBe(15.14);
-    expect(result.yhteensa).toBe(101.99);
+    expect(result.yhteensa).toBe(86.06);
   });
 });
 
@@ -86,7 +86,7 @@ describe("projektiHinta", () => {
   });
 
   it("pieni muutto on kiintea", () => {
-    expect(projektiHinta("pieni_muutto")).toBe(262.15);
+    expect(projektiHinta("pieni_muutto")).toBe(214.34);
   });
 
   it("suuri muutto palauttaa null", () => {

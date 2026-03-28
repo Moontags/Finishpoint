@@ -25,8 +25,8 @@ const services = [
   },
   {
     title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 329 € sis. ALV.",
-    accent: "Alkaen 329 €",
+    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 269 € sis. ALV.",
+    accent: "Alkaen 269 €",
     featured: false,
     href: "/muutot",
     backgroundImage: "/images/paku3.png",

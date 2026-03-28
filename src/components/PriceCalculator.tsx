@@ -134,7 +134,7 @@ export function KappaletavaraPriceCalculator() {
         Kappaletavarakuljetukset
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Pesukone, sohva ja sänky. 0-40 km 109 €, yli 40 km +1,29 €/km. Kerroslisä 15 €/kerros.
+        Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km. Kerroslisä 15 €/kerros.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -203,7 +203,7 @@ export function KappaletavaraPriceCalculator() {
 }
 
 export function ProjektiPriceCalculator() {
-  const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("tunti");
+  const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
   const [tunnit, setTunnit] = useState(4);
   const [lisakuormat, setLisakuormat] = useState(0);
   const [kierratysKm, setKierratysKm] = useState(20);
@@ -217,10 +217,10 @@ export function ProjektiPriceCalculator() {
   return (
     <section className={cardClass}>
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        Projektikuljetukset
+        Muuttopalvelut
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Muutot alkaen 329 €, tuntityö 55 €/h, kierrätys alkaen 54,99 €. Suuri muutto arvioidaan aina tarjouksena.
+        Muutot alkaen 269 € ja kierrätys alkaen 54,99 €.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -233,9 +233,7 @@ export function ProjektiPriceCalculator() {
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
             className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
           >
-            <option value="tunti">Tuntihinnoittelu</option>
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
-            <option value="suuri_muutto">Suuri muutto (3+ huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>
             <option value="kierratys_lisa">Kierrätys, lisäkuormat</option>
           </select>
@@ -314,7 +312,7 @@ export function ProjektiPriceCalculator() {
           </div>
         </div>
       ) : (
-        <PriceSummary hintaAlv0={hinta} label="Projektikuljetus" />
+        <PriceSummary hintaAlv0={hinta} label="Muuttopalvelu" />
       )}
     </section>
   );

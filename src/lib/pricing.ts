@@ -37,8 +37,8 @@ export function kappaletavaraHinta(
   const turvallinenKm = Math.max(0, km);
 
   let perus: number;
-  if (turvallinenKm <= 40) perus = poistaAlv(109);
-  else perus = poistaAlv(109) + (turvallinenKm - 40) * poistaAlv(1.29);
+  if (turvallinenKm <= 40) perus = poistaAlv(89);
+  else perus = poistaAlv(89) + (turvallinenKm - 40) * poistaAlv(1.29);
 
   let lisat = (kerrosNouto + kerrosToimitus) * poistaAlv(15);
   if (hissiton) lisat += poistaAlv(25);
@@ -60,7 +60,7 @@ export function projektiHinta(
   kierratysMaksu?: number,
 ): number | null {
   if (tyyppi === "tunti") return pyoristaSentteihin((tunnit ?? 0) * (55 / (1 + ALV)));
-  if (tyyppi === "pieni_muutto") return poistaAlv(329);
+  if (tyyppi === "pieni_muutto") return poistaAlv(269);
   if (tyyppi === "suuri_muutto") return null;
 
   const perusKierratys = poistaAlv(54.99);
