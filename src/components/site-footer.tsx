@@ -26,7 +26,7 @@ export function SiteFooter() {
           <p className="text-[13px] text-slate-700">050 354 7763</p>
           <p className="break-all text-[13px] text-slate-700">kuljetus@finishpoint.fi</p>
           <p className="pt-1 text-[12px] text-slate-600">
-            Hinnat ALV 0 %, ALV 25,5 % lisätään kokonaissummaan.
+            Hinnat näytetään sis. ALV 25,5 %. Yritys (ALV 0 %).
           </p>
           <a
             href="/images/sopimusehdot.pdf"

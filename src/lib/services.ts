@@ -168,7 +168,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "muutot",
     navLabel: "Muutot",
     title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille alkaen 295 € (ALV 0 %).",
+    description: "Joustavat muutot koteihin ja pienyrityksille alkaen 329 € sis. ALV.",
     valueProposition:
       "Sinä keskityt uuteen kotiin – me hoidamme muuton.",
     includes: [
@@ -179,7 +179,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Muuttojen hinnoittelu",
     pricingDescription:
-      "Lähtöhinta on 295 € (ALV 0 %). Lopullinen hinta riippuu muuton laajuudesta ja etäisyydestä",
+      "Lähtöhinta on 329 € sis. ALV. Lopullinen hinta riippuu muuton laajuudesta ja etäisyydestä",
     metadataTitle: "Muuttopalvelu | Finishpoint",
     metadataDescription:
       "Muuttopalvelut koteihin ja pienyrityksille. Selkeä hinnoittelu ja luotettava toteutus.",

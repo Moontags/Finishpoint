@@ -8,7 +8,7 @@ import type { ServiceCategory } from "@/lib/types";
 const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Bike }> = [
   { id: "ajoneuvo", label: "Ajoneuvokuljetukset", icon: Bike },
   { id: "kappaletavara", label: "Kappaletavara", icon: Boxes },
-  { id: "projekti", label: "Muutot ja kierratys", icon: Truck },
+  { id: "projekti", label: "Muutot ja kierrätys", icon: Truck },
 ];
 
 function parseCategory(value: string | null): ServiceCategory | null {
@@ -38,7 +38,7 @@ export default function ServiceSelector({
         Valitse palvelutyyppi
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Valitse ensin kategoria. Saat hinta-arvion aina ALV 0 % ja sis. ALV 25,5 %.
+        Valitse ensin kategoria. Hinta-arvio näytetään sis. ALV 25,5 %. Yrityksille näytetään ALV 0 %.
       </p>
 
       <div className="mt-5 sm:hidden">

@@ -2,30 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { Bike, Route } from "lucide-react";
-
-const VAT_RATE = 0.255;
+import { ajoneuvohinta, lisaaAlv } from "@/lib/pricing";
 
 type RouteMode = "single" | "multistop";
-
-function calculateVatExclusivePrice(kilometers: number, routeMode: RouteMode) {
-  if (!Number.isFinite(kilometers) || kilometers <= 0) {
-    return 0;
-  }
-
-  if (routeMode === "multistop") {
-    return kilometers * 1.4;
-  }
-
-  if (kilometers <= 40) {
-    return 120;
-  }
-
-  if (kilometers <= 80) {
-    return 180;
-  }
-
-  return kilometers * 1.4;
-}
 
 function formatPrice(value: number) {
   return new Intl.NumberFormat("fi-FI", {
@@ -40,11 +19,11 @@ export function MotorcycleCalculator() {
   const [kilometers, setKilometers] = useState(60);
 
   const vatExclusivePrice = useMemo(
-    () => calculateVatExclusivePrice(kilometers, routeMode),
+    () => ajoneuvohinta(kilometers, routeMode === "multistop"),
     [kilometers, routeMode],
   );
 
-  const vatInclusivePrice = vatExclusivePrice * (1 + VAT_RATE);
+  const vatInclusivePrice = lisaaAlv(vatExclusivePrice);
 
   return (
     <div
@@ -62,21 +41,18 @@ export function MotorcycleCalculator() {
             Laske kuljetuksen hinta
           </h2>
           <p className="max-w-lg text-[14px] leading-[1.75] text-slate-600">
-            Lyhyet 0–40 km: 120 €, aluelähdöt 40–80 km: 180 €, pitkät reitit 1,40 €/km.
+            Lyhyet 0-40 km: 129 €, aluelähdöt 41-80 km: 169 €, pitkät reitit 1,29 €/km.
             Monipysähdysreitit kokonaismatkan mukaan.
           </p>
         </div>
 
         {/* Price display */}
         <div className="shrink-0 rounded-xl border border-slate-200 bg-transparent px-5 py-4 text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-600">
-            Hinta ALV 0 %
-          </p>
           <p className="mt-2 text-3xl font-bold text-slate-900">
-            {formatPrice(vatExclusivePrice)}
+            {formatPrice(vatInclusivePrice)}
           </p>
-          <p className="mt-1.5 text-[13px] font-medium text-blue-600">
-            Sis. ALV 25,5 %: {formatPrice(vatInclusivePrice)}
+          <p className="mt-1 text-[13px] font-medium text-slate-600">
+            Yritys (ALV 0 %): {formatPrice(vatExclusivePrice)}
           </p>
         </div>
       </div>
@@ -98,12 +74,12 @@ export function MotorcycleCalculator() {
                   {
                     mode: "single" as RouteMode,
                     title: "Yksi nouto ja toimitus",
-                    desc: "Hinnoittelu 120 €, 180 € tai 1,40 €/km.",
+                    desc: "Hinnoittelu 129 €, 169 € tai 1,29 €/km.",
                   },
                   {
                     mode: "multistop" as RouteMode,
                     title: "Monipysähdysreitti",
-                    desc: "A → B → C → takaisin A, 1,40 €/km.",
+                    desc: "A → B → C → takaisin A, 1,29 €/km.",
                   },
                 ] as const
               ).map(({ mode, title, desc }) => (
@@ -162,10 +138,10 @@ export function MotorcycleCalculator() {
 
           <div className="mt-5 space-y-2.5">
             {[
-              { range: "0–40 km", price: "120 €", active: routeMode === "single" && kilometers <= 40 },
-              { range: "40–80 km", price: "180 €", active: routeMode === "single" && kilometers > 40 && kilometers <= 80 },
-              { range: "Yli 80 km", price: "1,40 € / km", active: routeMode === "single" && kilometers > 80 },
-              { range: "Monipysähdys", price: "1,40 € / km", active: routeMode === "multistop" },
+              { range: "0-40 km", price: "129 €", active: routeMode === "single" && kilometers <= 40 },
+              { range: "41-80 km", price: "169 €", active: routeMode === "single" && kilometers > 40 && kilometers <= 80 },
+              { range: "Yli 80 km", price: "1,29 € / km", active: routeMode === "single" && kilometers > 80 },
+              { range: "Monipysähdys", price: "1,29 € / km", active: routeMode === "multistop" },
             ].map(({ range, price, active }) => (
               <div
                 key={range}
@@ -182,7 +158,7 @@ export function MotorcycleCalculator() {
           </div>
 
           <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[12px] text-slate-700">
-            Hintoihin lisätään ALV 25,5 %.
+            Hinta näytetään sis. ALV 25,5 %. Yrityksille näytetään ALV 0 %.
           </div>
         </div>
       </div>

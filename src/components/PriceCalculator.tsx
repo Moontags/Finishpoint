@@ -86,7 +86,7 @@ export function AjoneuvoPriceCalculator() {
         Ajoneuvokuljetukset
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. Kiinteä hinta 0-80 km, sen jälkeen 1,40 €/km.
+        Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -100,7 +100,7 @@ export function AjoneuvoPriceCalculator() {
             onChange={(event) => setMonipysahdys(event.target.checked)}
             className="h-4 w-4 accent-blue-600"
           />
-          Monipysahdysreitti (A-B-C-A)
+          Monipysähdysreitti (A-B-C-A)
         </label>
       </div>
 
@@ -134,7 +134,7 @@ export function KappaletavaraPriceCalculator() {
         Kappaletavarakuljetukset
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Pesukone, sohva ja sanky. Rappuslisa lasketaan molemmista paista.
+        Pesukone, sohva ja sänky. 0-40 km 109 €, yli 40 km +1,29 €/km. Kerroslisä 15 €/kerros.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -195,7 +195,7 @@ export function KappaletavaraPriceCalculator() {
 
       <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[13px] text-slate-700">
         <p>Perushinta: {laskelma.perusHinta.toFixed(2)} €</p>
-        <p>Lisat: {laskelma.lisat.toFixed(2)} €</p>
+        <p>Lisät: {laskelma.lisat.toFixed(2)} €</p>
       </div>
       <PriceSummary hintaAlv0={laskelma.yhteensa} label="Kappaletavarakuljetus" />
     </section>
@@ -220,7 +220,7 @@ export function ProjektiPriceCalculator() {
         Projektikuljetukset
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Muutot ja kierratys. Suuri muutto arvioidaan aina tarjouksena.
+        Muutot alkaen 329 €, tuntityö 55 €/h, kierrätys alkaen 54,99 €. Suuri muutto arvioidaan aina tarjouksena.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -236,8 +236,8 @@ export function ProjektiPriceCalculator() {
             <option value="tunti">Tuntihinnoittelu</option>
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="suuri_muutto">Suuri muutto (3+ huonetta)</option>
-            <option value="kierratys_1">Kierratys, 1 kuorma</option>
-            <option value="kierratys_lisa">Kierratys, lisakuormat</option>
+            <option value="kierratys_1">Kierrätys, 1 kuorma</option>
+            <option value="kierratys_lisa">Kierrätys, lisäkuormat</option>
           </select>
         </label>
 
@@ -258,7 +258,7 @@ export function ProjektiPriceCalculator() {
 
         {tyyppi === "kierratys_lisa" ? (
           <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Lisakuormat
+            Lisäkuormat
             <input
               id="projekti-lisakuormat"
               name="projektiLisakuormat"
@@ -274,12 +274,12 @@ export function ProjektiPriceCalculator() {
         ) : null}
 
         {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-          <DistanceSlider label="Kierratysreitin matka" fieldName="projekti-kierratysmatka" value={kierratysKm} onChange={setKierratysKm} max={300} />
+          <DistanceSlider label="Kierrätysreitin matka" fieldName="projekti-kierratysmatka" value={kierratysKm} onChange={setKierratysKm} max={300} />
         ) : null}
 
         {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
           <label htmlFor="projekti-kierratysmaksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Kierratysmaksu
+            Kierrätysmaksu
             <select
               id="projekti-kierratysmaksu"
               name="projektiKierratysmaksu"
@@ -287,9 +287,9 @@ export function ProjektiPriceCalculator() {
               onChange={(event) => setKierratysMaksu(Number(event.target.value))}
               className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
             >
-              <option value={25}>Pieni kuorma - 25 €</option>
-              <option value={35}>Normaalikuorma - 35 €</option>
-              <option value={50}>Suuri kuorma - 50 €</option>
+              <option value={25}>Pieni kuorma - 25 € (sis. ALV)</option>
+              <option value={35}>Normaalikuorma - 35 € (sis. ALV)</option>
+              <option value={50}>Suuri kuorma - 50 € (sis. ALV)</option>
             </select>
           </label>
         ) : null}
@@ -297,13 +297,13 @@ export function ProjektiPriceCalculator() {
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
         <p className="mt-3 text-[13px] text-slate-700">
-          Kierratyksen hinta muodostuu perusnoutohinnasta, kilometreista ja valitusta kierratysmaksusta.
+          Kierrätyksen hinta muodostuu perushinnasta 54,99 €, reitin pituudesta 0,69 €/km, lisäkuormista ja asemamaksusta.
         </p>
       ) : null}
 
       {hinta === null ? (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-[14px] text-amber-800">
-          Suuri muutto hinnoitellaan tarjouksena, koska se vaatii useamman kuljetuskerran. Jata tarjouspyynto, niin palaamme nopeasti.
+          Suuri muutto hinnoitellaan tarjouksena, koska se vaatii useamman kuljetuskerran. Jätä tarjouspyyntö, niin palaamme nopeasti.
           <div className="mt-3">
             <Link
               href="/#quote"

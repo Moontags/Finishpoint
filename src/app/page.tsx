@@ -17,7 +17,7 @@ const services = [
   {
     title: "Ajoneuvokuljetukset",
     description:
-      "Kuljetuspalvelu moottoripyörille, mopoille ja mönkijöille. Lähtöhinta 120 € (ALV 0 %).",
+      "Kuljetuspalvelu moottoripyörille, mopoille ja mönkijöille. Lähtöhinta 129 € sis. ALV.",
     accent: "Siirtopalvelu",
     featured: true,
     href: "/pyorakuljetus",
@@ -25,8 +25,8 @@ const services = [
   },
   {
     title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 295 € (ALV 0 %).",
-    accent: "Alkaen 295 €",
+    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 329 € sis. ALV.",
+    accent: "Alkaen 329 €",
     featured: false,
     href: "/muutot",
     backgroundImage: "/images/paku3.png",
@@ -34,7 +34,7 @@ const services = [
   {
     title: "Kierrätykset",
     description:
-      "Lähtöhinta 59 € (ALV 0 %) sisältäen 1 kuorman, kierrätyksen ja 20 km:n matkan.",
+      "Lähtöhinta 54,99 € sis. ALV. Lopullinen hinta määräytyy kuormamäärän, kilometrien ja asemamaksun mukaan.",
     accent: "Tarjouskohteet erikseen",
     featured: false,
     href: "/kierratys",
@@ -147,7 +147,7 @@ export default function Home() {
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] font-medium text-slate-600">
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                ALV 0 % hinnat
+                Selkeä hinnoittelu
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -185,7 +185,7 @@ export default function Home() {
             {/* Payment + pricing info card */}
             <div className="rounded-2xl bg-white/10 px-5 py-4 text-[13px] leading-6 text-slate-700 shadow-sm backdrop-blur-sm">
               <p className="mb-3 font-semibold text-slate-800">Hinnoittelu & maksutavat</p>
-              <p className="mb-3 text-[12px] text-slate-700">Hinnat ALV 0 %, kokonaissummaan lisätään ALV 25,5 %.</p>
+              <p className="mb-3 text-[12px] text-slate-700">Hinnat näytetään sis. ALV 25,5 %. Yritys (ALV 0 %).</p>
               <div className="grid grid-cols-2 gap-2">
                 {paymentMethods.map(({ icon: Icon, label, desc }) => (
                   <div
