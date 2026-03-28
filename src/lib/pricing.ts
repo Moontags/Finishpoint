@@ -35,13 +35,16 @@ export function kappaletavaraHinta(
   pakkaus: boolean,
 ): { perusHinta: number; lisat: number; yhteensa: number } {
   const turvallinenKm = Math.max(0, km);
+  const kerroksetYhteensa = kerrosNouto + kerrosToimitus;
 
   let perus: number;
   if (turvallinenKm <= 40) perus = poistaAlv(89);
   else perus = poistaAlv(89) + (turvallinenKm - 40) * poistaAlv(1.29);
 
-  let lisat = (kerrosNouto + kerrosToimitus) * poistaAlv(15);
-  if (hissiton) lisat += poistaAlv(25);
+  let lisat = 0;
+  if (hissiton && kerroksetYhteensa > 0) {
+    lisat += kerroksetYhteensa * poistaAlv(5);
+  }
   if (pakkaus) lisat += poistaAlv(19);
 
   const perusHinta = pyoristaSentteihin(perus);
@@ -58,9 +61,21 @@ export function projektiHinta(
   lisakuormat?: number,
   kierratysKm?: number,
   kierratysMaksu?: number,
+  kerrosNouto?: number,
+  kerrosToimitus?: number,
+  hissiton?: boolean,
+  pakkaus?: boolean,
 ): number | null {
   if (tyyppi === "tunti") return pyoristaSentteihin((tunnit ?? 0) * (55 / (1 + ALV)));
-  if (tyyppi === "pieni_muutto") return poistaAlv(269);
+
+  const kerroksetYhteensa = (kerrosNouto ?? 0) + (kerrosToimitus ?? 0);
+  const kerrosLisatSisAlv = hissiton && kerroksetYhteensa > 0 ? kerroksetYhteensa * 5 : 0;
+  const pakkausLisaSisAlv = pakkaus ? 19 : 0;
+
+  let muuttoLisat = 0;
+  muuttoLisat += poistaAlv(kerrosLisatSisAlv + pakkausLisaSisAlv);
+
+  if (tyyppi === "pieni_muutto") return (269 + kerrosLisatSisAlv + pakkausLisaSisAlv) / (1 + ALV);
   if (tyyppi === "suuri_muutto") return null;
 
   const perusKierratys = poistaAlv(54.99);
@@ -70,7 +85,7 @@ export function projektiHinta(
 
   if (tyyppi === "kierratys_1") {
     return pyoristaSentteihin(
-      perusKierratys + (kierratysKm ?? 0) * kierratysKmHinta + kierratysMaksuAlv0,
+      perusKierratys + (kierratysKm ?? 0) * kierratysKmHinta + kierratysMaksuAlv0 + muuttoLisat,
     );
   }
 
@@ -79,7 +94,8 @@ export function projektiHinta(
       perusKierratys +
         (lisakuormat ?? 0) * lisakuormaHinta +
         (kierratysKm ?? 0) * kierratysKmHinta +
-        kierratysMaksuAlv0,
+        kierratysMaksuAlv0 +
+        muuttoLisat,
     );
   }
 

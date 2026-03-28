@@ -134,7 +134,7 @@ export function KappaletavaraPriceCalculator() {
         Kappaletavarakuljetukset
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km. Kerroslisä 15 €/kerros.
+        Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km. Kerroslisä ilman hissiä 5 €/kerros.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -204,14 +204,37 @@ export function KappaletavaraPriceCalculator() {
 
 export function ProjektiPriceCalculator() {
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
-  const [tunnit, setTunnit] = useState(4);
   const [lisakuormat, setLisakuormat] = useState(0);
   const [kierratysKm, setKierratysKm] = useState(20);
   const [kierratysMaksu, setKierratysMaksu] = useState(35);
+  const [kerrosNouto, setKerrosNouto] = useState(0);
+  const [kerrosToimitus, setKerrosToimitus] = useState(0);
+  const [hissiton, setHissiton] = useState(false);
+  const [pakkaus, setPakkaus] = useState(false);
 
   const hinta = useMemo(
-    () => projektiHinta(tyyppi, tunnit, lisakuormat, kierratysKm, kierratysMaksu),
-    [tyyppi, tunnit, lisakuormat, kierratysKm, kierratysMaksu],
+    () =>
+      projektiHinta(
+        tyyppi,
+        undefined,
+        lisakuormat,
+        kierratysKm,
+        kierratysMaksu,
+        kerrosNouto,
+        kerrosToimitus,
+        hissiton,
+        pakkaus,
+      ),
+    [
+      tyyppi,
+      lisakuormat,
+      kierratysKm,
+      kierratysMaksu,
+      kerrosNouto,
+      kerrosToimitus,
+      hissiton,
+      pakkaus,
+    ],
   );
 
   return (
@@ -220,7 +243,7 @@ export function ProjektiPriceCalculator() {
         Muuttopalvelut
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Muutot alkaen 269 € ja kierrätys alkaen 54,99 €.
+        Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Kerroslisä ilman hissiä 5 €/kerros.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -238,21 +261,6 @@ export function ProjektiPriceCalculator() {
             <option value="kierratys_lisa">Kierrätys, lisäkuormat</option>
           </select>
         </label>
-
-        {tyyppi === "tunti" ? (
-          <label htmlFor="projekti-tunnit" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Tunnit
-            <input
-              id="projekti-tunnit"
-              name="projektiTunnit"
-              type="number"
-              min={0}
-              value={tunnit}
-              onChange={(event) => setTunnit(Math.max(0, Number(event.target.value) || 0))}
-              className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
-            />
-          </label>
-        ) : null}
 
         {tyyppi === "kierratys_lisa" ? (
           <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
@@ -291,6 +299,57 @@ export function ProjektiPriceCalculator() {
             </select>
           </label>
         ) : null}
+
+        <label htmlFor="projekti-kerros-nouto" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          Kerros noudossa
+          <input
+            id="projekti-kerros-nouto"
+            name="projektiKerrosNouto"
+            type="number"
+            min={0}
+            value={kerrosNouto}
+            onChange={(event) => setKerrosNouto(Math.max(0, Number(event.target.value) || 0))}
+            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+          />
+        </label>
+
+        <label htmlFor="projekti-kerros-toimitus" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          Kerros toimituksessa
+          <input
+            id="projekti-kerros-toimitus"
+            name="projektiKerrosToimitus"
+            type="number"
+            min={0}
+            value={kerrosToimitus}
+            onChange={(event) => setKerrosToimitus(Math.max(0, Number(event.target.value) || 0))}
+            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+          />
+        </label>
+
+        <div className="grid gap-3">
+          <label htmlFor="projekti-hissiton" className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
+            <input
+              id="projekti-hissiton"
+              name="projektiHissiton"
+              type="checkbox"
+              checked={hissiton}
+              onChange={(event) => setHissiton(event.target.checked)}
+              className="h-4 w-4 accent-blue-600"
+            />
+            Hissiton talo
+          </label>
+          <label htmlFor="projekti-pakkaus" className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
+            <input
+              id="projekti-pakkaus"
+              name="projektiPakkaus"
+              type="checkbox"
+              checked={pakkaus}
+              onChange={(event) => setPakkaus(event.target.checked)}
+              className="h-4 w-4 accent-blue-600"
+            />
+            Pakkausapu
+          </label>
+        </div>
       </div>
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (

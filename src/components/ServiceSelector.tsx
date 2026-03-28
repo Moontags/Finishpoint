@@ -23,7 +23,7 @@ export default function ServiceSelector({
 }: {
   initialCategory?: ServiceCategory;
 }) {
-  const resolvedInitial = parseCategory(initialCategory ?? null) ?? "ajoneuvo";
+  const resolvedInitial = parseCategory(initialCategory ?? null) ?? "projekti";
 
   const [active, setActive] = useState<ServiceCategory>(resolvedInitial);
 
@@ -48,7 +48,7 @@ export default function ServiceSelector({
             id="service-category-select"
             name="serviceCategory"
             value={active}
-            onChange={(event) => setActive(parseCategory(event.target.value) ?? "ajoneuvo")}
+            onChange={(event) => setActive(parseCategory(event.target.value) ?? "projekti")}
             className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           >
             {categories.map(({ id, label }) => (
