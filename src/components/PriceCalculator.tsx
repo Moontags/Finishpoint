@@ -88,6 +88,9 @@ export function AjoneuvoPriceCalculator() {
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
         Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.
       </p>
+      <p className="mt-1 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
+        Lisäpyörän toimitus samaan toimipisteeseen 89 €.
+      </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <DistanceSlider label="Kokonaismatka" fieldName="ajoneuvo-kokonaismatka" value={km} onChange={setKm} />

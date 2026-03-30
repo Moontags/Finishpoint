@@ -44,6 +44,9 @@ export function MotorcycleCalculator() {
             Lyhyet 0-40 km: 129 €, aluelähdöt 41-80 km: 169 €, pitkät reitit 1,29 €/km.
             Monipysähdysreitit kokonaismatkan mukaan.
           </p>
+          <p className="max-w-lg text-[13px] font-semibold text-blue-700">
+            Lisäpyörän toimitus samaan toimipisteeseen: 89 €.
+          </p>
         </div>
 
         {/* Price display */}
