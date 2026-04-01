@@ -26,10 +26,12 @@ The quote form posts to the API route `/api/quote`, which sends email via SMTP.
 The distance lookup posts to `/api/distance`, which fetches route distance from Google Maps Distance Matrix API.
 Address suggestions are fetched from `/api/places/autocomplete` using Google Places Autocomplete API.
 
-1. Create a local env file from `.env.example`.
+1. Create `.env.local` from `.env.example`.
 2. Fill in SMTP credentials.
 3. Set `QUOTE_RECIPIENT` if quotes should go somewhere else than `kuljetus@finishpoint.fi`.
 4. Add the same variables to your hosting provider's server-side environment settings before deploying.
+
+Note: `SMTP_SECURE` must be the string `true` or `false` in the env file. The API route parses it with `process.env.SMTP_SECURE === "true"` so the value is converted to a real boolean before creating the Nodemailer transport.
 
 Required variables:
 

@@ -1,13 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
-import { quoteServiceOptions } from "@/lib/services";
+import { useRouter } from "next/navigation";
+import { useCalculatorContext } from "@/lib/calculator-context";
+import { getMobilePayPublicLink } from "@/lib/mobilepay-config";
+import { ORDER_DRAFT_STORAGE_KEY } from "@/lib/order-draft";
+import { quoteServiceOptions, services } from "@/lib/services";
+import type { ServiceCategory } from "@/lib/types";
+
+const categoryDefaultServiceType: Record<ServiceCategory, string> = {
+  ajoneuvo: services.pyorakuljetus.navLabel,
+  kappaletavara: services["pesukone-kuljetus"].navLabel,
+  projekti: services.muutot.navLabel,
+};
 
 const inputClass =
   "w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white focus:ring-[3px] focus:ring-blue-200";
 
 export function QuoteRequestForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -19,6 +31,42 @@ export function QuoteRequestForm() {
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
+  const [hasCalculatorData, setHasCalculatorData] = useState(false);
+  const [activeAction, setActiveAction] = useState<"quote" | "order" | null>(null);
+  const calculatorContext = useCalculatorContext();
+  const hasMobilePayLink = Boolean(getMobilePayPublicLink());
+
+  useEffect(() => {
+    if (!calculatorContext) return;
+    const { pickupAddress, deliveryAddress, serviceCategory } = calculatorContext;
+    if (!pickupAddress && !deliveryAddress) return;
+    // Sync calculator values into the order form fields when calculator data changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFormData((current) => ({
+      ...current,
+      pickupAddress: pickupAddress || current.pickupAddress,
+      deliveryAddress: deliveryAddress || current.deliveryAddress,
+      serviceType: serviceCategory
+        ? (categoryDefaultServiceType[serviceCategory] ?? current.serviceType)
+        : current.serviceType,
+    }));
+    setHasCalculatorData(true);
+  }, [calculatorContext?.pickupAddress, calculatorContext?.deliveryAddress, calculatorContext?.serviceCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if ((status !== "success" && status !== "error") || !feedback) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setFeedback("");
+      setStatus("idle");
+    }, status === "success" ? 2000 : 4000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [status, feedback]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -29,19 +77,34 @@ export function QuoteRequestForm() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setActiveAction("quote");
     setStatus("loading");
     setFeedback("");
 
     try {
+      const addressParts = [
+        formData.pickupAddress ? `Nouto: ${formData.pickupAddress}` : "",
+        formData.deliveryAddress ? `Toimitus: ${formData.deliveryAddress}` : "",
+      ].filter(Boolean);
+      const payload = {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        serviceType: formData.serviceType,
+        addresses: addressParts.join(" → "),
+        message: formData.message,
+      };
       const response = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const result = (await response.json()) as { ok: boolean; error?: string };
 
       if (!response.ok || !result.ok) {
+        setActiveAction(null);
         setStatus("error");
         setFeedback(result.error ?? "Lähetys epäonnistui. Yritä uudelleen.");
         return;
@@ -49,6 +112,8 @@ export function QuoteRequestForm() {
 
       setStatus("success");
       setFeedback("Tarjouspyyntö lähetettiin onnistuneesti.");
+      setActiveAction(null);
+      setHasCalculatorData(false);
       setFormData({
         name: "",
         phone: "",
@@ -59,10 +124,59 @@ export function QuoteRequestForm() {
         message: "",
       });
     } catch {
+      setActiveAction(null);
       setStatus("error");
       setFeedback("Palvelin ei vastannut. Tarkista yhteys ja yritä uudelleen.");
     }
   };
+
+  const handleOrderAndPayment = async () => {
+    setActiveAction("order");
+    setStatus("loading");
+    setFeedback("");
+
+    try {
+      const addressParts = [
+        formData.pickupAddress ? `Nouto: ${formData.pickupAddress}` : "",
+        formData.deliveryAddress ? `Toimitus: ${formData.deliveryAddress}` : "",
+      ].filter(Boolean);
+
+      const orderDraft = {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        serviceType: formData.serviceType,
+        pickupAddress: formData.pickupAddress,
+        deliveryAddress: formData.deliveryAddress,
+        addresses: addressParts.join(" -> "),
+        message: formData.message,
+        estimatedPriceVat0: calculatorContext?.estimatedPriceVat0 ?? null,
+        estimatedPriceVatIncl: calculatorContext?.estimatedPriceVatIncl ?? null,
+      };
+
+      window.sessionStorage.setItem(ORDER_DRAFT_STORAGE_KEY, JSON.stringify(orderDraft));
+      setStatus("idle");
+      setActiveAction(null);
+      router.push("/kassa");
+    } catch {
+      setActiveAction(null);
+      setStatus("error");
+      setFeedback("Kassaan siirtyminen epäonnistui. Yritä uudelleen.");
+    }
+  };
+
+  const hasContactFields =
+    formData.name.trim().length > 0 &&
+    formData.phone.trim().length > 0 &&
+    formData.email.trim().length > 0 &&
+    formData.pickupAddress.trim().length > 0 &&
+    formData.deliveryAddress.trim().length > 0;
+
+  const hasPriceFromCalculator = Boolean(
+    hasCalculatorData && calculatorContext?.estimatedPriceVat0 && calculatorContext.estimatedPriceVat0 > 0,
+  );
+
+  const canAttemptOrder = hasPriceFromCalculator && hasContactFields;
 
   return (
     <div
@@ -76,11 +190,11 @@ export function QuoteRequestForm() {
           <span className="truncate sm:whitespace-normal">Pyydä tarjous</span>
         </div>
         <h2 className="text-[1.85rem] font-bold tracking-tight text-slate-900 sm:text-4xl">
-          Lisää tiedot ja tilaa
+          Tilaa heti tai pyydä tarjous
         </h2>
         <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
-          Täytä yhteystietosi ja valitse palvelutyyppi. Lähetämme tarjouspyynnön suoraan palvelimelta,
-          jotta saat kaikki olennaiset tiedot kerralla perille.
+          Kun tiedot tulevat laskurista, voit tehdä suoran tilauksen ja siirtyä maksuun.
+          Voit myös lähettää tavallisen tarjouspyynnön.
         </p>
 
         {/* Info strip */}
@@ -201,14 +315,32 @@ export function QuoteRequestForm() {
           />
         </label>
 
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {status === "loading" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
-          <ArrowUpRight className="h-4 w-4" />
-        </button>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {status === "loading" && activeAction === "quote" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
+            <ArrowUpRight className="h-4 w-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleOrderAndPayment}
+            disabled={status === "loading" || !canAttemptOrder}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-blue-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja siirry maksuun"}
+            <ArrowUpRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        {!hasMobilePayLink ? (
+          <p className="text-[12px] text-amber-700">
+            Maksuun siirtyminen vaatii asetuksen `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` tiedostoon .env.local.
+          </p>
+        ) : null}
 
         {feedback ? (
           <p

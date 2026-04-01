@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-type QuotePayload = {
+type OrderPayload = {
   name: string;
   phone: string;
   email: string;
   serviceType: string;
   addresses: string;
   message: string;
+  estimatedPriceVat0: number | null;
+  estimatedPriceVatIncl: number | null;
 };
 
-const requiredFields: Array<keyof QuotePayload> = [
+const requiredFields: Array<keyof OrderPayload> = [
   "name",
   "phone",
   "email",
@@ -18,10 +20,10 @@ const requiredFields: Array<keyof QuotePayload> = [
   "addresses",
 ];
 
-function validatePayload(payload: Partial<QuotePayload>) {
+function validatePayload(payload: Partial<OrderPayload>) {
   for (const field of requiredFields) {
     const value = payload[field];
-    if (!value || !value.trim()) {
+    if (typeof value !== "string" || !value.trim()) {
       return `Kentta ${field} puuttuu.`;
     }
   }
@@ -30,12 +32,20 @@ function validatePayload(payload: Partial<QuotePayload>) {
     return "Sahkoposti ei ole kelvollinen.";
   }
 
+  if (
+    typeof payload.estimatedPriceVat0 !== "number" ||
+    !Number.isFinite(payload.estimatedPriceVat0) ||
+    payload.estimatedPriceVat0 <= 0
+  ) {
+    return "Hinta puuttuu laskurilta. Laske hinta ennen tilausta.";
+  }
+
   return null;
 }
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json()) as Partial<QuotePayload>;
+    const payload = (await request.json()) as Partial<OrderPayload>;
     const validationError = validatePayload(payload);
 
     if (validationError) {
@@ -52,6 +62,17 @@ export async function POST(request: Request) {
     const smtpSecure = process.env.SMTP_SECURE === "true";
     const recipient = process.env.QUOTE_RECIPIENT ?? "kuljetus@finishpoint.fi";
     const fromAddress = process.env.SMTP_FROM ?? smtpUser;
+    const mobilePayLink = process.env.NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK?.trim() ?? "";
+
+    if (!mobilePayLink) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Maksulinkki puuttuu. Maarita NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK.",
+        },
+        { status: 500 },
+      );
+    }
 
     if (!smtpHost || !smtpUser || !smtpPass || !fromAddress) {
       return NextResponse.json(
@@ -75,30 +96,38 @@ export async function POST(request: Request) {
       },
     });
 
-    const data = payload as QuotePayload;
+    const data = payload as OrderPayload;
 
     await transporter.sendMail({
       from: fromAddress,
       to: recipient,
-      subject: `Tarjouspyynto: ${data.serviceType}`,
+      subject: `Tilaus ja maksu: ${data.serviceType}`,
       text: [
+        "Uusi tilaus vastaanotettu.",
+        "",
         `Nimi: ${data.name}`,
         `Puhelin: ${data.phone}`,
         `Sahkoposti: ${data.email}`,
         `Palvelu: ${data.serviceType}`,
         `Nouto / toimitus: ${data.addresses}`,
+        `Hinta ALV 0 %: ${data.estimatedPriceVat0.toFixed(2)} EUR`,
+        data.estimatedPriceVatIncl
+          ? `Hinta sis. ALV: ${data.estimatedPriceVatIncl.toFixed(2)} EUR`
+          : "Hinta sis. ALV: -",
         "",
         "Viesti:",
         data.message || "-",
+        "",
+        `Maksulinkki asiakkaalle: ${mobilePayLink}`,
       ].join("\n"),
     });
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, paymentUrl: mobilePayLink });
   } catch {
     return NextResponse.json(
       {
         ok: false,
-        error: "Tarjouspyynnon kasittely epaonnistui palvelimella.",
+        error: "Tilauksen kasittely epaonnistui palvelimella.",
       },
       { status: 500 },
     );

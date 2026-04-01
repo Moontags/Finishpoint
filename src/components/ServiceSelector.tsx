@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Bike, Boxes, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
+import { useCalculatorContext } from "@/lib/calculator-context";
 import { serviceCategories } from "@/lib/service-categories";
 import type { ServiceCategory } from "@/lib/types";
 
@@ -35,10 +36,15 @@ export default function ServiceSelector({
   const resolvedInitial = parseCategory(initialCategory ?? null) ?? "kappaletavara";
 
   const [active, setActive] = useState<ServiceCategory>(resolvedInitial);
+  const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
     setActive(resolvedInitial);
   }, [resolvedInitial]);
+
+  useEffect(() => {
+    calculatorContext?.setServiceCategory(active);
+  }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div id="calculator" className="rounded-2xl bg-transparent p-5 sm:p-8">

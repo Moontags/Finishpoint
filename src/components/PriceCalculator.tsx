@@ -9,6 +9,7 @@ import {
   lisaaAlv,
   projektiHinta,
 } from "@/lib/pricing";
+import { useCalculatorContext } from "@/lib/calculator-context";
 import type { ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
 const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-5 shadow-sm sm:p-8";
@@ -244,8 +245,22 @@ export function AjoneuvoPriceCalculator() {
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const calculatorContext = useCalculatorContext();
+
+  useEffect(() => {
+    calculatorContext?.setPickupAddress(pickupAddress);
+  }, [pickupAddress]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    calculatorContext?.setDeliveryAddress(deliveryAddress);
+  }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hinta = useMemo(() => ajoneuvohinta(km, false), [km]);
+
+  useEffect(() => {
+    calculatorContext?.setEstimatedPriceVat0(hinta);
+    calculatorContext?.setEstimatedPriceVatIncl(lisaaAlv(hinta));
+  }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const haeGoogleMatka = async () => {
     const origin = pickupAddress.trim();
@@ -396,6 +411,15 @@ export function KappaletavaraPriceCalculator() {
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const calculatorContext = useCalculatorContext();
+
+  useEffect(() => {
+    calculatorContext?.setPickupAddress(pickupAddress);
+  }, [pickupAddress]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    calculatorContext?.setDeliveryAddress(deliveryAddress);
+  }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const laskelma = useMemo(
     () =>
@@ -408,6 +432,11 @@ export function KappaletavaraPriceCalculator() {
       ),
     [km, kerrosNouto, kerrosToimitus, hissiton, pakkaus],
   );
+
+  useEffect(() => {
+    calculatorContext?.setEstimatedPriceVat0(laskelma.yhteensa);
+    calculatorContext?.setEstimatedPriceVatIncl(lisaaAlv(laskelma.yhteensa));
+  }, [laskelma.yhteensa]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const haeGoogleMatka = async () => {
     const origin = pickupAddress.trim();
@@ -614,7 +643,15 @@ export function ProjektiPriceCalculator() {
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const calculatorContext = useCalculatorContext();
 
+  useEffect(() => {
+    calculatorContext?.setPickupAddress(pickupAddress);
+  }, [pickupAddress]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    calculatorContext?.setDeliveryAddress(deliveryAddress);
+  }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
   const hinta = useMemo(
     () =>
       projektiHinta(
@@ -699,6 +736,11 @@ export function ProjektiPriceCalculator() {
   };
 
   const hintaSisAlv = hinta === null ? null : lisaaAlv(hinta);
+
+  useEffect(() => {
+    calculatorContext?.setEstimatedPriceVat0(hinta);
+    calculatorContext?.setEstimatedPriceVatIncl(hintaSisAlv);
+  }, [hinta, hintaSisAlv]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section className={cardClass}>

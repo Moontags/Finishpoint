@@ -8,8 +8,7 @@ import {
   Smartphone,
   FileText,
 } from "lucide-react";
-import ServiceSelector from "@/components/ServiceSelector";
-import { QuoteRequestForm } from "@/components/quote-request-form";
+import { CalculatorFormSection } from "@/components/CalculatorFormSection";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { serviceCategories } from "@/lib/service-categories";
@@ -225,31 +224,8 @@ export default function Home() {
           </div>
       </section>
 
-      {/* ── Calculator ───────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
-        <ServiceSelector />
-      </section>
-
-      {/* ── Quote form background ───────────────────────────────── */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <Image
-            src="/images/paku5.png"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-white/65" />
-          <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#f5f6f8] to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#f5f6f8] to-transparent" />
-        </div>
-
-        {/* ── Quote form ───────────────────────────────────────────── */}
-        <section className="relative z-10 mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
-          <QuoteRequestForm />
-        </section>
-      </section>
+      {/* ── Calculator + Quote form ─────────────────────────────── */}
+      <CalculatorFormSection />
 
       <SiteFooter />
     </main>
