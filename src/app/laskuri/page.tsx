@@ -26,8 +26,8 @@ export default async function LaskuriPage({
   const initialCategory = parseCategory(params.kategoria);
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
-      <SiteHeader opaque />
+    <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
+      <SiteHeader opaque noShadow />
       <section className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6 lg:px-8 lg:pt-10">
         <div className="max-w-3xl space-y-3">
           <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-blue-500">Laskuri</p>
