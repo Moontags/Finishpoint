@@ -37,17 +37,7 @@ export function SiteHeader({
     return hasLocalQuoteSection ? siteCta.quoteSectionHref : `/${siteCta.quoteSectionHref}`;
   }, [pathname]);
 
-  const navLinkClass = (href: string) => {
-    const active = href === "/laskuri"
-      ? pathname.startsWith("/laskuri")
-      : pathname === href;
-
-    return `rounded-lg border-b-2 px-3.5 py-2 transition ${
-      active
-        ? "border-blue-600 text-blue-600"
-        : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-    }`;
-  };
+  const laskuriActive = pathname.startsWith("/laskuri");
 
   return (
     <header className={`relative z-50 bg-white px-2.5 pt-0 pb-1.5 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
@@ -98,11 +88,15 @@ export function SiteHeader({
                 </div>
               </div>
             </div>
-            <Link href="/laskuri" className={navLinkClass("/laskuri")}>
+            <Link
+              href="/laskuri"
+              className={`rounded-lg border-b-2 px-3.5 py-2 transition ${
+                laskuriActive
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
               Laskuri
-            </Link>
-            <Link href={quoteHref} className={navLinkClass("/")}>
-              {siteCta.quoteNavLabel}
             </Link>
           </nav>
 
