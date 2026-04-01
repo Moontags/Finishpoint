@@ -97,6 +97,17 @@ export async function POST(request: Request) {
     });
 
     const data = payload as OrderPayload;
+    const estimatedPriceVat0 = data.estimatedPriceVat0;
+
+    if (estimatedPriceVat0 === null) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Hinta puuttuu laskurilta. Laske hinta ennen tilausta.",
+        },
+        { status: 400 },
+      );
+    }
 
     await transporter.sendMail({
       from: fromAddress,
@@ -110,7 +121,7 @@ export async function POST(request: Request) {
         `Sahkoposti: ${data.email}`,
         `Palvelu: ${data.serviceType}`,
         `Nouto / toimitus: ${data.addresses}`,
-        `Hinta ALV 0 %: ${data.estimatedPriceVat0.toFixed(2)} EUR`,
+        `Hinta ALV 0 %: ${estimatedPriceVat0.toFixed(2)} EUR`,
         data.estimatedPriceVatIncl
           ? `Hinta sis. ALV: ${data.estimatedPriceVatIncl.toFixed(2)} EUR`
           : "Hinta sis. ALV: -",
