@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Bike, Boxes, Truck } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Bike, Boxes, ChevronDown, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import { serviceCategories } from "@/lib/service-categories";
@@ -36,6 +36,8 @@ export default function ServiceSelector({
   const resolvedInitial = parseCategory(initialCategory ?? null) ?? "kappaletavara";
 
   const [active, setActive] = useState<ServiceCategory>(resolvedInitial);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
@@ -46,9 +48,18 @@ export default function ServiceSelector({
     calculatorContext?.setServiceCategory(active);
   }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
     <div id="calculator" className="rounded-2xl bg-transparent p-5 sm:p-8">
-      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-500">Laskuri</p>
+      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-500">Tilaa kuljetus</p>
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Valitse palvelutyyppi
       </h2>
@@ -57,22 +68,37 @@ export default function ServiceSelector({
       </p>
 
       <div className="mt-5 sm:hidden">
-        <label htmlFor="service-category-select" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-          Palvelutyyppi
-          <select
-            id="service-category-select"
-            name="serviceCategory"
-            value={active}
-            onChange={(event) => setActive(parseCategory(event.target.value) ?? "kappaletavara")}
-            className="w-full rounded-xl border border-slate-700 bg-slate-700 px-4 py-3 text-[14px] text-white shadow-sm outline-none transition focus:border-slate-600 focus:bg-slate-700 focus:ring-2 focus:ring-slate-500/40"
+        <div ref={dropdownRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="flex w-full min-w-0 items-center justify-between rounded-2xl border-2 border-slate-700 bg-slate-700 px-5 py-5 text-[18px] font-bold text-white shadow-md transition"
           >
-            {categories.map(({ id, label }) => (
-              <option key={id} value={id}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+            <span className="min-w-0 flex-1 break-words text-left leading-tight">
+              {categories.find((c) => c.id === active)?.label}
+            </span>
+            <ChevronDown className={`h-6 w-6 transition-transform ${open ? "rotate-180" : ""}`} />
+          </button>
+          {open && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-xl">
+              {categories.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => { setActive(id); setOpen(false); }}
+                  className={`flex w-full min-w-0 items-center gap-4 px-5 py-5 text-[17px] font-bold transition ${
+                    active === id
+                      ? "bg-slate-700 text-white"
+                      : "text-slate-800 hover:bg-slate-100"
+                  }`}
+                >
+                  <Icon className="h-6 w-6 shrink-0" />
+                  <span className="break-words text-left leading-tight">{label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="mt-5 hidden gap-2 sm:grid sm:grid-cols-3">

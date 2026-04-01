@@ -27,31 +27,11 @@ export function ajoneuvohinta(km: number, monipysahdys: boolean): number {
 }
 
 // Kategoria B
-export function kappaletavaraHinta(
-  km: number,
-  kerrosNouto: number,
-  kerrosToimitus: number,
-  hissiton: boolean,
-  pakkaus: boolean,
-): { perusHinta: number; lisat: number; yhteensa: number } {
+export function kappaletavaraHinta(km: number): number {
   const turvallinenKm = Math.max(0, km);
-  const kerroksetYhteensa = kerrosNouto + kerrosToimitus;
 
-  let perus: number;
-  if (turvallinenKm <= 40) perus = poistaAlv(89);
-  else perus = poistaAlv(89) + (turvallinenKm - 40) * poistaAlv(1.29);
-
-  let lisat = 0;
-  if (hissiton && kerroksetYhteensa > 0) {
-    lisat += kerroksetYhteensa * poistaAlv(5);
-  }
-  if (pakkaus) lisat += poistaAlv(19);
-
-  const perusHinta = pyoristaSentteihin(perus);
-  const lisaHinta = pyoristaSentteihin(lisat);
-  const yhteensa = pyoristaSentteihin(perusHinta + lisaHinta);
-
-  return { perusHinta, lisat: lisaHinta, yhteensa };
+  if (turvallinenKm <= 40) return poistaAlv(89);
+  return pyoristaSentteihin(poistaAlv(89) + (turvallinenKm - 40) * poistaAlv(1.29));
 }
 
 // Kategoria C
@@ -61,19 +41,8 @@ export function projektiHinta(
   lisakuormat?: number,
   kierratysKm?: number,
   kierratysMaksu?: number,
-  kerrosNouto?: number,
-  kerrosToimitus?: number,
-  hissiton?: boolean,
-  pakkaus?: boolean,
 ): number | null {
   if (tyyppi === "tunti") return pyoristaSentteihin((tunnit ?? 0) * (55 / (1 + ALV)));
-
-  const kerroksetYhteensa = (kerrosNouto ?? 0) + (kerrosToimitus ?? 0);
-  const kerrosLisatSisAlv = hissiton && kerroksetYhteensa > 0 ? kerroksetYhteensa * 5 : 0;
-  const pakkausLisaSisAlv = pakkaus ? 19 : 0;
-
-  let muuttoLisat = 0;
-  muuttoLisat += poistaAlv(kerrosLisatSisAlv + pakkausLisaSisAlv);
 
   const perusKierratys = poistaAlv(54.99);
   const kierratysKmHinta = poistaAlv(0.69);
@@ -83,14 +52,12 @@ export function projektiHinta(
   const kmLisat = pyoristaSentteihin(Math.max(0, projektiKm - 40) * kierratysKmHinta);
 
   if (tyyppi === "pieni_muutto") {
-    return pyoristaSentteihin(poistaAlv(269) + kmLisat + muuttoLisat);
+    return pyoristaSentteihin(poistaAlv(269) + kmLisat);
   }
   if (tyyppi === "suuri_muutto") return null;
 
   if (tyyppi === "kierratys_1") {
-    return pyoristaSentteihin(
-      perusKierratys + kmLisat + kierratysMaksuAlv0 + muuttoLisat,
-    );
+    return pyoristaSentteihin(perusKierratys + kmLisat + kierratysMaksuAlv0);
   }
 
   if (tyyppi === "kierratys_lisa") {
@@ -98,8 +65,7 @@ export function projektiHinta(
       perusKierratys +
         (lisakuormat ?? 0) * lisakuormaHinta +
         kmLisat +
-        kierratysMaksuAlv0 +
-        muuttoLisat,
+        kierratysMaksuAlv0,
     );
   }
 

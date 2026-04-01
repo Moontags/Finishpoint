@@ -32,7 +32,11 @@ export function SiteFooter() {
                 href={href}
                 className="rounded-lg px-2 py-1.5 transition hover:bg-slate-100 hover:text-blue-600 hover:underline"
               >
-                {label}
+                {label === "Mönkijäkuljetus"
+                  ? "Mönkijä kuljetus"
+                  : label === "Moottoripyöräkuljetus"
+                    ? "Moottoripyörän kuljetus"
+                    : label}
               </Link>
             ))}
             </div>

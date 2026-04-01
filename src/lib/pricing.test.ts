@@ -37,58 +37,24 @@ describe("ajoneuvohinta", () => {
 });
 
 describe("kappaletavaraHinta", () => {
-  it("0-kerros ilman lisia -> lisa 0", () => {
-    const result = kappaletavaraHinta(30, 0, 0, false, false);
-    expect(result.perusHinta).toBe(70.92);
-    expect(result.lisat).toBe(0);
-    expect(result.yhteensa).toBe(70.92);
+  it("0-kerros ilman lisia -> 70,92 euroa", () => {
+    expect(kappaletavaraHinta(30)).toBe(70.92);
   });
 
   it("40 km -> 70,92 euroa", () => {
-    const result = kappaletavaraHinta(40, 0, 0, false, false);
-    expect(result.perusHinta).toBe(70.92);
-    expect(result.yhteensa).toBe(70.92);
+    expect(kappaletavaraHinta(40)).toBe(70.92);
   });
 
   it("41 km -> 71,95 euroa", () => {
-    const result = kappaletavaraHinta(41, 0, 0, false, false);
-    expect(result.perusHinta).toBe(71.95);
-    expect(result.yhteensa).toBe(71.95);
+    expect(kappaletavaraHinta(41)).toBe(71.95);
   });
 
-  it("kerroslisat eivat vaikuta ilman hissitonta valintaa", () => {
-    const result = kappaletavaraHinta(50, 2, 3, false, false);
-    expect(result.perusHinta).toBe(81.22);
-    expect(result.lisat).toBe(0);
-    expect(result.yhteensa).toBe(81.22);
+  it("100 km -> 132,72 euroa", () => {
+    expect(kappaletavaraHinta(100)).toBe(132.72);
   });
 
-  it("hissiton lisa lisataan aina, kun valittu", () => {
-    const result = kappaletavaraHinta(20, 1, 0, true, false);
-    expect(result.lisat).toBe(3.98);
-  });
-
-  it("hissiton ei nosta hintaa, jos kerrokset ovat 0", () => {
-    const result = kappaletavaraHinta(20, 0, 0, true, false);
-    expect(result.lisat).toBe(0);
-    expect(result.yhteensa).toBe(70.92);
-  });
-
-  it("kerroslisays kasvattaa hintaa 5 euroa kerrokselta (ALV-sisainen)", () => {
-    const yksiKerros = kappaletavaraHinta(20, 1, 0, true, false);
-    const kaksiKerrosta = kappaletavaraHinta(20, 2, 0, true, false);
-    expect(kaksiKerrosta.lisat - yksiKerros.lisat).toBeCloseTo(3.98, 2);
-  });
-
-  it("hissiton lisa lisataan ilman kerrosehtoa", () => {
-    const result = kappaletavaraHinta(20, 2, 0, true, false);
-    expect(result.lisat).toBe(7.96);
-  });
-
-  it("pakkausapu lisa lisataan", () => {
-    const result = kappaletavaraHinta(20, 0, 0, false, true);
-    expect(result.lisat).toBe(15.14);
-    expect(result.yhteensa).toBe(86.06);
+  it("0 km -> 70,92 euroa (aloitushinta)", () => {
+    expect(kappaletavaraHinta(0)).toBe(70.92);
   });
 });
 
@@ -127,58 +93,6 @@ describe("projektiHinta", () => {
     expect(aloitus).not.toBeNull();
     expect(yli).not.toBeNull();
     expect((yli as number) - (aloitus as number)).toBeCloseTo(11, 2);
-  });
-
-  it("pieni muutto huomioi kerros- ja palvelulisat", () => {
-    expect(
-      projektiHinta("pieni_muutto", undefined, undefined, undefined, undefined, 1, 2, true, true),
-    ).toBeCloseTo(241.43, 2);
-  });
-
-  it("kierratys huomioi kerros- ja palvelulisat", () => {
-    expect(
-      projektiHinta("kierratys_1", undefined, undefined, 20, 35, 1, 2, true, true),
-    ).toBe(98.8);
-  });
-
-  it("kerroslisat eivat vaikuta projektilaskurissa ilman hissitonta valintaa", () => {
-    expect(
-      projektiHinta("pieni_muutto", undefined, undefined, undefined, undefined, 2, 3, false, false),
-    ).toBeCloseTo(214.34, 2);
-  });
-
-  it("hissiton ei nosta projektihintaa, jos kerrokset ovat 0", () => {
-    expect(
-      projektiHinta("pieni_muutto", undefined, undefined, undefined, undefined, 0, 0, true, false),
-    ).toBeCloseTo(214.34, 2);
-  });
-
-  it("projektissa lisakerros kasvattaa hintaa 5 euroa kerrokselta (ALV-sisainen)", () => {
-    const yksiKerros = projektiHinta(
-      "pieni_muutto",
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      1,
-      0,
-      true,
-      false,
-    );
-    const kaksiKerrosta = projektiHinta(
-      "pieni_muutto",
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      2,
-      0,
-      true,
-      false,
-    );
-    expect(yksiKerros).not.toBeNull();
-    expect(kaksiKerrosta).not.toBeNull();
-    expect((kaksiKerrosta as number) - (yksiKerros as number)).toBeCloseTo(3.99, 2);
   });
 });
 
