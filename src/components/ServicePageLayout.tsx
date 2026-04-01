@@ -12,7 +12,7 @@ export default function ServicePageLayout({
   children: ReactNode;
 }) {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
+    <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
       <SiteHeader opaque />
 
       <section className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6 lg:px-8 lg:pt-10">

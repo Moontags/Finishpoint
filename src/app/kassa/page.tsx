@@ -115,7 +115,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
+    <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
       <SiteHeader opaque />
 
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
