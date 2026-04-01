@@ -58,7 +58,7 @@ export default function ServiceSelector({
             name="serviceCategory"
             value={active}
             onChange={(event) => setActive(parseCategory(event.target.value) ?? "kappaletavara")}
-            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-700 bg-slate-700 px-4 py-3 text-[14px] text-white shadow-sm outline-none transition focus:border-slate-600 focus:bg-slate-700 focus:ring-2 focus:ring-slate-500/40"
           >
             {categories.map(({ id, label }) => (
               <option key={id} value={id}>
@@ -77,7 +77,7 @@ export default function ServiceSelector({
             onClick={() => setActive(id)}
             className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold shadow-sm backdrop-blur-sm transition ${
               active === id
-                ? "border border-[#1e3a5f] bg-[#1e3a5f] text-white"
+                ? "border border-slate-700 bg-slate-700 text-white"
                 : "border border-slate-200 bg-white/10 text-slate-700 hover:border-blue-300 hover:bg-white/20 hover:text-slate-900"
             }`}
           >

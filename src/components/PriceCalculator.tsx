@@ -206,7 +206,7 @@ function AddressAutocompleteField({
           onFocus={() => setIsFocused(true)}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
         />
 
         {isFocused && suggestions.length > 0 ? (
@@ -348,22 +348,22 @@ export function AjoneuvoPriceCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 sm:col-span-2">
-            <p className="mb-3 text-[12px] font-medium text-emerald-700">
+          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-slate-500">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Kilometrit</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{routeSummary.distanceKm} km</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Aika</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Hinta</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatPrice(hintaSisAlv)}</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
           </div>
@@ -507,22 +507,22 @@ export function KappaletavaraPriceCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 sm:col-span-2">
-            <p className="mb-3 text-[12px] font-medium text-emerald-700">
+          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-slate-500">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Kilometrit</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{routeSummary.distanceKm} km</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Aika</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Hinta</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatPrice(hintaSisAlv)}</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
           </div>
@@ -548,7 +548,7 @@ export function KappaletavaraPriceCalculator() {
             onChange={(event) =>
               setKerrosNouto(Math.max(0, Number(event.target.value) || 0))
             }
-            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           />
         </label>
         <label htmlFor="kappaletavara-kerros-toimitus" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
@@ -562,7 +562,7 @@ export function KappaletavaraPriceCalculator() {
             onChange={(event) =>
               setKerrosToimitus(Math.max(0, Number(event.target.value) || 0))
             }
-            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           />
         </label>
         <div className="grid gap-3">
@@ -738,22 +738,22 @@ export function ProjektiPriceCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 sm:col-span-2">
-            <p className="mb-3 text-[12px] font-medium text-emerald-700">
+          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-slate-500">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Kilometrit</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{routeSummary.distanceKm} km</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Aika</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
-              <div className="rounded-lg bg-white/80 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Hinta</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatPrice(hintaSisAlv)}</p>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
           </div>
@@ -774,7 +774,7 @@ export function ProjektiPriceCalculator() {
             name="projektiTyyppi"
             value={tyyppi}
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
-            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           >
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>
@@ -796,7 +796,7 @@ export function ProjektiPriceCalculator() {
               onChange={(event) =>
                 setLisakuormat(Math.max(0, Number(event.target.value) || 0))
               }
-              className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
             />
           </label>
         ) : null}
@@ -809,7 +809,7 @@ export function ProjektiPriceCalculator() {
               name="projektiKierratysmaksu"
               value={kierratysMaksu}
               onChange={(event) => setKierratysMaksu(Number(event.target.value))}
-              className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
             >
               <option value={25}>Pieni kuorma - 25 € (sis. ALV)</option>
               <option value={35}>Normaalikuorma - 35 € (sis. ALV)</option>
@@ -827,7 +827,7 @@ export function ProjektiPriceCalculator() {
             min={0}
             value={kerrosNouto}
             onChange={(event) => setKerrosNouto(Math.max(0, Number(event.target.value) || 0))}
-            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           />
         </label>
 
@@ -840,7 +840,7 @@ export function ProjektiPriceCalculator() {
             min={0}
             value={kerrosToimitus}
             onChange={(event) => setKerrosToimitus(Math.max(0, Number(event.target.value) || 0))}
-            className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           />
         </label>
 
