@@ -1,16 +1,55 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PriceSummary } from "@/components/PriceSummary";
 import {
   ajoneuvohinta,
   kappaletavaraHinta,
+  lisaaAlv,
   projektiHinta,
 } from "@/lib/pricing";
 import type { ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
 const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-5 shadow-sm sm:p-8";
+
+type AddressSuggestion = {
+  label: string;
+  placeId: string;
+};
+
+type RouteSummary = {
+  distanceKm: number;
+  durationMinutes: number | null;
+  calculatedAt: string;
+};
+
+function formatPrice(value: number) {
+  return new Intl.NumberFormat("fi-FI", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatDuration(minutes: number | null) {
+  if (minutes === null || minutes <= 0) {
+    return "-";
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (hours === 0) {
+    return `${remainingMinutes} min`;
+  }
+
+  if (remainingMinutes === 0) {
+    return `${hours} h`;
+  }
+
+  return `${hours} h ${remainingMinutes} min`;
+}
 
 function DistanceSlider({
   label,
@@ -74,11 +113,199 @@ function DistanceSlider({
   );
 }
 
+function AddressAutocompleteField({
+  id,
+  name,
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDocumentMouseDown = (event: MouseEvent) => {
+      if (!containerRef.current) {
+        return;
+      }
+
+      const target = event.target as Node | null;
+      if (target && !containerRef.current.contains(target)) {
+        setIsFocused(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onDocumentMouseDown);
+    return () => {
+      document.removeEventListener("mousedown", onDocumentMouseDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    const query = value.trim();
+    if (query.length < 3) {
+      setSuggestions([]);
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `/api/places/autocomplete?input=${encodeURIComponent(query)}`,
+          {
+            method: "GET",
+            signal: controller.signal,
+          },
+        );
+
+        const result = (await response.json()) as {
+          ok: boolean;
+          suggestions?: AddressSuggestion[];
+        };
+
+        if (!response.ok || !result.ok) {
+          setSuggestions([]);
+          return;
+        }
+
+        setSuggestions(result.suggestions ?? []);
+      } catch {
+        setSuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timeoutId);
+    };
+  }, [value]);
+
+  return (
+    <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+      {label}
+      <div ref={containerRef} className="relative">
+        <input
+          id={id}
+          name={name}
+          value={value}
+          onFocus={() => setIsFocused(true)}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
+        />
+
+        {isFocused && suggestions.length > 0 ? (
+          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+            {suggestions.map((suggestion) => (
+              <button
+                key={suggestion.placeId || suggestion.label}
+                type="button"
+                className="block w-full border-b border-slate-100 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-blue-50 hover:text-slate-900 last:border-b-0"
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  onChange(suggestion.label);
+                  setSuggestions([]);
+                  setIsFocused(false);
+                }}
+              >
+                {suggestion.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      {loading ? (
+        <span className="text-[12px] font-medium text-slate-500">Haetaan osoite-ehdotuksia...</span>
+      ) : null}
+    </label>
+  );
+}
+
 export function AjoneuvoPriceCalculator() {
   const [km, setKm] = useState(60);
-  const [monipysahdys, setMonipysahdys] = useState(false);
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [distanceMessage, setDistanceMessage] = useState("");
+  const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
 
-  const hinta = useMemo(() => ajoneuvohinta(km, monipysahdys), [km, monipysahdys]);
+  const hinta = useMemo(() => ajoneuvohinta(km, false), [km]);
+
+  const haeGoogleMatka = async () => {
+    const origin = pickupAddress.trim();
+    const destination = deliveryAddress.trim();
+
+    if (!origin || !destination) {
+      setDistanceStatus("error");
+      setDistanceMessage("Anna sekä nouto- että toimitusosoite.");
+      setRouteSummary(null);
+      return;
+    }
+
+    setDistanceStatus("loading");
+    setDistanceMessage("");
+
+    try {
+      const response = await fetch("/api/distance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origin,
+          destination,
+        }),
+      });
+
+      const result = (await response.json()) as {
+        ok: boolean;
+        error?: string;
+        distanceKm?: number;
+        durationMinutes?: number | null;
+      };
+
+      if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
+        setDistanceStatus("error");
+        setDistanceMessage(result.error ?? "Matkan haku epäonnistui. Tarkista osoitteet.");
+        setRouteSummary(null);
+        return;
+      }
+
+      const roundedKm = Math.max(0, Math.round(result.distanceKm));
+      setKm(roundedKm);
+      setDistanceStatus("success");
+      setDistanceMessage("");
+      setRouteSummary({
+        distanceKm: roundedKm,
+        durationMinutes:
+          typeof result.durationMinutes === "number" ? result.durationMinutes : null,
+        calculatedAt: new Date().toLocaleTimeString("fi-FI", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    } catch {
+      setDistanceStatus("error");
+      setDistanceMessage("Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.");
+      setRouteSummary(null);
+    }
+  };
+
+  const hintaSisAlv = lisaaAlv(hinta);
 
   return (
     <section className="rounded-2xl bg-transparent p-5 sm:p-8">
@@ -93,18 +320,64 @@ export function AjoneuvoPriceCalculator() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <AddressAutocompleteField
+          id="ajoneuvo-nouto-osoite"
+          name="ajoneuvoNoutoOsoite"
+          label="Nouto-osoite"
+          value={pickupAddress}
+          onChange={setPickupAddress}
+          placeholder="Esim. Mannerheimintie 1, Helsinki"
+        />
+
+        <AddressAutocompleteField
+          id="ajoneuvo-toimitus-osoite"
+          name="ajoneuvoToimitusOsoite"
+          label="Toimitusosoite"
+          value={deliveryAddress}
+          onChange={setDeliveryAddress}
+          placeholder="Esim. Hämeenkatu 10, Tampere"
+        />
+
+        <button
+          type="button"
+          onClick={haeGoogleMatka}
+          disabled={distanceStatus === "loading"}
+          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+        >
+          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+        </button>
+
+        {distanceStatus === "success" && routeSummary ? (
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-emerald-700">
+              Paivitetty juuri nyt ({routeSummary.calculatedAt})
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{routeSummary.distanceKm} km</p>
+              </div>
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              </div>
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatPrice(hintaSisAlv)}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {distanceStatus === "error" && distanceMessage ? (
+          <p
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+          >
+            {distanceMessage}
+          </p>
+        ) : null}
+
         <DistanceSlider label="Kokonaismatka" fieldName="ajoneuvo-kokonaismatka" value={km} onChange={setKm} />
-        <label htmlFor="ajoneuvo-monipysahdys" className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/10">
-          <input
-            id="ajoneuvo-monipysahdys"
-            name="ajoneuvoMonipysahdys"
-            type="checkbox"
-            checked={monipysahdys}
-            onChange={(event) => setMonipysahdys(event.target.checked)}
-            className="h-4 w-4 accent-blue-600"
-          />
-          Monipysähdysreitti (A-B-C-A)
-        </label>
       </div>
 
       <PriceSummary hintaAlv0={hinta} label="Ajoneuvokuljetus" />
@@ -118,6 +391,11 @@ export function KappaletavaraPriceCalculator() {
   const [kerrosToimitus, setKerrosToimitus] = useState(0);
   const [hissiton, setHissiton] = useState(false);
   const [pakkaus, setPakkaus] = useState(false);
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [distanceMessage, setDistanceMessage] = useState("");
+  const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
 
   const laskelma = useMemo(
     () =>
@@ -131,6 +409,66 @@ export function KappaletavaraPriceCalculator() {
     [km, kerrosNouto, kerrosToimitus, hissiton, pakkaus],
   );
 
+  const haeGoogleMatka = async () => {
+    const origin = pickupAddress.trim();
+    const destination = deliveryAddress.trim();
+
+    if (!origin || !destination) {
+      setDistanceStatus("error");
+      setDistanceMessage("Anna sekä nouto- että toimitusosoite.");
+      setRouteSummary(null);
+      return;
+    }
+
+    setDistanceStatus("loading");
+    setDistanceMessage("");
+
+    try {
+      const response = await fetch("/api/distance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origin,
+          destination,
+        }),
+      });
+
+      const result = (await response.json()) as {
+        ok: boolean;
+        error?: string;
+        distanceKm?: number;
+        durationMinutes?: number | null;
+      };
+
+      if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
+        setDistanceStatus("error");
+        setDistanceMessage(result.error ?? "Matkan haku epäonnistui. Tarkista osoitteet.");
+        setRouteSummary(null);
+        return;
+      }
+
+      const roundedKm = Math.max(0, Math.round(result.distanceKm));
+      setKm(roundedKm);
+      setDistanceStatus("success");
+      setDistanceMessage("");
+      setRouteSummary({
+        distanceKm: roundedKm,
+        durationMinutes:
+          typeof result.durationMinutes === "number" ? result.durationMinutes : null,
+        calculatedAt: new Date().toLocaleTimeString("fi-FI", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    } catch {
+      setDistanceStatus("error");
+      setDistanceMessage("Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.");
+      setRouteSummary(null);
+    }
+  };
+
+  const hintaSisAlv = lisaaAlv(laskelma.yhteensa);
+
   return (
     <section className={cardClass}>
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -141,6 +479,63 @@ export function KappaletavaraPriceCalculator() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <AddressAutocompleteField
+          id="kappaletavara-nouto-osoite"
+          name="kappaletavaraNoutoOsoite"
+          label="Nouto-osoite"
+          value={pickupAddress}
+          onChange={setPickupAddress}
+          placeholder="Esim. Mannerheimintie 1, Helsinki"
+        />
+
+        <AddressAutocompleteField
+          id="kappaletavara-toimitus-osoite"
+          name="kappaletavaraToimitusOsoite"
+          label="Toimitusosoite"
+          value={deliveryAddress}
+          onChange={setDeliveryAddress}
+          placeholder="Esim. Hämeenkatu 10, Tampere"
+        />
+
+        <button
+          type="button"
+          onClick={haeGoogleMatka}
+          disabled={distanceStatus === "loading"}
+          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+        >
+          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+        </button>
+
+        {distanceStatus === "success" && routeSummary ? (
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-emerald-700">
+              Paivitetty juuri nyt ({routeSummary.calculatedAt})
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{routeSummary.distanceKm} km</p>
+              </div>
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              </div>
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatPrice(hintaSisAlv)}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {distanceStatus === "error" && distanceMessage ? (
+          <p
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+          >
+            {distanceMessage}
+          </p>
+        ) : null}
+
         <DistanceSlider label="Matka" fieldName="kappaletavara-matka" value={km} onChange={setKm} />
         <label htmlFor="kappaletavara-kerros-nouto" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Kerros noudossa
@@ -214,6 +609,11 @@ export function ProjektiPriceCalculator() {
   const [kerrosToimitus, setKerrosToimitus] = useState(0);
   const [hissiton, setHissiton] = useState(false);
   const [pakkaus, setPakkaus] = useState(false);
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [distanceMessage, setDistanceMessage] = useState("");
+  const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
 
   const hinta = useMemo(
     () =>
@@ -240,16 +640,133 @@ export function ProjektiPriceCalculator() {
     ],
   );
 
+  const haeGoogleMatka = async () => {
+    const origin = pickupAddress.trim();
+    const destination = deliveryAddress.trim();
+
+    if (!origin || !destination) {
+      setDistanceStatus("error");
+      setDistanceMessage("Anna sekä nouto- että toimitusosoite.");
+      setRouteSummary(null);
+      return;
+    }
+
+    setDistanceStatus("loading");
+    setDistanceMessage("");
+
+    try {
+      const response = await fetch("/api/distance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origin,
+          destination,
+        }),
+      });
+
+      const result = (await response.json()) as {
+        ok: boolean;
+        error?: string;
+        distanceKm?: number;
+        durationMinutes?: number | null;
+      };
+
+      if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
+        setDistanceStatus("error");
+        setDistanceMessage(result.error ?? "Matkan haku epäonnistui. Tarkista osoitteet.");
+        setRouteSummary(null);
+        return;
+      }
+
+      const roundedKm = Math.max(0, Math.round(result.distanceKm));
+      setKierratysKm(roundedKm);
+      setDistanceStatus("success");
+      setDistanceMessage("");
+      setRouteSummary({
+        distanceKm: roundedKm,
+        durationMinutes:
+          typeof result.durationMinutes === "number" ? result.durationMinutes : null,
+        calculatedAt: new Date().toLocaleTimeString("fi-FI", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    } catch {
+      setDistanceStatus("error");
+      setDistanceMessage("Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.");
+      setRouteSummary(null);
+    }
+  };
+
+  const hintaSisAlv = hinta === null ? null : lisaaAlv(hinta);
+
   return (
     <section className={cardClass}>
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Muuttopalvelut
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Kerroslisä ilman hissiä 5 €/kerros.
+        Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Aloitushintaan sisältyy 40 km, jonka jälkeen lisäkilometrit 0,69 €/km.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <AddressAutocompleteField
+          id="projekti-nouto-osoite"
+          name="projektiNoutoOsoite"
+          label="Nouto-osoite"
+          value={pickupAddress}
+          onChange={setPickupAddress}
+          placeholder="Esim. Mannerheimintie 1, Helsinki"
+        />
+
+        <AddressAutocompleteField
+          id="projekti-toimitus-osoite"
+          name="projektiToimitusOsoite"
+          label="Toimitusosoite"
+          value={deliveryAddress}
+          onChange={setDeliveryAddress}
+          placeholder="Esim. Hämeenkatu 10, Tampere"
+        />
+
+        <button
+          type="button"
+          onClick={haeGoogleMatka}
+          disabled={distanceStatus === "loading"}
+          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+        >
+          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+        </button>
+
+        {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-emerald-700">
+              Paivitetty juuri nyt ({routeSummary.calculatedAt})
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{routeSummary.distanceKm} km</p>
+              </div>
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              </div>
+              <div className="rounded-lg bg-white/80 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-900">{formatPrice(hintaSisAlv)}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {distanceStatus === "error" && distanceMessage ? (
+          <p
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+          >
+            {distanceMessage}
+          </p>
+        ) : null}
+
         <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Palvelutyyppi
           <select
@@ -264,6 +781,8 @@ export function ProjektiPriceCalculator() {
             <option value="kierratys_lisa">Kierrätys, lisäkuormat</option>
           </select>
         </label>
+
+        <DistanceSlider label="Reitin matka" fieldName="projekti-kierratysmatka" value={kierratysKm} onChange={setKierratysKm} max={400} />
 
         {tyyppi === "kierratys_lisa" ? (
           <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
@@ -280,10 +799,6 @@ export function ProjektiPriceCalculator() {
               className="w-full rounded-xl border border-slate-200 bg-white/5 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/10 focus:ring-2 focus:ring-blue-100"
             />
           </label>
-        ) : null}
-
-        {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-          <DistanceSlider label="Kierrätysreitin matka" fieldName="projekti-kierratysmatka" value={kierratysKm} onChange={setKierratysKm} max={300} />
         ) : null}
 
         {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
@@ -357,7 +872,7 @@ export function ProjektiPriceCalculator() {
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
         <p className="mt-3 text-[13px] text-slate-700">
-          Kierrätyksen hinta muodostuu perushinnasta 54,99 €, reitin pituudesta 0,69 €/km, lisäkuormista ja asemamaksusta.
+          Kierrätyksessä hinta muodostuu perushinnasta 54,99 €, yli 40 km osuudesta (0,69 €/km), lisäkuormista ja asemamaksusta.
         </p>
       ) : null}
 

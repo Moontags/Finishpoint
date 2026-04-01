@@ -15,12 +15,16 @@ Single-page website for Finishpoint, a logistics company focused on motorcycle t
 - Sticky header with quick call action
 - Service cards with highlighted motorcycle transport offering
 - Interactive motorcycle transport calculator using VAT 0% pricing rules
+- Address autocomplete (Google Places) for piece goods transport addresses
+- Address-based distance lookup (Google Maps) with optional A-B-C multi-stop routing
 - Quote request form with backend API submission
 - Responsive layout optimized for mobile and desktop
 
 ## Backend quote submission setup
 
 The quote form posts to the API route `/api/quote`, which sends email via SMTP.
+The distance lookup posts to `/api/distance`, which fetches route distance from Google Maps Distance Matrix API.
+Address suggestions are fetched from `/api/places/autocomplete` using Google Places Autocomplete API.
 
 1. Create a local env file from `.env.example`.
 2. Fill in SMTP credentials.
@@ -35,6 +39,8 @@ Required variables:
 - `SMTP_PASS`
 - `SMTP_FROM`
 - `QUOTE_RECIPIENT` (optional)
+- `GOOGLE_MAPS_API_KEY`
+- `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` (optional)
 
 ## Pricing logic
 

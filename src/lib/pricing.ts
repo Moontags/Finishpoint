@@ -75,17 +75,21 @@ export function projektiHinta(
   let muuttoLisat = 0;
   muuttoLisat += poistaAlv(kerrosLisatSisAlv + pakkausLisaSisAlv);
 
-  if (tyyppi === "pieni_muutto") return (269 + kerrosLisatSisAlv + pakkausLisaSisAlv) / (1 + ALV);
-  if (tyyppi === "suuri_muutto") return null;
-
   const perusKierratys = poistaAlv(54.99);
   const kierratysKmHinta = poistaAlv(0.69);
   const lisakuormaHinta = poistaAlv(39);
   const kierratysMaksuAlv0 = poistaAlv(kierratysMaksu ?? 0);
+  const projektiKm = Math.max(0, kierratysKm ?? 0);
+  const kmLisat = pyoristaSentteihin(Math.max(0, projektiKm - 40) * kierratysKmHinta);
+
+  if (tyyppi === "pieni_muutto") {
+    return pyoristaSentteihin(poistaAlv(269) + kmLisat + muuttoLisat);
+  }
+  if (tyyppi === "suuri_muutto") return null;
 
   if (tyyppi === "kierratys_1") {
     return pyoristaSentteihin(
-      perusKierratys + (kierratysKm ?? 0) * kierratysKmHinta + kierratysMaksuAlv0 + muuttoLisat,
+      perusKierratys + kmLisat + kierratysMaksuAlv0 + muuttoLisat,
     );
   }
 
@@ -93,7 +97,7 @@ export function projektiHinta(
     return pyoristaSentteihin(
       perusKierratys +
         (lisakuormat ?? 0) * lisakuormaHinta +
-        (kierratysKm ?? 0) * kierratysKmHinta +
+        kmLisat +
         kierratysMaksuAlv0 +
         muuttoLisat,
     );

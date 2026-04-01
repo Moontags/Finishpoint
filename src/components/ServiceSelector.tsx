@@ -6,9 +6,9 @@ import { PriceCalculator } from "@/components/PriceCalculator";
 import type { ServiceCategory } from "@/lib/types";
 
 const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Bike }> = [
-  { id: "ajoneuvo", label: "Ajoneuvokuljetukset", icon: Bike },
   { id: "kappaletavara", label: "Kappaletavara", icon: Boxes },
   { id: "projekti", label: "Muutot ja kierrätys", icon: Truck },
+  { id: "ajoneuvo", label: "Ajoneuvokuljetukset", icon: Bike },
 ];
 
 function parseCategory(value: string | null): ServiceCategory | null {
@@ -23,7 +23,7 @@ export default function ServiceSelector({
 }: {
   initialCategory?: ServiceCategory;
 }) {
-  const resolvedInitial = parseCategory(initialCategory ?? null) ?? "projekti";
+  const resolvedInitial = parseCategory(initialCategory ?? null) ?? "kappaletavara";
 
   const [active, setActive] = useState<ServiceCategory>(resolvedInitial);
 
@@ -48,7 +48,7 @@ export default function ServiceSelector({
             id="service-category-select"
             name="serviceCategory"
             value={active}
-            onChange={(event) => setActive(parseCategory(event.target.value) ?? "projekti")}
+            onChange={(event) => setActive(parseCategory(event.target.value) ?? "kappaletavara")}
             className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           >
             {categories.map(({ id, label }) => (

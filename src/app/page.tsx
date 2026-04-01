@@ -25,7 +25,7 @@ const services = [
   },
   {
     title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 269 € sis. ALV.",
+    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 269 € sis. ALV, sisältää 40 km.",
     accent: "Alkaen 269 €",
     featured: false,
     href: "/muutot",
@@ -34,7 +34,7 @@ const services = [
   {
     title: "Kierrätykset",
     description:
-      "Lähtöhinta 54,99 € sis. ALV. Lopullinen hinta määräytyy kuormamäärän, kilometrien ja asemamaksun mukaan.",
+      "Lähtöhinta 54,99 € sis. ALV, sisältää 40 km. Sen jälkeen hinta määräytyy kuormamäärän, lisäkilometrien ja asemamaksun mukaan.",
     accent: "Tarjouskohteet erikseen",
     featured: false,
     href: "/kierratys",

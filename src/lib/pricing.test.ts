@@ -106,11 +106,27 @@ describe("projektiHinta", () => {
   });
 
   it("kierratys 1 kuorma", () => {
-    expect(projektiHinta("kierratys_1", undefined, undefined, 20, 35)).toBe(82.71);
+    expect(projektiHinta("kierratys_1", undefined, undefined, 20, 35)).toBe(71.71);
   });
 
   it("kierratys lisakuormilla", () => {
-    expect(projektiHinta("kierratys_lisa", undefined, 2, 30, 45)).toBe(158.34);
+    expect(projektiHinta("kierratys_lisa", undefined, 2, 30, 45)).toBe(141.84);
+  });
+
+  it("projektikategoriaan km-lisa alkaa vasta 40 km jalkeen", () => {
+    const aloitus = projektiHinta("kierratys_1", undefined, undefined, 40, 35);
+    const yli = projektiHinta("kierratys_1", undefined, undefined, 60, 35);
+    expect(aloitus).not.toBeNull();
+    expect(yli).not.toBeNull();
+    expect((yli as number) - (aloitus as number)).toBeCloseTo(11, 2);
+  });
+
+  it("pieni muutto saa km-lisan vasta 40 km jalkeen", () => {
+    const aloitus = projektiHinta("pieni_muutto", undefined, undefined, 40);
+    const yli = projektiHinta("pieni_muutto", undefined, undefined, 60);
+    expect(aloitus).not.toBeNull();
+    expect(yli).not.toBeNull();
+    expect((yli as number) - (aloitus as number)).toBeCloseTo(11, 2);
   });
 
   it("pieni muutto huomioi kerros- ja palvelulisat", () => {
@@ -122,7 +138,7 @@ describe("projektiHinta", () => {
   it("kierratys huomioi kerros- ja palvelulisat", () => {
     expect(
       projektiHinta("kierratys_1", undefined, undefined, 20, 35, 1, 2, true, true),
-    ).toBe(109.8);
+    ).toBe(98.8);
   });
 
   it("kerroslisat eivat vaikuta projektilaskurissa ilman hissitonta valintaa", () => {
@@ -162,7 +178,7 @@ describe("projektiHinta", () => {
     );
     expect(yksiKerros).not.toBeNull();
     expect(kaksiKerrosta).not.toBeNull();
-    expect((kaksiKerrosta as number) - (yksiKerros as number)).toBeCloseTo(3.98, 2);
+    expect((kaksiKerrosta as number) - (yksiKerros as number)).toBeCloseTo(3.99, 2);
   });
 });
 
