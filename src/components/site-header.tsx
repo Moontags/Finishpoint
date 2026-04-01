@@ -8,7 +8,13 @@ import { ChevronDown, Mail, Phone } from "lucide-react";
 import { serviceNavigationLinks, serviceNavigationOrder } from "@/lib/services";
 import { siteContact, siteCta } from "@/lib/site-config";
 
-export function SiteHeader({ opaque = false }: { opaque?: boolean }) {
+export function SiteHeader({
+  opaque = false,
+  noShadow = false,
+}: {
+  opaque?: boolean;
+  noShadow?: boolean;
+}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
@@ -40,10 +46,10 @@ export function SiteHeader({ opaque = false }: { opaque?: boolean }) {
     <header className={`relative z-50 bg-white px-2.5 pt-0 pb-1.5 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
       <div className={`w-full rounded-2xl px-3 py-2.5 transition-all duration-200 sm:px-6 sm:py-3.5 ${
         scrolled
-          ? "border border-slate-200/90 bg-white/75 shadow-[0_2px_16px_rgba(0,0,0,0.08)] backdrop-blur-xl"
+          ? `border border-slate-200/90 bg-white/75 ${noShadow ? "" : "shadow-[0_2px_16px_rgba(0,0,0,0.08)]"} backdrop-blur-xl`
           : opaque
-            ? "border border-slate-200/70 bg-white shadow-sm"
-            : "border border-slate-200/70 bg-white shadow-sm md:border-transparent md:bg-transparent md:shadow-none"
+            ? `border border-slate-200/70 bg-white ${noShadow ? "" : "shadow-sm"}`
+            : `border border-slate-200/70 bg-white ${noShadow ? "" : "shadow-sm"} md:border-transparent md:bg-transparent md:shadow-none`
       }`}>
         <div className="flex items-center justify-between gap-2.5 sm:gap-5">
           <Link href="/" className="flex min-w-0 shrink-0 items-center" aria-label="Etusivu">

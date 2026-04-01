@@ -116,7 +116,7 @@ export default function CheckoutPage() {
 
   return (
     <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
-      <SiteHeader opaque />
+      <SiteHeader opaque noShadow />
 
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">

@@ -13,7 +13,7 @@ export default function ServicePageLayout({
 }) {
   return (
     <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
-      <SiteHeader opaque />
+      <SiteHeader opaque noShadow />
 
       <section className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6 lg:px-8 lg:pt-10">
         <div className="max-w-3xl space-y-3">
