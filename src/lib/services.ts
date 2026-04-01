@@ -1,3 +1,5 @@
+import { serviceCategoryContentById } from "@/lib/service-categories";
+
 export type ServiceSlug =
   | "pyorakuljetus"
   | "monkijakuljetus"
@@ -41,7 +43,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Hinnoittelu moottoripyörille",
     pricingDescription:
-      "Käytä alla olevaa laskuria arvioon. Lopullinen hinta vahvistetaan reitin, aikataulun ja mahdollisten lisäpysähdysten mukaan.",
+      `${serviceCategoryContentById.ajoneuvo.cardDescription} Lisäpyörän toimitus samaan toimipisteeseen 89 €.`,
     metadataTitle: "Moottoripyörän kuljetus | Finishpoint",
     metadataDescription:
       "Nopea ja turvallinen moottoripyörän kuljetus. Pyydä tarjous Finishpointilta.",
@@ -64,7 +66,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Hinta-arvio mönkijäkuljetukselle",
     pricingDescription:
-      "Hinta muodostuu matkan pituudesta, noutoajasta ja kohteen saavutettavuudesta.",
+      serviceCategoryContentById.ajoneuvo.cardDescription,
     metadataTitle: "Mönkijän kuljetus | Finishpoint",
     metadataDescription:
       "Turvallinen mönkijän kuljetus joustavasti koko Suomessa. Pyydä tarjous nopeasti.",
@@ -87,7 +89,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Pesukonekuljetuksen hinnoittelu",
     pricingDescription:
-      "Hinta riippuu kerroksista ja kantomatkasta . Saat arvion nopeasti puhelimella tai lomakkeella.",
+      serviceCategoryContentById.kappaletavara.cardDescription,
     metadataTitle: "Pesukoneen kuljetus | Finishpoint",
     metadataDescription:
       "Pesukoneen kuljetus nopeasti ja turvallisesti. Nouto ja toimitus joustavasti.",
@@ -110,7 +112,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Sohvakuljetuksen arvio",
     pricingDescription:
-      "Hinta määräytyy koon, kerrosten ja matkan perusteella.",
+      serviceCategoryContentById.kappaletavara.cardDescription,
     metadataTitle: "Sohvan kuljetus | Finishpoint",
     metadataDescription:
       "Sohvan kuljetus turvallisesti ja täsmällisesti. Pyydä tarjous nopeasti Finishpointilta.",
@@ -133,7 +135,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Sänkykuljetuksen hinnoittelu",
     pricingDescription:
-      "Arvio perustuu matkaan, kantotarpeeseen ja aikatauluun. Saat hinnan etukäteen ennen tilausta.",
+      serviceCategoryContentById.kappaletavara.cardDescription,
     metadataTitle: "Sängyn kuljetus | Finishpoint",
     metadataDescription:
       "Sängyn kuljetus nopeasti ja turvallisesti. Nouto ja toimitus sovitusti.",
@@ -145,7 +147,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "kierratys",
     navLabel: "Kierrätys",
     title: "Kierrätyspalvelu",
-    description: "Noudamme poistettavat tavarat ja viemme ne asianmukaiseen kierrätykseen.",
+    description: "Kierrätyspalvelu alkaen 54,99 € sis. ALV. Aloitushintaan sisältyy 40 km.",
     valueProposition:
       "Helppo tapa päästä eroon ylimääräisestä tavarasta vastuullisesti.",
     includes: [
@@ -156,7 +158,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Kierrätyksen hinta-arvio",
     pricingDescription:
-      "Hinta määräytyy tavaramäärän ja kierrätyspaikan perusteella.",
+      serviceCategoryContentById.projekti.cardDescription,
     metadataTitle: "Kierrätyspalvelu | Finishpoint",
     metadataDescription:
       "Kierrätyspalvelu ja tavaran poistot nopeasti. Nouto ja vastuullinen käsittely.",
@@ -168,7 +170,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "muutot",
     navLabel: "Muutot",
     title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille alkaen 269 € sis. ALV.",
+    description: "Joustavat muutot koteihin ja pienyrityksille alkaen 269 € sis. ALV. Aloitushintaan sisältyy 40 km.",
     valueProposition:
       "Sinä keskityt uuteen kotiin – me hoidamme muuton.",
     includes: [
@@ -179,7 +181,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Muuttojen hinnoittelu",
     pricingDescription:
-      "Lähtöhinta on 269 € sis. ALV. Lopullinen hinta riippuu muuton laajuudesta ja etäisyydestä",
+      serviceCategoryContentById.projekti.cardDescription,
     metadataTitle: "Muuttopalvelu | Finishpoint",
     metadataDescription:
       "Muuttopalvelut koteihin ja pienyrityksille. Selkeä hinnoittelu ja luotettava toteutus.",
@@ -221,4 +223,26 @@ export const serviceNavigationOrder: ServiceSlug[] = [
   "sangyn-kuljetus",
   "kierratys",
   "muutot",
+];
+
+export const serviceNavigationLinks = serviceNavigationOrder.map((slug) => ({
+  href: `/${slug}`,
+  label: services[slug].navLabel,
+  slug,
+}));
+
+export const serviceFooterLinks = [
+  {
+    href: "/laskuri/projekti",
+    label: serviceCategoryContentById.projekti.label,
+  },
+  ...serviceNavigationLinks.filter(({ slug }) => slug !== "muutot" && slug !== "kierratys").map(({ href, label }) => ({
+    href,
+    label,
+  })),
+];
+
+export const quoteServiceOptions = [
+  ...serviceNavigationOrder.map((slug) => services[slug].navLabel),
+  "Muu kuljetus",
 ];

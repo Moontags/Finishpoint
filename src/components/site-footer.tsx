@@ -1,30 +1,14 @@
 import Link from "next/link";
-import { serviceNavigationOrder, services } from "@/lib/services";
+import { serviceFooterLinks } from "@/lib/services";
+import { siteContact } from "@/lib/site-config";
 
 export function SiteFooter() {
-  const footerServiceLinks = [
-    { href: "/laskuri/projekti", label: "Muutot & kierrätys" },
-    ...serviceNavigationOrder
-      .filter((slug) => slug !== "muutot" && slug !== "kierratys")
-      .map((slug) => ({
-        href: `/${slug}`,
-        label:
-          slug === "sohvan-kuljetus"
-            ? "Sohvakuljetus"
-            : slug === "pesukone-kuljetus"
-              ? "Pesukonekuljetus"
-              : slug === "sangyn-kuljetus"
-                ? "Sängynkuljetus"
-              : services[slug].navLabel,
-      })),
-  ];
-
   return (
     <footer className="border-t border-slate-200 bg-white/90">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_auto] lg:px-8">
         <div className="min-w-0 space-y-1.5">
-          <p className="text-[13px] text-slate-700">050 354 7763</p>
-          <p className="break-all text-[13px] text-slate-700">kuljetus@finishpoint.fi</p>
+          <p className="text-[13px] text-slate-700">{siteContact.phoneDisplay}</p>
+          <p className="break-all text-[13px] text-slate-700">{siteContact.email}</p>
           <p className="pt-1 text-[12px] text-slate-600">
             Hinnat näytetään sis. ALV 25,5 %. Yritys (ALV 0 %).
           </p>
@@ -42,7 +26,7 @@ export function SiteFooter() {
           <div>
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">Palvelut</p>
             <div className="grid grid-cols-2 gap-2 text-[12px] text-slate-700">
-            {footerServiceLinks.map(({ href, label }) => (
+            {serviceFooterLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}

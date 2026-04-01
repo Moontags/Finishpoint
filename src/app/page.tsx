@@ -12,57 +12,29 @@ import ServiceSelector from "@/components/ServiceSelector";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-
-const services = [
-  {
-    title: "Ajoneuvokuljetukset",
-    description:
-      "Kuljetuspalvelu moottoripyörille, mopoille ja mönkijöille. Lähtöhinta 129 € sis. ALV.",
-    accent: "Siirtopalvelu",
-    featured: true,
-    href: "/pyorakuljetus",
-    backgroundImage: "/images/moottoripyörä.jpeg",
-  },
-  {
-    title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille. Lähtöhinta 269 € sis. ALV, sisältää 40 km.",
-    accent: "Alkaen 269 €",
-    featured: false,
-    href: "/muutot",
-    backgroundImage: "/images/paku3.png",
-  },
-  {
-    title: "Kierrätykset",
-    description:
-      "Lähtöhinta 54,99 € sis. ALV, sisältää 40 km. Sen jälkeen hinta määräytyy kuormamäärän, lisäkilometrien ja asemamaksun mukaan.",
-    accent: "Tarjouskohteet erikseen",
-    featured: false,
-    href: "/kierratys",
-    backgroundImage: "/images/paku4.jpeg",
-  },
-];
+import { serviceCategories } from "@/lib/service-categories";
+import { siteContact, siteCta } from "@/lib/site-config";
 
 const contactLinks = [
   {
-    href: "tel:0503547763",
+    href: siteContact.phoneHref,
     label: "Soita",
-    value: "050 354 7763",
+    value: siteContact.phoneDisplay,
     icon: Phone,
   },
   {
-    href: "mailto:kuljetus@finishpoint.fi",
+    href: siteContact.emailHref,
     label: "Sähköposti",
-    value: "kuljetus@finishpoint.fi",
+    value: siteContact.email,
     icon: Mail,
   },
   {
-    href: "#quote",
-    label: "Tarjous",
-    value: "Pyydä tarjous",
+    href: siteCta.quoteSectionHref,
+    label: siteCta.quoteNavLabel,
+    value: siteCta.requestQuoteLabel,
     icon: ArrowRight,
   },
 ];
-
 const paymentMethods = [
   {
     icon: Smartphone,
@@ -128,14 +100,14 @@ export default function Home() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <a
-                href="#quote"
+                href={siteCta.quoteSectionHref}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-600 active:scale-[0.97] sm:w-auto"
               >
-                Tilaa kuljetus
+                {siteCta.orderTransportLabel}
                 <MoveRight className="h-4 w-4" />
               </a>
               <a
-                href="#calculator"
+                href={siteCta.calculatorHref}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-400 hover:text-blue-600 active:scale-[0.97] sm:w-auto"
               >
                 Laske hinta
@@ -219,9 +191,9 @@ export default function Home() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {services.map(({ title, description, accent, featured, href, backgroundImage }) => (
+            {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
               <a
-                key={title}
+                key={cardTitle}
                 href={href}
                 className={`group relative flex min-h-75 min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-85 ${
                   featured
@@ -239,13 +211,13 @@ export default function Home() {
                 <div className="absolute inset-0 bg-linear-to-b from-slate-900/20 via-slate-900/55 to-slate-900/85" />
                 <div className="relative z-1 mt-auto">
                   <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-200 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
-                    {accent}
+                    {cardAccent}
                   </p>
                   <h3 className="mt-2 wrap-break-word text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
-                    {title}
+                    {cardTitle}
                   </h3>
                   <p className="mt-3 wrap-break-word text-[14px] leading-[1.7] text-slate-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
-                    {description}
+                    {cardDescription}
                   </p>
                 </div>
               </a>

@@ -3,13 +3,22 @@
 import { useEffect, useState } from "react";
 import { Bike, Boxes, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
+import { serviceCategories } from "@/lib/service-categories";
 import type { ServiceCategory } from "@/lib/types";
 
-const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Bike }> = [
-  { id: "kappaletavara", label: "Kappaletavara", icon: Boxes },
-  { id: "projekti", label: "Muutot ja kierrätys", icon: Truck },
-  { id: "ajoneuvo", label: "Ajoneuvokuljetukset", icon: Bike },
-];
+const categoryIcons = {
+  kappaletavara: Boxes,
+  projekti: Truck,
+  ajoneuvo: Bike,
+};
+
+const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Bike }> = serviceCategories.map(
+  ({ id, label }) => ({
+    id,
+    label,
+    icon: categoryIcons[id],
+  }),
+);
 
 function parseCategory(value: string | null): ServiceCategory | null {
   if (value === "ajoneuvo" || value === "kappaletavara" || value === "projekti") {

@@ -1,4 +1,5 @@
 import { ArrowRight, Phone } from "lucide-react";
+import { siteContact, siteCta } from "@/lib/site-config";
 
 export function CTA({ title, description }: { title: string; description: string }) {
   return (
@@ -9,17 +10,17 @@ export function CTA({ title, description }: { title: string; description: string
       </p>
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
         <a
-          href="tel:0503547763"
+          href={siteContact.phoneHref}
           className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-600 active:scale-[0.97] sm:w-auto"
         >
-          Soita 050 354 7763
+          {`Soita ${siteContact.phoneDisplay}`}
           <Phone className="h-4 w-4" />
         </a>
         <a
-          href="#quote"
+          href={siteCta.quoteSectionHref}
           className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-400 hover:text-blue-600 active:scale-[0.97] sm:w-auto"
         >
-          Täytä tarjouslomake
+          {siteCta.fillQuoteFormLabel}
           <ArrowRight className="h-4 w-4" />
         </a>
       </div>

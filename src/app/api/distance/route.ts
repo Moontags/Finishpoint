@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { distanceLookupUnavailableMessage, getGoogleMapsApiKey } from "@/lib/google-maps-config";
+
 type DistanceRequest = {
   origin: string;
   destination: string;
@@ -108,15 +110,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+    const apiKey = getGoogleMapsApiKey();
 
     if (!apiKey) {
       return NextResponse.json(
         {
           ok: false,
-          error: "GOOGLE_MAPS_API_KEY puuttuu palvelimen asetuksista.",
+          error: distanceLookupUnavailableMessage,
         },
-        { status: 500 },
+        { status: 503 },
       );
     }
 

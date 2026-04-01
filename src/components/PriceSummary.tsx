@@ -1,5 +1,6 @@
 "use client";
 
+import { getMobilePayPublicLink } from "@/lib/mobilepay-config";
 import { lisaaAlv } from "@/lib/pricing";
 
 interface PriceSummaryProps {
@@ -9,7 +10,7 @@ interface PriceSummaryProps {
 
 export function PriceSummary({ hintaAlv0, label = "Hinta" }: PriceSummaryProps) {
   const sisAlv = lisaaAlv(hintaAlv0);
-  const mobilePayLink = process.env.NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK?.trim() ?? "";
+  const mobilePayLink = getMobilePayPublicLink();
 
   return (
     <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-4">

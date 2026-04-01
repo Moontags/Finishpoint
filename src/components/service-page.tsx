@@ -7,6 +7,7 @@ import ServicePageLayout from "@/components/ServicePageLayout";
 import { ServiceList } from "@/components/ServiceList";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import type { ServiceContent } from "@/lib/services";
+import { siteContact, siteCta } from "@/lib/site-config";
 
 export function ServicePage({
   service,
@@ -47,17 +48,17 @@ export function ServicePage({
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <a
-              href="tel:0503547763"
+              href={siteContact.phoneHref}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-600 active:scale-[0.97] sm:w-auto"
             >
-              Soita heti
+              {siteCta.callNowLabel}
               <MoveRight className="h-4 w-4" />
             </a>
             <a
-              href="#quote"
+              href={siteCta.quoteSectionHref}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-400 hover:text-blue-600 active:scale-[0.97] sm:w-auto"
             >
-              Pyydä tarjous
+              {siteCta.requestQuoteLabel}
             </a>
           </div>
         </div>
@@ -82,7 +83,7 @@ export function ServicePage({
             href={`/laskuri?kategoria=${service.calculatorCategory}`}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-600 active:scale-[0.97] sm:w-auto"
           >
-            Avaa laskuri valmiilla valinnalla
+            {siteCta.pricingLinkLabel}
           </Link>
         </div>
       </section>

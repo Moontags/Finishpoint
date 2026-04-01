@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { getGoogleMapsApiKey } from "@/lib/google-maps-config";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -9,16 +11,10 @@ export async function GET(request: Request) {
       return NextResponse.json({ ok: true, suggestions: [] });
     }
 
-    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+    const apiKey = getGoogleMapsApiKey();
 
     if (!apiKey) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "GOOGLE_MAPS_API_KEY puuttuu palvelimen asetuksista.",
-        },
-        { status: 500 },
-      );
+      return NextResponse.json({ ok: true, suggestions: [] });
     }
 
     const params = new URLSearchParams({

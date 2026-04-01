@@ -2,18 +2,7 @@
 
 import { useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
-
-const serviceOptions = [
-  "Moottoripyöräkuljetukset",
-  "Mönkijäkuljetukset",
-  "Pesukoneen kuljetus",
-  "Sohvan kuljetus",
-  "Sängyn kuljetus",
-  "Ruohonleikkurit ja mopot",
-  "Muuttopalvelut",
-  "Kierrätys",
-  "Muu kuljetus",
-];
+import { quoteServiceOptions } from "@/lib/services";
 
 const inputClass =
   "w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white focus:ring-[3px] focus:ring-blue-200";
@@ -23,7 +12,7 @@ export function QuoteRequestForm() {
     name: "",
     phone: "",
     email: "",
-    serviceType: serviceOptions[0],
+    serviceType: quoteServiceOptions[0],
     pickupAddress: "",
     deliveryAddress: "",
     message: "",
@@ -64,7 +53,7 @@ export function QuoteRequestForm() {
         name: "",
         phone: "",
         email: "",
-        serviceType: serviceOptions[0],
+        serviceType: quoteServiceOptions[0],
         pickupAddress: "",
         deliveryAddress: "",
         message: "",
@@ -90,8 +79,8 @@ export function QuoteRequestForm() {
           Lisää tiedot ja tilaa
         </h2>
         <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
-          Täytä Yhteistietosi ja valitse palvelutyyppi. Lähetyspainike avaa sähköpostin valmiiksi täytetyllä
-          tarjouspyynnöllä, jotta saat kaiken olennaisen yhdellä kertaa mukaan.
+          Täytä yhteystietosi ja valitse palvelutyyppi. Lähetämme tarjouspyynnön suoraan palvelimelta,
+          jotta saat kaikki olennaiset tiedot kerralla perille.
         </p>
 
         {/* Info strip */}
@@ -162,7 +151,7 @@ export function QuoteRequestForm() {
               onChange={handleChange}
               className={inputClass}
             >
-              {serviceOptions.map((option) => (
+              {quoteServiceOptions.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
