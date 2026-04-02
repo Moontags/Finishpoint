@@ -4,7 +4,6 @@ import {
   Mail,
   MoveRight,
   Phone,
-  ShieldCheck,
   Smartphone,
   FileText,
 } from "lucide-react";
@@ -82,11 +81,6 @@ export default function Home() {
 
           {/* Left */}
           <div className="min-w-0 space-y-7">
-            <div className="inline-flex max-w-full items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700 sm:text-xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
-              <span className="max-w-full truncate sm:whitespace-normal">Logistiikkakumppanisi</span>
-            </div>
-
             <div className="space-y-5">
               <h1 className="max-w-4xl text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 max-[390px]:text-[1.95rem] sm:text-6xl">
                 Tavarakuljetukset, muutot &amp; siirtopalvelut <br />

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Mail, Phone } from "lucide-react";
+import { ChevronDown, Mail, Menu, Phone } from "lucide-react";
 import { serviceNavigationLinks, serviceNavigationOrder } from "@/lib/services";
 import { siteContact, siteCta } from "@/lib/site-config";
 
@@ -48,16 +48,20 @@ export function SiteHeader({
             ? "bg-white"
             : "bg-white md:bg-transparent"
       }`}>
-        <div className="flex items-center justify-between gap-2.5 sm:gap-5">
-          <Link href="/" className="flex min-w-0 shrink-0 items-center" aria-label="Etusivu">
+        <div className="flex translate-y-[8px] items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
+          <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2" aria-label="Etusivu">
             <Image
               src="/images/finishpoint-logo.png"
               alt="Finishpoint"
               width={160}
               height={80}
-              className="h-auto w-28 object-contain sm:w-44"
+              className="h-auto w-32 object-contain sm:w-44"
               priority
             />
+            <span className="flex shrink-0 flex-col leading-none sm:hidden">
+              <span className="text-[15px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
+              <span className="mt-0.5 text-[9px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
+            </span>
           </Link>
 
           <nav className="hidden items-center gap-1 text-[14px] font-medium text-slate-600 md:flex">
@@ -100,13 +104,12 @@ export function SiteHeader({
             </Link>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2">
-            <details className="relative mr-3 sm:hidden">
-              <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-xl border border-slate-700/80 bg-slate-800 px-3.5 py-1.5 text-[12px] font-semibold text-white shadow-sm">
-                Palvelut
-                <ChevronDown className="h-4 w-4" />
+          <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+            <details className="relative mr-5 translate-y-0.5 sm:mr-0 sm:translate-y-0 sm:hidden">
+              <summary className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50">
+                <Menu className="h-[22px] w-[22px]" />
               </summary>
-              <div className="absolute right-0 top-full z-50 mt-2 grid min-w-52 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
+              <div className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
                 {serviceNavigationLinks.map(({ href, label }) => (
                   <Link
                     key={href}
