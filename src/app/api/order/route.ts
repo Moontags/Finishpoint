@@ -1,5 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { createMobilePayPayment, hasMobilePayApiCredentials } from "../../../lib/mobilepay-api";
 
 type OrderPayload = {
   name: string;
@@ -64,16 +66,6 @@ export async function POST(request: Request) {
     const fromAddress = process.env.SMTP_FROM ?? smtpUser;
     const mobilePayLink = process.env.NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK?.trim() ?? "";
 
-    if (!mobilePayLink) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "Maksulinkki puuttuu. Maarita NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK.",
-        },
-        { status: 500 },
-      );
-    }
-
     if (!smtpHost || !smtpUser || !smtpPass || !fromAddress) {
       return NextResponse.json(
         {
@@ -109,6 +101,44 @@ export async function POST(request: Request) {
       );
     }
 
+    let paymentUrl = mobilePayLink;
+
+    if (hasMobilePayApiCredentials()) {
+      try {
+        paymentUrl = await createMobilePayPayment({
+          orderId: `FP-${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`,
+          amount: data.estimatedPriceVatIncl ?? estimatedPriceVat0,
+          description: `Finishpoint ${data.serviceType}`,
+          customerEmail: data.email,
+          customerPhone: data.phone,
+        });
+      } catch (error) {
+        if (!mobilePayLink) {
+          return NextResponse.json(
+            {
+              ok: false,
+              error:
+                "MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella.",
+            },
+            { status: 502 },
+          );
+        }
+
+        console.error("MobilePay API failed, falling back to public payment link", error);
+      }
+    }
+
+    if (!paymentUrl) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error:
+            "Maksuasetukset puuttuvat. Maarita NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK tai palvelinpuolen MOBILEPAY_* API-avaimet.",
+        },
+        { status: 500 },
+      );
+    }
+
     await transporter.sendMail({
       from: fromAddress,
       to: recipient,
@@ -129,11 +159,11 @@ export async function POST(request: Request) {
         "Viesti:",
         data.message || "-",
         "",
-        `Maksulinkki asiakkaalle: ${mobilePayLink}`,
+        `Maksulinkki asiakkaalle: ${paymentUrl}`,
       ].join("\n"),
     });
 
-    return NextResponse.json({ ok: true, paymentUrl: mobilePayLink });
+    return NextResponse.json({ ok: true, paymentUrl });
   } catch {
     return NextResponse.json(
       {

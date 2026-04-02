@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCalculatorContext } from "@/lib/calculator-context";
-import { getMobilePayPublicLink } from "@/lib/mobilepay-config";
 import { ORDER_DRAFT_STORAGE_KEY } from "@/lib/order-draft";
 import { quoteServiceOptions, services } from "@/lib/services";
 import type { ServiceCategory } from "@/lib/types";
@@ -34,7 +33,6 @@ export function QuoteRequestForm() {
   const [hasCalculatorData, setHasCalculatorData] = useState(false);
   const [activeAction, setActiveAction] = useState<"quote" | "order" | null>(null);
   const calculatorContext = useCalculatorContext();
-  const hasMobilePayLink = Boolean(getMobilePayPublicLink());
 
   useEffect(() => {
     if (!calculatorContext) return;
@@ -348,12 +346,6 @@ export function QuoteRequestForm() {
         {isOrderFlow ? (
           <p className="text-[12px] text-slate-600">
             Seuraava vaihe: tarkista tiedot kassassa ja vahvista maksu.
-          </p>
-        ) : null}
-
-        {!hasMobilePayLink ? (
-          <p className="text-[12px] text-amber-700">
-            Maksuun siirtyminen vaatii asetuksen `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` tiedostoon .env.local.
           </p>
         ) : null}
 

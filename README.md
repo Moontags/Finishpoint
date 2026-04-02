@@ -43,20 +43,37 @@ Required variables:
 - `SMTP_FROM`
 - `QUOTE_RECIPIENT` (optional)
 - `GOOGLE_MAPS_API_KEY`
-- `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` (optional)
+- `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` (optional fallback)
+- `MOBILEPAY_CLIENT_ID` (optional, enables API mode)
+- `MOBILEPAY_CLIENT_SECRET` (optional, enables API mode)
+- `MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY` (optional, enables API mode)
 
 ## MobilePay setup
 
-The current implementation supports a public MobilePay payment link via `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK`.
+The order API supports two payment modes:
 
-- Use `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` only for a browser-safe payment URL that may be exposed to users.
-- If MobilePay later provides secret API credentials, store them in Vercel as server-only `MOBILEPAY_*` variables without the `NEXT_PUBLIC_` prefix.
-- Keep all future MobilePay API calls in server routes so client secrets never reach the browser.
+1. **API mode (recommended):** If `MOBILEPAY_CLIENT_ID`, `MOBILEPAY_CLIENT_SECRET`, and a subscription key are set, the server creates a MobilePay payment dynamically.
+2. **Fallback link mode:** If API mode is not configured, the server uses `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK`.
 
-Recommended Vercel setup:
+Required for API mode (server-only variables):
 
-- `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` for the current pay-by-link button
-- future `MOBILEPAY_*` secrets only in server environments as needed
+- `MOBILEPAY_CLIENT_ID`
+- `MOBILEPAY_CLIENT_SECRET`
+- `MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY` (or `MOBILEPAY_SUBSCRIPTION_KEY`)
+
+Optional API overrides:
+
+- `MOBILEPAY_SUBSCRIPTION_KEY_SECONDARY`
+- `MOBILEPAY_SCOPE`
+- `MOBILEPAY_TOKEN_URL`
+- `MOBILEPAY_PAYMENTS_URL`
+- `MOBILEPAY_CURRENCY` (default `EUR`)
+- `MOBILEPAY_RETURN_URL`
+- `MOBILEPAY_CANCEL_URL`
+- `MOBILEPAY_WEBHOOK_URL`
+- `NEXT_PUBLIC_SITE_URL` (used as fallback return URL)
+
+Security note: keep all `MOBILEPAY_*` secrets server-side only, never with `NEXT_PUBLIC_`.
 
 For Google Maps features to work in production, the API key must be available as a server-side environment variable and the following Google APIs must be enabled for the same project:
 
