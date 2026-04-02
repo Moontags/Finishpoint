@@ -191,7 +191,7 @@ export function QuoteRequestForm() {
           <span className="truncate sm:whitespace-normal">Vahvista tilaus ja maksa</span>
         </div>
         {isOrderFlow ? (
-          <p className="inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">
+          <p className="-mt-3 ml-1 inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">
             Vaihe 1/2: Yhteystiedot
           </p>
         ) : null}
@@ -327,24 +327,22 @@ export function QuoteRequestForm() {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
               <ArrowUpRight className="h-4 w-4" />
             </button>
-          ) : null}
-
-          <button
-            type="button"
-            onClick={handleOrderAndPayment}
-            disabled={status === "loading" || !canAttemptOrder}
-            className={`inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-blue-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 ${
-              isOrderFlow ? "sm:col-span-2" : ""
-            }`}
-          >
-            {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja jatka kassaan"}
-            <ArrowUpRight className="h-4 w-4" />
-          </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleOrderAndPayment}
+              disabled={status === "loading" || !canAttemptOrder}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-blue-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+            >
+              {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja jatka kassaan"}
+              <ArrowUpRight className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
         {isOrderFlow ? (
