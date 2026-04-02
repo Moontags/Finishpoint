@@ -227,7 +227,7 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
   const paymentsUrl = getEnv("VIPPS_PAYMENTS_URL") || "https://api.vipps.no/ecomm/v2/payments";
   const returnUrl = input.returnUrl || getEnv("VIPPS_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
   const cancelUrl = input.cancelUrl || getEnv("VIPPS_CANCEL_URL") || returnUrl;
-  const currency = getEnv("VIPPS_CURRENCY") || "NOK";
+  const currency = getEnv("VIPPS_CURRENCY") || "EUR";
   const callbackPrefix = returnUrl ? getVippsCallbackPrefix(returnUrl) : "";
 
   if (!returnUrl || !cancelUrl || !callbackPrefix) {

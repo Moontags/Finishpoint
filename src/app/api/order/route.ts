@@ -194,10 +194,8 @@ export async function POST(request: Request) {
 
     let paymentUrl = mobilePayLink;
     const origin = new URL(request.url).origin;
-    const returnUrl =
-      process.env.VIPPS_RETURN_URL?.trim() || process.env.MOBILEPAY_RETURN_URL?.trim() || `${origin}/kassa`;
-    const cancelUrl =
-      process.env.VIPPS_CANCEL_URL?.trim() || process.env.MOBILEPAY_CANCEL_URL?.trim() || `${origin}/#quote`;
+    const returnUrl = process.env.VIPPS_RETURN_URL?.trim() || `${origin}/kassa`;
+    const cancelUrl = process.env.VIPPS_CANCEL_URL?.trim() || `${origin}/#quote`;
 
     if (hasMobilePayApiCredentials()) {
       try {
