@@ -103,6 +103,7 @@ Optional API overrides:
 - `MOBILEPAY_CANCEL_URL`
 - `MOBILEPAY_WEBHOOK_URL`
 - `NEXT_PUBLIC_SITE_URL` (used as fallback return URL)
+- `TEST_PAYMENT_AMOUNT_EUR` (optional dev/preview-only override for low-value test payments, ignored in Vercel production)
 
 Optional Vipps ePayment overrides:
 
