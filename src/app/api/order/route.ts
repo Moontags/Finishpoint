@@ -147,6 +147,19 @@ function isVippsPaymentServerError(error: unknown) {
   );
 }
 
+function isVippsInvalidSubscriptionKey(error: unknown) {
+  if (!(error instanceof MobilePayApiError)) {
+    return false;
+  }
+
+  if (error.code !== "VIPPS_PAYMENT_REQUEST_FAILED" || error.status !== 401) {
+    return false;
+  }
+
+  const raw = JSON.stringify(error.details ?? {}).toLowerCase();
+  return raw.includes("invalid subscription key");
+}
+
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as Partial<OrderPayload>;
@@ -246,11 +259,14 @@ export async function POST(request: Request) {
           const vipps500Hint = isVippsPaymentServerError(error)
             ? " Vipps 500-virheessa tarkista erityisesti: VIPPS_PAYMENTS_URL (epayment), VIPPS_MERCHANT_SERIAL_NUMBER, VIPPS_RETURN_URL (julkinen https-osoite), VIPPS_CURRENCY ja avainten testi/tuotanto-ymparistojen vastaavuus."
             : "";
+          const vippsInvalidSubscriptionHint = isVippsInvalidSubscriptionKey(error)
+            ? " Vipps 401 Invalid Subscription Key: tarkista etta VIPPS_SUBSCRIPTION_KEY_PRIMARY on ePayment-tuotteen avain (ei Login), ettei arvossa ole valilyonteja tai rivinvaihtoa, ja etta avain kuuluu samaan ymparistoon (test/prod) kuin VIPPS_CLIENT_ID ja VIPPS_MERCHANT_SERIAL_NUMBER."
+            : "";
 
           return NextResponse.json(
             {
               ok: false,
-              error: `Maksun luonti epaonnistui. Tarkista MOBILEPAY_* tai VIPPS_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}${vipps500Hint}`,
+              error: `Maksun luonti epaonnistui. Tarkista MOBILEPAY_* tai VIPPS_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}${vipps500Hint}${vippsInvalidSubscriptionHint}`,
             },
             { status: 502 },
           );
