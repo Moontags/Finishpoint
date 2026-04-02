@@ -73,6 +73,15 @@ function extractMobilePayReason(details: unknown) {
   return "";
 }
 
+function isMobilePayInvalidClient(details: unknown) {
+  if (!details || typeof details !== "object") {
+    return false;
+  }
+
+  const data = details as Record<string, unknown>;
+  return data.error === "invalid_client";
+}
+
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as Partial<OrderPayload>;
@@ -165,11 +174,15 @@ export async function POST(request: Request) {
             error instanceof MobilePayApiError
               ? extractMobilePayReason(error.details)
               : "";
+          const invalidClientHint =
+            error instanceof MobilePayApiError && isMobilePayInvalidClient(error.details)
+              ? " Varmista MOBILEPAY_CLIENT_ID, MOBILEPAY_CLIENT_SECRET, MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY ja MOBILEPAY_TOKEN_AUTH_METHOD=client_secret_basic. Jos arvot ovat oikein, generoi uusi client secret MobilePay-portaalissa."
+              : "";
 
           return NextResponse.json(
             {
               ok: false,
-              error: `MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.`,
+              error: `MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}`,
             },
             { status: 502 },
           );
