@@ -24,3 +24,14 @@ export type OrderData = {
   paymentMethod: "mobilepay" | "invoice";
   vippsReference?: string;
 };
+
+export type QuoteRequestData = {
+  name: string;
+  phone: string;
+  email: string;
+  serviceType: string;
+  addresses: string;
+  message: string;
+  source: "website";
+  status: "received";
+};

@@ -43,12 +43,40 @@ Required variables:
 - `SMTP_FROM`
 - `QUOTE_RECIPIENT` (optional)
 - `GOOGLE_MAPS_API_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL` (recommended primary database)
+- `SUPABASE_SERVICE_ROLE_KEY` (server-side database access)
 - `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK` (optional fallback)
 - `MOBILEPAY_CLIENT_ID` (optional, enables API mode)
 - `MOBILEPAY_CLIENT_SECRET` (optional, enables API mode)
 - `MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY` (optional, enables API mode)
-- `KV_REST_API_URL` (recommended in production for webhook/order persistence)
-- `KV_REST_API_TOKEN` (recommended in production for webhook/order persistence)
+- `KV_REST_API_URL` (optional legacy fallback for webhook/order persistence)
+- `KV_REST_API_TOKEN` (optional legacy fallback for webhook/order persistence)
+
+## Database setup
+
+The project now supports Supabase as the primary production database for quote requests and orders, with a ready `bookings` table for a future customer booking calendar.
+
+Required server-side variables:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+Optional future browser-side variable:
+
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+Apply the schema in Supabase before enabling the integration:
+
+1. Open the Supabase SQL editor for your project.
+2. Run [supabase/schema.sql](/Users/jari/finishpoint/supabase/schema.sql).
+3. Add `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to Vercel for Development, Preview, and Production.
+4. Redeploy the project.
+
+Storage model:
+
+- `quote_requests` stores all incoming tarjouspyynnot.
+- `orders` stores confirmed tilaukset used by order confirmation and webhook flows.
+- `bookings` is reserved for the upcoming booking calendar.
 
 ## MobilePay setup
 
@@ -99,9 +127,10 @@ Vipps webhook endpoint:
 
 Order persistence for receipt email:
 
-- In production, configure Vercel KV (`KV_REST_API_URL` and `KV_REST_API_TOKEN`) so `/api/order/confirm` and `/api/vipps/webhook` can share order data across server instances.
+- In production, configure Supabase (`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`) so `/api/order/confirm` and `/api/vipps/webhook` can share order data across server instances.
+- If Supabase is not configured yet, the code falls back to Vercel KV (`KV_REST_API_URL` and `KV_REST_API_TOKEN`) and finally in-memory storage.
 - Optional `ORDER_STORE_TTL_SECONDS` controls how long order records are kept (default 30 days).
-- Without KV, local in-memory fallback works only within one running process and is not reliable for production webhooks.
+- Without Supabase or KV, local in-memory fallback works only within one running process and is not reliable for production webhooks.
 
 For Google Maps features to work in production, the API key must be available as a server-side environment variable and the following Google APIs must be enabled for the same project:
 

@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { saveQuoteRequest } from "../../../lib/quote-store";
+import type { QuoteRequestData } from "@/lib/types";
 
-type QuotePayload = {
-  name: string;
-  phone: string;
-  email: string;
-  serviceType: string;
-  addresses: string;
-  message: string;
-};
+type QuotePayload = Omit<QuoteRequestData, "source" | "status">;
 
 const requiredFields: Array<keyof QuotePayload> = [
   "name",
@@ -76,6 +71,17 @@ export async function POST(request: Request) {
     });
 
     const data = payload as QuotePayload;
+
+    await saveQuoteRequest({
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      serviceType: data.serviceType,
+      addresses: data.addresses,
+      message: data.message || "",
+      source: "website",
+      status: "received",
+    });
 
     await transporter.sendMail({
       from: fromAddress,

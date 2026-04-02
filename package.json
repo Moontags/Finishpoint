@@ -10,6 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.101.1",
     "lucide-react": "^0.542.0",
     "next": "16.1.7",
     "nodemailer": "^8.0.2",
