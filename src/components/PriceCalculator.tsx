@@ -137,7 +137,7 @@ function AddressAutocompleteField({
   return (
     <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
       {label}
-      <div ref={containerRef} className="relative -mx-1 sm:mx-0">
+      <div ref={containerRef} className="relative">
         <input
           id={id}
           name={name}
