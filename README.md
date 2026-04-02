@@ -47,6 +47,8 @@ Required variables:
 - `MOBILEPAY_CLIENT_ID` (optional, enables API mode)
 - `MOBILEPAY_CLIENT_SECRET` (optional, enables API mode)
 - `MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY` (optional, enables API mode)
+- `KV_REST_API_URL` (recommended in production for webhook/order persistence)
+- `KV_REST_API_TOKEN` (recommended in production for webhook/order persistence)
 
 ## MobilePay setup
 
@@ -94,6 +96,12 @@ Vipps webhook endpoint:
 - `POST /api/vipps/webhook`
 - Accepts JSON payloads and returns `{ ok: true }` when accepted.
 - If `VIPPS_WEBHOOK_AUTH_TOKEN` is set, include `Authorization: Bearer <token>` in webhook calls.
+
+Order persistence for receipt email:
+
+- In production, configure Vercel KV (`KV_REST_API_URL` and `KV_REST_API_TOKEN`) so `/api/order/confirm` and `/api/vipps/webhook` can share order data across server instances.
+- Optional `ORDER_STORE_TTL_SECONDS` controls how long order records are kept (default 30 days).
+- Without KV, local in-memory fallback works only within one running process and is not reliable for production webhooks.
 
 For Google Maps features to work in production, the API key must be available as a server-side environment variable and the following Google APIs must be enabled for the same project:
 
