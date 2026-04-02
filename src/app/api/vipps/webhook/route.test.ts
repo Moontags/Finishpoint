@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   sendEmail: vi.fn(),
   getOrderByReference: vi.fn(),
+  markOrderAsPaid: vi.fn(),
 }));
 
 vi.mock("@/lib/email", () => ({
@@ -11,6 +12,7 @@ vi.mock("@/lib/email", () => ({
 
 vi.mock("@/lib/order-store", () => ({
   getOrderByReference: mocks.getOrderByReference,
+  markOrderAsPaid: mocks.markOrderAsPaid,
 }));
 
 import { POST } from "./route";
@@ -20,6 +22,7 @@ describe("POST /api/vipps/webhook", () => {
     delete process.env.VIPPS_WEBHOOK_AUTH_TOKEN;
     vi.clearAllMocks();
     mocks.getOrderByReference.mockResolvedValue(null);
+    mocks.markOrderAsPaid.mockResolvedValue(undefined);
   });
 
   it("hyvaksyy webhookin ilman auth-tokenia", async () => {
@@ -106,6 +109,7 @@ describe("POST /api/vipps/webhook", () => {
     expect(response.status).toBe(200);
     expect(body).toEqual({ ok: true });
     expect(mocks.getOrderByReference).toHaveBeenCalledWith("FP-2026-0042");
+    expect(mocks.markOrderAsPaid).toHaveBeenCalledWith("FP-2026-0042", "FP-2026-0042");
     expect(mocks.sendEmail).toHaveBeenCalledTimes(1);
     expect(mocks.sendEmail).toHaveBeenCalledWith(
       expect.objectContaining({

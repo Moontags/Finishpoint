@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/email";
 import { generateReceiptHtml } from "../../../../lib/email-templates";
-import { getOrderByReference } from "@/lib/order-store";
+import { getOrderByReference, markOrderAsPaid } from "@/lib/order-store";
 
 function getExpectedToken() {
   return process.env.VIPPS_WEBHOOK_AUTH_TOKEN?.trim() ?? "";
@@ -110,6 +110,16 @@ export async function POST(request: Request) {
     const order = await getOrderByReference(reference);
 
     if (order) {
+      try {
+        await markOrderAsPaid(order.orderId, reference);
+      } catch (error) {
+        console.error("Order payment status update failed", {
+          orderId: order.orderId,
+          reference,
+          error,
+        });
+      }
+
       try {
         await sendEmail({
           to: order.customerEmail,

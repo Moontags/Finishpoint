@@ -146,6 +146,28 @@ async function getOrderByReferenceFromSupabase(reference: string) {
   return byVippsReference.data ? fromOrderRow(byVippsReference.data) : null;
 }
 
+async function markOrderAsPaidInSupabase(orderId: string, vippsReference: string) {
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    return false;
+  }
+
+  const { error } = await client
+    .from("orders")
+    .update({
+      payment_status: "paid",
+      paid_at: new Date().toISOString(),
+      vipps_reference: vippsReference || null,
+    })
+    .eq("order_id", orderId);
+
+  if (error) {
+    throw new Error(`Supabase markOrderAsPaid failed: ${error.message}`);
+  }
+
+  return true;
+}
+
 async function executeKvCommand(config: KvConfig, command: unknown[]) {
   const response = await fetch(config.url, {
     method: "POST",
@@ -231,6 +253,57 @@ export async function getOrderByReference(reference: string) {
   }
 
   return orderById.get(reference) ?? null;
+}
+
+export async function markOrderAsPaid(orderId: string, vippsReference: string) {
+  try {
+    const updatedInSupabase = await markOrderAsPaidInSupabase(orderId, vippsReference);
+    if (updatedInSupabase) {
+      return;
+    }
+  } catch (error) {
+    console.error("Supabase markOrderAsPaid failed, falling back to KV or in-memory store", {
+      orderId,
+      vippsReference,
+      error,
+    });
+  }
+
+  const kv = getKvConfig();
+  if (kv) {
+    try {
+      const key = toOrderKey(orderId);
+      const payload = await executeKvCommand(kv, ["GET", key]);
+
+      if (typeof payload.result === "string" && payload.result) {
+        const order = JSON.parse(payload.result) as OrderData;
+        order.vippsReference = vippsReference;
+
+        await executeKvCommand(kv, [
+          "SET",
+          key,
+          JSON.stringify(order),
+          "EX",
+          `${kv.ttlSeconds}`,
+        ]);
+        return;
+      }
+    } catch (error) {
+      console.error("KV markOrderAsPaid failed, falling back to in-memory store", {
+        orderId,
+        vippsReference,
+        error,
+      });
+    }
+  }
+
+  const inMemoryOrder = orderById.get(orderId);
+  if (inMemoryOrder) {
+    orderById.set(orderId, {
+      ...inMemoryOrder,
+      vippsReference,
+    });
+  }
 }
 
 export function __unsafeResetOrderStore() {
