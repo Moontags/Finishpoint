@@ -103,6 +103,32 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return value as Record<string, unknown>;
 }
 
+type TokenAttemptResult = {
+  ok: boolean;
+  status: number;
+  body: unknown;
+};
+
+async function requestTokenWithAttempt(
+  tokenUrl: string,
+  headers: Record<string, string>,
+  body: URLSearchParams,
+): Promise<TokenAttemptResult> {
+  const response = await fetch(tokenUrl, {
+    method: "POST",
+    headers,
+    body: body.toString(),
+  });
+
+  const json = await response.json().catch(() => ({}));
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    body: json,
+  };
+}
+
 export async function createMobilePayPayment(input: MobilePayPaymentInput) {
   const clientId = getEnv("MOBILEPAY_CLIENT_ID");
   const clientSecret = getEnv("MOBILEPAY_CLIENT_SECRET");
@@ -131,20 +157,59 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
     tokenForm.set("scope", scope);
   }
 
-  const tokenResponse = await fetch(tokenUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+  const baseHeaders = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: "application/json",
+  };
+
+  const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+
+  const tokenAttemptA = await requestTokenWithAttempt(
+    tokenUrl,
+    {
+      ...baseHeaders,
       "Ocp-Apim-Subscription-Key": subscriptionKey,
     },
-    body: tokenForm.toString(),
-  });
+    tokenForm,
+  );
 
-  const tokenBody = await tokenResponse.json().catch(() => ({}));
-  const tokenData = asRecord(tokenBody);
+  let tokenAttempt = tokenAttemptA;
 
-  if (!tokenResponse.ok || !tokenData || typeof tokenData.access_token !== "string") {
-    throw new MobilePayApiError("MOBILEPAY_TOKEN_REQUEST_FAILED", tokenResponse.status, tokenBody);
+  if (!tokenAttempt.ok) {
+    const basicBody = new URLSearchParams({ grant_type: "client_credentials" });
+    if (scope) {
+      basicBody.set("scope", scope);
+    }
+
+    const tokenAttemptB = await requestTokenWithAttempt(
+      tokenUrl,
+      {
+        ...baseHeaders,
+        Authorization: `Basic ${basicAuth}`,
+        "Ocp-Apim-Subscription-Key": subscriptionKey,
+      },
+      basicBody,
+    );
+
+    tokenAttempt = tokenAttemptB;
+
+    if (!tokenAttempt.ok) {
+      const tokenAttemptC = await requestTokenWithAttempt(
+        tokenUrl,
+        {
+          ...baseHeaders,
+          Authorization: `Basic ${basicAuth}`,
+        },
+        basicBody,
+      );
+      tokenAttempt = tokenAttemptC;
+    }
+  }
+
+  const tokenData = asRecord(tokenAttempt.body);
+
+  if (!tokenAttempt.ok || !tokenData || typeof tokenData.access_token !== "string") {
+    throw new MobilePayApiError("MOBILEPAY_TOKEN_REQUEST_FAILED", tokenAttempt.status, tokenAttempt.body);
   }
 
   const returnUrl = input.returnUrl || getEnv("MOBILEPAY_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
