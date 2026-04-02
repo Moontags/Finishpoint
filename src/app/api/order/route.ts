@@ -64,14 +64,25 @@ function extractMobilePayReason(details: unknown) {
   if (data.returnUrl === false) {
     missingFlags.push("VIPPS_RETURN_URL");
   }
-  if (data.cancelUrl === false) {
-    missingFlags.push("VIPPS_CANCEL_URL");
-  }
-  if (data.callbackPrefix === false) {
-    missingFlags.push("VIPPS_CALLBACK_PREFIX");
+  if (data.phoneNormalized === false) {
+    missingFlags.push("customer phoneNumber (e.g. 358501234567)");
   }
   if (missingFlags.length > 0) {
     return `Missing: ${missingFlags.join(", ")}`;
+  }
+
+  const expectedFormat = typeof data.expectedFormat === "string" ? data.expectedFormat : "";
+  const phoneOriginal = typeof data.phoneOriginal === "string" ? data.phoneOriginal : "";
+  const phoneNormalized = typeof data.phoneNormalized === "string" ? data.phoneNormalized : "";
+  if (expectedFormat || phoneOriginal || phoneNormalized) {
+    const parts = [
+      phoneOriginal ? `input=${phoneOriginal}` : "",
+      phoneNormalized ? `normalized=${phoneNormalized}` : "",
+      expectedFormat ? `expected=${expectedFormat}` : "",
+    ].filter(Boolean);
+    if (parts.length > 0) {
+      return `Invalid phone format (${parts.join(", ")})`;
+    }
   }
 
   if (Array.isArray(data.errors)) {

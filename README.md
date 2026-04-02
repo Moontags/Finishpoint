@@ -81,6 +81,7 @@ Optional Vipps ePayment overrides:
 - `VIPPS_TOKEN_URL` (default `https://api.vipps.no/accesstoken/get`)
 - `VIPPS_PAYMENTS_URL` (default `https://api.vipps.no/epayment/v1/payments`)
 - `VIPPS_CURRENCY` (default `EUR`)
+- `VIPPS_DEFAULT_COUNTRY_CODE` (default `358`, used when customer enters local-format phone number)
 - `VIPPS_RETURN_URL`
 - `VIPPS_WEBHOOK_AUTH_TOKEN` (optional bearer token check for `/api/vipps/webhook`)
 

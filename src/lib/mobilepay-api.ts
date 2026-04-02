@@ -123,6 +123,35 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return value as Record<string, unknown>;
 }
 
+function normalizeVippsPhoneNumber(rawPhone: string, defaultCountryCode: string) {
+  const countryCode = defaultCountryCode.replace(/\D/g, "") || "358";
+  const compact = rawPhone.trim().replace(/[\s()-]/g, "");
+
+  let normalized = compact;
+  if (normalized.startsWith("+")) {
+    normalized = normalized.slice(1);
+  }
+  if (normalized.startsWith("00")) {
+    normalized = normalized.slice(2);
+  }
+
+  normalized = normalized.replace(/\D/g, "");
+
+  if (!normalized) {
+    return "";
+  }
+
+  if (normalized.startsWith("0")) {
+    normalized = `${countryCode}${normalized.slice(1)}`;
+  }
+
+  return normalized;
+}
+
+function isValidVippsPhoneNumber(phoneNumber: string) {
+  return /^\d{8,15}$/.test(phoneNumber);
+}
+
 type TokenAttemptResult = {
   ok: boolean;
   status: number;
@@ -213,9 +242,19 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
   const paymentsUrl = getEnv("VIPPS_PAYMENTS_URL") || "https://api.vipps.no/epayment/v1/payments";
   const returnUrl = input.returnUrl || getEnv("VIPPS_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
   const currency = getEnv("VIPPS_CURRENCY") || "EUR";
+  const defaultCountryCode = getEnv("VIPPS_DEFAULT_COUNTRY_CODE") || "358";
+  const normalizedPhone = normalizeVippsPhoneNumber(input.customerPhone, defaultCountryCode);
 
   if (!returnUrl) {
     throw new MobilePayApiError("VIPPS_URLS_MISSING", 500, { returnUrl: false });
+  }
+
+  if (!isValidVippsPhoneNumber(normalizedPhone)) {
+    throw new MobilePayApiError("VIPPS_PHONE_INVALID", 400, {
+      phoneOriginal: input.customerPhone,
+      phoneNormalized: normalizedPhone,
+      expectedFormat: "358501234567",
+    });
   }
 
   const tokenAttempt = await requestVippsToken(tokenUrl, {
@@ -241,7 +280,7 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
       type: "WALLET",
     },
     customer: {
-      phoneNumber: input.customerPhone,
+      phoneNumber: normalizedPhone,
     },
     reference: input.orderId,
     returnUrl,
