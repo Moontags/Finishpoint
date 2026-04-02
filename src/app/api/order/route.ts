@@ -60,6 +60,20 @@ function extractMobilePayReason(details: unknown) {
   const message = typeof data.message === "string" ? data.message : "";
   const detail = typeof data.detail === "string" ? data.detail : "";
 
+  const missingFlags: string[] = [];
+  if (data.returnUrl === false) {
+    missingFlags.push("VIPPS_RETURN_URL");
+  }
+  if (data.cancelUrl === false) {
+    missingFlags.push("VIPPS_CANCEL_URL");
+  }
+  if (data.callbackPrefix === false) {
+    missingFlags.push("VIPPS_CALLBACK_PREFIX");
+  }
+  if (missingFlags.length > 0) {
+    return `Missing: ${missingFlags.join(", ")}`;
+  }
+
   if (Array.isArray(data.errors)) {
     const errorTexts = data.errors
       .map((item) => {

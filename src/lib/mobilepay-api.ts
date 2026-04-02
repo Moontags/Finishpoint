@@ -199,6 +199,20 @@ async function requestVippsToken(
   };
 }
 
+function getVippsCallbackPrefix(returnUrl: string) {
+  const configured = getEnv("VIPPS_CALLBACK_PREFIX");
+  if (configured) {
+    return configured;
+  }
+
+  try {
+    const parsedReturnUrl = new URL(returnUrl);
+    return `${parsedReturnUrl.origin}/api/vipps`;
+  } catch {
+    return "";
+  }
+}
+
 async function createVippsPayment(input: MobilePayPaymentInput) {
   const clientId = getEnv("VIPPS_CLIENT_ID");
   const clientSecret = getEnv("VIPPS_CLIENT_SECRET");
@@ -214,6 +228,15 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
   const returnUrl = input.returnUrl || getEnv("VIPPS_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
   const cancelUrl = input.cancelUrl || getEnv("VIPPS_CANCEL_URL") || returnUrl;
   const currency = getEnv("VIPPS_CURRENCY") || "NOK";
+  const callbackPrefix = returnUrl ? getVippsCallbackPrefix(returnUrl) : "";
+
+  if (!returnUrl || !cancelUrl || !callbackPrefix) {
+    throw new MobilePayApiError("VIPPS_URLS_MISSING", 500, {
+      returnUrl: Boolean(returnUrl),
+      cancelUrl: Boolean(cancelUrl),
+      callbackPrefix: Boolean(callbackPrefix),
+    });
+  }
 
   const tokenAttempt = await requestVippsToken(tokenUrl, {
     "Content-Type": "application/json",
@@ -235,7 +258,7 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
     },
     merchantInfo: {
       merchantSerialNumber,
-      callbackPrefix: getEnv("VIPPS_CALLBACK_PREFIX") || returnUrl,
+      callbackPrefix,
       fallBack: cancelUrl,
     },
     transaction: {
