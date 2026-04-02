@@ -1,7 +1,11 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { createMobilePayPayment, hasMobilePayApiCredentials } from "../../../lib/mobilepay-api";
+import {
+  createMobilePayPayment,
+  hasMobilePayApiCredentials,
+  MobilePayApiError,
+} from "../../../lib/mobilepay-api";
 
 type OrderPayload = {
   name: string;
@@ -102,6 +106,9 @@ export async function POST(request: Request) {
     }
 
     let paymentUrl = mobilePayLink;
+    const origin = new URL(request.url).origin;
+    const returnUrl = process.env.MOBILEPAY_RETURN_URL?.trim() || `${origin}/kassa`;
+    const cancelUrl = process.env.MOBILEPAY_CANCEL_URL?.trim() || `${origin}/#quote`;
 
     if (hasMobilePayApiCredentials()) {
       try {
@@ -111,14 +118,30 @@ export async function POST(request: Request) {
           description: `Finishpoint ${data.serviceType}`,
           customerEmail: data.email,
           customerPhone: data.phone,
+          returnUrl,
+          cancelUrl,
         });
       } catch (error) {
+        if (error instanceof MobilePayApiError) {
+          console.error("MobilePay API error", {
+            code: error.code,
+            status: error.status,
+            details: error.details,
+          });
+        } else {
+          console.error("MobilePay API unknown error", error);
+        }
+
         if (!mobilePayLink) {
+          const extra =
+            error instanceof MobilePayApiError
+              ? ` (${error.code}${error.status ? ` ${error.status}` : ""})`
+              : "";
+
           return NextResponse.json(
             {
               ok: false,
-              error:
-                "MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella.",
+              error: `MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella${extra}.`,
             },
             { status: 502 },
           );

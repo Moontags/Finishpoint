@@ -4,7 +4,20 @@ type MobilePayPaymentInput = {
   description: string;
   customerEmail: string;
   customerPhone: string;
+  returnUrl?: string;
+  cancelUrl?: string;
 };
+
+export class MobilePayApiError extends Error {
+  constructor(
+    public code: string,
+    public status?: number,
+    public details?: unknown,
+  ) {
+    super(code);
+    this.name = "MobilePayApiError";
+  }
+}
 
 function getEnv(name: string) {
   return process.env[name]?.trim() ?? "";
@@ -14,7 +27,9 @@ function getSubscriptionKey() {
   return (
     getEnv("MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY") ||
     getEnv("MOBILEPAY_SUBSCRIPTION_KEY") ||
-    getEnv("MOBILEPAY_SUBSCRIPTION_KEY_SECONDARY")
+    getEnv("MOBILEPAY_SUBSCRIPTION_KEY_SECONDARY") ||
+    getEnv("OCP_APIM_SUBSCRIPTION_KEY") ||
+    getEnv("MOBILEPAY_OCP_APIM_SUBSCRIPTION_KEY")
   );
 }
 
@@ -94,7 +109,7 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
   const subscriptionKey = getSubscriptionKey();
 
   if (!clientId || !clientSecret || !subscriptionKey) {
-    throw new Error("MOBILEPAY_CREDENTIALS_MISSING");
+    throw new MobilePayApiError("MOBILEPAY_CREDENTIALS_MISSING");
   }
 
   const tokenUrl =
@@ -129,11 +144,11 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
   const tokenData = asRecord(tokenBody);
 
   if (!tokenResponse.ok || !tokenData || typeof tokenData.access_token !== "string") {
-    throw new Error("MOBILEPAY_TOKEN_REQUEST_FAILED");
+    throw new MobilePayApiError("MOBILEPAY_TOKEN_REQUEST_FAILED", tokenResponse.status, tokenBody);
   }
 
-  const returnUrl = getEnv("MOBILEPAY_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
-  const cancelUrl = getEnv("MOBILEPAY_CANCEL_URL") || returnUrl;
+  const returnUrl = input.returnUrl || getEnv("MOBILEPAY_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
+  const cancelUrl = input.cancelUrl || getEnv("MOBILEPAY_CANCEL_URL") || returnUrl;
   const webhookUrl = getEnv("MOBILEPAY_WEBHOOK_URL");
   const currency = getEnv("MOBILEPAY_CURRENCY") || "EUR";
 
@@ -178,7 +193,7 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
   const paymentUrl = resolvePaymentUrl(paymentBody);
 
   if (!paymentResponse.ok || !paymentUrl) {
-    throw new Error("MOBILEPAY_PAYMENT_REQUEST_FAILED");
+    throw new MobilePayApiError("MOBILEPAY_PAYMENT_REQUEST_FAILED", paymentResponse.status, paymentBody);
   }
 
   return paymentUrl;
