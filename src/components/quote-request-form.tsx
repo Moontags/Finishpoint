@@ -5,13 +5,19 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import { ORDER_DRAFT_STORAGE_KEY } from "@/lib/order-draft";
-import { quoteServiceOptions, services } from "@/lib/services";
+import { quoteServiceOptions } from "@/lib/services";
 import type { ServiceCategory } from "@/lib/types";
 
+const orderServiceTypeOptions = [
+  "Ajoneuvokuljetukset",
+  "Kappaletavara",
+  "Muutot ja kierrätys",
+] as const;
+
 const categoryDefaultServiceType: Record<ServiceCategory, string> = {
-  ajoneuvo: services.pyorakuljetus.navLabel,
-  kappaletavara: services["pesukone-kuljetus"].navLabel,
-  projekti: services.muutot.navLabel,
+  ajoneuvo: orderServiceTypeOptions[0],
+  kappaletavara: orderServiceTypeOptions[1],
+  projekti: orderServiceTypeOptions[2],
 };
 
 const inputClass =
@@ -174,6 +180,7 @@ export function QuoteRequestForm() {
     hasCalculatorData && calculatorContext?.estimatedPriceVat0 && calculatorContext.estimatedPriceVat0 > 0,
   );
   const isOrderFlow = hasPriceFromCalculator;
+  const serviceTypeOptions = isOrderFlow ? orderServiceTypeOptions : quoteServiceOptions;
 
   const canAttemptOrder = hasPriceFromCalculator && hasContactFields;
 
@@ -270,7 +277,7 @@ export function QuoteRequestForm() {
               onChange={handleChange}
               className={inputClass}
             >
-              {quoteServiceOptions.map((option) => (
+              {serviceTypeOptions.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
