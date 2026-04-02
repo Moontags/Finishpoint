@@ -50,23 +50,6 @@ function validatePayload(payload: Partial<OrderPayload>) {
   return null;
 }
 
-function resolvePaymentAmount(defaultAmount: number) {
-  const rawOverride = process.env.TEST_PAYMENT_AMOUNT_EUR?.trim();
-  const vercelEnv = process.env.VERCEL_ENV?.trim().toLowerCase();
-
-  // Never allow payment amount override in production deployments.
-  if (!rawOverride || vercelEnv === "production") {
-    return defaultAmount;
-  }
-
-  const parsed = Number(rawOverride.replace(",", "."));
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    return defaultAmount;
-  }
-
-  return Math.round(parsed * 100) / 100;
-}
-
 function extractMobilePayReason(details: unknown) {
   if (!details || typeof details !== "object") {
     return "";
@@ -239,13 +222,12 @@ export async function POST(request: Request) {
     const origin = new URL(request.url).origin;
     const returnUrl = process.env.VIPPS_RETURN_URL?.trim() || `${origin}/kassa`;
     const cancelUrl = process.env.VIPPS_CANCEL_URL?.trim() || `${origin}/#quote`;
-    const paymentAmount = resolvePaymentAmount(data.estimatedPriceVatIncl ?? estimatedPriceVat0);
 
     if (hasMobilePayApiCredentials()) {
       try {
         paymentUrl = await createMobilePayPayment({
           orderId,
-          amount: paymentAmount,
+          amount: data.estimatedPriceVatIncl ?? estimatedPriceVat0,
           description: `Finishpoint ${data.serviceType}`,
           customerEmail: data.email,
           customerPhone: data.phone,
