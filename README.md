@@ -84,10 +84,17 @@ Optional Vipps eCom overrides:
 - `VIPPS_RETURN_URL`
 - `VIPPS_CANCEL_URL`
 - `VIPPS_CALLBACK_PREFIX`
+- `VIPPS_WEBHOOK_AUTH_TOKEN` (optional bearer token check for `/api/vipps/webhook`)
 
 Security note: keep all `MOBILEPAY_*` secrets server-side only, never with `NEXT_PUBLIC_`.
 
 If you enable both MobilePay and Vipps credentials at the same time, Vipps mode is prioritized.
+
+Vipps webhook endpoint:
+
+- `POST /api/vipps/webhook`
+- Accepts JSON payloads and returns `{ ok: true }` when accepted.
+- If `VIPPS_WEBHOOK_AUTH_TOKEN` is set, include `Authorization: Bearer <token>` in webhook calls.
 
 For Google Maps features to work in production, the API key must be available as a server-side environment variable and the following Google APIs must be enabled for the same project:
 
