@@ -199,20 +199,6 @@ async function requestVippsToken(
   };
 }
 
-function getVippsCallbackPrefix(returnUrl: string) {
-  const configured = getEnv("VIPPS_CALLBACK_PREFIX");
-  if (configured) {
-    return configured;
-  }
-
-  try {
-    const parsedReturnUrl = new URL(returnUrl);
-    return `${parsedReturnUrl.origin}/api/vipps`;
-  } catch {
-    return "";
-  }
-}
-
 async function createVippsPayment(input: MobilePayPaymentInput) {
   const clientId = getEnv("VIPPS_CLIENT_ID");
   const clientSecret = getEnv("VIPPS_CLIENT_SECRET");
@@ -224,18 +210,12 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
   }
 
   const tokenUrl = getEnv("VIPPS_TOKEN_URL") || "https://api.vipps.no/accessToken/get";
-  const paymentsUrl = getEnv("VIPPS_PAYMENTS_URL") || "https://api.vipps.no/ecomm/v2/payments";
+  const paymentsUrl = getEnv("VIPPS_PAYMENTS_URL") || "https://api.vipps.no/epayment/v1/payments";
   const returnUrl = input.returnUrl || getEnv("VIPPS_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
-  const cancelUrl = input.cancelUrl || getEnv("VIPPS_CANCEL_URL") || returnUrl;
-  const currency = getEnv("VIPPS_CURRENCY") || "EUR";
-  const callbackPrefix = returnUrl ? getVippsCallbackPrefix(returnUrl) : "";
+  const currency = getEnv("VIPPS_CURRENCY") || "NOK";
 
-  if (!returnUrl || !cancelUrl || !callbackPrefix) {
-    throw new MobilePayApiError("VIPPS_URLS_MISSING", 500, {
-      returnUrl: Boolean(returnUrl),
-      cancelUrl: Boolean(cancelUrl),
-      callbackPrefix: Boolean(callbackPrefix),
-    });
+  if (!returnUrl) {
+    throw new MobilePayApiError("VIPPS_URLS_MISSING", 500, { returnUrl: false });
   }
 
   const tokenAttempt = await requestVippsToken(tokenUrl, {
@@ -253,21 +233,20 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
   }
 
   const paymentPayload: Record<string, unknown> = {
-    customerInfo: {
-      mobileNumber: input.customerPhone,
-    },
-    merchantInfo: {
-      merchantSerialNumber,
-      callbackPrefix,
-      returnURL: returnUrl,
-      fallBack: cancelUrl,
-    },
-    transaction: {
-      amount: Math.round(input.amount * 100),
-      orderId: input.orderId,
-      transactionText: input.description,
+    amount: {
       currency,
+      value: Math.round(input.amount * 100),
     },
+    paymentMethod: {
+      type: "WALLET",
+    },
+    customer: {
+      phoneNumber: input.customerPhone,
+    },
+    reference: input.orderId,
+    returnUrl,
+    userFlow: "WEB_REDIRECT",
+    paymentDescription: input.description,
   };
 
   const paymentResponse = await fetch(paymentsUrl, {
