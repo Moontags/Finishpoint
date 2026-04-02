@@ -259,6 +259,7 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
     merchantInfo: {
       merchantSerialNumber,
       callbackPrefix,
+      returnURL: returnUrl,
       fallBack: cancelUrl,
     },
     transaction: {
