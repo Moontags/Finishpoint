@@ -8,6 +8,7 @@ import {
 } from "../../../lib/mobilepay-api";
 
 type OrderPayload = {
+  orderId?: string;
   name: string;
   phone: string;
   email: string;
@@ -217,6 +218,7 @@ export async function POST(request: Request) {
     }
 
     let paymentUrl = mobilePayLink;
+    const orderId = data.orderId?.trim() || `FP-${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`;
     const origin = new URL(request.url).origin;
     const returnUrl = process.env.VIPPS_RETURN_URL?.trim() || `${origin}/kassa`;
     const cancelUrl = process.env.VIPPS_CANCEL_URL?.trim() || `${origin}/#quote`;
@@ -224,7 +226,7 @@ export async function POST(request: Request) {
     if (hasMobilePayApiCredentials()) {
       try {
         paymentUrl = await createMobilePayPayment({
-          orderId: `FP-${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`,
+          orderId,
           amount: data.estimatedPriceVatIncl ?? estimatedPriceVat0,
           description: `Finishpoint ${data.serviceType}`,
           customerEmail: data.email,
@@ -298,6 +300,7 @@ export async function POST(request: Request) {
         `Puhelin: ${data.phone}`,
         `Sahkoposti: ${data.email}`,
         `Palvelu: ${data.serviceType}`,
+        `Tilausnumero: ${orderId}`,
         `Nouto / toimitus: ${data.addresses}`,
         `Hinta ALV 0 %: ${estimatedPriceVat0.toFixed(2)} EUR`,
         data.estimatedPriceVatIncl

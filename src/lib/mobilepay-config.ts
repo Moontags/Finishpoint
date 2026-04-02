@@ -11,7 +11,9 @@ export function getMobilePayMode(): MobilePayMode {
     return "link";
   }
 
-  const hasServerCredentials = Object.keys(process.env).some((key) => key.startsWith("MOBILEPAY_"));
+  const hasServerCredentials = Object.keys(process.env).some(
+    (key) => key.startsWith("MOBILEPAY_") || key.startsWith("VIPPS_"),
+  );
 
   if (hasServerCredentials) {
     return "api";

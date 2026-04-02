@@ -88,19 +88,50 @@ export default function CheckoutPage() {
         return;
       }
 
-      const response = await fetch("/api/order", {
+      const confirmResponse = await fetch("/api/order/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
+        body: JSON.stringify({
+          customerName: draft.name,
+          customerEmail: draft.email,
+          customerPhone: draft.phone,
+          customerAddress: draft.addresses,
+          serviceDescription: draft.serviceType,
+          pickupAddress: draft.pickupAddress,
+          deliveryAddress: draft.deliveryAddress,
+          totalWithVat: draft.estimatedPriceVatIncl,
+          paymentMethod: "mobilepay",
+        }),
       });
 
-      const result = (await response.json()) as {
+      const confirmResult = (await confirmResponse.json()) as {
+        ok: boolean;
+        orderId?: string;
+        error?: string;
+      };
+
+      if (!confirmResponse.ok || !confirmResult.ok || !confirmResult.orderId) {
+        setSubmitting(false);
+        setError(confirmResult.error ?? "Tilausvahvistuksen lahetys epaonnistui. Yrita uudelleen.");
+        return;
+      }
+
+      const orderResponse = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...draft,
+          orderId: confirmResult.orderId,
+        }),
+      });
+
+      const result = (await orderResponse.json()) as {
         ok: boolean;
         error?: string;
         paymentUrl?: string;
       };
 
-      if (!response.ok || !result.ok || !result.paymentUrl) {
+      if (!orderResponse.ok || !result.ok || !result.paymentUrl) {
         setSubmitting(false);
         setError(result.error ?? "Tilauksen vahvistus epaonnistui. Yrita uudelleen.");
         return;

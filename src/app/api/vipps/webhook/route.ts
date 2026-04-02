@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+import { sendEmail } from "@/lib/email";
+import { generateReceiptHtml } from "../../../../lib/email-templates";
+import { getOrderByReference } from "@/lib/order-store";
 
 function getExpectedToken() {
   return process.env.VIPPS_WEBHOOK_AUTH_TOKEN?.trim() ?? "";
@@ -40,6 +43,43 @@ function getEventName(payload: unknown) {
   return "unknown";
 }
 
+function getReference(payload: unknown) {
+  if (!payload || typeof payload !== "object") {
+    return "";
+  }
+
+  const data = payload as Record<string, unknown>;
+  const candidates = [
+    data.reference,
+    data.orderId,
+    data.paymentReference,
+  ];
+
+  for (const candidate of candidates) {
+    if (typeof candidate === "string" && candidate.trim()) {
+      return candidate.trim();
+    }
+  }
+
+  return "";
+}
+
+function isReceiptEvent(eventName: string) {
+  const normalized = eventName.trim().toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  return (
+    normalized === "epayments.payment.captured.v1" ||
+    normalized === "epayments.payment.authorized.v1" ||
+    normalized.includes("payment_capture") ||
+    normalized.includes("payment_authorized") ||
+    normalized.includes("payment.captured") ||
+    normalized.includes("payment.authorized")
+  );
+}
+
 export async function POST(request: Request) {
   const expectedToken = getExpectedToken();
   if (!hasValidAuthorizationHeader(request, expectedToken)) {
@@ -57,10 +97,37 @@ export async function POST(request: Request) {
     }
   }
 
+  const eventName = getEventName(payload);
+  const reference = getReference(payload);
+
   console.info("Vipps webhook received", {
-    eventName: getEventName(payload),
+    eventName,
+    reference: reference || "unknown",
     receivedAt: new Date().toISOString(),
   });
+
+  if (isReceiptEvent(eventName) && reference) {
+    const order = await getOrderByReference(reference);
+
+    if (order) {
+      try {
+        await sendEmail({
+          to: order.customerEmail,
+          subject: `Kuitti ${order.orderId} - Finishpoint`,
+          html: generateReceiptHtml({
+            ...order,
+            vippsReference: reference,
+          }),
+        });
+      } catch (error) {
+        console.error("Receipt email sending failed", {
+          orderId: order.orderId,
+          reference,
+          error,
+        });
+      }
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }

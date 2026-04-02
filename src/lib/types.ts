@@ -6,3 +6,21 @@ export type ProjektiTyyppi =
   | "suuri_muutto"
   | "kierratys_1"
   | "kierratys_lisa";
+
+export type OrderData = {
+  orderId: string;
+  orderDate: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerAddress?: string;
+  serviceDescription: string;
+  pickupAddress: string;
+  deliveryAddress: string;
+  totalWithVat: number;
+  vatRate: number;
+  vatAmount: number;
+  netAmount: number;
+  paymentMethod: "mobilepay" | "invoice";
+  vippsReference?: string;
+};
