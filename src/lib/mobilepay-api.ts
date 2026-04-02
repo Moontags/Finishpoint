@@ -109,6 +109,19 @@ type TokenAttemptResult = {
   body: unknown;
 };
 
+type TokenAuthMethod = "auto" | "client_secret_basic" | "client_secret_post";
+
+function getTokenAuthMethod(): TokenAuthMethod {
+  const raw = getEnv("MOBILEPAY_TOKEN_AUTH_METHOD").toLowerCase();
+  if (raw === "client_secret_basic") {
+    return "client_secret_basic";
+  }
+  if (raw === "client_secret_post") {
+    return "client_secret_post";
+  }
+  return "auto";
+}
+
 async function requestTokenWithAttempt(
   tokenUrl: string,
   headers: Record<string, string>,
@@ -148,6 +161,7 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
 
   const scope = getEnv("MOBILEPAY_SCOPE");
   const scopeCandidates = scope ? [scope] : ["payments", "openid payments", ""];
+  const tokenAuthMethod = getTokenAuthMethod();
 
   const baseHeaders = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -163,6 +177,11 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
   };
 
   for (const candidateScope of scopeCandidates) {
+    const basicBody = new URLSearchParams({ grant_type: "client_credentials" });
+    if (candidateScope) {
+      basicBody.set("scope", candidateScope);
+    }
+
     const directBody = new URLSearchParams({
       grant_type: "client_credentials",
       client_id: clientId,
@@ -173,46 +192,63 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
       directBody.set("scope", candidateScope);
     }
 
-    tokenAttempt = await requestTokenWithAttempt(
-      tokenUrl,
-      {
-        ...baseHeaders,
-        "Ocp-Apim-Subscription-Key": subscriptionKey,
-      },
-      directBody,
-    );
+    const attempts: Array<{ headers: Record<string, string>; body: URLSearchParams }> = [];
 
-    if (tokenAttempt.ok) {
-      break;
+    if (tokenAuthMethod === "client_secret_basic") {
+      attempts.push({
+        headers: {
+          ...baseHeaders,
+          Authorization: `Basic ${basicAuth}`,
+          "Ocp-Apim-Subscription-Key": subscriptionKey,
+        },
+        body: basicBody,
+      });
+      attempts.push({
+        headers: {
+          ...baseHeaders,
+          Authorization: `Basic ${basicAuth}`,
+        },
+        body: basicBody,
+      });
+    } else if (tokenAuthMethod === "client_secret_post") {
+      attempts.push({
+        headers: {
+          ...baseHeaders,
+          "Ocp-Apim-Subscription-Key": subscriptionKey,
+        },
+        body: directBody,
+      });
+    } else {
+      attempts.push({
+        headers: {
+          ...baseHeaders,
+          Authorization: `Basic ${basicAuth}`,
+          "Ocp-Apim-Subscription-Key": subscriptionKey,
+        },
+        body: basicBody,
+      });
+      attempts.push({
+        headers: {
+          ...baseHeaders,
+          "Ocp-Apim-Subscription-Key": subscriptionKey,
+        },
+        body: directBody,
+      });
+      attempts.push({
+        headers: {
+          ...baseHeaders,
+          Authorization: `Basic ${basicAuth}`,
+        },
+        body: basicBody,
+      });
     }
 
-    const basicBody = new URLSearchParams({ grant_type: "client_credentials" });
-    if (candidateScope) {
-      basicBody.set("scope", candidateScope);
+    for (const attempt of attempts) {
+      tokenAttempt = await requestTokenWithAttempt(tokenUrl, attempt.headers, attempt.body);
+      if (tokenAttempt.ok) {
+        break;
+      }
     }
-
-    tokenAttempt = await requestTokenWithAttempt(
-      tokenUrl,
-      {
-        ...baseHeaders,
-        Authorization: `Basic ${basicAuth}`,
-        "Ocp-Apim-Subscription-Key": subscriptionKey,
-      },
-      basicBody,
-    );
-
-    if (tokenAttempt.ok) {
-      break;
-    }
-
-    tokenAttempt = await requestTokenWithAttempt(
-      tokenUrl,
-      {
-        ...baseHeaders,
-        Authorization: `Basic ${basicAuth}`,
-      },
-      basicBody,
-    );
 
     if (tokenAttempt.ok) {
       break;
