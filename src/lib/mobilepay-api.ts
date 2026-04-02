@@ -304,6 +304,29 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
   const paymentBody = await paymentResponse.json().catch(() => ({}));
   const paymentUrl = resolvePaymentUrl(paymentBody);
   if (!paymentResponse.ok || !paymentUrl) {
+    if (getEnv("VIPPS_DEBUG") === "true") {
+      const redactedSentPayload: Record<string, unknown> = {
+        ...paymentPayload,
+        customer: {
+          ...(asRecord(paymentPayload.customer) ?? {}),
+          phoneNumber: "***",
+        },
+      };
+
+      console.error(
+        "VIPPS DEBUG",
+        JSON.stringify(
+          {
+            status: paymentResponse.status,
+            body: paymentBody,
+            sentPayload: redactedSentPayload,
+          },
+          null,
+          2,
+        ),
+      );
+    }
+
     throw new MobilePayApiError("VIPPS_PAYMENT_REQUEST_FAILED", paymentResponse.status, paymentBody);
   }
 
