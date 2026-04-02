@@ -146,16 +146,8 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
     getEnv("MOBILEPAY_PAYMENTS_URL") ||
     "https://api.mobilepay.dk/merchant/v1/payments";
 
-  const tokenForm = new URLSearchParams({
-    grant_type: "client_credentials",
-    client_id: clientId,
-    client_secret: clientSecret,
-  });
-
   const scope = getEnv("MOBILEPAY_SCOPE");
-  if (scope) {
-    tokenForm.set("scope", scope);
-  }
+  const scopeCandidates = scope ? [scope] : ["payments", "openid payments", ""];
 
   const baseHeaders = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -164,24 +156,42 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
 
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
-  const tokenAttemptA = await requestTokenWithAttempt(
-    tokenUrl,
-    {
-      ...baseHeaders,
-      "Ocp-Apim-Subscription-Key": subscriptionKey,
-    },
-    tokenForm,
-  );
+  let tokenAttempt: TokenAttemptResult = {
+    ok: false,
+    status: 0,
+    body: {},
+  };
 
-  let tokenAttempt = tokenAttemptA;
+  for (const candidateScope of scopeCandidates) {
+    const directBody = new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+    });
 
-  if (!tokenAttempt.ok) {
-    const basicBody = new URLSearchParams({ grant_type: "client_credentials" });
-    if (scope) {
-      basicBody.set("scope", scope);
+    if (candidateScope) {
+      directBody.set("scope", candidateScope);
     }
 
-    const tokenAttemptB = await requestTokenWithAttempt(
+    tokenAttempt = await requestTokenWithAttempt(
+      tokenUrl,
+      {
+        ...baseHeaders,
+        "Ocp-Apim-Subscription-Key": subscriptionKey,
+      },
+      directBody,
+    );
+
+    if (tokenAttempt.ok) {
+      break;
+    }
+
+    const basicBody = new URLSearchParams({ grant_type: "client_credentials" });
+    if (candidateScope) {
+      basicBody.set("scope", candidateScope);
+    }
+
+    tokenAttempt = await requestTokenWithAttempt(
       tokenUrl,
       {
         ...baseHeaders,
@@ -191,18 +201,21 @@ export async function createMobilePayPayment(input: MobilePayPaymentInput) {
       basicBody,
     );
 
-    tokenAttempt = tokenAttemptB;
+    if (tokenAttempt.ok) {
+      break;
+    }
 
-    if (!tokenAttempt.ok) {
-      const tokenAttemptC = await requestTokenWithAttempt(
-        tokenUrl,
-        {
-          ...baseHeaders,
-          Authorization: `Basic ${basicAuth}`,
-        },
-        basicBody,
-      );
-      tokenAttempt = tokenAttemptC;
+    tokenAttempt = await requestTokenWithAttempt(
+      tokenUrl,
+      {
+        ...baseHeaders,
+        Authorization: `Basic ${basicAuth}`,
+      },
+      basicBody,
+    );
+
+    if (tokenAttempt.ok) {
+      break;
     }
   }
 

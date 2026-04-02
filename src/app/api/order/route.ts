@@ -49,6 +49,30 @@ function validatePayload(payload: Partial<OrderPayload>) {
   return null;
 }
 
+function extractMobilePayReason(details: unknown) {
+  if (!details || typeof details !== "object") {
+    return "";
+  }
+
+  const data = details as Record<string, unknown>;
+  const error = typeof data.error === "string" ? data.error : "";
+  const description = typeof data.error_description === "string" ? data.error_description : "";
+
+  if (error && description) {
+    return `${error}: ${description}`;
+  }
+
+  if (description) {
+    return description;
+  }
+
+  if (error) {
+    return error;
+  }
+
+  return "";
+}
+
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as Partial<OrderPayload>;
@@ -137,11 +161,15 @@ export async function POST(request: Request) {
             error instanceof MobilePayApiError
               ? ` (${error.code}${error.status ? ` ${error.status}` : ""})`
               : "";
+          const reason =
+            error instanceof MobilePayApiError
+              ? extractMobilePayReason(error.details)
+              : "";
 
           return NextResponse.json(
             {
               ok: false,
-              error: `MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella${extra}.`,
+              error: `MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.`,
             },
             { status: 502 },
           );
