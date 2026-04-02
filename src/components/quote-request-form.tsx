@@ -187,10 +187,10 @@ export function QuoteRequestForm() {
       <div className="space-y-4">
         <div className="inline-flex max-w-full items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700 sm:text-xs">
           <Mail className="h-3.5 w-3.5 text-blue-600" />
-          <span className="truncate sm:whitespace-normal">Pyydä tarjous</span>
+          <span className="truncate sm:whitespace-normal">Vahvista tilaus ja maksa</span>
         </div>
-        <h2 className="text-[1.85rem] font-bold tracking-tight text-slate-900 sm:text-4xl">
-          Tilaa heti tai pyydä tarjous
+        <h2 className="hidden text-[1.85rem] font-bold tracking-tight text-slate-900 sm:block sm:text-4xl">
+          Täytä yhteystietosi
         </h2>
         <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           Kun tiedot tulevat laskurista, voit tehdä suoran tilauksen ja siirtyä maksuun.
@@ -276,7 +276,7 @@ export function QuoteRequestForm() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label htmlFor="quote-pickup-address" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Nouto osoite
+            Mistä
             <input
               id="quote-pickup-address"
               required
@@ -289,7 +289,7 @@ export function QuoteRequestForm() {
             />
           </label>
           <label htmlFor="quote-delivery-address" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Toimitusosoite
+            Minne
             <input
               id="quote-delivery-address"
               required

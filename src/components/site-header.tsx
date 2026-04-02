@@ -40,8 +40,8 @@ export function SiteHeader({
   const laskuriActive = pathname.startsWith("/laskuri");
 
   return (
-    <header className={`relative z-50 w-full bg-white pt-0 pb-1.5 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
-      <div className={`w-full rounded-none sm:rounded-2xl px-0 py-2.5 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
+    <header className={`relative z-50 w-full bg-white pt-0 pb-0 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
+      <div className={`w-full rounded-none sm:rounded-2xl px-0 py-0.5 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
         scrolled
           ? "bg-white/75 backdrop-blur-xl"
           : opaque
@@ -55,7 +55,7 @@ export function SiteHeader({
               alt="Finishpoint"
               width={160}
               height={80}
-              className="h-auto w-36 object-contain sm:w-44"
+              className="h-auto w-28 object-contain sm:w-44"
               priority
             />
           </Link>
@@ -101,8 +101,8 @@ export function SiteHeader({
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
-            <details className="relative mr-2 sm:hidden">
-              <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-xl border border-slate-700/80 bg-slate-800 px-3.5 py-2 text-[12px] font-semibold text-white shadow-sm">
+            <details className="relative mr-3 sm:hidden">
+              <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-xl border border-slate-700/80 bg-slate-800 px-3.5 py-1.5 text-[12px] font-semibold text-white shadow-sm">
                 Palvelut
                 <ChevronDown className="h-4 w-4" />
               </summary>

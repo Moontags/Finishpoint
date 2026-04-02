@@ -177,7 +177,7 @@ export default function Home() {
             <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-blue-500">
               Palvelut
             </p>
-            <h2 className="text-[1.85rem] font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="hidden text-[1.85rem] font-bold tracking-tight text-slate-900 sm:block sm:text-4xl">
               Kaikki yhdestä paikasta
             </h2>
           </div>

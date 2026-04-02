@@ -12,7 +12,7 @@ import {
 import { useCalculatorContext } from "@/lib/calculator-context";
 import type { ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
-const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-5 shadow-sm sm:p-8";
+const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-4 shadow-sm sm:p-8";
 
 type AddressSuggestion = {
   label: string;
@@ -137,7 +137,7 @@ function AddressAutocompleteField({
   return (
     <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
       {label}
-      <div ref={containerRef} className="relative">
+      <div ref={containerRef} className="relative -mx-1 sm:mx-0">
         <input
           id={id}
           name={name}
@@ -261,7 +261,7 @@ export function AjoneuvoPriceCalculator() {
   const hintaSisAlv = lisaaAlv(hinta);
 
   return (
-    <section className="rounded-2xl bg-transparent p-5 sm:p-8">
+    <section className="rounded-2xl bg-transparent p-4 sm:p-8">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Ajoneuvokuljetukset
       </h2>
@@ -276,7 +276,7 @@ export function AjoneuvoPriceCalculator() {
         <AddressAutocompleteField
           id="ajoneuvo-nouto-osoite"
           name="ajoneuvoNoutoOsoite"
-          label="Nouto-osoite"
+          label="Mistä"
           value={pickupAddress}
           onChange={setPickupAddress}
           placeholder="Esim. Mannerheimintie 1, Helsinki"
@@ -285,7 +285,7 @@ export function AjoneuvoPriceCalculator() {
         <AddressAutocompleteField
           id="ajoneuvo-toimitus-osoite"
           name="ajoneuvoToimitusOsoite"
-          label="Toimitusosoite"
+          label="Minne"
           value={deliveryAddress}
           onChange={setDeliveryAddress}
           placeholder="Esim. Hämeenkatu 10, Tampere"
@@ -433,7 +433,7 @@ export function KappaletavaraPriceCalculator() {
         <AddressAutocompleteField
           id="kappaletavara-nouto-osoite"
           name="kappaletavaraNoutoOsoite"
-          label="Nouto-osoite"
+          label="Mistä"
           value={pickupAddress}
           onChange={setPickupAddress}
           placeholder="Esim. Mannerheimintie 1, Helsinki"
@@ -442,7 +442,7 @@ export function KappaletavaraPriceCalculator() {
         <AddressAutocompleteField
           id="kappaletavara-toimitus-osoite"
           name="kappaletavaraToimitusOsoite"
-          label="Toimitusosoite"
+          label="Minne"
           value={deliveryAddress}
           onChange={setDeliveryAddress}
           placeholder="Esim. Hämeenkatu 10, Tampere"
@@ -596,7 +596,7 @@ export function ProjektiPriceCalculator() {
         <AddressAutocompleteField
           id="projekti-nouto-osoite"
           name="projektiNoutoOsoite"
-          label="Nouto-osoite"
+          label="Mistä"
           value={pickupAddress}
           onChange={setPickupAddress}
           placeholder="Esim. Mannerheimintie 1, Helsinki"
@@ -605,7 +605,7 @@ export function ProjektiPriceCalculator() {
         <AddressAutocompleteField
           id="projekti-toimitus-osoite"
           name="projektiToimitusOsoite"
-          label="Toimitusosoite"
+          label="Minne"
           value={deliveryAddress}
           onChange={setDeliveryAddress}
           placeholder="Esim. Hämeenkatu 10, Tampere"
