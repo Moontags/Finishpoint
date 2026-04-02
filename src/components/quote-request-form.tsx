@@ -175,6 +175,7 @@ export function QuoteRequestForm() {
   const hasPriceFromCalculator = Boolean(
     hasCalculatorData && calculatorContext?.estimatedPriceVat0 && calculatorContext.estimatedPriceVat0 > 0,
   );
+  const isOrderFlow = hasPriceFromCalculator;
 
   const canAttemptOrder = hasPriceFromCalculator && hasContactFields;
 
@@ -189,19 +190,25 @@ export function QuoteRequestForm() {
           <Mail className="h-3.5 w-3.5 text-blue-600" />
           <span className="truncate sm:whitespace-normal">Vahvista tilaus ja maksa</span>
         </div>
+        {isOrderFlow ? (
+          <p className="inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">
+            Vaihe 1/2: Yhteystiedot
+          </p>
+        ) : null}
         <h2 className="hidden text-[1.85rem] font-bold tracking-tight text-slate-900 sm:block sm:text-4xl">
           Täytä yhteystietosi
         </h2>
         <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
-          Kun tiedot tulevat laskurista, voit tehdä suoran tilauksen ja siirtyä maksuun.
-          Voit myös lähettää tavallisen tarjouspyynnön.
+          {isOrderFlow
+            ? "Täydennä yhteystietosi ja jatka kassaan. Tarkistat tilauksen vielä ennen maksua."
+            : "Voit lähettää tarjouspyynnön tai tilata suoraan, kun hinta on laskettu laskurissa."}
         </p>
 
         {/* Info strip */}
         <div className="space-y-2.5 pt-2">
           {[
             "Vastaamme yleensä saman päivän aikana",
-            "Hinnat näytetään sis. ALV 25,5 %",
+            isOrderFlow ? "Seuraava vaihe: tarkista tiedot kassassa" : "Hinnat näytetään sis. ALV 25,5 %",
             "Yritys (ALV 0 %)",
           ].map((line) => (
             <div key={line} className="flex items-start gap-2 text-[13px] text-slate-700">
@@ -316,25 +323,35 @@ export function QuoteRequestForm() {
         </label>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <button
-            type="submit"
-            disabled={status === "loading"}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {status === "loading" && activeAction === "quote" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
-            <ArrowUpRight className="h-4 w-4" />
-          </button>
+          {!isOrderFlow ? (
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {status === "loading" && activeAction === "quote" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
+              <ArrowUpRight className="h-4 w-4" />
+            </button>
+          ) : null}
 
           <button
             type="button"
             onClick={handleOrderAndPayment}
             disabled={status === "loading" || !canAttemptOrder}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-blue-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+            className={`inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-blue-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 ${
+              isOrderFlow ? "sm:col-span-2" : ""
+            }`}
           >
-            {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja siirry maksuun"}
+            {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja jatka kassaan"}
             <ArrowUpRight className="h-4 w-4" />
           </button>
         </div>
+
+        {isOrderFlow ? (
+          <p className="text-[12px] text-slate-600">
+            Seuraava vaihe: tarkista tiedot kassassa ja vahvista maksu.
+          </p>
+        ) : null}
 
         {!hasMobilePayLink ? (
           <p className="text-[12px] text-amber-700">
