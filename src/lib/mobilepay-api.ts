@@ -33,8 +33,28 @@ function getSubscriptionKey() {
   );
 }
 
+function getVippsSubscriptionKey() {
+  return (
+    getEnv("VIPPS_SUBSCRIPTION_KEY_PRIMARY") ||
+    getEnv("VIPPS_SUBSCRIPTION_KEY") ||
+    getEnv("VIPPS_SUBSCRIPTION_KEY_SECONDARY")
+  );
+}
+
+function hasVippsApiCredentials() {
+  return Boolean(
+    getEnv("VIPPS_CLIENT_ID") &&
+    getEnv("VIPPS_CLIENT_SECRET") &&
+    getVippsSubscriptionKey() &&
+    getEnv("VIPPS_MERCHANT_SERIAL_NUMBER"),
+  );
+}
+
 export function hasMobilePayApiCredentials() {
-  return Boolean(getEnv("MOBILEPAY_CLIENT_ID") && getEnv("MOBILEPAY_CLIENT_SECRET") && getSubscriptionKey());
+  return Boolean(
+    (getEnv("MOBILEPAY_CLIENT_ID") && getEnv("MOBILEPAY_CLIENT_SECRET") && getSubscriptionKey()) ||
+      hasVippsApiCredentials(),
+  );
 }
 
 function resolvePaymentUrl(payload: unknown): string | null {
@@ -142,7 +162,117 @@ async function requestTokenWithAttempt(
   };
 }
 
+type VippsTokenAttemptResult = {
+  ok: boolean;
+  status: number;
+  body: unknown;
+};
+
+async function requestVippsToken(
+  tokenUrl: string,
+  headers: Record<string, string>,
+): Promise<VippsTokenAttemptResult> {
+  const postResponse = await fetch(tokenUrl, {
+    method: "POST",
+    headers,
+  });
+
+  const postBody = await postResponse.json().catch(() => ({}));
+  if (postResponse.ok) {
+    return {
+      ok: true,
+      status: postResponse.status,
+      body: postBody,
+    };
+  }
+
+  const getResponse = await fetch(tokenUrl, {
+    method: "GET",
+    headers,
+  });
+
+  const getBody = await getResponse.json().catch(() => ({}));
+  return {
+    ok: getResponse.ok,
+    status: getResponse.status,
+    body: getBody,
+  };
+}
+
+async function createVippsPayment(input: MobilePayPaymentInput) {
+  const clientId = getEnv("VIPPS_CLIENT_ID");
+  const clientSecret = getEnv("VIPPS_CLIENT_SECRET");
+  const subscriptionKey = getVippsSubscriptionKey();
+  const merchantSerialNumber = getEnv("VIPPS_MERCHANT_SERIAL_NUMBER");
+
+  if (!clientId || !clientSecret || !subscriptionKey || !merchantSerialNumber) {
+    throw new MobilePayApiError("VIPPS_CREDENTIALS_MISSING");
+  }
+
+  const tokenUrl = getEnv("VIPPS_TOKEN_URL") || "https://api.vipps.no/accessToken/get";
+  const paymentsUrl = getEnv("VIPPS_PAYMENTS_URL") || "https://api.vipps.no/ecomm/v2/payments";
+  const returnUrl = input.returnUrl || getEnv("VIPPS_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
+  const cancelUrl = input.cancelUrl || getEnv("VIPPS_CANCEL_URL") || returnUrl;
+  const currency = getEnv("VIPPS_CURRENCY") || "NOK";
+
+  const tokenAttempt = await requestVippsToken(tokenUrl, {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    client_id: clientId,
+    client_secret: clientSecret,
+    "Ocp-Apim-Subscription-Key": subscriptionKey,
+    "Merchant-Serial-Number": merchantSerialNumber,
+  });
+
+  const tokenData = asRecord(tokenAttempt.body);
+  if (!tokenAttempt.ok || !tokenData || typeof tokenData.access_token !== "string") {
+    throw new MobilePayApiError("VIPPS_TOKEN_REQUEST_FAILED", tokenAttempt.status, tokenAttempt.body);
+  }
+
+  const paymentPayload: Record<string, unknown> = {
+    customerInfo: {
+      mobileNumber: input.customerPhone,
+    },
+    merchantInfo: {
+      merchantSerialNumber,
+      callbackPrefix: getEnv("VIPPS_CALLBACK_PREFIX") || returnUrl,
+      fallBack: cancelUrl,
+    },
+    transaction: {
+      amount: Math.round(input.amount * 100),
+      orderId: input.orderId,
+      transactionText: input.description,
+      currency,
+    },
+  };
+
+  const paymentResponse = await fetch(paymentsUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${tokenData.access_token}`,
+      "Ocp-Apim-Subscription-Key": subscriptionKey,
+      "Merchant-Serial-Number": merchantSerialNumber,
+      "Idempotency-Key": input.orderId,
+    },
+    body: JSON.stringify(paymentPayload),
+  });
+
+  const paymentBody = await paymentResponse.json().catch(() => ({}));
+  const paymentUrl = resolvePaymentUrl(paymentBody);
+  if (!paymentResponse.ok || !paymentUrl) {
+    throw new MobilePayApiError("VIPPS_PAYMENT_REQUEST_FAILED", paymentResponse.status, paymentBody);
+  }
+
+  return paymentUrl;
+}
+
 export async function createMobilePayPayment(input: MobilePayPaymentInput) {
+  if (hasVippsApiCredentials()) {
+    return createVippsPayment(input);
+  }
+
   const clientId = getEnv("MOBILEPAY_CLIENT_ID");
   const clientSecret = getEnv("MOBILEPAY_CLIENT_SECRET");
   const subscriptionKey = getSubscriptionKey();

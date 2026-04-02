@@ -54,6 +54,7 @@ The order API supports two payment modes:
 
 1. **API mode (recommended):** If `MOBILEPAY_CLIENT_ID`, `MOBILEPAY_CLIENT_SECRET`, and a subscription key are set, the server creates a MobilePay payment dynamically.
 2. **Fallback link mode:** If API mode is not configured, the server uses `NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK`.
+3. **Vipps eCom mode:** If `VIPPS_CLIENT_ID`, `VIPPS_CLIENT_SECRET`, `VIPPS_SUBSCRIPTION_KEY_PRIMARY` (or `VIPPS_SUBSCRIPTION_KEY`), and `VIPPS_MERCHANT_SERIAL_NUMBER` are set, the server uses Vipps APIs for token and payment creation.
 
 Required for API mode (server-only variables):
 
@@ -73,7 +74,20 @@ Optional API overrides:
 - `MOBILEPAY_WEBHOOK_URL`
 - `NEXT_PUBLIC_SITE_URL` (used as fallback return URL)
 
+Optional Vipps eCom overrides:
+
+- `VIPPS_SUBSCRIPTION_KEY_SECONDARY`
+- `VIPPS_SUBSCRIPTION_KEY`
+- `VIPPS_TOKEN_URL` (default `https://api.vipps.no/accessToken/get`)
+- `VIPPS_PAYMENTS_URL` (default `https://api.vipps.no/ecomm/v2/payments`)
+- `VIPPS_CURRENCY` (default `NOK`)
+- `VIPPS_RETURN_URL`
+- `VIPPS_CANCEL_URL`
+- `VIPPS_CALLBACK_PREFIX`
+
 Security note: keep all `MOBILEPAY_*` secrets server-side only, never with `NEXT_PUBLIC_`.
+
+If you enable both MobilePay and Vipps credentials at the same time, Vipps mode is prioritized.
 
 For Google Maps features to work in production, the API key must be available as a server-side environment variable and the following Google APIs must be enabled for the same project:
 

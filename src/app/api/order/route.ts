@@ -176,13 +176,13 @@ export async function POST(request: Request) {
               : "";
           const invalidClientHint =
             error instanceof MobilePayApiError && isMobilePayInvalidClient(error.details)
-              ? " Varmista MOBILEPAY_CLIENT_ID, MOBILEPAY_CLIENT_SECRET, MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY ja MOBILEPAY_TOKEN_AUTH_METHOD=client_secret_basic. Jos arvot ovat oikein, generoi uusi client secret MobilePay-portaalissa."
+              ? " Varmista MOBILEPAY_CLIENT_ID, MOBILEPAY_CLIENT_SECRET, MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY ja MOBILEPAY_TOKEN_AUTH_METHOD=client_secret_basic (tai Vipps-tilassa VIPPS_CLIENT_ID, VIPPS_CLIENT_SECRET, VIPPS_SUBSCRIPTION_KEY_PRIMARY, VIPPS_MERCHANT_SERIAL_NUMBER). Jos arvot ovat oikein, generoi uusi client secret palveluntarjoajan portaalissa."
               : "";
 
           return NextResponse.json(
             {
               ok: false,
-              error: `MobilePay API -maksun luonti epaonnistui. Tarkista MOBILEPAY_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}`,
+              error: `Maksun luonti epaonnistui. Tarkista MOBILEPAY_* tai VIPPS_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}`,
             },
             { status: 502 },
           );
