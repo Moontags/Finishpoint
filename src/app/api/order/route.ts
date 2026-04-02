@@ -233,7 +233,7 @@ export async function POST(request: Request) {
               ? " Varmista MOBILEPAY_CLIENT_ID, MOBILEPAY_CLIENT_SECRET, MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY ja MOBILEPAY_TOKEN_AUTH_METHOD=client_secret_basic (tai Vipps-tilassa VIPPS_CLIENT_ID, VIPPS_CLIENT_SECRET, VIPPS_SUBSCRIPTION_KEY_PRIMARY, VIPPS_MERCHANT_SERIAL_NUMBER). Jos arvot ovat oikein, generoi uusi client secret palveluntarjoajan portaalissa."
               : "";
           const vipps500Hint = isVippsPaymentServerError(error)
-            ? " Vipps 500-virheessa tarkista erityisesti: VIPPS_PAYMENTS_URL, VIPPS_MERCHANT_SERIAL_NUMBER, VIPPS_RETURN_URL/VIPPS_CANCEL_URL (julkinen https-osoite), VIPPS_CALLBACK_PREFIX (julkinen https-prefix) ja avainten testi/tuotanto-ymparistojen vastaavuus."
+            ? " Vipps 500-virheessa tarkista erityisesti: VIPPS_PAYMENTS_URL (epayment), VIPPS_MERCHANT_SERIAL_NUMBER, VIPPS_RETURN_URL (julkinen https-osoite), VIPPS_CURRENCY ja avainten testi/tuotanto-ymparistojen vastaavuus."
             : "";
 
           return NextResponse.json(

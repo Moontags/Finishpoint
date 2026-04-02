@@ -209,10 +209,10 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
     throw new MobilePayApiError("VIPPS_CREDENTIALS_MISSING");
   }
 
-  const tokenUrl = getEnv("VIPPS_TOKEN_URL") || "https://api.vipps.no/accessToken/get";
+  const tokenUrl = getEnv("VIPPS_TOKEN_URL") || "https://api.vipps.no/accesstoken/get";
   const paymentsUrl = getEnv("VIPPS_PAYMENTS_URL") || "https://api.vipps.no/epayment/v1/payments";
   const returnUrl = input.returnUrl || getEnv("VIPPS_RETURN_URL") || getEnv("NEXT_PUBLIC_SITE_URL");
-  const currency = getEnv("VIPPS_CURRENCY") || "NOK";
+  const currency = getEnv("VIPPS_CURRENCY") || "EUR";
 
   if (!returnUrl) {
     throw new MobilePayApiError("VIPPS_URLS_MISSING", 500, { returnUrl: false });

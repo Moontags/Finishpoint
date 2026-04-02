@@ -74,16 +74,14 @@ Optional API overrides:
 - `MOBILEPAY_WEBHOOK_URL`
 - `NEXT_PUBLIC_SITE_URL` (used as fallback return URL)
 
-Optional Vipps eCom overrides:
+Optional Vipps ePayment overrides:
 
 - `VIPPS_SUBSCRIPTION_KEY_SECONDARY`
 - `VIPPS_SUBSCRIPTION_KEY`
-- `VIPPS_TOKEN_URL` (default `https://api.vipps.no/accessToken/get`)
-- `VIPPS_PAYMENTS_URL` (default `https://api.vipps.no/ecomm/v2/payments`)
-- `VIPPS_CURRENCY` (default `NOK`)
+- `VIPPS_TOKEN_URL` (default `https://api.vipps.no/accesstoken/get`)
+- `VIPPS_PAYMENTS_URL` (default `https://api.vipps.no/epayment/v1/payments`)
+- `VIPPS_CURRENCY` (default `EUR`)
 - `VIPPS_RETURN_URL`
-- `VIPPS_CANCEL_URL`
-- `VIPPS_CALLBACK_PREFIX`
 - `VIPPS_WEBHOOK_AUTH_TOKEN` (optional bearer token check for `/api/vipps/webhook`)
 
 Security note: keep all `MOBILEPAY_*` secrets server-side only, never with `NEXT_PUBLIC_`.
