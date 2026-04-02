@@ -57,6 +57,29 @@ function extractMobilePayReason(details: unknown) {
   const data = details as Record<string, unknown>;
   const error = typeof data.error === "string" ? data.error : "";
   const description = typeof data.error_description === "string" ? data.error_description : "";
+  const message = typeof data.message === "string" ? data.message : "";
+  const detail = typeof data.detail === "string" ? data.detail : "";
+
+  if (Array.isArray(data.errors)) {
+    const errorTexts = data.errors
+      .map((item) => {
+        if (!item || typeof item !== "object") {
+          return "";
+        }
+        const value = item as Record<string, unknown>;
+        const field = typeof value.field === "string" ? value.field : "";
+        const msg = typeof value.message === "string" ? value.message : "";
+        const code = typeof value.code === "string" ? value.code : "";
+        const parts = [field, msg, code].filter(Boolean);
+        return parts.join(" ").trim();
+      })
+      .filter(Boolean)
+      .join("; ");
+
+    if (errorTexts) {
+      return errorTexts;
+    }
+  }
 
   if (error && description) {
     return `${error}: ${description}`;
@@ -64,6 +87,14 @@ function extractMobilePayReason(details: unknown) {
 
   if (description) {
     return description;
+  }
+
+  if (message) {
+    return message;
+  }
+
+  if (detail) {
+    return detail;
   }
 
   if (error) {
@@ -80,6 +111,15 @@ function isMobilePayInvalidClient(details: unknown) {
 
   const data = details as Record<string, unknown>;
   return data.error === "invalid_client";
+}
+
+function isVippsPaymentServerError(error: unknown) {
+  return (
+    error instanceof MobilePayApiError &&
+    error.code === "VIPPS_PAYMENT_REQUEST_FAILED" &&
+    typeof error.status === "number" &&
+    error.status >= 500
+  );
 }
 
 export async function POST(request: Request) {
@@ -140,8 +180,10 @@ export async function POST(request: Request) {
 
     let paymentUrl = mobilePayLink;
     const origin = new URL(request.url).origin;
-    const returnUrl = process.env.MOBILEPAY_RETURN_URL?.trim() || `${origin}/kassa`;
-    const cancelUrl = process.env.MOBILEPAY_CANCEL_URL?.trim() || `${origin}/#quote`;
+    const returnUrl =
+      process.env.VIPPS_RETURN_URL?.trim() || process.env.MOBILEPAY_RETURN_URL?.trim() || `${origin}/kassa`;
+    const cancelUrl =
+      process.env.VIPPS_CANCEL_URL?.trim() || process.env.MOBILEPAY_CANCEL_URL?.trim() || `${origin}/#quote`;
 
     if (hasMobilePayApiCredentials()) {
       try {
@@ -178,11 +220,14 @@ export async function POST(request: Request) {
             error instanceof MobilePayApiError && isMobilePayInvalidClient(error.details)
               ? " Varmista MOBILEPAY_CLIENT_ID, MOBILEPAY_CLIENT_SECRET, MOBILEPAY_SUBSCRIPTION_KEY_PRIMARY ja MOBILEPAY_TOKEN_AUTH_METHOD=client_secret_basic (tai Vipps-tilassa VIPPS_CLIENT_ID, VIPPS_CLIENT_SECRET, VIPPS_SUBSCRIPTION_KEY_PRIMARY, VIPPS_MERCHANT_SERIAL_NUMBER). Jos arvot ovat oikein, generoi uusi client secret palveluntarjoajan portaalissa."
               : "";
+          const vipps500Hint = isVippsPaymentServerError(error)
+            ? " Vipps 500-virheessa tarkista erityisesti: VIPPS_PAYMENTS_URL, VIPPS_MERCHANT_SERIAL_NUMBER, VIPPS_RETURN_URL/VIPPS_CANCEL_URL (julkinen https-osoite), VIPPS_CALLBACK_PREFIX (julkinen https-prefix) ja avainten testi/tuotanto-ymparistojen vastaavuus."
+            : "";
 
           return NextResponse.json(
             {
               ok: false,
-              error: `Maksun luonti epaonnistui. Tarkista MOBILEPAY_* tai VIPPS_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}`,
+              error: `Maksun luonti epaonnistui. Tarkista MOBILEPAY_* tai VIPPS_* asetukset palvelimella${extra}${reason ? `: ${reason}` : ""}.${invalidClientHint}${vipps500Hint}`,
             },
             { status: 502 },
           );
@@ -197,7 +242,7 @@ export async function POST(request: Request) {
         {
           ok: false,
           error:
-            "Maksuasetukset puuttuvat. Maarita NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK tai palvelinpuolen MOBILEPAY_* API-avaimet.",
+            "Maksuasetukset puuttuvat. Maarita NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK tai palvelinpuolen VIPPS_* / MOBILEPAY_* API-avaimet.",
         },
         { status: 500 },
       );
