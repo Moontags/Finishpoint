@@ -1,159 +1,131 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
-import { fi } from "date-fns/locale";
-
-type Varaus = {
-  id: string;
-  palvelutyyppi: string;
-  lahto_osoite: string;
-  kohde_osoite: string;
-  varaus_pvm: string;
-  aloitusaika: string;
-  lopetusaika: string;
-  hinta_alv: number | null;
-  status: string;
-  asiakas_nimi: string | null;
-  asiakas_email: string | null;
-  created_at: string;
-};
-
-const statusConfig: Record<string, { label: string; className: string }> = {
-  vahvistettu: { label: "Vahvistettu", className: "bg-lime-700/35 text-lime-300" },
-  peruttu: { label: "Peruttu", className: "bg-rose-700/35 text-rose-300" },
-  valmis: { label: "Valmis", className: "bg-zinc-700/70 text-zinc-300" },
-};
-
-function StatusBadge({ status }: { status: string }) {
-  const cfg = statusConfig[status] ?? { label: status, className: "bg-zinc-700/70 text-zinc-300" };
-  return (
-    <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${cfg.className}`}>
-      {cfg.label}
-    </span>
-  );
-}
+import { StatusBadge } from "./components/status-badge";
+import { DeleteButton } from "./components/delete-button";
 
 export default async function AdminDashboard() {
-  const db = createAdminClient();
-  const today = format(new Date(), "yyyy-MM-dd");
-  const weekStart = format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
-  const weekEnd = format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
-  const monthStart = format(startOfMonth(new Date()), "yyyy-MM-dd");
-  const monthEnd = format(endOfMonth(new Date()), "yyyy-MM-dd");
+  const supabase = await createClient();
+  const { data: bookings } = await supabase
+    .from("bookings")
+    .select("*")
+    .order("starts_at", { ascending: false });
 
-  const [{ data: allBookings }, { count: todayCount }, { count: weekCount }, { count: monthCount }] =
-    await Promise.all([
-      db.from("varaukset").select("*").order("varaus_pvm", { ascending: false }).order("aloitusaika", { ascending: false }),
-      db.from("varaukset").select("*", { count: "exact", head: true }).eq("varaus_pvm", today),
-      db.from("varaukset").select("*", { count: "exact", head: true }).gte("varaus_pvm", weekStart).lte("varaus_pvm", weekEnd),
-      db.from("varaukset").select("*", { count: "exact", head: true }).gte("varaus_pvm", monthStart).lte("varaus_pvm", monthEnd),
-    ]);
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  const weekEndDate = new Date(now);
+  weekEndDate.setDate(weekEndDate.getDate() + 7);
+  const weekEnd = weekEndDate.toISOString().split("T")[0];
 
-  const bookings = (allBookings ?? []) as Varaus[];
-  const openCount = bookings.filter((b) => b.status === "vahvistettu").length;
-
-  const monthRevenue = bookings
-    .filter((booking) => booking.status !== "peruttu")
-    .reduce((sum, booking) => sum + (booking.hinta_alv ?? 0), 0);
-
-  const stats = [
-    { label: "Tällä viikolla", value: `${weekCount ?? 0}`, suffix: "keikkaa" },
-    { label: "Avoimet tarjoukset", value: `${openCount}`, suffix: "odottaa vastausta" },
-    { label: "Tänään", value: `${todayCount ?? 0}`, suffix: "keikka" },
-    {
-      label: "Kuukauden tulot",
-      value: `${Math.round(monthRevenue)} €`,
-      suffix: `${monthCount ?? 0} keikkaa, sis. ALV`,
-    },
-  ];
+  const stats = {
+    total: bookings?.length ?? 0,
+    today: bookings?.filter(
+      (b) => b.starts_at?.split("T")[0] === today
+    ).length ?? 0,
+    thisWeek: bookings?.filter(
+      (b) =>
+        b.starts_at?.split("T")[0] >= today &&
+        b.starts_at?.split("T")[0] <= weekEnd
+    ).length ?? 0,
+    open: bookings?.filter(
+      (b) => b.status === "pending" || b.status === "confirmed"
+    ).length ?? 0,
+  };
 
   return (
-    <div className="space-y-6 max-w-6xl">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">Keikat</h1>
+    <div>
+      {/* Tilastokortit */}
+      <div className="grid grid-cols-4 gap-3 mb-6">
+        {[
+          { label: "Keikat yhteensä", value: stats.total },
+          { label: "Tänään", value: stats.today },
+          { label: "Tällä viikolla", value: stats.thisWeek },
+          { label: "Avoimet", value: stats.open },
+        ].map((s) => (
+          <div
+            key={s.label}
+            className="bg-zinc-800/50 rounded-lg p-4 border border-zinc-700"
+          >
+            <div className="text-xs text-zinc-400 mb-1">{s.label}</div>
+            <div className="text-2xl font-semibold text-zinc-100">
+              {s.value}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Toimintopalkki */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-base font-semibold text-zinc-100">Keikat</h2>
         <Link
           href="/admin/bookings/new"
-          className="rounded-xl border border-zinc-500 bg-zinc-800/50 px-4 py-2.5 text-sm font-semibold text-zinc-100 hover:bg-zinc-700/70 transition-colors"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
         >
           + Lisää keikka
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {stats.map((s) => (
-          <div key={s.label} className="rounded-xl border border-zinc-700 bg-zinc-800/55 p-4">
-            <p className="text-sm text-zinc-300">{s.label}</p>
-            <p className="mt-1 text-4xl leading-none font-bold text-zinc-50">{s.value}</p>
-            <p className="mt-1 text-sm text-zinc-400">{s.suffix}</p>
-          </div>
-        ))}
+      {/* Keikkataulukko */}
+      <div className="overflow-x-auto rounded-lg border border-zinc-700">
+        <table className="w-full text-sm">
+          <thead className="bg-zinc-800/50 border-b border-zinc-700">
+            <tr>
+              {["Päivä", "Palvelu", "Mistä", "Minne", "Hinta", "Tila", ""].map(
+                (h) => (
+                  <th
+                    key={h}
+                    className="px-4 py-3 text-left font-medium text-zinc-300"
+                  >
+                    {h}
+                  </th>
+                )
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {bookings?.map((b) => (
+              <tr
+                key={b.id}
+                className="border-b border-zinc-700/50 hover:bg-zinc-800/30 transition"
+              >
+                <td className="px-4 py-3 text-zinc-300">
+                  {b.starts_at ? new Date(b.starts_at).toLocaleDateString("fi-FI") : "—"}
+                </td>
+                <td className="px-4 py-3 text-zinc-300">{b.service_type}</td>
+                <td className="px-4 py-3 text-zinc-300 truncate">
+                  {b.pickup_address}
+                </td>
+                <td className="px-4 py-3 text-zinc-300 truncate">
+                  {b.delivery_address}
+                </td>
+                <td className="px-4 py-3 text-zinc-300">
+                  {b.price ? `${b.price} €` : "—"}
+                </td>
+                <td className="px-4 py-3">
+                  <StatusBadge status={b.status} />
+                </td>
+                <td className="px-4 py-3 text-right space-x-2 flex">
+                  <Link
+                    href={`/admin/bookings/${b.id}`}
+                    className="text-blue-400 hover:text-blue-300 text-xs font-medium"
+                  >
+                    Muokkaa
+                  </Link>
+                  <DeleteButton id={b.id} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      <div className="rounded-2xl border border-zinc-700 bg-zinc-800/45 overflow-hidden">
-        <div className="flex items-center justify-between border-b border-zinc-700/90 px-4 py-3 md:px-6">
-          <h2 className="text-2xl font-bold text-zinc-100">Tulevat keikat</h2>
-          <button
-            type="button"
-            className="rounded-xl border border-zinc-500 bg-zinc-800 px-4 py-2 text-sm font-semibold text-zinc-200 hover:bg-zinc-700/70 transition-colors"
-          >
-            Suodata
-          </button>
+      {!bookings?.length && (
+        <div className="text-center py-8 text-zinc-400">
+          Ei keikoita.{" "}
+          <Link href="/admin/bookings/new" className="text-blue-400 hover:underline">
+            Lisää ensimmäinen keikka
+          </Link>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[760px]">
-            <thead>
-              <tr className="border-b border-zinc-700/90 bg-zinc-900/30">
-                <th className="text-left px-4 py-3 font-semibold text-zinc-300">Päivä</th>
-                <th className="text-left px-4 py-3 font-semibold text-zinc-300">Palvelu</th>
-                <th className="text-left px-4 py-3 font-semibold text-zinc-300">Mistä -&gt; Minne</th>
-                <th className="text-left px-4 py-3 font-semibold text-zinc-300">Hinta</th>
-                <th className="text-left px-4 py-3 font-semibold text-zinc-300">Tila</th>
-                <th className="text-left px-4 py-3 font-semibold text-zinc-300">Toiminnot</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="text-center py-12 text-zinc-400">
-                    Ei keikkoja
-                  </td>
-                </tr>
-              ) : (
-                bookings.map((b) => (
-                  <tr key={b.id} className="border-b border-zinc-700/70 hover:bg-zinc-700/20 transition-colors">
-                    <td className="px-4 py-3 text-zinc-100 whitespace-nowrap">
-                      {b.varaus_pvm
-                        ? format(new Date(b.varaus_pvm), "d.M.yyyy", { locale: fi })
-                        : "—"}
-                      <p className="mt-0.5 text-xs text-zinc-400">
-                        {b.aloitusaika?.slice(0, 5)}-{b.lopetusaika?.slice(0, 5)}
-                      </p>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-100 capitalize font-semibold">{b.palvelutyyppi}</td>
-                    <td className="px-4 py-3 text-zinc-200 max-w-56 truncate">
-                      {b.lahto_osoite} -&gt; {b.kohde_osoite}
-                    </td>
-                    <td className="px-4 py-3 text-zinc-100 whitespace-nowrap font-semibold">
-                      {b.hinta_alv != null ? `${b.hinta_alv} €` : "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <StatusBadge status={b.status} />
-                    </td>
-                    <td className="px-4 py-3">
-                      <Link
-                        href={`/admin/bookings/${b.id}`}
-                        className="rounded-xl border border-zinc-500 bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-zinc-100 hover:bg-zinc-700/70 transition-colors"
-                      >
-                        Muokkaa
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

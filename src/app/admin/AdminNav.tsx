@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 
 const primaryItems = [
   { href: "/admin", label: "Keikat" },
+  { href: "/admin/stats", label: "Tilastot" },
+  { href: "/admin/customers", label: "Asiakkaat" },
   { href: "/admin/prices", label: "Laskuri & hinnat" },
   { href: "/admin/dates", label: "Päivämäärät" },
   { href: null, label: "Osoitteet" },

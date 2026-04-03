@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase/server";
 import AdminNav from "./AdminNav";
 
 export const metadata: Metadata = {
@@ -6,11 +7,20 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Login-sivu renderöidään omalla layoutillaan ilman sidebaria
+  // Tämä layout koskee VAIN kirjautuneita sivuja
+  if (!user) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="min-h-screen bg-[#252525] text-zinc-100 md:grid md:grid-cols-[260px_1fr]">
       <AdminNav />

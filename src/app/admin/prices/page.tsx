@@ -1,68 +1,85 @@
-import { createAdminClient } from "@/lib/supabase/admin";
-import { revalidatePath } from "next/cache";
-import PriceRow from "./price-row";
+import { createClient } from "@/lib/supabase/server";
+import { updatePrice } from "./actions";
 
-type PriceRecord = {
-  id: string;
-  key: string;
-  value: number;
-  label: string | null;
-  updated_at: string;
+const PRICE_CATEGORIES = {
+  "Kappaletavara": [
+    { key: "base_kappaletavara", label: "Perustaksa" },
+    { key: "km_rate_tavara", label: "Km-hinta" },
+    { key: "floor_extra", label: "Kerrosraha" },
+  ],
+  "Muutto & kierrätys": [
+    { key: "base_muutto", label: "Muuton perustaksa" },
+    { key: "base_kierratys", label: "Kierrätyksen perustaksa" },
+    { key: "km_rate_muutto", label: "Km-hinta" },
+  ],
+  "Ajoneuvokuljetukset": [
+    { key: "base_ajoneuvo_40", label: "Perustaksa (4t)" },
+    { key: "base_ajoneuvo_80", label: "Perustaksa (8t)" },
+    { key: "km_rate_ajoneuvo", label: "Km-hinta" },
+  ],
+  "Verotus": [{ key: "vat_rate", label: "ALV-prosentti" }],
 };
 
-async function updatePrice(formData: FormData) {
-  "use server";
-  const key = formData.get("key") as string;
-  const value = Number(formData.get("value"));
-  const db = createAdminClient();
-  await db
-    .from("prices")
-    .update({ value, updated_at: new Date().toISOString() })
-    .eq("key", key);
-  revalidatePath("/admin/prices");
-}
-
 export default async function PricesPage() {
-  const db = createAdminClient();
-  const { data, error } = await db
-    .from("prices")
-    .select("*")
-    .order("key", { ascending: true });
+  const supabase = await createClient();
+  const { data: prices } = await supabase.from("prices").select("*");
 
-  const prices = (data ?? []) as PriceRecord[];
+  const priceMap = new Map(prices?.map((p) => [p.key, p.value]) ?? []);
 
   return (
-    <div className="max-w-5xl space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-100">Laskuri & hinnat</h1>
-        <span className="rounded-xl border border-zinc-600 bg-zinc-800/60 px-3 py-2 text-xs font-semibold text-zinc-300">
-          Pikamuokkaus
-        </span>
-      </div>
+    <div className="max-w-2xl">
+      <h1 className="text-2xl font-bold text-zinc-100 mb-6">Hintojen muokkaus</h1>
 
-      {error && (
-        <div className="rounded-xl border border-rose-500/50 bg-rose-900/30 px-4 py-3 text-sm text-rose-200">
-          Virhe hintojen lataamisessa: {error.message}
-        </div>
-      )}
+      <div className="space-y-8">
+        {Object.entries(PRICE_CATEGORIES).map(([category, items]) => (
+          <div
+            key={category}
+            className="bg-zinc-800/50 rounded-lg p-6 border border-zinc-700"
+          >
+            <h2 className="text-lg font-semibold text-zinc-100 mb-4">
+              {category}
+            </h2>
 
-      {prices.length === 0 && !error && (
-        <div className="rounded-2xl border border-zinc-700 bg-zinc-800/50 p-8 text-center text-sm text-zinc-400">
-          Hintoja ei löydy. Aja ensin SQL-migraatio Supabasessa.
-        </div>
-      )}
-
-      {prices.length > 0 && (
-        <div className="overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-800/45">
-          <div className="grid grid-cols-[1fr_auto] border-b border-zinc-700/90 bg-zinc-900/30 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">
-            <span>Hintakomponentti</span>
-            <span>Arvo</span>
+            <div className="space-y-3">
+              {items.map(({ key, label }) => (
+                <form
+                  key={key}
+                  action={updatePrice}
+                  className="flex gap-3 items-end"
+                >
+                  <div className="flex-1">
+                    <label className="block text-sm text-zinc-400 mb-1">
+                      {label}
+                    </label>
+                    <div className="flex gap-2">
+                      <input type="hidden" name="key" value={key} />
+                      <input
+                        type="number"
+                        step="0.01"
+                        name="value"
+                        defaultValue={priceMap.get(key) ?? "0"}
+                        className="flex-1 bg-zinc-700 text-zinc-100 border border-zinc-600 rounded px-3 py-2 text-sm"
+                      />
+                      {key === "vat_rate" && (
+                        <span className="text-zinc-400 text-sm">%</span>
+                      )}
+                      {key !== "vat_rate" && (
+                        <span className="text-zinc-400 text-sm">€</span>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition"
+                  >
+                    Tallenna
+                  </button>
+                </form>
+              ))}
+            </div>
           </div>
-          {prices.map((p) => (
-            <PriceRow key={p.key} price={p} updatePrice={updatePrice} />
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }

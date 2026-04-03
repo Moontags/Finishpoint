@@ -1,32 +1,12 @@
+import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { getReservedBookings } from "@/lib/bookings";
 
-export async function GET(request: Request) {
-  try {
-    const url = new URL(request.url);
-    const alku = url.searchParams.get("alku")?.trim() ?? "";
-    const loppu = url.searchParams.get("loppu")?.trim() ?? "";
+export async function GET() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("blocked_dates")
+    .select("blocked_date");
 
-    if (!alku || !loppu) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "Parametrit alku ja loppu ovat pakolliset.",
-        },
-        { status: 400 },
-      );
-    }
-
-    const data = await getReservedBookings(alku, loppu);
-
-    return NextResponse.json({ ok: true, data });
-  } catch {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "Varattujen paivien haku epaonnistui.",
-      },
-      { status: 500 },
-    );
-  }
+  const dates = data?.map((d) => d.blocked_date) ?? [];
+  return NextResponse.json(dates);
 }
