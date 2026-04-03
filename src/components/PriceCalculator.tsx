@@ -14,7 +14,7 @@ import {
 import { useCalculatorContext } from "@/lib/calculator-context";
 import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
-const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-4 shadow-sm sm:p-8";
+const cardClass = "rounded-2xl border-0 bg-transparent p-0 shadow-none sm:border sm:border-slate-200 sm:p-8 sm:shadow-sm";
 
 type AddressSuggestion = {
   label: string;

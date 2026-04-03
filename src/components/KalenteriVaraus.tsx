@@ -321,7 +321,7 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div className="rounded-[10px] border border-slate-200 bg-white/10 p-5 shadow-[0_1px_4px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:col-span-2 lg:p-3.5">
+    <div className="rounded-[10px] border-0 bg-white/10 p-5 shadow-none backdrop-blur-sm sm:col-span-2 sm:border sm:border-slate-200 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
       <div className="mb-3 flex items-center justify-between gap-2 lg:mb-1.5">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#6b7a8d]">Varaa ajankohta</p>
         {isLoadingReservedDays ? (
