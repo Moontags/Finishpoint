@@ -190,9 +190,6 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
                         : "Lähetä kirjautumislinkki"}
                     </button>
                   </form>
-                </div>
-              </div>
-            );
       </div>
     </div>
   );
