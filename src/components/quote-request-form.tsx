@@ -35,6 +35,7 @@ function AddressAutocompleteField({
   value,
   onChange,
   placeholder,
+  disabled = false,
 }: {
   id: string;
   name: string;
@@ -42,6 +43,7 @@ function AddressAutocompleteField({
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
+  disabled?: boolean;
 }) {
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
@@ -67,6 +69,12 @@ function AddressAutocompleteField({
   }, []);
 
   useEffect(() => {
+    if (disabled) {
+      setSuggestions([]);
+      setLoading(false);
+      return;
+    }
+
     const query = value.trim();
     if (query.length < 3) {
       setSuggestions([]);
@@ -105,7 +113,7 @@ function AddressAutocompleteField({
       controller.abort();
       window.clearTimeout(timeoutId);
     };
-  }, [value]);
+  }, [disabled, value]);
 
   return (
     <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
@@ -118,12 +126,21 @@ function AddressAutocompleteField({
           autoComplete="street-address"
           placeholder={placeholder}
           value={value}
-          onFocus={() => setIsFocused(true)}
-          onChange={(event) => onChange(event.target.value)}
+          disabled={disabled}
+          onFocus={() => {
+            if (!disabled) {
+              setIsFocused(true);
+            }
+          }}
+          onChange={(event) => {
+            if (!disabled) {
+              onChange(event.target.value);
+            }
+          }}
           className={inputClass}
         />
 
-        {isFocused && suggestions.length > 0 ? (
+        {!disabled && isFocused && suggestions.length > 0 ? (
           <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
             {suggestions.map((suggestion) => (
               <button
@@ -144,7 +161,7 @@ function AddressAutocompleteField({
         ) : null}
       </div>
 
-      {loading ? <span className="text-[12px] font-medium text-slate-500">Haetaan osoite-ehdotuksia...</span> : null}
+      {!disabled && loading ? <span className="text-[12px] font-medium text-slate-500">Haetaan osoite-ehdotuksia...</span> : null}
     </label>
   );
 }
@@ -261,14 +278,27 @@ export function QuoteRequestForm() {
   };
 
   const handleOrderAndPayment = async () => {
+    if (isOrderFlow && !addressesMatchCalculator) {
+      setStatus("error");
+      setFeedback("Nouto- ja toimitusosoitteen tulee olla samat kuin laskurissa.");
+      return;
+    }
+
     setActiveAction("order");
     setStatus("loading");
     setFeedback("");
 
     try {
+      const draftPickupAddress = isOrderFlow && calculatorPickupAddress
+        ? calculatorPickupAddress
+        : formData.pickupAddress;
+      const draftDeliveryAddress = isOrderFlow && calculatorDeliveryAddress
+        ? calculatorDeliveryAddress
+        : formData.deliveryAddress;
+
       const addressParts = [
-        formData.pickupAddress ? `Nouto: ${formData.pickupAddress}` : "",
-        formData.deliveryAddress ? `Toimitus: ${formData.deliveryAddress}` : "",
+        draftPickupAddress ? `Nouto: ${draftPickupAddress}` : "",
+        draftDeliveryAddress ? `Toimitus: ${draftDeliveryAddress}` : "",
       ].filter(Boolean);
 
       const orderDraft = {
@@ -276,8 +306,8 @@ export function QuoteRequestForm() {
         phone: formData.phone,
         email: formData.email,
         serviceType: formData.serviceType,
-        pickupAddress: formData.pickupAddress,
-        deliveryAddress: formData.deliveryAddress,
+        pickupAddress: draftPickupAddress,
+        deliveryAddress: draftDeliveryAddress,
         addresses: addressParts.join(" -> "),
         message: formData.message,
         estimatedPriceVat0: calculatorContext?.estimatedPriceVat0 ?? null,
@@ -309,7 +339,21 @@ export function QuoteRequestForm() {
   const isOrderFlow = hasPriceFromCalculator;
   const serviceTypeOptions = isOrderFlow ? orderServiceTypeOptions : quoteServiceOptions;
 
-  const canAttemptOrder = hasPriceFromCalculator && hasContactFields;
+  const calculatorPickupAddress = calculatorContext?.pickupAddress?.trim() ?? "";
+  const calculatorDeliveryAddress = calculatorContext?.deliveryAddress?.trim() ?? "";
+  const currentPickupAddress = formData.pickupAddress.trim();
+  const currentDeliveryAddress = formData.deliveryAddress.trim();
+
+  const addressesMatchCalculator =
+    !isOrderFlow ||
+    (
+      calculatorPickupAddress.length > 0 &&
+      calculatorDeliveryAddress.length > 0 &&
+      currentPickupAddress === calculatorPickupAddress &&
+      currentDeliveryAddress === calculatorDeliveryAddress
+    );
+
+  const canAttemptOrder = hasPriceFromCalculator && hasContactFields && addressesMatchCalculator;
 
   return (
     <div
@@ -421,6 +465,7 @@ export function QuoteRequestForm() {
             value={formData.pickupAddress}
             onChange={(pickupAddress) => setFormData((current) => ({ ...current, pickupAddress }))}
             placeholder="Katuosoite, kaupunki"
+            disabled={isOrderFlow}
           />
           <AddressAutocompleteField
             id="quote-delivery-address"
@@ -429,6 +474,7 @@ export function QuoteRequestForm() {
             value={formData.deliveryAddress}
             onChange={(deliveryAddress) => setFormData((current) => ({ ...current, deliveryAddress }))}
             placeholder="Katuosoite, kaupunki"
+            disabled={isOrderFlow}
           />
         </div>
 
