@@ -37,8 +37,10 @@ export async function saveBooking(formData: FormData) {
   redirect("/admin");
 }
 
-export async function deleteBooking(id: string) {
+export async function deleteBooking(formData: FormData) {
+  const id = formData.get("id") as string;
   const supabase = await createClient();
   await supabase.from("bookings").delete().eq("id", id);
   revalidatePath("/admin");
+  redirect("/admin");
 }
