@@ -112,52 +112,88 @@ export async function POST(req: Request) {
       paymentMethod: payload.paymentMethod!,
     };
 
-    await saveOrder(order);
+    try {
+      await saveOrder(order);
+    } catch (error) {
+      console.error("Order save failed in /api/order/confirm", error);
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Tilauksen tallennus epaonnistui. Tarkista SUPABASE_SERVICE_ROLE_KEY tai KV-asetukset.",
+        },
+        { status: 500 },
+      );
+    }
+
+    const warnings: string[] = [];
 
     if (payload.bookingSelection) {
       const booking = payload.bookingSelection;
-      const bookingResult = await saveBooking({
-        asiakas_nimi: order.customerName,
-        asiakas_email: order.customerEmail,
-        asiakas_puhelin: order.customerPhone,
-        palvelutyyppi: order.serviceDescription,
-        lahto_osoite: order.pickupAddress,
-        kohde_osoite: order.deliveryAddress,
-        varaus_pvm: booking.reservationDate,
-        aloitusaika: booking.arrivalTime,
-        lopetusaika: booking.releaseTime,
-        ajoaika_kohteeseen_min: booking.driveToDestinationMinutes,
-        ajoaika_riihimaelta_min: booking.driveFromRiihimakiMinutes,
-        hinta_alv: order.totalWithVat,
-        hinta_alv0: order.netAmount,
-        status: "vahvistettu",
-      });
+      let bookingResult: { id: string };
 
-      await sendBookingEmails({
-        bookingId: bookingResult.id,
-        customerName: order.customerName,
-        customerEmail: order.customerEmail,
-        customerPhone: order.customerPhone,
-        serviceType: order.serviceDescription,
-        pickupAddress: order.pickupAddress,
-        destinationAddress: order.deliveryAddress,
-        reservationDate: booking.reservationDate,
-        arrivalTime: booking.arrivalTime,
-        riihimakiDepartureTime: booking.riihimakiDepartureTime,
-        driveToDestinationMinutes: booking.driveToDestinationMinutes,
-        driveFromRiihimakiMinutes: booking.driveFromRiihimakiMinutes,
-        hintaAlv: order.totalWithVat,
-        hintaAlv0: order.netAmount,
-      });
+      try {
+        bookingResult = await saveBooking({
+          asiakas_nimi: order.customerName,
+          asiakas_email: order.customerEmail,
+          asiakas_puhelin: order.customerPhone,
+          palvelutyyppi: order.serviceDescription,
+          lahto_osoite: order.pickupAddress,
+          kohde_osoite: order.deliveryAddress,
+          varaus_pvm: booking.reservationDate,
+          aloitusaika: booking.arrivalTime,
+          lopetusaika: booking.releaseTime,
+          ajoaika_kohteeseen_min: booking.driveToDestinationMinutes,
+          ajoaika_riihimaelta_min: booking.driveFromRiihimakiMinutes,
+          hinta_alv: order.totalWithVat,
+          hinta_alv0: order.netAmount,
+          status: "vahvistettu",
+        });
+      } catch (error) {
+        console.error("Booking save failed in /api/order/confirm", error);
+        return NextResponse.json(
+          {
+            ok: false,
+            error: "Varauksen tallennus epaonnistui. Tarkista Supabase varaukset-taulu ja service role -asetukset.",
+          },
+          { status: 500 },
+        );
+      }
+
+      try {
+        await sendBookingEmails({
+          bookingId: bookingResult.id,
+          customerName: order.customerName,
+          customerEmail: order.customerEmail,
+          customerPhone: order.customerPhone,
+          serviceType: order.serviceDescription,
+          pickupAddress: order.pickupAddress,
+          destinationAddress: order.deliveryAddress,
+          reservationDate: booking.reservationDate,
+          arrivalTime: booking.arrivalTime,
+          riihimakiDepartureTime: booking.riihimakiDepartureTime,
+          driveToDestinationMinutes: booking.driveToDestinationMinutes,
+          driveFromRiihimakiMinutes: booking.driveFromRiihimakiMinutes,
+          hintaAlv: order.totalWithVat,
+          hintaAlv0: order.netAmount,
+        });
+      } catch (error) {
+        console.error("Booking emails failed in /api/order/confirm", error);
+        warnings.push("Varausviestien lahetys epaonnistui.");
+      }
     }
 
-    await sendEmail({
-      to: order.customerEmail,
-      subject: `Tilausvahvistus ${order.orderId} - Finishpoint`,
-      html: generateOrderConfirmationHtml(order),
-    });
+    try {
+      await sendEmail({
+        to: order.customerEmail,
+        subject: `Tilausvahvistus ${order.orderId} - Finishpoint`,
+        html: generateOrderConfirmationHtml(order),
+      });
+    } catch (error) {
+      console.error("Order confirmation email failed in /api/order/confirm", error);
+      warnings.push("Tilausvahvistuksen sahkoposti epaonnistui.");
+    }
 
-    return NextResponse.json({ ok: true, orderId: order.orderId });
+    return NextResponse.json({ ok: true, orderId: order.orderId, warnings });
   } catch {
     return NextResponse.json(
       {
