@@ -115,11 +115,12 @@ export async function POST(req: Request) {
     try {
       await saveOrder(order);
     } catch (error) {
+      const reason = error instanceof Error ? error.message : "Tuntematon virhe";
       console.error("Order save failed in /api/order/confirm", error);
       return NextResponse.json(
         {
           ok: false,
-          error: "Tilauksen tallennus epaonnistui. Tarkista SUPABASE_SERVICE_ROLE_KEY tai KV-asetukset.",
+          error: `Tilauksen tallennus epaonnistui. ${reason}`,
         },
         { status: 500 },
       );
@@ -149,11 +150,12 @@ export async function POST(req: Request) {
           status: "vahvistettu",
         });
       } catch (error) {
+        const reason = error instanceof Error ? error.message : "Tuntematon virhe";
         console.error("Booking save failed in /api/order/confirm", error);
         return NextResponse.json(
           {
             ok: false,
-            error: "Varauksen tallennus epaonnistui. Tarkista Supabase varaukset-taulu ja service role -asetukset.",
+            error: `Varauksen tallennus epaonnistui. ${reason}`,
           },
           { status: 500 },
         );
