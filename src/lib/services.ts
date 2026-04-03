@@ -57,7 +57,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     title: "Mönkijäkuljetus",
     description: "Luotettava mönkijän kuljetus mökille, huoltoon tai myyntiin.",
     valueProposition:
-      "Mönkijät kulkevat turvallisesti perille oikealla kalustolla ja selkeällä aikataululla.",
+      "Mönkijät kulkevat turvallisesti ja aikataulussa perille.",
     includes: [
       "Nouto pihasta, varastosta tai liikkeestä",
       "Varmistettu kiinnitys kuljetuksen ajaksi",
@@ -103,7 +103,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     title: "Sohvan kuljetus",
     description: "Sohvan nouto ja toimitus vahingoittumatta perille asti.",
     valueProposition:
-      "Kuljetamme sohvat koteihin, varastoihin ja liikkeisiin nopeasti sekä varovaisella käsittelyllä.",
+      "Kuljetamme sohvat liikkeistä, kodeista ja varastoista.",
     includes: [
       "Nouto yksityiseltä tai liikkeestä",
       "Suojaus ja varovainen kuormaus",
@@ -126,7 +126,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     title: "Sängyn kuljetus",
     description: "Sängyn ja runkopaketin kuljetus sujuvasti uuteen kohteeseen.",
     valueProposition:
-      "Siirrämme sängyt ja patjat turvallisesti kotiin, mökille tai varastoon ammattimaisella otteella.",
+      "Siirrämme sängyt ja patjat kotiin, mökille tai varastoon.",
     includes: [
       "Nouto myymälästä tai yksityiseltä",
       "Huolellinen suojaus kuljetuksen ajaksi",
