@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   addDays,
   addMinutes,
@@ -97,6 +97,8 @@ export function KalenteriVaraus({
   const [driveToDestinationMinutes, setDriveToDestinationMinutes] = useState<number | null>(null);
   const [driveFromRiihimakiMinutes, setDriveFromRiihimakiMinutes] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
 
   const daysCount = isMobile ? 3 : 7;
   const navStep = isMobile ? 3 : 7;
@@ -286,12 +288,44 @@ export function KalenteriVaraus({
     }
   }, [driveToDestinationMinutes, reservedBookings, selectedDay, selectedTime]);
 
+  const handleDayGridTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    touchStartXRef.current = touch.clientX;
+    touchStartYRef.current = touch.clientY;
+  };
+
+  const handleDayGridTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (!isMobile || touchStartXRef.current === null || touchStartYRef.current === null) {
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartXRef.current;
+    const deltaY = touch.clientY - touchStartYRef.current;
+
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+
+    if (Math.abs(deltaX) < 35 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    if (deltaX < 0 && canGoForward) {
+      setWeekStart((current) => addDays(current, navStep));
+      return;
+    }
+
+    if (deltaX > 0 && canGoBack) {
+      setWeekStart((current) => addDays(current, -navStep));
+    }
+  };
+
   return (
     <div className="rounded-[10px] border border-slate-200 bg-white/10 p-5 shadow-[0_1px_4px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:col-span-2 lg:p-3.5">
       <div className="mb-3 flex items-center justify-between gap-2 lg:mb-1.5">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#6b7a8d]">Varaa ajankohta</p>
         {isLoadingReservedDays ? (
-          <span className="text-[11px] font-medium text-[#6b7a8d]">Paivitetaan saatavuutta...</span>
+          <span className="hidden text-[11px] font-medium text-[#6b7a8d] sm:inline">Paivitetaan saatavuutta...</span>
         ) : null}
       </div>
 
@@ -300,13 +334,17 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
           disabled={!canGoBack}
-          className="shrink-0 rounded-lg border border-slate-300 bg-white/10 px-3 py-2 text-[#1a2e4a] backdrop-blur-sm transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
+          className="hidden shrink-0 rounded-lg border border-slate-300 bg-white/10 px-3 py-2 text-[#1a2e4a] backdrop-blur-sm transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex"
           aria-label="Edellinen jakso"
         >
           ←
         </button>
 
-        <div className="grid min-w-0 flex-1 grid-cols-3 gap-1.5 sm:grid-cols-7 sm:gap-2 lg:gap-1.5">
+        <div
+          className="grid min-w-0 flex-1 grid-cols-3 gap-1.5 sm:grid-cols-7 sm:gap-2 lg:gap-1.5"
+          onTouchStart={handleDayGridTouchStart}
+          onTouchEnd={handleDayGridTouchEnd}
+        >
           {weekDays.map((day) => {
             const selected = selectedDay ? isSameDay(selectedDay, day) : false;
             const reserved = hasReservations(day);
@@ -355,7 +393,7 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
           disabled={!canGoForward}
-          className="shrink-0 rounded-lg border border-slate-300 bg-white/10 px-3 py-2 text-[#1a2e4a] backdrop-blur-sm transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
+          className="hidden shrink-0 rounded-lg border border-slate-300 bg-white/10 px-3 py-2 text-[#1a2e4a] backdrop-blur-sm transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex"
           aria-label="Seuraava jakso"
         >
           →
@@ -365,7 +403,7 @@ export function KalenteriVaraus({
       {selectedDay && !isPast(selectedDay) ? (
         <div className="mt-4 animate-[fadein_200ms_ease-in-out] lg:mt-2.5">
           <label className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.08em] text-[#6b7a8d]">
-            Valitse saapumisaika kohteeseen
+            Valitse kuljetusaika
           </label>
 
           {getReservedBookingsForDay(selectedDay).length > 0 ? (
