@@ -48,7 +48,7 @@ export function SiteHeader({
             ? "bg-white"
             : "bg-white md:bg-transparent"
       }`}>
-        <div className="flex translate-y-[8px] items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
+        <div className="flex translate-y-2 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
           <Link href="/" className="ml-0 flex min-w-0 shrink-0 items-center gap-2" aria-label="Etusivu">
             <Image
               src="/images/finishpoint-logo.png"
@@ -107,7 +107,7 @@ export function SiteHeader({
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
             <details className="relative mr-5 translate-y-0.5 sm:mr-0 sm:translate-y-0 sm:hidden">
               <summary className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50">
-                <Menu className="h-[22px] w-[22px]" />
+                <Menu className="h-5.5 w-5.5" />
               </summary>
               <div className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
                 {serviceNavigationLinks.map(({ href, label }) => (
