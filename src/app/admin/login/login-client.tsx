@@ -52,14 +52,15 @@ export default function AdminLoginPageClient() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        router.replace("/admin");
-      }
-    });
-
-    return () => {
-      isMounted = false;
+  export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: string | null }) {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [sent, setSent] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [cooldownSeconds, setCooldownSeconds] = useState(() =>
+      getRemainingCooldownSeconds()
+    );
       subscription.unsubscribe();
     };
   }, [router]);
@@ -149,6 +150,20 @@ export default function AdminLoginPageClient() {
               </p>
             )}
             {cooldownSeconds > 0 && (
+          {/* Lisää virhebanneri lomakkeen yläpuolelle */}
+          {errorMessage && (
+            <div style={{
+              background: '#fef2f2',
+              border: '1px solid #fecaca',
+              borderRadius: 8,
+              padding: '12px 16px',
+              marginBottom: 16,
+              color: '#991b1b',
+              fontSize: 14,
+            }}>
+              {errorMessage}
+            </div>
+          )}
               <p className="text-xs text-slate-500">
                 Uusi lähetys mahdollista {cooldownSeconds} s kuluttua.
               </p>

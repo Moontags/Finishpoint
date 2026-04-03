@@ -5,44 +5,48 @@ import type { EmailOtpType } from '@supabase/supabase-js'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
-  const code = searchParams.get('code')
-  const tokenHash = searchParams.get('token_hash')
-  const type = searchParams.get('type') as EmailOtpType | null
-  
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (c) =>
-          c.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          ),
-      },
-    }
-  )
-  
-  let authError: string | null = null
-  
-  // Handle OAuth/PKCE code exchange (e.g., GitHub, Google)
-  if (code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (error) authError = error.message
-  }
-  // Handle magic link (token_hash + type)
-  else if (tokenHash && type) {
-    const { error } = await supabase.auth.verifyOtp({
-      type,
-      token_hash: tokenHash,
-    })
-    if (error) authError = error.message
-  }
-  
-  if (!authError) {
-    return NextResponse.redirect(`${origin}/admin`)
+
+  // Tarkista ensin virheet query-parametreista
+  const error = searchParams.get('error')
+  const errorCode = searchParams.get('error_code')
+  const errorDescription = searchParams.get('error_description')
+
+  if (error || errorCode) {
+    // Ohjaa login-sivulle selkeällä virheilmoituksella
+    // EI pääsivulle
+    const loginUrl = new URL('/admin/login', origin)
+    loginUrl.searchParams.set('error', errorCode ?? error ?? 'auth_error')
+    return NextResponse.redirect(loginUrl)
   }
 
-  return NextResponse.redirect(`${origin}/admin/login?error=auth_failed`)
+  const code = searchParams.get('code')
+
+  if (code) {
+    const cookieStore = await cookies()
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll: () => cookieStore.getAll(),
+          setAll: (c) => c.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options))
+        }
+      }
+    )
+
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+
+    if (!exchangeError) {
+      return NextResponse.redirect(new URL('/admin', origin))
+    }
+
+    // Vaihto epäonnistui — ohjaa loginiin virhekoodilla
+    const loginUrl = new URL('/admin/login', origin)
+    loginUrl.searchParams.set('error', 'session_error')
+    return NextResponse.redirect(loginUrl)
+  }
+
+  // Ei koodia eikä virhettä — ohjaa loginiin
+  return NextResponse.redirect(new URL('/admin/login', origin))
 }
