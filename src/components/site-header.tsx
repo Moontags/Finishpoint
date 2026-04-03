@@ -49,7 +49,7 @@ export function SiteHeader({
             : "bg-white md:bg-transparent"
       }`}>
         <div className="flex translate-y-[8px] items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
-          <Link href="/" className="-ml-[0.6rem] flex min-w-0 shrink-0 items-center gap-2 sm:ml-0" aria-label="Etusivu">
+          <Link href="/" className="ml-0 flex min-w-0 shrink-0 items-center gap-2" aria-label="Etusivu">
             <Image
               src="/images/finishpoint-logo.png"
               alt="Finishpoint"
