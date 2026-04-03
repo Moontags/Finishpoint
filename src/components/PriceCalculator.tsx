@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { KalenteriVaraus } from "@/components/KalenteriVaraus";
 import { PriceSummary } from "@/components/PriceSummary";
 import {
   ajoneuvohinta,
@@ -10,7 +11,7 @@ import {
   projektiHinta,
 } from "@/lib/pricing";
 import { useCalculatorContext } from "@/lib/calculator-context";
-import type { ProjektiTyyppi, ServiceCategory } from "@/lib/types";
+import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
 const cardClass = "rounded-2xl border border-slate-200 bg-transparent p-4 shadow-sm sm:p-8";
 
@@ -145,16 +146,16 @@ function AddressAutocompleteField({
           onFocus={() => setIsFocused(true)}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-slate-400 focus:bg-white/20"
         />
 
         {isFocused && suggestions.length > 0 ? (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 overflow-hidden rounded-xl border border-slate-200 bg-white/10 shadow-lg backdrop-blur-sm">
             {suggestions.map((suggestion) => (
               <button
                 key={suggestion.placeId || suggestion.label}
                 type="button"
-                className="block w-full border-b border-slate-100 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-blue-50 hover:text-slate-900 last:border-b-0"
+                className="block w-full border-b border-slate-200 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-white/20 hover:text-slate-900 last:border-b-0"
                 onMouseDown={(event) => {
                   event.preventDefault();
                   onChange(suggestion.label);
@@ -183,6 +184,7 @@ export function AjoneuvoPriceCalculator() {
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
   const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
@@ -199,6 +201,10 @@ export function AjoneuvoPriceCalculator() {
     calculatorContext?.setEstimatedPriceVat0(hinta);
     calculatorContext?.setEstimatedPriceVatIncl(lisaaAlv(hinta));
   }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    calculatorContext?.setBookingSelection(bookingSelection);
+  }, [bookingSelection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const haeGoogleMatka = async () => {
     const origin = pickupAddress.trim();
@@ -291,6 +297,12 @@ export function AjoneuvoPriceCalculator() {
           placeholder="Esim. Hämeenkatu 10, Tampere"
         />
 
+        <KalenteriVaraus
+          lahto={pickupAddress}
+          kohde={deliveryAddress}
+          onDateTimeSelect={setBookingSelection}
+        />
+
         <button
           type="button"
           onClick={haeGoogleMatka}
@@ -343,6 +355,7 @@ export function KappaletavaraPriceCalculator() {
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
   const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
@@ -359,6 +372,10 @@ export function KappaletavaraPriceCalculator() {
     calculatorContext?.setEstimatedPriceVat0(hinta);
     calculatorContext?.setEstimatedPriceVatIncl(lisaaAlv(hinta));
   }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    calculatorContext?.setBookingSelection(bookingSelection);
+  }, [bookingSelection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const haeGoogleMatka = async () => {
     const origin = pickupAddress.trim();
@@ -422,7 +439,7 @@ export function KappaletavaraPriceCalculator() {
 
   return (
     <section className={cardClass}>
-      <h2 className="max-w-full text-[1.75rem] font-bold leading-tight tracking-tight text-slate-900 [overflow-wrap:anywhere] sm:text-3xl">
+      <h2 className="max-w-full text-[1.75rem] font-bold leading-tight tracking-tight text-slate-900 wrap-anywhere sm:text-3xl">
         Kappaletavara
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
@@ -446,6 +463,12 @@ export function KappaletavaraPriceCalculator() {
           value={deliveryAddress}
           onChange={setDeliveryAddress}
           placeholder="Esim. Hämeenkatu 10, Tampere"
+        />
+
+        <KalenteriVaraus
+          lahto={pickupAddress}
+          kohde={deliveryAddress}
+          onDateTimeSelect={setBookingSelection}
         />
 
         <button
@@ -503,6 +526,7 @@ export function ProjektiPriceCalculator() {
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
   const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
@@ -583,6 +607,10 @@ export function ProjektiPriceCalculator() {
     calculatorContext?.setEstimatedPriceVatIncl(hintaSisAlv);
   }, [hinta, hintaSisAlv]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    calculatorContext?.setBookingSelection(bookingSelection);
+  }, [bookingSelection]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <section className={cardClass}>
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -609,6 +637,12 @@ export function ProjektiPriceCalculator() {
           value={deliveryAddress}
           onChange={setDeliveryAddress}
           placeholder="Esim. Hämeenkatu 10, Tampere"
+        />
+
+        <KalenteriVaraus
+          lahto={pickupAddress}
+          kohde={deliveryAddress}
+          onDateTimeSelect={setBookingSelection}
         />
 
         <button
@@ -657,7 +691,7 @@ export function ProjektiPriceCalculator() {
             name="projektiTyyppi"
             value={tyyppi}
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
-            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-slate-400 focus:bg-white/20"
           >
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>

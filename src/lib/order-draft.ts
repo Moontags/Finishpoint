@@ -1,3 +1,5 @@
+import type { BookingSelectionData } from "@/lib/types";
+
 export const ORDER_DRAFT_STORAGE_KEY = "finishpoint.orderDraft";
 
 export type OrderDraft = {
@@ -11,4 +13,5 @@ export type OrderDraft = {
   message: string;
   estimatedPriceVat0: number | null;
   estimatedPriceVatIncl: number | null;
+  bookingSelection?: BookingSelectionData | null;
 };

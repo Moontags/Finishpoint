@@ -35,3 +35,14 @@ export type QuoteRequestData = {
   source: "website";
   status: "received";
 };
+
+export type BookingSelectionData = {
+  reservationDate: string;
+  arrivalTime: string;
+  riihimakiDepartureTime: string;
+  releaseTime: string;
+  driveToDestinationMinutes: number;
+  driveFromRiihimakiMinutes: number;
+  workDurationMinutes: number;
+  calendarBlockMinutes: number;
+};

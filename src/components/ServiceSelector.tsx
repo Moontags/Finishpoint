@@ -58,7 +58,7 @@ export default function ServiceSelector({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <div id="calculator" className="rounded-2xl bg-transparent p-[0.875rem] sm:p-8">
+    <div id="calculator" className="rounded-2xl bg-transparent p-3.5 sm:p-8">
       <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-500">Tilaa kuljetus</p>
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Valitse palvelutyyppi
@@ -72,12 +72,12 @@ export default function ServiceSelector({
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="flex w-full min-w-0 items-center justify-between rounded-2xl border-2 border-slate-700 bg-slate-700 px-5 py-5 text-[18px] font-bold text-white shadow-md transition"
+            className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition"
           >
-            <span className="min-w-0 flex-1 break-words text-left leading-tight">
+            <span className="min-w-0 flex-1 wrap-break-word text-left leading-tight">
               {categories.find((c) => c.id === active)?.label}
             </span>
-            <ChevronDown className={`h-6 w-6 transition-transform ${open ? "rotate-180" : ""}`} />
+            <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
           {open && (
             <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-xl">
@@ -93,7 +93,7 @@ export default function ServiceSelector({
                   }`}
                 >
                   <Icon className="h-6 w-6 shrink-0" />
-                  <span className="break-words text-left leading-tight">{label}</span>
+                  <span className="wrap-break-word text-left leading-tight">{label}</span>
                 </button>
               ))}
             </div>

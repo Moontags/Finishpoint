@@ -6,7 +6,9 @@ import {
   generateOrderConfirmationHtml,
 } from "../../../../lib/email-templates";
 import { saveOrder } from "@/lib/order-store";
-import type { OrderData } from "../../../../lib/types";
+import { saveBooking } from "../../../../lib/bookings";
+import { sendBookingEmails } from "../../../../lib/booking-emails";
+import type { BookingSelectionData, OrderData } from "../../../../lib/types";
 
 type ConfirmOrderPayload = {
   customerName?: string;
@@ -18,7 +20,16 @@ type ConfirmOrderPayload = {
   deliveryAddress?: string;
   totalWithVat?: number;
   paymentMethod?: "mobilepay" | "invoice";
+  bookingSelection?: BookingSelectionData | null;
 };
+
+function isValidDate(value: string) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+function isValidTime(value: string) {
+  return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+}
 
 function parsePayload(raw: unknown): { ok: true; value: ConfirmOrderPayload } | { ok: false; error: string } {
   if (!raw || typeof raw !== "object") {
@@ -59,6 +70,16 @@ function parsePayload(raw: unknown): { ok: true; value: ConfirmOrderPayload } | 
     return { ok: false, error: "Asiakkaan osoite vaaditaan yli 400 EUR laskuille." };
   }
 
+  if (payload.bookingSelection) {
+    const booking = payload.bookingSelection;
+    if (!isValidDate(booking.reservationDate)) {
+      return { ok: false, error: "Varauksen paivamaara on virheellinen." };
+    }
+    if (!isValidTime(booking.arrivalTime) || !isValidTime(booking.releaseTime) || !isValidTime(booking.riihimakiDepartureTime)) {
+      return { ok: false, error: "Varauksen kellonaika on virheellinen." };
+    }
+  }
+
   return { ok: true, value: payload };
 }
 
@@ -92,6 +113,43 @@ export async function POST(req: Request) {
     };
 
     await saveOrder(order);
+
+    if (payload.bookingSelection) {
+      const booking = payload.bookingSelection;
+      const bookingResult = await saveBooking({
+        asiakas_nimi: order.customerName,
+        asiakas_email: order.customerEmail,
+        asiakas_puhelin: order.customerPhone,
+        palvelutyyppi: order.serviceDescription,
+        lahto_osoite: order.pickupAddress,
+        kohde_osoite: order.deliveryAddress,
+        varaus_pvm: booking.reservationDate,
+        aloitusaika: booking.arrivalTime,
+        lopetusaika: booking.releaseTime,
+        ajoaika_kohteeseen_min: booking.driveToDestinationMinutes,
+        ajoaika_riihimaelta_min: booking.driveFromRiihimakiMinutes,
+        hinta_alv: order.totalWithVat,
+        hinta_alv0: order.netAmount,
+        status: "vahvistettu",
+      });
+
+      await sendBookingEmails({
+        bookingId: bookingResult.id,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        customerPhone: order.customerPhone,
+        serviceType: order.serviceDescription,
+        pickupAddress: order.pickupAddress,
+        destinationAddress: order.deliveryAddress,
+        reservationDate: booking.reservationDate,
+        arrivalTime: booking.arrivalTime,
+        riihimakiDepartureTime: booking.riihimakiDepartureTime,
+        driveToDestinationMinutes: booking.driveToDestinationMinutes,
+        driveFromRiihimakiMinutes: booking.driveFromRiihimakiMinutes,
+        hintaAlv: order.totalWithVat,
+        hintaAlv0: order.netAmount,
+      });
+    }
 
     await sendEmail({
       to: order.customerEmail,

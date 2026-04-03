@@ -74,6 +74,31 @@ create index if not exists bookings_time_range_idx
 create index if not exists bookings_status_idx
   on public.bookings (status);
 
+create table if not exists public.varaukset (
+  id uuid primary key default gen_random_uuid(),
+  luotu_at timestamptz not null default timezone('utc', now()),
+  asiakas_nimi text,
+  asiakas_email text not null,
+  asiakas_puhelin text,
+  palvelutyyppi text not null,
+  lahto_osoite text not null,
+  kohde_osoite text not null,
+  varaus_pvm date not null,
+  aloitusaika time not null,
+  lopetusaika time not null,
+  ajoaika_kohteeseen_min integer,
+  ajoaika_riihimaelta_min integer,
+  hinta_alv numeric(10,2),
+  hinta_alv0 numeric(10,2),
+  status text not null default 'vahvistettu'
+);
+
+create index if not exists varaukset_pvm_idx
+  on public.varaukset (varaus_pvm);
+
+create index if not exists varaukset_status_idx
+  on public.varaukset (status);
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql

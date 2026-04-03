@@ -156,6 +156,7 @@ export function QuoteRequestForm() {
         message: formData.message,
         estimatedPriceVat0: calculatorContext?.estimatedPriceVat0 ?? null,
         estimatedPriceVatIncl: calculatorContext?.estimatedPriceVatIncl ?? null,
+        bookingSelection: calculatorContext?.bookingSelection ?? null,
       };
 
       window.sessionStorage.setItem(ORDER_DRAFT_STORAGE_KEY, JSON.stringify(orderDraft));

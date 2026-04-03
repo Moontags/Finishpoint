@@ -101,6 +101,7 @@ export default function CheckoutPage() {
           deliveryAddress: draft.deliveryAddress,
           totalWithVat: draft.estimatedPriceVatIncl,
           paymentMethod: "mobilepay",
+          bookingSelection: draft.bookingSelection ?? null,
         }),
       });
 
@@ -169,6 +170,13 @@ export default function CheckoutPage() {
               <p><span className="font-semibold">Nouto-osoite:</span> {draft.pickupAddress}</p>
               <p><span className="font-semibold">Toimitusosoite:</span> {draft.deliveryAddress}</p>
               <p><span className="font-semibold">Lisatiedot:</span> {draft.message || "-"}</p>
+              {draft.bookingSelection ? (
+                <>
+                  <p><span className="font-semibold">Varauspaiva:</span> {draft.bookingSelection.reservationDate}</p>
+                  <p><span className="font-semibold">Saapumisaika kohteeseen:</span> {draft.bookingSelection.arrivalTime}</p>
+                  <p><span className="font-semibold">Auton lahto Riihimaelta:</span> {draft.bookingSelection.riihimakiDepartureTime}</p>
+                </>
+              ) : null}
 
               <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-700">Maksettava summa</p>
