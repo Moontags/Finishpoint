@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCalculatorContext } from "@/lib/calculator-context";
@@ -22,6 +22,132 @@ const categoryDefaultServiceType: Record<ServiceCategory, string> = {
 
 const inputClass =
   "w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white focus:ring-[3px] focus:ring-blue-200";
+
+type AddressSuggestion = {
+  label: string;
+  placeId: string;
+};
+
+function AddressAutocompleteField({
+  id,
+  name,
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDocumentMouseDown = (event: MouseEvent) => {
+      if (!containerRef.current) {
+        return;
+      }
+
+      const target = event.target as Node | null;
+      if (target && !containerRef.current.contains(target)) {
+        setIsFocused(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onDocumentMouseDown);
+    return () => {
+      document.removeEventListener("mousedown", onDocumentMouseDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    const query = value.trim();
+    if (query.length < 3) {
+      setSuggestions([]);
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/places/autocomplete?input=${encodeURIComponent(query)}`, {
+          method: "GET",
+          signal: controller.signal,
+        });
+
+        const result = (await response.json()) as {
+          ok: boolean;
+          suggestions?: AddressSuggestion[];
+        };
+
+        if (!response.ok || !result.ok) {
+          setSuggestions([]);
+          return;
+        }
+
+        setSuggestions(result.suggestions ?? []);
+      } catch {
+        setSuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timeoutId);
+    };
+  }, [value]);
+
+  return (
+    <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+      {label}
+      <div ref={containerRef} className="relative">
+        <input
+          id={id}
+          name={name}
+          required
+          autoComplete="street-address"
+          placeholder={placeholder}
+          value={value}
+          onFocus={() => setIsFocused(true)}
+          onChange={(event) => onChange(event.target.value)}
+          className={inputClass}
+        />
+
+        {isFocused && suggestions.length > 0 ? (
+          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+            {suggestions.map((suggestion) => (
+              <button
+                key={suggestion.placeId || suggestion.label}
+                type="button"
+                className="block w-full border-b border-slate-200 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900 last:border-b-0"
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  onChange(suggestion.label);
+                  setSuggestions([]);
+                  setIsFocused(false);
+                }}
+              >
+                {suggestion.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      {loading ? <span className="text-[12px] font-medium text-slate-500">Haetaan osoite-ehdotuksia...</span> : null}
+    </label>
+  );
+}
 
 export function QuoteRequestForm() {
   const router = useRouter();
@@ -197,7 +323,7 @@ export function QuoteRequestForm() {
           <span className="truncate sm:whitespace-normal">Vahvista tilaus ja maksa</span>
         </div>
         {isOrderFlow ? (
-          <p className="-mt-3 ml-1 inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">
+          <p className="mt-1 block w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">
             Vaihe 1/2: Yhteystiedot
           </p>
         ) : null}
@@ -288,32 +414,22 @@ export function QuoteRequestForm() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <label htmlFor="quote-pickup-address" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Mistä
-            <input
-              id="quote-pickup-address"
-              required
-              name="pickupAddress"
-              autoComplete="street-address"
-              placeholder="Katuosoite, kaupunki"
-              value={formData.pickupAddress}
-              onChange={handleChange}
-              className={inputClass}
-            />
-          </label>
-          <label htmlFor="quote-delivery-address" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Minne
-            <input
-              id="quote-delivery-address"
-              required
-              name="deliveryAddress"
-              autoComplete="street-address"
-              placeholder="Katuosoite, kaupunki"
-              value={formData.deliveryAddress}
-              onChange={handleChange}
-              className={inputClass}
-            />
-          </label>
+          <AddressAutocompleteField
+            id="quote-pickup-address"
+            name="pickupAddress"
+            label="Mistä"
+            value={formData.pickupAddress}
+            onChange={(pickupAddress) => setFormData((current) => ({ ...current, pickupAddress }))}
+            placeholder="Katuosoite, kaupunki"
+          />
+          <AddressAutocompleteField
+            id="quote-delivery-address"
+            name="deliveryAddress"
+            label="Minne"
+            value={formData.deliveryAddress}
+            onChange={(deliveryAddress) => setFormData((current) => ({ ...current, deliveryAddress }))}
+            placeholder="Katuosoite, kaupunki"
+          />
         </div>
 
         <label htmlFor="quote-message" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">

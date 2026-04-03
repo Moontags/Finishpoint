@@ -185,11 +185,15 @@ export function KalenteriVaraus({
         fetchDuration(RIIHIMAKI, destination),
       ]);
 
+      if (controller.signal.aborted) {
+        return;
+      }
+
       setDriveToDestinationMinutes(fromCustomerToDestination);
       setDriveFromRiihimakiMinutes(fromRiihimakiToDestination);
     };
 
-    run();
+    void run();
 
     return () => {
       controller.abort();
