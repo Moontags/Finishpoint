@@ -3,7 +3,6 @@ import ServiceSelector from "@/components/ServiceSelector";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import type { ServiceCategory } from "@/lib/types";
-import { getPrices } from "@/lib/prices";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
@@ -26,8 +25,6 @@ export default async function LaskuriPage({
 }) {
   const params = await searchParams;
   const initialCategory = parseCategory(params.kategoria);
-  const prices = await getPrices();
-
   return (
     <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
       <SiteHeader opaque noShadow />
@@ -45,7 +42,7 @@ export default async function LaskuriPage({
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 lg:pb-16">
-        <ServiceSelector initialCategory={initialCategory} prices={prices} />
+        <ServiceSelector initialCategory={initialCategory} />
       </section>
       <SiteFooter />
     </main>
