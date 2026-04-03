@@ -10,11 +10,37 @@ import {
   lisaaAlv,
   pyoristaAsiakkaalle,
   projektiHinta,
+  defaultPriceConfig,
+  type PriceConfig,
 } from "@/lib/pricing";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
 const cardClass = "rounded-2xl border-0 bg-transparent p-0 shadow-none sm:border sm:border-slate-200 sm:p-8 sm:shadow-sm";
+
+let _cachedPrices: PriceConfig | null = null;
+
+function usePrices(): PriceConfig {
+  const [prices, setPrices] = useState<PriceConfig>(defaultPriceConfig);
+
+  useEffect(() => {
+    if (_cachedPrices) {
+      setPrices(_cachedPrices);
+      return;
+    }
+    fetch("/api/prices")
+      .then((r) => r.json() as Promise<PriceConfig>)
+      .then((data) => {
+        _cachedPrices = data;
+        setPrices(data);
+      })
+      .catch(() => {
+        // keep defaults on error
+      });
+  }, []);
+
+  return prices;
+}
 
 type AddressSuggestion = {
   label: string;
@@ -179,6 +205,7 @@ function AddressAutocompleteField({
 }
 
 export function AjoneuvoPriceCalculator() {
+  const prices = usePrices();
   const [km, setKm] = useState(60);
   const [pickupAddress, setPickupAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -196,7 +223,7 @@ export function AjoneuvoPriceCalculator() {
     calculatorContext?.setDeliveryAddress(deliveryAddress);
   }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const hinta = useMemo(() => ajoneuvohinta(km, false), [km]);
+  const hinta = useMemo(() => ajoneuvohinta(km, false, prices), [km, prices]);
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
@@ -350,6 +377,7 @@ export function AjoneuvoPriceCalculator() {
 }
 
 export function KappaletavaraPriceCalculator() {
+  const prices = usePrices();
   const [km, setKm] = useState(40);
   const [pickupAddress, setPickupAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -367,7 +395,7 @@ export function KappaletavaraPriceCalculator() {
     calculatorContext?.setDeliveryAddress(deliveryAddress);
   }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const hinta = useMemo(() => kappaletavaraHinta(km), [km]);
+  const hinta = useMemo(() => kappaletavaraHinta(km, prices), [km, prices]);
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
@@ -518,6 +546,7 @@ export function KappaletavaraPriceCalculator() {
 }
 
 export function ProjektiPriceCalculator() {
+  const prices = usePrices();
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
   const [lisakuormat, setLisakuormat] = useState(0);
   const [kierratysKm, setKierratysKm] = useState(20);
@@ -539,8 +568,8 @@ export function ProjektiPriceCalculator() {
   }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hinta = useMemo(
-    () => projektiHinta(tyyppi, undefined, lisakuormat, kierratysKm, kierratysMaksu),
-    [tyyppi, lisakuormat, kierratysKm, kierratysMaksu],
+    () => projektiHinta(tyyppi, undefined, lisakuormat, kierratysKm, kierratysMaksu, prices),
+    [tyyppi, lisakuormat, kierratysKm, kierratysMaksu, prices],
   );
 
   const haeGoogleMatka = async () => {
