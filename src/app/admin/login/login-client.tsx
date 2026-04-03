@@ -52,15 +52,13 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
 
     const {
       data: { subscription },
-  export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: string | null }) {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [sent, setSent] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [cooldownSeconds, setCooldownSeconds] = useState(() =>
-      getRemainingCooldownSeconds()
-    );
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        router.replace("/admin");
+      }
+    });
+    return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, [router]);
