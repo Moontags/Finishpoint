@@ -59,8 +59,8 @@ export function SiteHeader({
               priority
             />
             <span className="flex shrink-0 flex-col leading-none sm:hidden">
-              <span className="text-[15px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
-              <span className="mt-0.5 text-[9px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
+              <span className="text-[19px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
+              <span className="mt-0.5 text-[11px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
             </span>
           </Link>
 
