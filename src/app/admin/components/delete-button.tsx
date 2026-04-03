@@ -8,7 +8,9 @@ export function DeleteButton({ id }: { id: string }) {
       return;
     }
     try {
-      await deleteBooking(id);
+      const formData = new FormData();
+      formData.set("id", id);
+      await deleteBooking(formData);
     } catch (error) {
       alert(
         "Virhe poistamisessa: " +
