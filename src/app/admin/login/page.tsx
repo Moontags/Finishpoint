@@ -1,16 +1,84 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+const OTP_COOLDOWN_SECONDS = 60;
+const OTP_LAST_SENT_KEY = "finishpoint_admin_otp_last_sent";
+
+function getRemainingCooldownSeconds() {
+  if (typeof window === "undefined") {
+    return 0;
+  }
+
+  const raw = window.localStorage.getItem(OTP_LAST_SENT_KEY);
+  if (!raw) {
+    return 0;
+  }
+
+  const lastSent = Number(raw);
+  if (!Number.isFinite(lastSent)) {
+    return 0;
+  }
+
+  const elapsedSeconds = Math.floor((Date.now() - lastSent) / 1000);
+  return Math.max(0, OTP_COOLDOWN_SECONDS - elapsedSeconds);
+}
+
 export default function AdminLoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(() =>
+    getRemainingCooldownSeconds()
+  );
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    let isMounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!isMounted) {
+        return;
+      }
+
+      if (data.session?.user) {
+        router.replace("/admin");
+      }
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        router.replace("/admin");
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, [router]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCooldownSeconds(getRemainingCooldownSeconds());
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (cooldownSeconds > 0) {
+      setError(`Odota ${cooldownSeconds} s ennen uuden kirjautumislinkin lähetystä.`);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -26,9 +94,17 @@ export default function AdminLoginPage() {
     });
 
     if (authError) {
-      setError(authError.message);
+      if (authError.message.toLowerCase().includes("rate limit")) {
+        setError("Liian monta pyyntöä. Odota hetki ja yritä uudelleen.");
+      } else {
+        setError(authError.message);
+      }
     } else {
       setSent(true);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(OTP_LAST_SENT_KEY, String(Date.now()));
+      }
+      setCooldownSeconds(OTP_COOLDOWN_SECONDS);
     }
     setLoading(false);
   }
@@ -41,13 +117,14 @@ export default function AdminLoginPage() {
         </h1>
         <p className="text-sm text-slate-500 mb-6">Kirjaudu sähköpostilinkin avulla</p>
 
-        {sent ? (
+        {sent && (
           <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-800">
             Kirjautumislinkki lähetetty osoitteeseen <strong>{email}</strong>.
             Tarkista sähköpostisi.
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
             <div>
               <label
                 htmlFor="email"
@@ -71,15 +148,23 @@ export default function AdminLoginPage() {
                 {error}
               </p>
             )}
+            {cooldownSeconds > 0 && (
+              <p className="text-xs text-slate-500">
+                Uusi lähetys mahdollista {cooldownSeconds} s kuluttua.
+              </p>
+            )}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || cooldownSeconds > 0}
               className="w-full rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2.5 text-sm transition-colors"
             >
-              {loading ? "Lähetetään..." : "Lähetä kirjautumislinkki"}
+              {loading
+                ? "Lähetetään..."
+                : cooldownSeconds > 0
+                ? `Odota ${cooldownSeconds} s`
+                : "Lähetä kirjautumislinkki"}
             </button>
           </form>
-        )}
       </div>
     </div>
   );

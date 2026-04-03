@@ -1,6 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
-import PriceRow from "./PriceRow";
+import PriceRow from "./price-row";
 
 type PriceRecord = {
   id: string;
@@ -32,23 +32,32 @@ export default async function PricesPage() {
   const prices = (data ?? []) as PriceRecord[];
 
   return (
-    <div className="max-w-2xl space-y-6">
-      <h1 className="text-2xl font-bold text-slate-800">Hinnat</h1>
+    <div className="max-w-5xl space-y-6">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-100">Laskuri & hinnat</h1>
+        <span className="rounded-xl border border-zinc-600 bg-zinc-800/60 px-3 py-2 text-xs font-semibold text-zinc-300">
+          Pikamuokkaus
+        </span>
+      </div>
 
       {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm">
+        <div className="rounded-xl border border-rose-500/50 bg-rose-900/30 px-4 py-3 text-sm text-rose-200">
           Virhe hintojen lataamisessa: {error.message}
         </div>
       )}
 
       {prices.length === 0 && !error && (
-        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center text-slate-400 text-sm">
+        <div className="rounded-2xl border border-zinc-700 bg-zinc-800/50 p-8 text-center text-sm text-zinc-400">
           Hintoja ei löydy. Aja ensin SQL-migraatio Supabasessa.
         </div>
       )}
 
       {prices.length > 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
+        <div className="overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-800/45">
+          <div className="grid grid-cols-[1fr_auto] border-b border-zinc-700/90 bg-zinc-900/30 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            <span>Hintakomponentti</span>
+            <span>Arvo</span>
+          </div>
           {prices.map((p) => (
             <PriceRow key={p.key} price={p} updatePrice={updatePrice} />
           ))}

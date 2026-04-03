@@ -2,59 +2,76 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
 
-const navItems = [
+const primaryItems = [
   { href: "/admin", label: "Keikat" },
-  { href: "/admin/prices", label: "Hinnat" },
-  { href: "/admin/dates", label: "Kalenteri" },
+  { href: "/admin/prices", label: "Laskuri & hinnat" },
+  { href: "/admin/dates", label: "Päivämäärät" },
+  { href: null, label: "Osoitteet" },
+  { href: null, label: "Tarjouspyynnöt" },
 ];
 
 export default function AdminNav() {
   const pathname = usePathname();
-  const router = useRouter();
-
-  async function handleSignOut() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/admin/login");
-  }
 
   return (
-    <header className="bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-14 flex items-center justify-between">
-        <nav className="flex items-center gap-1">
-          <span className="font-bold text-slate-800 mr-4 text-sm">
-            Finishpoint
-          </span>
-          {navItems.map((item) => {
-            const active =
-              item.href === "/admin"
-                ? pathname === "/admin"
-                : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <button
-          onClick={handleSignOut}
-          className="text-sm text-slate-500 hover:text-slate-800 transition-colors"
-        >
-          Kirjaudu ulos
-        </button>
+    <aside className="border-r border-zinc-700/80 bg-[#1f1f1f] md:min-h-screen">
+      <div className="p-4 border-b border-zinc-700/80">
+        <p className="text-lg font-bold leading-none">Finishpoint</p>
+        <p className="text-xs text-zinc-400 mt-1">Hallintapaneeli</p>
       </div>
-    </header>
+
+      <nav className="p-3 space-y-1">
+        {primaryItems.map((item) => {
+          const active = item.href
+            ? item.href === "/admin"
+              ? pathname === "/admin"
+              : pathname.startsWith(item.href)
+            : false;
+
+          const className = `group flex items-center gap-3 rounded-md px-3 py-2 text-base font-semibold transition-colors ${
+            active
+              ? "bg-zinc-700/40 text-zinc-100"
+              : item.href
+              ? "text-zinc-300 hover:bg-zinc-800/70 hover:text-zinc-100"
+              : "text-zinc-500 cursor-default"
+          }`;
+
+          const dotClass = `h-2 w-2 rounded-full ${
+            active ? "bg-zinc-100" : item.href ? "bg-zinc-500" : "bg-zinc-700"
+          }`;
+
+          if (!item.href) {
+            return (
+              <span key={item.label} className={className}>
+                <span className={dotClass} aria-hidden />
+                {item.label}
+              </span>
+            );
+          }
+
+          return (
+            <Link key={item.href} href={item.href} className={className}>
+              <span className={dotClass} aria-hidden />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="mt-8 border-t border-zinc-700/80 p-3 space-y-1">
+        <span className="flex items-center gap-3 rounded-md px-3 py-2 text-base font-semibold text-zinc-400">
+          <span className="h-2 w-2 rounded-full bg-zinc-600" aria-hidden />
+          Asetukset
+        </span>
+        <Link
+          href="/admin/auth/signout"
+          className="flex items-center gap-3 rounded-md px-3 py-2 text-base font-semibold text-zinc-300 hover:bg-zinc-800/70 hover:text-zinc-100 transition-colors"
+        >
+          <span className="h-2 w-2 rounded-full bg-zinc-500" aria-hidden />
+          Kirjaudu ulos
+        </Link>
+      </div>
+    </aside>
   );
 }

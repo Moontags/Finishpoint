@@ -41,12 +41,12 @@ function CalendarView({ blockedDates }: { blockedDates: string[] }) {
 
   return (
     <div>
-      <p className="text-sm font-medium text-slate-600 mb-2">
+      <p className="mb-3 text-sm font-semibold text-zinc-300">
         {format(today, "MMMM yyyy", { locale: fi })}
       </p>
       <div className="grid grid-cols-7 gap-1 text-xs">
         {dayNames.map((d) => (
-          <div key={d} className="text-center text-slate-400 font-medium py-1">
+          <div key={d} className="py-1 text-center font-semibold text-zinc-500">
             {d}
           </div>
         ))}
@@ -60,12 +60,12 @@ function CalendarView({ blockedDates }: { blockedDates: string[] }) {
           return (
             <div
               key={dateStr}
-              className={`text-center rounded-lg py-2 font-medium ${
+              className={`rounded-lg py-2 text-center font-semibold ${
                 isBlocked
-                  ? "bg-red-100 text-red-700"
+                  ? "bg-rose-700/35 text-rose-200"
                   : isToday
-                  ? "bg-blue-100 text-blue-700"
-                  : "text-slate-600"
+                  ? "bg-zinc-100 text-zinc-900"
+                  : "text-zinc-300"
               }`}
             >
               {format(day, "d")}
@@ -88,46 +88,44 @@ export default async function DatesPage() {
   const blockedDateStrings = blockedDates.map((d) => d.blocked_date);
 
   return (
-    <div className="max-w-2xl space-y-6">
-      <h1 className="text-2xl font-bold text-slate-800">Kalenterinhallinta</h1>
+    <div className="max-w-5xl space-y-6">
+      <h1 className="text-3xl font-bold tracking-tight text-zinc-100">Päivämäärät</h1>
 
       {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm">
+        <div className="rounded-xl border border-rose-500/50 bg-rose-900/30 px-4 py-3 text-sm text-rose-200">
           Virhe: {error.message}
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Calendar overview */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="rounded-2xl border border-zinc-700 bg-zinc-800/45 p-5">
           <CalendarView blockedDates={blockedDateStrings} />
         </div>
 
-        {/* Add new blocked date */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-slate-700">Lukitse päivä</h2>
+        <div className="space-y-4 rounded-2xl border border-zinc-700 bg-zinc-800/45 p-5">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-300">Lukitse päivä</h2>
           <form action={addBlockedDate} className="space-y-3">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Päivämäärä</label>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-400">Päivämäärä</label>
               <input
                 type="date"
                 name="blocked_date"
                 required
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full rounded-xl border border-zinc-500 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-300"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Syy (valinnainen)</label>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-400">Syy (valinnainen)</label>
               <input
                 type="text"
                 name="reason"
                 placeholder="esim. loma"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full rounded-xl border border-zinc-500 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-zinc-300"
               />
             </div>
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 transition-colors"
+              className="w-full rounded-xl border border-zinc-500 bg-zinc-700 py-2 text-sm font-semibold text-zinc-100 transition-colors hover:bg-zinc-600"
             >
               Lisää lukittu päivä
             </button>
@@ -135,24 +133,23 @@ export default async function DatesPage() {
         </div>
       </div>
 
-      {/* List */}
-      <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
+      <div className="divide-y divide-zinc-700/70 overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-800/45">
         {blockedDates.length === 0 ? (
-          <p className="text-center py-8 text-slate-400 text-sm">Ei lukittuja päiviä</p>
+          <p className="py-8 text-center text-sm text-zinc-400">Ei lukittuja päiviä</p>
         ) : (
           blockedDates.map((d) => (
             <div key={d.id} className="flex items-center justify-between px-5 py-3">
               <div>
-                <p className="text-sm font-medium text-slate-700">
+                <p className="text-sm font-semibold text-zinc-100">
                   {format(new Date(d.blocked_date), "d.M.yyyy EEEE", { locale: fi })}
                 </p>
-                {d.reason && <p className="text-xs text-slate-400">{d.reason}</p>}
+                {d.reason && <p className="text-xs text-zinc-400">{d.reason}</p>}
               </div>
               <form action={removeBlockedDate}>
                 <input type="hidden" name="id" value={d.id} />
                 <button
                   type="submit"
-                  className="text-xs text-red-500 hover:text-red-700 font-medium transition-colors"
+                  className="rounded-lg border border-rose-400/50 px-3 py-1.5 text-xs font-semibold text-rose-200 transition-colors hover:bg-rose-900/30"
                 >
                   Poista
                 </button>

@@ -35,13 +35,13 @@ export default function PriceRow({ price, updatePrice }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center justify-between px-5 py-3 gap-4"
+      className="flex items-center justify-between gap-4 border-b border-zinc-700/70 px-5 py-3"
     >
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-slate-700">
+        <p className="text-sm font-semibold text-zinc-100">
           {price.label ?? price.key}
         </p>
-        <p className="text-xs text-slate-400">{price.key}</p>
+        <p className="text-xs text-zinc-400">{price.key}</p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <input
@@ -50,14 +50,14 @@ export default function PriceRow({ price, updatePrice }: Props) {
           min="0"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="w-24 rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-right focus:outline-none focus:border-blue-500"
+          className="w-28 rounded-xl border border-zinc-500 bg-zinc-800 px-3 py-2 text-right text-sm text-zinc-100 focus:outline-none focus:border-zinc-300"
         />
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-slate-800 hover:bg-slate-900 disabled:opacity-50 text-white text-xs font-medium px-3 py-1.5 transition-colors"
+          className="rounded-xl border border-zinc-500 bg-zinc-700 px-3 py-2 text-xs font-semibold text-zinc-100 transition-colors hover:bg-zinc-600 disabled:opacity-50"
         >
-          {saved ? "✓" : "Tallenna"}
+          {saved ? "Tallennettu" : "Tallenna"}
         </button>
       </div>
     </form>
