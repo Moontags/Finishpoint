@@ -1,6 +1,6 @@
 "use client";
 
-import { lisaaAlv } from "@/lib/pricing";
+import { lisaaAlv, pyoristaAsiakkaalle } from "@/lib/pricing";
 
 interface PriceSummaryProps {
   hintaAlv0: number;
@@ -8,7 +8,7 @@ interface PriceSummaryProps {
 }
 
 export function PriceSummary({ hintaAlv0, label = "Hinta" }: PriceSummaryProps) {
-  const sisAlv = lisaaAlv(hintaAlv0);
+  const sisAlv = pyoristaAsiakkaalle(lisaaAlv(hintaAlv0));
 
   return (
     <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-4">

@@ -14,6 +14,10 @@ export function lisaaAlv(hintaAlv0: number): number {
   return pyoristaSentteihin(hintaAlv0 * (1 + ALV));
 }
 
+export function pyoristaAsiakkaalle(hintaSisAlv: number): number {
+  return Math.round(hintaSisAlv);
+}
+
 // Kategoria A
 export function ajoneuvohinta(km: number, monipysahdys: boolean): number {
   const turvallinenKm = Math.max(0, km);

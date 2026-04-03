@@ -268,8 +268,8 @@ export function KalenteriVaraus({
   }, [driveToDestinationMinutes, reservedBookings, selectedDay, selectedTime]);
 
   return (
-    <div className="rounded-[10px] border border-slate-200 bg-white/10 p-5 shadow-[0_1px_4px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:col-span-2 lg:p-4">
-      <div className="mb-3 flex items-center justify-between gap-2 lg:mb-2">
+    <div className="rounded-[10px] border border-slate-200 bg-white/10 p-5 shadow-[0_1px_4px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:col-span-2 lg:p-3.5">
+      <div className="mb-3 flex items-center justify-between gap-2 lg:mb-1.5">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#6b7a8d]">Varaa ajankohta</p>
         {isLoadingReservedDays ? (
           <span className="text-[11px] font-medium text-[#6b7a8d]">Paivitetaan saatavuutta...</span>
@@ -287,7 +287,7 @@ export function KalenteriVaraus({
           ←
         </button>
 
-        <div className="grid min-w-0 flex-1 grid-cols-3 gap-1.5 sm:grid-cols-7 sm:gap-2">
+        <div className="grid min-w-0 flex-1 grid-cols-3 gap-1.5 sm:grid-cols-7 sm:gap-2 lg:gap-1.5">
           {weekDays.map((day) => {
             const selected = selectedDay ? isSameDay(selectedDay, day) : false;
             const reserved = hasReservations(day);
@@ -305,17 +305,17 @@ export function KalenteriVaraus({
                   setSelectedTime("");
                   setIsTimeMenuOpen(false);
                 }}
-                className={`rounded-lg border px-1 py-2 text-center backdrop-blur-sm transition lg:py-1.5 ${
+                className={`rounded-lg border px-1 py-2 text-center backdrop-blur-sm transition lg:py-1 ${
                   selected
                     ? "border-[#1a2e4a] bg-[#1a2e4a] text-white"
                     : "border-slate-300 bg-white/10 text-[#1a2e4a] hover:border-[#1a2e4a] hover:bg-white/20"
                 } ${disabled ? "cursor-not-allowed opacity-40 hover:border-slate-300 hover:bg-white/10" : ""}`}
               >
-                <span className={`block text-[11px] uppercase tracking-[0.06em] ${selected ? "text-white/80" : "text-[#6b7a8d]"}`}>
+                <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-white/80" : "text-[#6b7a8d]"}`}>
                   {format(day, "EE", { locale: fi })}
                 </span>
-                <span className="mt-0.5 block text-[18px] font-semibold">{format(day, "d")}</span>
-                <span className={`block text-[10px] ${selected ? "text-white/80" : "text-[#6b7a8d]"}`}>
+                <span className="mt-0.5 block text-[18px] font-semibold lg:text-[16px]">{format(day, "d")}</span>
+                <span className={`block text-[10px] lg:text-[9px] ${selected ? "text-white/80" : "text-[#6b7a8d]"}`}>
                   {format(day, "LLL", { locale: fi })}
                 </span>
                 <span className="mt-1 block h-3 text-[10px]">
@@ -344,7 +344,7 @@ export function KalenteriVaraus({
       </div>
 
       {selectedDay && !isPast(selectedDay) ? (
-        <div className="mt-4 animate-[fadein_200ms_ease-in-out] lg:mt-3">
+        <div className="mt-4 animate-[fadein_200ms_ease-in-out] lg:mt-2.5">
           <label className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.08em] text-[#6b7a8d]">
             Valitse saapumisaika kohteeseen
           </label>
@@ -378,7 +378,7 @@ export function KalenteriVaraus({
             </button>
 
             {isTimeMenuOpen ? (
-              <div className="max-h-52 overflow-y-auto border-t border-slate-200">
+              <div className="max-h-52 overflow-y-auto border-t border-slate-200 lg:max-h-44">
                 {timeSlots.map((slot) => (
                   <button
                     key={slot}
@@ -429,7 +429,7 @@ export function KalenteriVaraus({
             </div>
           ) : (
             <p className="mt-3 text-[12px] text-[#6b7a8d]">
-              Tayta Mista ja Minne, jotta ajoaika voidaan laskea automaattisesti.
+              Täytä mistä ja minne jotta kuljetushinta voidaan laskea
             </p>
           )}
         </div>

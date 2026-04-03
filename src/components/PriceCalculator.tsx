@@ -8,6 +8,7 @@ import {
   ajoneuvohinta,
   kappaletavaraHinta,
   lisaaAlv,
+  pyoristaAsiakkaalle,
   projektiHinta,
 } from "@/lib/pricing";
 import { useCalculatorContext } from "@/lib/calculator-context";
@@ -199,7 +200,7 @@ export function AjoneuvoPriceCalculator() {
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
-    calculatorContext?.setEstimatedPriceVatIncl(lisaaAlv(hinta));
+    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta)));
   }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -264,7 +265,7 @@ export function AjoneuvoPriceCalculator() {
     }
   };
 
-  const hintaSisAlv = lisaaAlv(hinta);
+  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta));
 
   return (
     <section className="rounded-2xl bg-transparent p-4 sm:p-8">
@@ -370,7 +371,7 @@ export function KappaletavaraPriceCalculator() {
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
-    calculatorContext?.setEstimatedPriceVatIncl(lisaaAlv(hinta));
+    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta)));
   }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -435,7 +436,7 @@ export function KappaletavaraPriceCalculator() {
     }
   };
 
-  const hintaSisAlv = lisaaAlv(hinta);
+  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta));
 
   return (
     <section className={cardClass}>
@@ -600,7 +601,7 @@ export function ProjektiPriceCalculator() {
     }
   };
 
-  const hintaSisAlv = hinta === null ? null : lisaaAlv(hinta);
+  const hintaSisAlv = hinta === null ? null : pyoristaAsiakkaalle(lisaaAlv(hinta));
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
@@ -644,45 +645,6 @@ export function ProjektiPriceCalculator() {
           kohde={deliveryAddress}
           onDateTimeSelect={setBookingSelection}
         />
-
-        <button
-          type="button"
-          onClick={haeGoogleMatka}
-          disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
-        >
-          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
-        </button>
-
-        {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
-          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
-            <p className="mb-3 text-[12px] font-medium text-slate-500">
-              Paivitetty juuri nyt ({routeSummary.calculatedAt})
-            </p>
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
-              </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
-              </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
-              </div>
-            </div>
-          </div>
-        ) : null}
-
-        {distanceStatus === "error" && distanceMessage ? (
-          <p
-            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
-          >
-            {distanceMessage}
-          </p>
-        ) : null}
 
         <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Palvelutyyppi
@@ -747,6 +709,46 @@ export function ProjektiPriceCalculator() {
             <option value={50}>Suuri kuorma - 50 € (sis. ALV)</option>
           </select>
         </label>
+
+        <button
+          type="button"
+          onClick={haeGoogleMatka}
+          disabled={distanceStatus === "loading"}
+          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+        >
+          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+        </button>
+
+        {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
+          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+            <p className="mb-3 text-[12px] font-medium text-slate-500">
+              Paivitetty juuri nyt ({routeSummary.calculatedAt})
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {distanceStatus === "error" && distanceMessage ? (
+          <p
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+          >
+            {distanceMessage}
+          </p>
+        ) : null}
+
       </div>
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
