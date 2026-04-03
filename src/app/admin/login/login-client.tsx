@@ -26,7 +26,7 @@ function getRemainingCooldownSeconds() {
   return Math.max(0, OTP_COOLDOWN_SECONDS - elapsedSeconds);
 }
 
-export default function AdminLoginPageClient() {
+export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: string | null }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -121,65 +121,80 @@ export default function AdminLoginPageClient() {
         {sent && (
           <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-800">
             Kirjautumislinkki lähetetty osoitteeseen <strong>{email}</strong>.
-            Tarkista sähköpostisi.
-          </div>
-        )}
+            return (
+              <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
+                  <h1 className="text-xl font-bold text-slate-800 mb-1">
+                    Finishpoint Admin
+                  </h1>
+                  <p className="text-sm text-slate-500 mb-6">Kirjaudu sähköpostilinkin avulla</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Sähköpostiosoite
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                placeholder="sinun@email.fi"
-              />
-            </div>
-            {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
-                {error}
-              </p>
-            )}
-            {cooldownSeconds > 0 && (
-          {/* Lisää virhebanneri lomakkeen yläpuolelle */}
-          {errorMessage && (
-            <div style={{
-              background: '#fef2f2',
-              border: '1px solid #fecaca',
-              borderRadius: 8,
-              padding: '12px 16px',
-              marginBottom: 16,
-              color: '#991b1b',
-              fontSize: 14,
-            }}>
-              {errorMessage}
-            </div>
-          )}
-              <p className="text-xs text-slate-500">
-                Uusi lähetys mahdollista {cooldownSeconds} s kuluttua.
-              </p>
-            )}
-            <button
-              type="submit"
-              disabled={loading || cooldownSeconds > 0}
-              className="w-full rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2.5 text-sm transition-colors"
-            >
-              {loading
-                ? "Lähetetään..."
-                : cooldownSeconds > 0
-                ? `Odota ${cooldownSeconds} s`
-                : "Lähetä kirjautumislinkki"}
-            </button>
-          </form>
+                  {/* Virhebanneri lomakkeen yläpuolelle */}
+                  {errorMessage && (
+                    <div style={{
+                      background: '#fef2f2',
+                      border: '1px solid #fecaca',
+                      borderRadius: 8,
+                      padding: '12px 16px',
+                      marginBottom: 16,
+                      color: '#991b1b',
+                      fontSize: 14,
+                    }}>
+                      {errorMessage}
+                    </div>
+                  )}
+
+                  {sent && (
+                    <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-800">
+                      Kirjautumislinkki lähetetty osoitteeseen <strong>{email}</strong>.
+                      Tarkista sähköpostisi.
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-slate-700 mb-1"
+                      >
+                        Sähköpostiosoite
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        required
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        placeholder="sinun@email.fi"
+                      />
+                    </div>
+                    {error && (
+                      <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+                        {error}
+                      </p>
+                    )}
+                    {cooldownSeconds > 0 && (
+                      <p className="text-xs text-slate-500">
+                        Uusi lähetys mahdollista {cooldownSeconds} s kuluttua.
+                      </p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={loading || cooldownSeconds > 0}
+                      className="w-full rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2.5 text-sm transition-colors"
+                    >
+                      {loading
+                        ? "Lähetetään..."
+                        : cooldownSeconds > 0
+                        ? `Odota ${cooldownSeconds} s`
+                        : "Lähetä kirjautumislinkki"}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            );
       </div>
     </div>
   );
