@@ -324,7 +324,7 @@ export function AjoneuvoPriceCalculator() {
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
@@ -492,7 +492,7 @@ export function KappaletavaraPriceCalculator() {
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
@@ -730,7 +730,7 @@ export function ProjektiPriceCalculator() {
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Aika</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">

@@ -135,14 +135,14 @@ export function SiteHeader({
             </details>
             <Link
               href={quoteHref}
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl bg-slate-700 px-3 py-2 text-xs font-bold text-white shadow-[0_4px_14px_rgba(15,23,42,0.18)] transition hover:bg-slate-600 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden sm:inline-flex items-center gap-1 rounded-xl bg-slate-700/80 px-3 py-2 text-xs font-bold text-white shadow-[0_4px_14px_rgba(15,23,42,0.18)] transition hover:bg-slate-700/90 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{siteCta.quoteNavLabel}</span>
             </Link>
             <a
               href={siteContact.phoneHref}
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl bg-slate-700 px-3 py-2 text-xs font-bold text-white shadow-[0_4px_14px_rgba(15,23,42,0.18)] transition hover:bg-slate-600 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden sm:inline-flex items-center gap-1 rounded-xl bg-slate-700/80 px-3 py-2 text-xs font-bold text-white shadow-[0_4px_14px_rgba(15,23,42,0.18)] transition hover:bg-slate-700/90 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>Soita</span>

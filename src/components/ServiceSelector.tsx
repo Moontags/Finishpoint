@@ -88,7 +88,7 @@ export default function ServiceSelector({
                   onClick={() => { setActive(id); setOpen(false); }}
                   className={`flex w-full min-w-0 items-center gap-4 px-5 py-5 text-[17px] font-bold transition ${
                     active === id
-                      ? "bg-slate-700 text-white"
+                      ? "bg-slate-700/80 text-white"
                       : "text-slate-800 hover:bg-slate-100"
                   }`}
                 >
@@ -109,7 +109,7 @@ export default function ServiceSelector({
             onClick={() => setActive(id)}
             className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold shadow-sm backdrop-blur-sm transition ${
               active === id
-                ? "border border-slate-700 bg-slate-700 text-white"
+                ? "border border-slate-700/60 bg-slate-700/80 text-white"
                 : "border border-slate-200 bg-white/10 text-slate-700 hover:border-blue-300 hover:bg-white/20 hover:text-slate-900"
             }`}
           >

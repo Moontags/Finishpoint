@@ -94,7 +94,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row">
               <a
                 href={siteCta.calculatorHref}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-600 active:scale-[0.97] sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-700/90 active:scale-[0.97] sm:w-auto"
               >
                 {siteCta.orderTransportLabel}
                 <MoveRight className="h-4 w-4" />

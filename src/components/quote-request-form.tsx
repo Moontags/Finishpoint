@@ -29,7 +29,7 @@ export function QuoteRequestForm() {
     name: "",
     phone: "",
     email: "",
-    serviceType: quoteServiceOptions[0],
+    serviceType: "Muu kuljetus",
     pickupAddress: "",
     deliveryAddress: "",
     message: "",
@@ -122,7 +122,7 @@ export function QuoteRequestForm() {
         name: "",
         phone: "",
         email: "",
-        serviceType: quoteServiceOptions[0],
+        serviceType: "Muu kuljetus",
         pickupAddress: "",
         deliveryAddress: "",
         message: "",
@@ -333,7 +333,7 @@ export function QuoteRequestForm() {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#1e3a5f] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
               <ArrowUpRight className="h-4 w-4" />
@@ -343,7 +343,7 @@ export function QuoteRequestForm() {
               type="button"
               onClick={handleOrderAndPayment}
               disabled={status === "loading" || !canAttemptOrder}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-blue-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja jatka kassaan"}
               <ArrowUpRight className="h-4 w-4" />

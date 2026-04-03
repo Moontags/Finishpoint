@@ -40,6 +40,21 @@ function timeLabel(date: Date) {
   return format(date, "HH:mm", { locale: fi });
 }
 
+function durationLabel(totalMinutes: number) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours <= 0) {
+    return `${minutes}min`;
+  }
+
+  if (minutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${minutes}min`;
+}
+
 function generateTimeSlots() {
   const result: string[] = [];
   for (let hour = 7; hour <= 18; hour += 1) {
@@ -415,16 +430,8 @@ export function KalenteriVaraus({
           {selectedTime && driveToDestinationMinutes !== null && driveFromRiihimakiMinutes !== null ? (
             <div className="mt-3 rounded-[10px] bg-[#f0f2f5] px-4 py-3 text-[13px] leading-7 text-[#1a2e4a]">
               <p>📍 Saapuminen kohteeseen: ~{selectedTime}</p>
-              <p>🚛 Ajomatka {driveFromRiihimakiMinutes} min</p>
-              <p>⏱ Arvioitu kesto kohteessa: {WORK_DURATION_MINUTES} min</p>
               <p>
-                ✅ Varaus vapautetaan: ~
-                {timeLabel(
-                  addMinutes(
-                    parse(`${format(selectedDay, "yyyy-MM-dd")} ${selectedTime}`, "yyyy-MM-dd HH:mm", new Date()),
-                    WORK_DURATION_MINUTES + driveToDestinationMinutes,
-                  ),
-                )}
+                ⏱ Arvioitu kuljetuksen kokonaiskesto: {durationLabel(WORK_DURATION_MINUTES + driveToDestinationMinutes)}
               </p>
             </div>
           ) : (

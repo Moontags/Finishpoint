@@ -16,9 +16,9 @@ export default function AjoneuvoLaskuriPage() {
       <SiteHeader opaque />
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-5 flex flex-wrap gap-2">
-          <Link href="/laskuri" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] font-medium text-slate-700">Kaikki kategoriat</Link>
-          <Link href="/laskuri/kappaletavara" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] font-medium text-slate-700">Kappaletavara</Link>
-          <Link href="/laskuri/projekti" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] font-medium text-slate-700">Projektit</Link>
+          <Link href="/laskuri" className="rounded-lg border border-slate-700/60 bg-slate-700/80 px-3 py-2 text-[13px] font-medium text-white transition hover:bg-slate-700/90">Kaikki kategoriat</Link>
+          <Link href="/laskuri/kappaletavara" className="rounded-lg border border-slate-700/60 bg-slate-700/80 px-3 py-2 text-[13px] font-medium text-white transition hover:bg-slate-700/90">Kappaletavara</Link>
+          <Link href="/laskuri/projekti" className="rounded-lg border border-slate-700/60 bg-slate-700/80 px-3 py-2 text-[13px] font-medium text-white transition hover:bg-slate-700/90">Projektit</Link>
         </div>
         <PriceCalculator category="ajoneuvo" />
       </section>
