@@ -35,13 +35,13 @@ export default function Home() {
           }}
         />
 
-        <div className="relative z-2 mx-auto max-w-7xl px-4 py-12 max-[390px]:px-3 max-[390px]:py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
-          <div className="space-y-5 text-center">
-            <h1 className="mx-auto max-w-4xl text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 max-[390px]:text-[1.95rem] sm:text-6xl">
+        <div className="relative z-2 mx-auto max-w-7xl px-4 py-12 mt-18 sm:mt-0 max-[390px]:px-3 max-[390px]:py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
+          <div className="space-y-5 text-left ml-4 sm:ml-12 mt-12">
+            <h1 className="max-w-4xl text-5xl font-bold leading-[1.1] tracking-tight text-slate-900 max-[390px]:text-[1.95rem] sm:text-6xl">
               Tavarakuljetukset, muutot &amp; siirtopalvelut <br />
               <span className="text-blue-600"> yhdestä paikasta</span>
             </h1>
-            <p className="mx-auto max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-lg sm:leading-8">
+            <p className="max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-lg sm:leading-8">
               FP-pikakuljetus hoitaa kuljetukset puolestasi alusta loppuun.
             </p>
           </div>
@@ -53,7 +53,7 @@ export default function Home() {
 
       {/* ── Services ─────────────────────────────────────────────── */}
       <section id="services" className="mx-auto max-w-7xl overflow-x-clip px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-3 lg:gap-16">
             {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
               <a
                 key={cardTitle}
