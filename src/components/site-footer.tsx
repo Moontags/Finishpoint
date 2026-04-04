@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { serviceFooterLinks } from "@/lib/services";
 import { siteContact } from "@/lib/site-config";
@@ -6,23 +7,38 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-white/90">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
-        <div className="min-w-0 space-y-1.5 lg:max-w-md lg:pt-4">
-          <p className="text-[13px] text-slate-700">{siteContact.phoneDisplay}</p>
-          <p className="break-all text-[13px] text-slate-700">{siteContact.email}</p>
-          <p className="pt-1 text-[12px] text-slate-600">
-            Hinnat näytetään sis. ALV 25,5 %. Yritys (ALV 0 %).
-          </p>
-          <a
-            href="/images/sopimusehdot.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-[12px] text-slate-700 underline transition hover:text-blue-600"
-          >
-            Sopimusehdot
-          </a>
+
+        {/* Vasempi palsta: yhteystiedot + logo tekstin oikealla mobiilissa */}
+        <div className="min-w-0 lg:max-w-md lg:pt-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-1.5">
+              <p className="text-[13px] text-slate-700">{siteContact.phoneDisplay}</p>
+              <p className="break-all text-[13px] text-slate-700">{siteContact.email}</p>
+              <p className="pt-1 text-[12px] text-slate-600">
+                Hinnat näytetään sis. ALV 25,5 %. Yritys (ALV 0 %).
+              </p>
+              <a
+                href="/images/sopimusehdot.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-[12px] text-slate-700 underline transition hover:text-blue-600"
+              >
+                Sopimusehdot
+              </a>
+            </div>
+            {/* Logo tekstin oikealla — vain mobiili/tablet, piilotetaan lg:ssä. Suurempi mobiilissa. */}
+            <Image
+              src="/images/finishpoint-logo.png"
+              alt="Finishpoint"
+              width={180}
+              height={90}
+              className="h-auto w-40 shrink-0 object-contain opacity-55 -mt-2 mr-2 lg:hidden"
+            />
+          </div>
         </div>
 
-        <div className="grid gap-4 lg:max-w-md lg:justify-self-end lg:w-full">
+        {/* Oikea palsta: vain Palvelut — isot näytöt */}
+        <div className="hidden lg:grid gap-4 lg:max-w-md lg:justify-self-end lg:w-full">
           <div>
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">Palvelut</p>
             <div className="grid grid-cols-2 gap-2 text-[12px] text-slate-700">
@@ -42,6 +58,7 @@ export function SiteFooter() {
             </div>
           </div>
         </div>
+
       </div>
     </footer>
   );
