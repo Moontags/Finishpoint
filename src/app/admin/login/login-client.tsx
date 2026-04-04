@@ -32,9 +32,14 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [cooldownSeconds, setCooldownSeconds] = useState(() =>
-    getRemainingCooldownSeconds()
-  );
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+
+  useEffect(() => {
+    // Asetetaan cooldown seuraavassa event loopissa, jotta vältetään synkroninen setState
+    setTimeout(() => {
+      setCooldownSeconds(getRemainingCooldownSeconds());
+    }, 0);
+  }, []);
 
   useEffect(() => {
     const supabase = createClient();
@@ -83,8 +88,13 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
 
     const supabase = createClient();
 
-    // Käytä aina eksplisiittistä SITE_URL-pohjaista redirectUrlia
-    const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/admin/auth/callback`;
+
+    // Käytä eksplisiittistä SITE_URL:ia, mutta fallback window.location.origin jos sitä ei ole
+    let redirectUrl = "/admin/auth/callback";
+    if (typeof window !== "undefined") {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+      redirectUrl = `${siteUrl}/admin/auth/callback`;
+    }
 
     const { error: authError } = await supabase.auth.signInWithOtp({
       email,

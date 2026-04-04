@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
@@ -47,15 +47,11 @@ export async function middleware(request: NextRequest) {
   const isAdmin    = pathname.startsWith('/admin')
 
   if (isLogin && user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin'
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(`${request.nextUrl.origin}/admin`)
   }
 
   if (isAdmin && !isLogin && !isCallback && !isSignout && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin/login'
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(`${request.nextUrl.origin}/admin/login`)
   }
 
   return supabaseResponse

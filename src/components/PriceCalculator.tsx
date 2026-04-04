@@ -25,7 +25,9 @@ function usePrices(): PriceConfig {
 
   useEffect(() => {
     if (_cachedPrices) {
-      setPrices(_cachedPrices);
+      setTimeout(() => {
+        setPrices(_cachedPrices!);
+      }, 0);
       return;
     }
     fetch("/api/prices")

@@ -2,11 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import AdminLoginPageClient from "./login-client";
 
-export default async function AdminLoginPage({
-  searchParams,
-}: {
-  searchParams: { error?: string }
-}) {
+export default async function AdminLoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const params = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -23,8 +20,8 @@ export default async function AdminLoginPage({
     auth_failed: 'Kirjautuminen epäonnistui. Yritä uudelleen.',
   };
 
-  const errorMsg = searchParams?.error
-    ? (errorMessages[searchParams.error] ?? 'Kirjautuminen epäonnistui.')
+  const errorMsg = params?.error
+    ? (errorMessages[params.error] ?? 'Kirjautuminen epäonnistui.')
     : null;
 
   // Renderöi lomake ja välitä virheilmoitus
