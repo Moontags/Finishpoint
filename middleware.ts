@@ -1,7 +1,13 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+
 export async function middleware(request: NextRequest) {
+  // Debuggaus: tulosta polku ja cookiet Vercelin logeihin
+  console.log('=== MIDDLEWARE ===')
+  console.log('pathname:', request.nextUrl.pathname)
+  console.log('cookies:', request.cookies.getAll().map(c => c.name))
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -13,20 +19,26 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
+          // Aseta cookiet sekä requestiin että responseen
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, {
+              ...options,
+              sameSite: 'lax',
+              secure: process.env.NODE_ENV === 'production',
+              httpOnly: true,
+            })
           )
         },
       },
     }
   )
 
-  // TÄRKEÄÄ: älä kirjoita logiikkaa ennen tätä getUser-kutsua
   const { data: { user } } = await supabase.auth.getUser()
+  console.log('user:', user?.email ?? 'NULL')
 
   const pathname = request.nextUrl.pathname
   const isLogin    = pathname === '/admin/login'
@@ -46,8 +58,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // TÄRKEÄÄ: palauta supabaseResponse eikä NextResponse.next()
-  // jotta cookiet välittyvät oikein
   return supabaseResponse
 }
 
