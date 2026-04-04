@@ -13,18 +13,27 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error } = await supabase.auth.getUser();
 
-  // Login-sivu renderöidään omalla layoutillaan ilman sidebaria
-  // Tämä layout koskee VAIN kirjautuneita sivuja
+  // Debug: näet Vercelin logeissa käyttäjän
+  console.log("AdminLayout user:", user?.email ?? "NULL", "error:", error?.message);
+
   if (!user) {
-    return <>{children}</>;
+    // Palauta vaalea tausta kirjautumattomille (login)
+    return (
+      <div style={{ minHeight: "100vh", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {children}
+      </div>
+    );
   }
 
+  // Kirjautuneille: sidebar + sisältö
   return (
-    <div className="min-h-screen bg-[#252525] text-zinc-100 md:grid md:grid-cols-[260px_1fr]">
+    <div style={{ display: "flex", minHeight: "100vh", background: "#f9fafb" }}>
       <AdminNav />
-      <main className="p-4 md:p-7 lg:p-8">{children}</main>
+      <main style={{ flex: 1, padding: "24px", overflowY: "auto" }}>
+        {children}
+      </main>
     </div>
   );
 }
