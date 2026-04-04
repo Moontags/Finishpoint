@@ -6,24 +6,24 @@ import { serviceCategories } from "@/lib/service-categories";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
+    <main className="min-h-screen overflow-x-clip max-w-full bg-[#f5f6f8] text-slate-900">
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative overflow-hidden md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
+      <section id="top" className="relative overflow-hidden max-w-full md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
 
         {/* Van background image */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 max-w-full">
           <Image
             src="/images/paku2.png"
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-center"
+            className="object-cover object-center max-w-full h-auto"
             priority
           />
-          <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20" />
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-[#f5f6f8] to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20 max-w-full" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-[#f5f6f8] to-transparent max-w-full" />
         </div>
 
         {/* Dot pattern */}
@@ -36,12 +36,14 @@ export default function Home() {
         />
 
         <div className="relative z-2 mx-auto max-w-7xl px-4 py-12 mt-18 sm:mt-0 max-[390px]:px-3 max-[390px]:py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
-          <div className="space-y-5 text-left ml-4 sm:ml-12 mt-12">
-            <h1 className="max-w-4xl text-5xl font-bold leading-[1.1] tracking-tight text-slate-900 max-[390px]:text-[1.95rem] sm:text-6xl">
+          <div className="space-y-5 text-left ml-2 sm:ml-12 mt-12">
+            <h1
+              className="break-words hyphens-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-4xl text-3xl max-[390px]:text-[1.5rem] sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight text-slate-900"
+            >
               Tavarakuljetukset, muutot &amp; siirtopalvelut <br />
-              <span className="text-blue-600"> yhdestä paikasta</span>
+              <span className="text-blue-600">yhdestä paikasta</span>
             </h1>
-            <p className="max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-lg sm:leading-8">
+            <p className="break-words hyphens-auto max-w-[90vw] sm:max-w-md md:max-w-xl lg:max-w-2xl text-[14px] max-[390px]:text-[13px] leading-7 text-slate-600 sm:text-lg sm:leading-8">
               FP-pikakuljetus hoitaa kuljetukset puolestasi alusta loppuun.
             </p>
           </div>
@@ -52,7 +54,7 @@ export default function Home() {
       <CalculatorFormSection />
 
       {/* ── Services ─────────────────────────────────────────────── */}
-      <section id="services" className="mx-auto max-w-7xl overflow-x-clip px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
+      <section id="services" className="mx-auto max-w-7xl overflow-x-clip max-w-full px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
           <div className="grid gap-5 md:grid-cols-3 lg:gap-16">
             {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
               <a

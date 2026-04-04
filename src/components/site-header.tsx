@@ -48,19 +48,19 @@ export function SiteHeader({
             ? "bg-white"
             : "bg-white md:bg-transparent"
       }`}>
-        <div className="flex translate-y-2 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
-          <Link href="/" className="ml-0 flex min-w-0 shrink-0 items-center gap-2" aria-label="Etusivu">
+        <div className="flex translate-y-4 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
+          <Link href="/" className="ml-4 flex min-w-0 shrink-0 items-center gap-2 sm:ml-0" aria-label="Etusivu">
             <Image
               src="/images/finishpoint-logo.png"
               alt="Finishpoint"
               width={160}
               height={80}
-              className="h-auto w-32 object-contain sm:w-44"
+              className="hidden h-auto w-32 object-contain sm:block sm:w-44"
               priority
             />
-            <span className="flex shrink-0 flex-col leading-none sm:hidden">
-              <span className="text-[19px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
-              <span className="mt-0.5 text-[11px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
+            <span className="flex shrink-0 flex-col leading-none mx-auto text-left ml-3 sm:hidden">
+              <span className="text-[22px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
+              <span className="mt-0.5 text-[13px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
             </span>
           </Link>
 
@@ -105,7 +105,7 @@ export function SiteHeader({
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-            <details className="relative mr-5 translate-y-0.5 sm:mr-0 sm:translate-y-0 sm:hidden">
+            <details className="relative mr-5 sm:mr-0 sm:hidden">
               <summary className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50">
                 <Menu className="h-5.5 w-5.5" />
               </summary>
