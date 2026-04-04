@@ -23,6 +23,7 @@ function formatEuro(value: number | null) {
 export default function CheckoutPage() {
   const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : undefined;
   const success = searchParams?.get("success") === "1";
+  const cancel = searchParams?.get("cancel") === "1";
   const [draft] = useState<OrderDraft | null>(() => {
     if (typeof window === "undefined") return null;
     const raw = window.sessionStorage.getItem(ORDER_DRAFT_STORAGE_KEY);
@@ -114,6 +115,25 @@ export default function CheckoutPage() {
                 <Link
                   href="/"
                   className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600"
+                >
+                  Palaa etusivulle
+                </Link>
+              </div>
+            </>
+          ) : cancel ? (
+            <>
+              <h1 className="mt-3 text-3xl font-bold tracking-tight text-rose-700">Maksu peruutettu</h1>
+              <p className="mt-2 text-sm text-rose-600">Maksua ei suoritettu loppuun. Voit yrittää maksua uudelleen tai palata etusivulle.</p>
+              <div className="mt-6 flex justify-center gap-4">
+                <Link
+                  href="/kassa"
+                  className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600"
+                >
+                  Yritä maksua uudelleen
+                </Link>
+                <Link
+                  href="/"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-base font-bold text-slate-700 transition hover:bg-slate-100"
                 >
                   Palaa etusivulle
                 </Link>
