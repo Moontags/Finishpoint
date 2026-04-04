@@ -24,36 +24,22 @@ export async function middleware(request: NextRequest) {
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, {
               ...options,
-              sameSite: 'lax',
-              secure: process.env.NODE_ENV === 'production',
-              httpOnly: true,
-            })
-          )
-        },
-      },
-    }
-  )
+                const pathname = request.nextUrl.pathname
+                const isLogin    = pathname === '/admin/login'
+                const isCallback = pathname === '/admin/auth/callback'
+                const isSignout  = pathname === '/admin/auth/signout'
+                const isAdmin    = pathname.startsWith('/admin')
 
-  const { data: { user } } = await supabase.auth.getUser()
-  // ...existing code...
+                // Tarkista Supabase-auth-cookie (esim. sb-access-token tai sb-refresh-token)
+                const hasAuthCookie = request.cookies.has('sb-access-token') || request.cookies.has('sb-refresh-token')
 
-  const pathname = request.nextUrl.pathname
-  const isLogin    = pathname === '/admin/login'
-  const isCallback = pathname === '/admin/auth/callback'
-  const isSignout  = pathname === '/admin/auth/signout'
-  const isAdmin    = pathname.startsWith('/admin')
+                if (isLogin && hasAuthCookie) {
+                  return NextResponse.redirect(`${request.nextUrl.origin}/admin`)
+                }
 
-  if (isLogin && user) {
-    return NextResponse.redirect(`${request.nextUrl.origin}/admin`)
-  }
+                if (isAdmin && !isLogin && !isCallback && !isSignout && !hasAuthCookie) {
+                  return NextResponse.redirect(`${request.nextUrl.origin}/admin/login`)
+                }
 
-  if (isAdmin && !isLogin && !isCallback && !isSignout && !user) {
-    return NextResponse.redirect(`${request.nextUrl.origin}/admin/login`)
-  }
+                return NextResponse.next()
 
-  return supabaseResponse
-}
-
-export const config = {
-  matcher: ['/admin/:path*'],
-}
