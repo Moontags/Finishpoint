@@ -110,14 +110,13 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
-        <h1 className="text-xl font-bold text-slate-800 mb-1">
-          Finishpoint Admin
-        </h1>
-        <p className="text-sm text-slate-500 mb-6">Kirjaudu sähköpostilinkin avulla</p>
+    <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
+      <h1 className="text-xl font-bold text-slate-800 mb-1">
+        Finishpoint Admin
+      </h1>
+      <p className="text-sm text-slate-500 mb-6">Kirjaudu sähköpostilinkin avulla</p>
 
-        {/* Virhebanneri lomakkeen yläpuolelle */}
+      {/* Virhebanneri lomakkeen yläpuolelle */}
         {errorMessage && (
           <div style={{
             background: '#fef2f2',
