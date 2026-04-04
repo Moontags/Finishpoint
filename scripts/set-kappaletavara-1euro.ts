@@ -10,7 +10,7 @@ async function setKappaletavaraBaseToOneEuro() {
   const supabase = createAdminClient();
   await supabase
     .from("prices")
-    .update({ value: 1, updated_at: new Date().toISOString() })
+    .update({ value: 89, updated_at: new Date().toISOString() })
     .eq("key", "base_kappaletavara");
   const { data, error } = await supabase.from("prices").select("*").eq("key", "base_kappaletavara");
   if (error) {

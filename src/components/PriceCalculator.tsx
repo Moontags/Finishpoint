@@ -167,7 +167,11 @@ function AddressAutocompleteField({
   return (
     <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
       {label}
-      <div ref={containerRef} className="relative">
+      <div
+        ref={containerRef}
+        className="relative max-w-full overflow-x-hidden"
+        style={{ touchAction: "pan-y" }}
+      >
         <input
           id={id}
           name={name}
@@ -179,7 +183,7 @@ function AddressAutocompleteField({
         />
 
         {isFocused && suggestions.length > 0 ? (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 overflow-hidden rounded-xl border border-slate-200 bg-white/10 shadow-lg backdrop-blur-sm">
+          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 w-full overflow-hidden rounded-xl border border-slate-200 bg-white/10 shadow-lg backdrop-blur-sm">
             {suggestions.map((suggestion) => (
               <button
                 key={suggestion.placeId || suggestion.label}
