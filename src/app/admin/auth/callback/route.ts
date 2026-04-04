@@ -1,25 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import type { EmailOtpType } from '@supabase/supabase-js'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
-
-  // Tarkista ensin virheet query-parametreista
-  const error = searchParams.get('error')
-  const errorCode = searchParams.get('error_code')
-  const errorDescription = searchParams.get('error_description')
-
-  if (error || errorCode) {
-    // Ohjaa login-sivulle selkeällä virheilmoituksella
-    // EI pääsivulle
-    const loginUrl = new URL('/admin/login', origin)
-    loginUrl.searchParams.set('error', errorCode ?? error ?? 'auth_error')
-    return NextResponse.redirect(loginUrl)
-  }
-
   const code = searchParams.get('code')
+  const error = searchParams.get('error')
+
+  if (error) {
+    return NextResponse.redirect(`${origin}/admin/login?error=otp_expired`)
+  }
 
   if (code) {
     const cookieStore = await cookies()
@@ -28,25 +18,27 @@ export async function GET(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
       {
         cookies: {
-          getAll: () => cookieStore.getAll(),
-          setAll: (c) => c.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options))
-        }
+          getAll() {
+            return cookieStore.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          },
+        },
       }
     )
 
-    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+    const { error: exchangeError } =
+      await supabase.auth.exchangeCodeForSession(code)
 
     if (!exchangeError) {
-      return NextResponse.redirect(new URL('/admin', origin))
+      return NextResponse.redirect(`${origin}/admin`)
     }
-
-    // Vaihto epäonnistui — ohjaa loginiin virhekoodilla
-    const loginUrl = new URL('/admin/login', origin)
-    loginUrl.searchParams.set('error', 'session_error')
-    return NextResponse.redirect(loginUrl)
   }
 
-  // Ei koodia eikä virhettä — ohjaa loginiin
+  return NextResponse.redirect(`${origin}/admin/login?error=auth_failed`)
+}
   return NextResponse.redirect(new URL('/admin/login', origin))
 }
