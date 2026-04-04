@@ -1,8 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request) {
   // ...existing code...
 
   let supabaseResponse = NextResponse.next({ request })
