@@ -3,10 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 
 export async function middleware(request: NextRequest) {
-  // Debuggaus: tulosta polku ja cookiet Vercelin logeihin
-  console.log('=== MIDDLEWARE ===')
-  console.log('pathname:', request.nextUrl.pathname)
-  console.log('cookies:', request.cookies.getAll().map(c => c.name))
+  // ...existing code...
 
   let supabaseResponse = NextResponse.next({ request })
 
@@ -38,7 +35,7 @@ export async function middleware(request: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
-  console.log('user:', user?.email ?? 'NULL')
+  // ...existing code...
 
   const pathname = request.nextUrl.pathname
   const isLogin    = pathname === '/admin/login'
