@@ -235,14 +235,16 @@ export async function POST(request: Request) {
           cancelUrl,
         });
       } catch (error) {
-        if (error instanceof MobilePayApiError) {
-          console.error("MobilePay API error", {
-            code: error.code,
-            status: error.status,
-            details: error.details,
-          });
-        } else {
-          console.error("MobilePay API unknown error", error);
+        if (process.env.NODE_ENV !== "production") {
+          if (error instanceof MobilePayApiError) {
+            console.error("MobilePay API error", {
+              code: error.code,
+              status: error.status,
+              details: error.details,
+            });
+          } else {
+            console.error("MobilePay API unknown error", error);
+          }
         }
 
         if (!mobilePayLink) {
@@ -274,7 +276,9 @@ export async function POST(request: Request) {
           );
         }
 
-        console.error("MobilePay API failed, falling back to public payment link", error);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("MobilePay API failed, falling back to public payment link", error);
+        }
       }
     }
 

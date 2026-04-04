@@ -1,13 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 
-type BookingRow = {
+type VarausRow = {
   id: string;
   created_at: string | null;
-  starts_at: string | null;
-  service_type: string | null;
+  varaus_pvm: string | null;
+  palvelutyyppi: string | null;
   status: string | null;
-  price?: number | null;
-  total_with_vat?: number | null;
+  hinta?: number | null;
+  hinta_alv?: number | null;
 };
 
 type MonthlyStat = {
@@ -17,10 +17,10 @@ type MonthlyStat = {
   revenue: number;
 };
 
-function toAmount(booking: BookingRow): number {
-  const price = typeof booking.price === "number" ? booking.price : null;
-  const total = typeof booking.total_with_vat === "number" ? booking.total_with_vat : null;
-  return price ?? total ?? 0;
+function toAmount(varaus: VarausRow): number {
+  const price = typeof varaus.hinta === "number" ? varaus.hinta : null;
+  const total = typeof varaus.hinta_alv === "number" ? varaus.hinta_alv : null;
+  return total ?? price ?? 0;
 }
 
 function normalizeService(serviceType: string | null): string {
@@ -88,12 +88,12 @@ function ProgressBar({ percent }: { percent: number }) {
 
 export default async function AdminStatsPage() {
   const supabase = await createClient();
-  const { data: bookings } = await supabase
-    .from("bookings")
+  const { data: varaukset } = await supabase
+    .from("varaukset")
     .select("*")
     .order("created_at", { ascending: true });
 
-  const list = (bookings ?? []) as BookingRow[];
+  const list = (varaukset ?? []) as VarausRow[];
   const totalBookings = list.length;
   const totalRevenue = list.reduce((sum, b) => sum + toAmount(b), 0);
   const avgPrice = totalBookings > 0 ? totalRevenue / totalBookings : 0;
@@ -127,9 +127,9 @@ export default async function AdminStatsPage() {
   };
   const weekdayCounts = [0, 0, 0, 0, 0, 0, 0];
 
-  for (const booking of list) {
-    const amount = toAmount(booking);
-    const created = booking.created_at ? new Date(booking.created_at) : null;
+  for (const varaus of list) {
+    const amount = toAmount(varaus);
+    const created = varaus.created_at ? new Date(varaus.created_at) : null;
     if (created && !Number.isNaN(created.getTime())) {
       const key = `${created.getFullYear()}-${String(created.getMonth() + 1).padStart(2, "0")}`;
       const item = monthMap.get(key);
@@ -139,15 +139,15 @@ export default async function AdminStatsPage() {
       }
     }
 
-    const serviceKey = normalizeService(booking.service_type);
+    const serviceKey = normalizeService(varaus.palvelutyyppi);
     if (serviceKey in serviceCounts) {
       serviceCounts[serviceKey] += 1;
     }
 
-    const statusKey = normalizeStatus(booking.status);
+    const statusKey = normalizeStatus(varaus.status);
     statusCounts[statusKey] += 1;
 
-    const daySource = booking.starts_at ?? booking.created_at;
+    const daySource = varaus.varaus_pvm ?? varaus.created_at;
     if (daySource) {
       const dayDate = new Date(daySource);
       if (!Number.isNaN(dayDate.getTime())) {
@@ -300,18 +300,18 @@ export default async function AdminStatsPage() {
               </tr>
             </thead>
             <tbody>
-              {lastTen.map((booking) => (
-                <tr key={booking.id} className="border-b border-zinc-700/60 text-zinc-200">
+              {lastTen.map((varaus) => (
+                <tr key={varaus.id} className="border-b border-zinc-700/60 text-zinc-200">
                   <td className="px-2 py-2">
-                    {booking.starts_at
-                      ? new Date(booking.starts_at).toLocaleDateString("fi-FI")
-                      : booking.created_at
-                      ? new Date(booking.created_at).toLocaleDateString("fi-FI")
+                    {varaus.varaus_pvm
+                      ? new Date(varaus.varaus_pvm).toLocaleDateString("fi-FI")
+                      : varaus.created_at
+                      ? new Date(varaus.created_at).toLocaleDateString("fi-FI")
                       : "-"}
                   </td>
-                  <td className="px-2 py-2">{booking.service_type ?? "-"}</td>
-                  <td className="px-2 py-2">{formatEuro(toAmount(booking))}</td>
-                  <td className="px-2 py-2">{normalizeStatus(booking.status)}</td>
+                  <td className="px-2 py-2">{varaus.palvelutyyppi ?? "-"}</td>
+                  <td className="px-2 py-2">{formatEuro(toAmount(varaus))}</td>
+                  <td className="px-2 py-2">{normalizeStatus(varaus.status)}</td>
                 </tr>
               ))}
             </tbody>

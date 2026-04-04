@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 
@@ -6,6 +6,12 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: "Finishpoint | Kuljetukset ja muutot",
@@ -19,13 +25,23 @@ export const metadata: Metadata = {
     "moottoripyöräkuljetus",
     "kierrätys",
   ],
+  metadataBase: new URL("https://www.finishpoint.fi"),
   openGraph: {
     type: "website",
     locale: "fi_FI",
+    url: "https://www.finishpoint.fi",
     title: "Finishpoint | Kuljetukset ja muutot",
     description:
       "Finishpoint tarjoaa tavarakuljetukset, muutot & siirtopalvelut yhdestä paikasta",
     siteName: "Finishpoint",
+    images: [
+      {
+        url: "/images/paku2.png",
+        width: 1200,
+        height: 630,
+        alt: "Finishpoint kuljetuspalvelu",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

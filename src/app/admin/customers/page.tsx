@@ -1,70 +1,69 @@
 import { createClient } from "@/lib/supabase/server";
 import { CustomerSearch, type Customer } from "@/components/customer-search";
 
-type BookingRow = {
+type VarausRow = {
   id: string;
   created_at: string | null;
-  starts_at: string | null;
-  scheduled_date?: string | null;
-  customer_name: string | null;
-  customer_email: string | null;
-  customer_phone: string | null;
-  service_type: string | null;
+  varaus_pvm: string | null;
+  asiakas_nimi: string | null;
+  asiakas_email: string | null;
+  asiakas_puhelin: string | null;
+  palvelutyyppi: string | null;
   status: string | null;
-  pickup_address: string | null;
-  delivery_address: string | null;
-  price?: number | null;
-  total_with_vat?: number | null;
+  lahto_osoite: string | null;
+  kohde_osoite: string | null;
+  hinta?: number | null;
+  hinta_alv?: number | null;
 };
 
-function bookingAmount(booking: BookingRow): number {
-  const price = typeof booking.price === "number" ? booking.price : null;
-  const total = typeof booking.total_with_vat === "number" ? booking.total_with_vat : null;
-  return price ?? total ?? 0;
+function varausAmount(varaus: VarausRow): number {
+  const price = typeof varaus.hinta === "number" ? varaus.hinta : null;
+  const total = typeof varaus.hinta_alv === "number" ? varaus.hinta_alv : null;
+  return total ?? price ?? 0;
 }
 
 export default async function AdminCustomersPage() {
   const supabase = await createClient();
-  const { data: bookings } = await supabase
-    .from("bookings")
+  const { data: varaukset } = await supabase
+    .from("varaukset")
     .select("*")
-    .not("customer_email", "is", null)
+    .not("asiakas_email", "is", null)
     .order("created_at", { ascending: false });
 
   const grouped: Record<string, Customer> = {};
 
-  for (const raw of bookings ?? []) {
-    const booking = raw as BookingRow;
-    const email = booking.customer_email;
+  for (const raw of varaukset ?? []) {
+    const varaus = raw as VarausRow;
+    const email = varaus.asiakas_email;
     if (!email) {
       continue;
     }
 
     if (!grouped[email]) {
       grouped[email] = {
-        name: booking.customer_name,
+        name: varaus.asiakas_nimi,
         email,
-        phone: booking.customer_phone,
+        phone: varaus.asiakas_puhelin,
         bookings: [],
         totalSpent: 0,
-        latestBookingAt: booking.starts_at ?? booking.scheduled_date ?? booking.created_at,
+        latestBookingAt: varaus.varaus_pvm ?? varaus.created_at,
       };
     }
 
     grouped[email].bookings.push({
-      id: booking.id,
-      service_type: booking.service_type,
-      pickup_address: booking.pickup_address,
-      delivery_address: booking.delivery_address,
-      status: booking.status,
-      starts_at: booking.starts_at,
-      scheduled_date: booking.scheduled_date ?? null,
-      price: bookingAmount(booking),
+      id: varaus.id,
+      service_type: varaus.palvelutyyppi,
+      pickup_address: varaus.lahto_osoite,
+      delivery_address: varaus.kohde_osoite,
+      status: varaus.status,
+      starts_at: varaus.varaus_pvm,
+      scheduled_date: varaus.varaus_pvm,
+      price: varausAmount(varaus),
     });
-    grouped[email].totalSpent += bookingAmount(booking);
+    grouped[email].totalSpent += varausAmount(varaus);
 
     const currentLatest = grouped[email].latestBookingAt;
-    const candidate = booking.starts_at ?? booking.scheduled_date ?? booking.created_at;
+    const candidate = varaus.varaus_pvm ?? varaus.created_at;
     if (candidate && (!currentLatest || new Date(candidate) > new Date(currentLatest))) {
       grouped[email].latestBookingAt = candidate;
     }

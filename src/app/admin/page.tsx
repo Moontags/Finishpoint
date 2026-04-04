@@ -1,14 +1,22 @@
-import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { StatusBadge } from "./components/status-badge";
 import { DeleteButton } from "./components/delete-button";
+import { ErrorMessage } from "./components/error-message";
+import { getAllVaraukset, type Varaus } from "@/lib/varaukset";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const supabase = await createClient();
-  const { data: bookings } = await supabase
-    .from("bookings")
-    .select("*")
-    .order("starts_at", { ascending: false });
+  let varaukset: Varaus[] = [];
+  let error: string | null = null;
+
+  try {
+    varaukset = await getAllVaraukset();
+  } catch (err) {
+    console.error("Failed to fetch varaukset:", err);
+    error = err instanceof Error ? err.message : "Tuntematon virhe";
+    varaukset = [];
+  }
 
   const now = new Date();
   const today = now.toISOString().split("T")[0];
@@ -17,24 +25,34 @@ export default async function AdminDashboard() {
   const weekEnd = weekEndDate.toISOString().split("T")[0];
 
   const stats = {
-    total: bookings?.length ?? 0,
-    today: bookings?.filter(
-      (b) => b.starts_at?.split("T")[0] === today
+    total: varaukset?.length ?? 0,
+    today: varaukset?.filter(
+      (v) => v.varaus_pvm === today
     ).length ?? 0,
-    thisWeek: bookings?.filter(
-      (b) =>
-        b.starts_at?.split("T")[0] >= today &&
-        b.starts_at?.split("T")[0] <= weekEnd
+    thisWeek: varaukset?.filter(
+      (v) =>
+        v.varaus_pvm >= today &&
+        v.varaus_pvm <= weekEnd
     ).length ?? 0,
-    open: bookings?.filter(
-      (b) => b.status === "pending" || b.status === "confirmed"
+    open: varaukset?.filter(
+      (v) => v.status === "vahvistettu"
     ).length ?? 0,
   };
 
   return (
     <div>
+      {/* Virheilmoitus */}
+      {error && (
+        <div className="mb-6">
+          <ErrorMessage
+            title="Varausten lataus epäonnistui"
+            message={error}
+          />
+        </div>
+      )}
+
       {/* Tilastokortit */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
           { label: "Keikat yhteensä", value: stats.total },
           { label: "Tänään", value: stats.today },
@@ -55,12 +73,12 @@ export default async function AdminDashboard() {
 
       {/* Toimintopalkki */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-base font-semibold text-zinc-100">Keikat</h2>
+        <h2 className="text-base font-semibold text-zinc-100">Varaukset</h2>
         <Link
-          href="/admin/bookings/new"
+          href="/admin/varaukset/new"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
         >
-          + Lisää keikka
+          + Lisää varaus
         </Link>
       </div>
 
@@ -82,35 +100,35 @@ export default async function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {bookings?.map((b) => (
+            {varaukset?.map((v) => (
               <tr
-                key={b.id}
+                key={v.id}
                 className="border-b border-zinc-700/50 hover:bg-zinc-800/30 transition"
               >
                 <td className="px-4 py-3 text-zinc-300">
-                  {b.starts_at ? new Date(b.starts_at).toLocaleDateString("fi-FI") : "—"}
+                  {v.varaus_pvm ? new Date(v.varaus_pvm).toLocaleDateString("fi-FI") : "—"}
                 </td>
-                <td className="px-4 py-3 text-zinc-300">{b.service_type}</td>
+                <td className="px-4 py-3 text-zinc-300">{v.palvelutyyppi}</td>
                 <td className="px-4 py-3 text-zinc-300 truncate">
-                  {b.pickup_address}
+                  {v.lahto_osoite}
                 </td>
                 <td className="px-4 py-3 text-zinc-300 truncate">
-                  {b.delivery_address}
+                  {v.kohde_osoite}
                 </td>
                 <td className="px-4 py-3 text-zinc-300">
-                  {b.price ? `${b.price} €` : "—"}
+                  {v.hinta_alv ? `${v.hinta_alv.toFixed(2)} €` : "—"}
                 </td>
                 <td className="px-4 py-3">
-                  <StatusBadge status={b.status} />
+                  <StatusBadge status={v.status} />
                 </td>
                 <td className="px-4 py-3 text-right space-x-2 flex">
                   <Link
-                    href={`/admin/bookings/${b.id}`}
+                    href={`/admin/varaukset/${v.id}`}
                     className="text-blue-400 hover:text-blue-300 text-xs font-medium"
                   >
                     Muokkaa
                   </Link>
-                  <DeleteButton id={b.id} />
+                  <DeleteButton id={v.id} />
                 </td>
               </tr>
             ))}
@@ -118,11 +136,11 @@ export default async function AdminDashboard() {
         </table>
       </div>
 
-      {!bookings?.length && (
+      {!varaukset?.length && (
         <div className="text-center py-8 text-zinc-400">
-          Ei keikoita.{" "}
-          <Link href="/admin/bookings/new" className="text-blue-400 hover:underline">
-            Lisää ensimmäinen keikka
+          Ei varauksia.{" "}
+          <Link href="/admin/varaukset/new" className="text-blue-400 hover:underline">
+            Lisää ensimmäinen varaus
           </Link>
         </div>
       )}

@@ -3,10 +3,16 @@ export function StatusBadge({ status }: { status: string }) {
     string,
     { bg: string; text: string; label: string }
   > = {
+    // Englanti (legacy)
     new: {
       bg: "bg-blue-900/30",
       text: "text-blue-300",
       label: "Uusi",
+    },
+    pending: {
+      bg: "bg-blue-900/30",
+      text: "text-blue-300",
+      label: "Odottaa",
     },
     confirmed: {
       bg: "bg-green-900/30",
@@ -23,9 +29,25 @@ export function StatusBadge({ status }: { status: string }) {
       text: "text-red-300",
       label: "Peruutettu",
     },
+    // Suomi (uusi)
+    vahvistettu: {
+      bg: "bg-green-900/30",
+      text: "text-green-300",
+      label: "Vahvistettu",
+    },
+    valmis: {
+      bg: "bg-gray-900/30",
+      text: "text-gray-300",
+      label: "Valmis",
+    },
+    peruttu: {
+      bg: "bg-red-900/30",
+      text: "text-red-300",
+      label: "Peruttu",
+    },
   };
 
-  const style = styles[status] || styles.new;
+  const style = styles[status] || styles.pending;
 
   return (
     <span

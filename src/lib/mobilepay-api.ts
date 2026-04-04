@@ -313,18 +313,20 @@ async function createVippsPayment(input: MobilePayPaymentInput) {
         },
       };
 
-      console.error(
-        "VIPPS DEBUG",
-        JSON.stringify(
-          {
-            status: paymentResponse.status,
-            body: paymentBody,
-            sentPayload: redactedSentPayload,
-          },
-          null,
-          2,
-        ),
-      );
+      if (process.env.NODE_ENV !== "production") {
+        console.error(
+          "VIPPS DEBUG",
+          JSON.stringify(
+            {
+              status: paymentResponse.status,
+              body: paymentBody,
+              sentPayload: redactedSentPayload,
+            },
+            null,
+            2,
+          ),
+        );
+      }
     }
 
     throw new MobilePayApiError("VIPPS_PAYMENT_REQUEST_FAILED", paymentResponse.status, paymentBody);

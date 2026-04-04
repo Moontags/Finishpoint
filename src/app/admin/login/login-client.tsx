@@ -84,7 +84,8 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
     const supabase = createClient();
 
     // Käytä aina eksplisiittistä SITE_URL-pohjaista redirectUrlia
-    const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/admin/auth/callback`;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== "undefined" ? window.location.origin : "");
+    const redirectUrl = `${siteUrl}/admin/auth/callback`;
 
     const { error: authError } = await supabase.auth.signInWithOtp({
       email,

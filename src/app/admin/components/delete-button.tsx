@@ -1,16 +1,16 @@
 "use client";
 
-import { deleteBooking } from "../actions";
+import { deleteVarausAction } from "../varaukset/[id]/actions";
 
 export function DeleteButton({ id }: { id: string }) {
   async function handleDelete() {
-    if (!confirm("Oletko varma että haluat poistaa tämän keikat?")) {
+    if (!confirm("Oletko varma että haluat poistaa tämän varauksen?")) {
       return;
     }
     try {
       const formData = new FormData();
       formData.set("id", id);
-      await deleteBooking(formData);
+      await deleteVarausAction(formData);
     } catch (error) {
       alert(
         "Virhe poistamisessa: " +
