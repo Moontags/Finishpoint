@@ -78,7 +78,7 @@ export default function Home() {
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-300 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
                   {cardAccent}
                 </p>
-                <h3 className="mt-2 text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+                <h3 className="mt-2 text-lg sm:text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
                   {cardTitle}
                 </h3>
                 <p className="mt-2 text-[14px] leading-[1.7] text-slate-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">

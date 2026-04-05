@@ -77,7 +77,7 @@ export default function ServiceSelector({
             <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
           {open && (
-            <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-xl">
+            <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-y-auto max-h-60 rounded-2xl border-2 border-slate-200 bg-white shadow-xl">
               {categories.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
