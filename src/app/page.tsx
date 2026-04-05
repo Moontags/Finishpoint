@@ -19,7 +19,7 @@ export default function Home() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-center max-w-full h-auto"
+            className="object-cover object-right sm:object-center max-w-full h-auto"
             priority
           />
           <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20 max-w-full" />
