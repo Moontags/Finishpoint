@@ -35,7 +35,7 @@ export default function Home() {
           }}
         />
 
-        <div className="relative z-2 mx-auto max-w-7xl px-4 py-12 mt-18 sm:mt-0 max-[390px]:px-3 max-[390px]:py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
+        <div className="relative z-2 mx-auto max-w-7xl px-4 py-2 mt-2 sm:mt-0 max-[390px]:px-3 max-[390px]:py-2 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
           <div className="hidden sm:block space-y-5 text-left ml-2 sm:ml-12 mt-12 lg:mt-32">
             <h1
               className="break-words hyphens-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-4xl text-3xl max-[390px]:text-[1.5rem] sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight text-slate-900"
