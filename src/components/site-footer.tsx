@@ -13,7 +13,7 @@ export function SiteFooter() {
             <p className="text-[17px] font-medium text-slate-600">{siteContact.phoneDisplay}</p>
             <p className="break-all text-[17px] font-medium text-slate-600">{siteContact.email}</p>
             <p className="pt-2 text-[14px] leading-relaxed text-slate-600">
-              Hinnat näytetään sis. ALV 25,5 %. Yritys (ALV 0 %).
+              Hinnat sis. ALV 25,5 %. Yritys (ALV 0 %).
             </p>
             <a
               href="/images/sopimusehdot.pdf"
