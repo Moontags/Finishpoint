@@ -10,7 +10,7 @@ export default function Home() {
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative overflow-hidden max-w-full md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
+      <section id="top" className="relative overflow-hidden max-w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
 
         {/* Van background image */}
         <div className="absolute inset-0 z-0 max-w-full">
@@ -36,7 +36,7 @@ export default function Home() {
         />
 
         <div className="relative z-2 mx-auto max-w-7xl px-4 py-12 mt-18 sm:mt-0 max-[390px]:px-3 max-[390px]:py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
-          <div className="hidden sm:block space-y-5 text-left ml-2 sm:ml-12 mt-12">
+          <div className="hidden sm:block space-y-5 text-left ml-2 sm:ml-12 mt-12 lg:mt-32">
             <h1
               className="break-words hyphens-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-4xl text-3xl max-[390px]:text-[1.5rem] sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight text-slate-900"
             >
@@ -55,12 +55,12 @@ export default function Home() {
 
       {/* ── Services ─────────────────────────────────────────────── */}
       <section id="services" className="mx-auto max-w-7xl overflow-x-clip max-w-full px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
-          <div className="grid gap-5 md:grid-cols-3 lg:gap-16">
+          <div className="grid gap-1 md:grid-cols-3 lg:gap-1">
             {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
               <a
                 key={cardTitle}
                 href={href}
-                className={`group relative flex min-h-75 min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-85 ${
+                className={`group relative flex min-h-75 min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-85 md:max-w-md lg:max-w-lg mx-auto ${
                   featured
                     ? "border-2 border-blue-500 shadow-[0_0_0_4px_rgba(37,99,235,0.15),0_14px_32px_rgba(15,23,42,0.22)]"
                     : "border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-lg"
