@@ -62,7 +62,7 @@ export function ServicePage({
         </p>
         <div className="mt-6">
           <Link
-            href={`/laskuri?kategoria=${service.calculatorCategory}`}
+            href="/#quote"
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-700/90 active:scale-[0.97] sm:w-auto"
           >
             {siteCta.pricingLinkLabel}

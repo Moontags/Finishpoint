@@ -10,7 +10,7 @@ export default function Home() {
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative overflow-hidden max-w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
+      <section id="top" className="relative overflow-hidden max-w-full h-[320px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
 
         {/* Van background image */}
         <div className="absolute inset-0 z-0 max-w-full">
@@ -55,7 +55,7 @@ export default function Home() {
 
       {/* ── Services ─────────────────────────────────────────────── */}
       <section id="services" className="mx-auto max-w-7xl overflow-x-clip max-w-full px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
-          <div className="grid gap-1 md:grid-cols-3 lg:gap-1">
+          <div className="grid gap-1 md:grid-cols-3 lg:gap-0">
             {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
               <a
                 key={cardTitle}

@@ -19,7 +19,7 @@ export function CalculatorFormSection({
       </section>
 
       {/* ── Quote form background ──────────────────────────────── */}
-      <section className="relative overflow-hidden">
+      <section id="quote" className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0">
           <Image
             src="/images/paku5.png"
