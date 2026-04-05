@@ -10,7 +10,7 @@ export default function Home() {
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative overflow-hidden w-screen h-[320px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37 p-0 left-0 right-0">
+      <section id="top" className="relative overflow-hidden overflow-x-clip w-screen h-[320px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37 p-0 left-0 right-0">
 
         {/* Van background image */}
         <div className="absolute inset-0 z-0 w-screen h-full left-0 right-0">
@@ -19,7 +19,7 @@ export default function Home() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-center w-full h-full"
+            className="object-cover object-[58%] sm:object-center w-full h-full"
             priority
           />
           <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20 w-screen h-full" />
@@ -35,7 +35,7 @@ export default function Home() {
           }}
         />
 
-        <div className="relative z-2 mx-auto max-w-7xl px-4 py-2 mt-2 sm:mt-0 max-[390px]:px-3 max-[390px]:py-2 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
+        <div className="relative z-2 mx-auto max-w-7xl py-2 mt-2 sm:mt-0 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
           <div className="hidden sm:block space-y-5 text-left ml-2 sm:ml-12 mt-12 lg:mt-32">
             <h1
               className="break-words hyphens-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-4xl text-3xl max-[390px]:text-[1.5rem] sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight text-slate-900"
@@ -54,7 +54,7 @@ export default function Home() {
       <CalculatorFormSection />
 
       {/* ── Services ─────────────────────────────────────────────── */}
-      <section id="services" className="mx-auto max-w-7xl px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
+      <section id="services" className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 lg:py-10">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
             <a
