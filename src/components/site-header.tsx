@@ -114,20 +114,20 @@ export function SiteHeader({
                   <Link
                     key={href}
                     href={href}
-                    className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                   >
                     {label}
                   </Link>
                 ))}
                 <Link
                   href="/laskuri"
-                  className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                  className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                 >
                   Laskuri
                 </Link>
                 <Link
                   href={quoteHref}
-                  className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                  className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                 >
                   {siteCta.quoteNavLabel}
                 </Link>
