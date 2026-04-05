@@ -6,24 +6,24 @@ import { serviceCategories } from "@/lib/service-categories";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-clip max-w-full bg-[#f5f6f8] text-slate-900">
+    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section id="top" className="relative overflow-hidden max-w-full h-[320px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
+      <section id="top" className="relative overflow-hidden w-screen h-[320px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37 p-0 left-0 right-0">
 
         {/* Van background image */}
-        <div className="absolute inset-0 z-0 max-w-full">
+        <div className="absolute inset-0 z-0 w-screen h-full left-0 right-0">
           <Image
             src="/images/paku2.png"
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-right sm:object-center max-w-full h-auto"
+            className="object-cover object-center w-full h-full"
             priority
           />
-          <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20 max-w-full" />
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-[#f5f6f8] to-transparent max-w-full" />
+          <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/65 to-white/20 w-screen h-full" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-[#f5f6f8] to-transparent w-full" />
         </div>
 
         {/* Dot pattern */}
@@ -54,40 +54,40 @@ export default function Home() {
       <CalculatorFormSection />
 
       {/* ── Services ─────────────────────────────────────────────── */}
-      <section id="services" className="mx-auto max-w-7xl overflow-x-clip max-w-full px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
-          <div className="grid gap-1 md:grid-cols-3 lg:gap-0">
-            {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
-              <a
-                key={cardTitle}
-                href={href}
-                className={`group relative flex min-h-75 min-w-0 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition sm:min-h-85 md:max-w-md lg:max-w-lg mx-auto ${
-                  featured
-                    ? "border-2 border-blue-500 shadow-[0_0_0_4px_rgba(37,99,235,0.15),0_14px_32px_rgba(15,23,42,0.22)]"
-                    : "border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-lg"
-                }`}
-              >
-                <Image
-                  src={backgroundImage}
-                  alt=""
-                  fill
-                  sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                  className="object-cover object-center opacity-80"
-                />
-                <div className="absolute inset-0 bg-linear-to-b from-slate-900/20 via-slate-900/55 to-slate-900/85" />
-                <div className="relative z-1 mt-auto">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-200 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
-                    {cardAccent}
-                  </p>
-                  <h3 className="mt-2 wrap-break-word text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
-                    {cardTitle}
-                  </h3>
-                  <p className="mt-3 wrap-break-word text-[14px] leading-[1.7] text-slate-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
-                    {cardDescription}
-                  </p>
-                </div>
-              </a>
-            ))}
-          </div>
+      <section id="services" className="mx-auto max-w-7xl px-4 py-6 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-10">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {serviceCategories.map(({ cardTitle, cardDescription, cardAccent, featured, href, backgroundImage }) => (
+            <a
+              key={cardTitle}
+              href={href}
+              className={`group relative flex min-h-[280px] w-full flex-col justify-end overflow-hidden rounded-2xl border transition sm:min-h-[320px] lg:min-h-[360px] ${
+                featured
+                  ? "border-2 border-blue-500 shadow-[0_0_0_4px_rgba(37,99,235,0.15),0_14px_32px_rgba(15,23,42,0.22)]"
+                  : "border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-xl"
+              }`}
+            >
+              <Image
+                src={backgroundImage}
+                alt=""
+                fill
+                sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                className="object-cover object-center opacity-80 transition duration-300 group-hover:scale-[1.03]"
+              />
+              <div className="absolute inset-0 bg-linear-to-b from-slate-900/10 via-slate-900/50 to-slate-900/90" />
+              <div className="relative z-1 p-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-300 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+                  {cardAccent}
+                </p>
+                <h3 className="mt-2 text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+                  {cardTitle}
+                </h3>
+                <p className="mt-2 text-[14px] leading-[1.7] text-slate-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
+                  {cardDescription}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
       </section>
 
       <SiteFooter />
