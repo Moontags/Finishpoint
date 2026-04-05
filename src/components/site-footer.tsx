@@ -5,8 +5,10 @@ import { siteContact } from "@/lib/site-config";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-200 bg-white/90">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
+    <footer className="relative border-t border-slate-200 bg-white/90 overflow-hidden">
+      {/* Yläreunan vaalea gradient-siirtymä */}
+      <div className="pointer-events-none absolute left-0 right-0 top-0 h-10 bg-gradient-to-t from-white/90 via-[#f5f6f8] to-transparent z-0" />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
 
         {/* Vasempi palsta: yhteystiedot + logo tekstin oikealla mobiilissa */}
         <div className="min-w-0 lg:max-w-md lg:pt-4">

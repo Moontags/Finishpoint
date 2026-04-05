@@ -341,9 +341,9 @@ export function AjoneuvoPriceCalculator() {
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm transition hover:border-blue-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 focus:ring-[3px] focus:ring-blue-200"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 focus:ring-[3px] focus:ring-blue-200"
         >
-          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+          {distanceStatus === "loading" ? "Lasketaan..." : "Laske hinta"}
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
