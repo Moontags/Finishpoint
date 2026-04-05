@@ -179,7 +179,7 @@ function AddressAutocompleteField({
           onFocus={() => setIsFocused(true)}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-slate-400 focus:bg-white/20"
+          className="w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:bg-white focus:ring-[3px] focus:ring-blue-200"
         />
 
         {isFocused && suggestions.length > 0 ? (
@@ -341,7 +341,7 @@ export function AjoneuvoPriceCalculator() {
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:border-blue-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm transition hover:border-blue-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 focus:ring-[3px] focus:ring-blue-200"
         >
           {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
         </button>
