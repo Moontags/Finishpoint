@@ -15,8 +15,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Finishpoint | Kuljetukset ja muutot",
-  description:
-    "Finishpoint tarjoaa tavarakuljetukset, muutot & siirtopalvelut yhdestä paikasta",
+  // description removed
   applicationName: "Finishpoint",
   keywords: [
     "kuljetuspalvelu",
@@ -31,8 +30,7 @@ export const metadata: Metadata = {
     locale: "fi_FI",
     url: "https://www.finishpoint.fi",
     title: "Finishpoint | Kuljetukset ja muutot",
-    description:
-      "Finishpoint tarjoaa tavarakuljetukset, muutot & siirtopalvelut yhdestä paikasta",
+    // description removed
     siteName: "Finishpoint",
     images: [
       {
@@ -46,8 +44,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Finishpoint | Kuljetukset ja muutot",
-    description:
-      "Finishpoint tarjoaa tavarakuljetukset, muutot & siirtopalvelut yhdestä paikasta",
+    // description removed
   },
   robots: {
     index: true,

@@ -41,26 +41,26 @@ export function SiteHeader({
 
   return (
     <header className={`relative z-50 w-full bg-white pt-0 pb-0 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
-      <div className={`w-full rounded-none sm:rounded-2xl px-0 py-0.5 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
+      <div className={`w-full rounded-none sm:rounded-2xl px-0 pt-2 pb-3 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
         scrolled
           ? "bg-white/75 backdrop-blur-xl"
           : opaque
             ? "bg-white"
             : "bg-white md:bg-transparent"
       }`}>
-        <div className="flex translate-y-4 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
+        <div className="flex translate-y-2 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
           <Link href="/" className="ml-4 flex min-w-0 shrink-0 items-center gap-2 sm:ml-0" aria-label="Etusivu">
             <Image
               src="/images/finishpoint-logo.png"
               alt="Finishpoint"
               width={160}
               height={80}
-              className="hidden h-auto w-32 object-contain sm:block sm:w-44"
+              className="h-auto w-32 object-contain hidden sm:block sm:w-44"
               priority
             />
-            <span className="flex shrink-0 flex-col leading-none mx-auto text-left ml-3 sm:hidden">
-              <span className="text-[22px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
-              <span className="mt-0.5 text-[13px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
+            <span className="flex shrink-0 flex-col leading-none sm:hidden">
+              <span className="text-[27px] font-black tracking-[0.04em] text-slate-900">FINISHPOINT</span>
+              <span className="mt-0.5 text-[14px] font-semibold tracking-[0.2em] text-slate-500">PIKAKULJETUS</span>
             </span>
           </Link>
 
@@ -105,9 +105,9 @@ export function SiteHeader({
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-            <details className="relative mr-5 sm:mr-0 sm:hidden">
-              <summary className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50">
-                <Menu className="h-5.5 w-5.5" />
+            <details className="relative mr-5 translate-y-0.5 sm:mr-0 sm:translate-y-0 sm:hidden">
+              <summary className="grid h-12 w-12 cursor-pointer list-none place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50">
+                <Menu className="h-6 w-6" />
               </summary>
               <div className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
                 {serviceNavigationLinks.map(({ href, label }) => (
