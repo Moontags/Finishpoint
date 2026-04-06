@@ -10,8 +10,8 @@ export function SessionRefresher() {
     const supabase = createClient()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'SIGNED_OUT' || !session) {
+      (event) => {
+        if (event === 'SIGNED_OUT') {
           router.push('/admin/login')
         }
         if (event === 'TOKEN_REFRESHED') {

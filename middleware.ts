@@ -52,6 +52,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(`${request.nextUrl.origin}/admin/login`)
     }
 
+    supabaseResponse.headers.set("x-pathname", pathname);
     return supabaseResponse
   } catch (error) {
     console.error('Middleware error:', error)

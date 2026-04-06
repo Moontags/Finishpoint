@@ -3,7 +3,6 @@
  * Käyttää Supabase "varaukset"-taulua kaikissa operaatioissa
  */
 
-import { createClient } from "./supabase/server";
 import { getSupabaseAdminClient } from "./supabase-admin";
 
 export type Varaus = {
@@ -34,8 +33,11 @@ export type VarausUpdate = Partial<Omit<Varaus, "id" | "created_at">>;
  * Hae kaikki varaukset (admin)
  */
 export async function getAllVaraukset() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    throw new Error("Supabase admin client puuttuu – tarkista ympäristömuuttujat");
+  }
+  const { data, error } = await client
     .from("varaukset")
     .select("*")
     .order("varaus_pvm", { ascending: false });
@@ -51,8 +53,11 @@ export async function getAllVaraukset() {
  * Hae yksittäinen varaus ID:llä
  */
 export async function getVaraus(id: string) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    throw new Error("Supabase admin client puuttuu – tarkista ympäristömuuttujat");
+  }
+  const { data, error } = await client
     .from("varaukset")
     .select("*")
     .eq("id", id)
@@ -95,8 +100,11 @@ export async function createVaraus(varaus: VarausInsert) {
  * Päivitä varaus (admin)
  */
 export async function updateVaraus(id: string, updates: VarausUpdate) {
-  const supabase = await createClient();
-  const { error } = await supabase
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    throw new Error("Supabase admin client puuttuu – tarkista ympäristömuuttujat");
+  }
+  const { error } = await client
     .from("varaukset")
     .update({
       ...updates,
@@ -113,8 +121,11 @@ export async function updateVaraus(id: string, updates: VarausUpdate) {
  * Poista varaus (admin)
  */
 export async function deleteVaraus(id: string) {
-  const supabase = await createClient();
-  const { error } = await supabase
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    throw new Error("Supabase admin client puuttuu – tarkista ympäristömuuttujat");
+  }
+  const { error } = await client
     .from("varaukset")
     .delete()
     .eq("id", id);

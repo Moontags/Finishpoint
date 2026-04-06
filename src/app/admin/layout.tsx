@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import AdminNav from "./AdminNav";
 import { SessionRefresher } from "./components/session-refresher";
@@ -17,6 +19,12 @@ export default async function AdminLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
+    const headersList = headers();
+    const pathname = headersList.get("x-pathname") ?? "";
+    const isAuthPage = pathname.includes("/admin/login") || pathname.includes("/admin/auth");
+    if (!isAuthPage) {
+      redirect("/admin/login");
+    }
     return <>{children}</>;
   }
 
