@@ -173,8 +173,7 @@ function AddressAutocompleteField({
       {label}
       <div
         ref={containerRef}
-        className="relative max-w-full overflow-x-hidden"
-        style={{ touchAction: "pan-y" }}
+        style={{ position: 'relative', overflow: 'visible', touchAction: 'pan-y' }}
       >
         <input
           ref={inputRef}
@@ -184,25 +183,57 @@ function AddressAutocompleteField({
           onFocus={() => setIsFocused(true)}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:bg-white focus:ring-[3px] focus:ring-blue-200"
+          style={{
+            width: '100%',
+            borderRadius: '12px',
+            border: '1px solid #e5e7eb',
+            background: '#fff',
+            padding: '12px 18px',
+            fontSize: 15,
+            color: '#1e293b',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+            outline: 'none',
+            marginBottom: 0,
+          }}
         />
+        {/* Osoite-ehdotukset */}
         {isFocused && suggestions.length > 0 && (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-20 w-full overflow-hidden rounded-[10px] border border-slate-300 bg-white/10 backdrop-blur-sm animate-[fadein_200ms_ease-in-out]">
-            {suggestions.map((suggestion) => (
-              <button
-                key={suggestion.placeId || suggestion.label}
-                type="button"
-                onMouseDown={(event) => {
-                  event.preventDefault();
-                  onChange(suggestion.label);
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              zIndex: 99999,
+              marginTop: '4px',
+              backgroundColor: '#1e1e2e',
+              border: '1px solid #444',
+              borderRadius: '8px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
+              overflow: 'visible',
+            }}
+          >
+            {suggestions.map((s, i) => (
+              <div
+                key={s.placeId || s.label}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  onChange(s.label);
                   setSuggestions([]);
                   setIsFocused(false);
                 }}
-                className="w-full px-4 py-3 text-left text-[17px] transition bg-white/10 text-[#1a2e4a] hover:bg-white/20 last:border-b-0 border-b border-slate-200"
-                style={{ fontWeight: 500 }}
+                style={{
+                  padding: '10px 14px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  color: '#fff',
+                  borderBottom: i < suggestions.length - 1 ? '1px solid #333' : 'none',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#2563eb')}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
               >
-                {suggestion.label}
-              </button>
+                {s.label}
+              </div>
             ))}
           </div>
         )}
