@@ -36,6 +36,26 @@ export function KeikkaView() {
   const [mode, setMode] = useState<EditMode>('list')
   const { toast, showSuccess, showError, hideToast } = useToast()
 
+  // Selaimen back-nappi: lisää historiavienti lomakkeelle siirtyessä
+  function navigate(newMode: EditMode) {
+    window.history.pushState({ adminKeikkaMode: newMode }, '')
+    setMode(newMode)
+  }
+
+  function goBack() {
+    if (window.history.state?.adminKeikkaMode) {
+      window.history.back()
+    } else {
+      setMode('list')
+    }
+  }
+
+  useEffect(() => {
+    const handlePop = () => setMode('list')
+    window.addEventListener('popstate', handlePop)
+    return () => window.removeEventListener('popstate', handlePop)
+  }, [])
+
   async function loadVaraukset() {
     const { data, error } = await getSupabaseAdmin()
       .from('varaukset')
@@ -66,10 +86,10 @@ export function KeikkaView() {
     return (
       <VarausForm
         varaus={existing}
-        onSaved={async (msg) => { showSuccess(msg); setMode('list'); await loadVaraukset() }}
-        onDeleted={async () => { showSuccess('Varaus poistettu.'); setMode('list'); await loadVaraukset() }}
+        onSaved={async (msg) => { showSuccess(msg); goBack(); await loadVaraukset() }}
+        onDeleted={async () => { showSuccess('Varaus poistettu.'); goBack(); await loadVaraukset() }}
         onError={showError}
-        onCancel={() => setMode('list')}
+        onCancel={goBack}
       />
     )
   }
@@ -95,7 +115,7 @@ export function KeikkaView() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-base font-semibold text-zinc-100">Varaukset</h2>
         <button
-          onClick={() => setMode('new')}
+          onClick={() => navigate('new')}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
         >
           + Lisää varaus
@@ -133,7 +153,7 @@ export function KeikkaView() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
-                      onClick={() => setMode(v.id)}
+                      onClick={() => navigate(v.id)}
                       className="text-blue-400 hover:text-blue-300 text-xs font-medium"
                     >
                       Muokkaa
@@ -146,7 +166,7 @@ export function KeikkaView() {
           {varaukset.length === 0 && (
             <div className="text-center py-8 text-zinc-400">
               Ei varauksia.{' '}
-              <button onClick={() => setMode('new')} className="text-blue-400 hover:underline">
+              <button onClick={() => navigate('new')} className="text-blue-400 hover:underline">
                 Lisää ensimmäinen varaus
               </button>
             </div>

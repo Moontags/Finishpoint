@@ -6,6 +6,8 @@ import {
   hasMobilePayApiCredentials,
   MobilePayApiError,
 } from "../../../lib/mobilepay-api";
+import { saveBooking } from "@/lib/bookings";
+import type { BookingSelectionData } from "@/lib/types";
 
 type OrderPayload = {
   orderId?: string;
@@ -14,9 +16,12 @@ type OrderPayload = {
   email: string;
   serviceType: string;
   addresses: string;
+  pickupAddress?: string;
+  deliveryAddress?: string;
   message: string;
   estimatedPriceVat0: number | null;
   estimatedPriceVatIncl: number | null;
+  bookingSelection?: BookingSelectionData | null;
 };
 
 const requiredFields: Array<keyof OrderPayload> = [
@@ -317,6 +322,35 @@ export async function POST(request: Request) {
         `Maksulinkki asiakkaalle: ${paymentUrl}`,
       ].join("\n"),
     });
+
+    // Tallenna varaukset-tauluun jos käyttäjä valitsi aikaslotit kalenterista
+    if (data.bookingSelection) {
+      const sel = data.bookingSelection;
+      try {
+        await saveBooking({
+          asiakas_nimi: data.name,
+          asiakas_email: data.email,
+          asiakas_puhelin: data.phone,
+          palvelutyyppi: data.serviceType,
+          lahto_osoite: data.pickupAddress || data.addresses,
+          kohde_osoite: data.deliveryAddress || data.addresses,
+          varaus_pvm: sel.reservationDate,
+          aloitusaika: sel.riihimakiDepartureTime,
+          lopetusaika: sel.releaseTime,
+          ajoaika_kohteeseen_min: sel.driveToDestinationMinutes,
+          ajoaika_riihimaelta_min: sel.driveFromRiihimakiMinutes,
+          hinta_alv: data.estimatedPriceVatIncl ?? null,
+          hinta_alv0: estimatedPriceVat0,
+          status: "vahvistettu",
+        });
+      } catch (bookingError) {
+        // Ei estä tilausta — kirjataan vain virhe lokiin
+        console.error("Varaukset-tallennus epäonnistui (tilaus kuitenkin luotu)", {
+          orderId,
+          error: bookingError,
+        });
+      }
+    }
 
     return NextResponse.json({ ok: true, paymentUrl });
   } catch {
