@@ -148,7 +148,9 @@ export function KalenteriVaraus({
     run();
 
     return () => {
-      controller.abort();
+      if (!controller.signal.aborted) {
+        controller.abort();
+      }
     };
   }, [weekStart]);
 
@@ -198,7 +200,9 @@ export function KalenteriVaraus({
     void run();
 
     return () => {
-      controller.abort();
+      if (!controller.signal.aborted) {
+        controller.abort();
+      }
     };
   }, [kohde, lahto, onDateTimeSelect]);
 
