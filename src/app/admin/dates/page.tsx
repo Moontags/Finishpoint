@@ -1,13 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { addBlockedDate, removeBlockedDate } from "./actions";
 import { DeleteButton } from "./delete-button";
 
 export default async function DatesPage() {
-  const supabase = await createClient();
-  const { data: blockedDates } = await supabase
-    .from("blocked_dates")
-    .select("*")
-    .order("blocked_date");
+  const supabase = getSupabaseAdminClient();
+  const { data: blockedDates } = supabase
+    ? await supabase.from("blocked_dates").select("*").order("blocked_date")
+    : { data: null };
 
   return (
     <div className="max-w-2xl">

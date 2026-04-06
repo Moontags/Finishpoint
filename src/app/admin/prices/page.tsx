@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { PriceForm } from "./price-form";
 
 const PRICE_CATEGORIES = {
@@ -21,8 +21,10 @@ const PRICE_CATEGORIES = {
 };
 
 export default async function PricesPage() {
-  const supabase = await createClient();
-  const { data: prices } = await supabase.from("prices").select("*");
+  const supabase = getSupabaseAdminClient();
+  const { data: prices } = supabase
+    ? await supabase.from("prices").select("*")
+    : { data: null };
 
   const priceMap = new Map(prices?.map((p) => [p.key, p.value]) ?? []);
 
