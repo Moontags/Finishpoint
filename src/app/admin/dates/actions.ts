@@ -3,9 +3,12 @@
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
 
+type ActionState = { error: string | null };
+
 export async function addBlockedDate(
+  _prev: ActionState,
   formData: FormData
-): Promise<{ error: string | null }> {
+): Promise<ActionState> {
   try {
     const supabase = getSupabaseAdminClient();
     if (!supabase) {

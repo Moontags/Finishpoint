@@ -3,19 +3,32 @@
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
 
-export async function updatePrice(formData: FormData) {
-  const supabase = getSupabaseAdminClient();
-  if (!supabase) throw new Error("Supabase admin client puuttuu");
+export async function updatePrice(
+  formData: FormData
+): Promise<{ error: string | null }> {
+  try {
+    const supabase = getSupabaseAdminClient();
+    if (!supabase) return { error: "Palvelinyhteys puuttuu" };
 
-  const key = formData.get("key") as string;
-  const value = parseFloat(formData.get("value") as string);
+    const key = formData.get("key") as string;
+    const value = parseFloat(formData.get("value") as string);
 
-  const { error } = await supabase
-    .from("prices")
-    .update({ value, updated_at: new Date().toISOString() })
-    .eq("key", key);
+    if (!key || isNaN(value)) return { error: "Virheelliset arvot" };
 
-  if (error) throw new Error(`Hinnan tallennus epäonnistui: ${error.message}`);
+    const { error } = await supabase
+      .from("prices")
+      .update({ value, updated_at: new Date().toISOString() })
+      .eq("key", key);
 
-  revalidatePath("/admin/prices");
+    if (error) {
+      console.error("prices update:", error);
+      return { error: error.message };
+    }
+
+    revalidatePath("/admin/prices");
+    return { error: null };
+  } catch (e) {
+    console.error("updatePrice:", e);
+    return { error: "Odottamaton virhe" };
+  }
 }

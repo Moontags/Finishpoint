@@ -3,14 +3,12 @@
 import { useActionState } from "react";
 import { addBlockedDate } from "./actions";
 
-const initialState = { error: null as string | null };
+type State = { error: string | null };
+const initialState: State = { error: null };
 
 export function AddDateForm() {
   const [state, formAction, isPending] = useActionState(
-    async (_prev: typeof initialState, formData: FormData) => {
-      const result = await addBlockedDate(formData);
-      return result ?? { error: null };
-    },
+    addBlockedDate,
     initialState
   );
 
@@ -41,7 +39,7 @@ export function AddDateForm() {
         <input
           type="text"
           name="reason"
-          placeholder="esim. lomat, huolto"
+          placeholder="esim. loma, huolto"
           className="w-full bg-zinc-700 text-zinc-100 border border-zinc-600 rounded px-3 py-2 text-sm"
         />
       </div>
@@ -51,7 +49,7 @@ export function AddDateForm() {
         disabled={isPending}
         className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2 rounded font-medium transition"
       >
-        {isPending ? "Lisätään..." : "Lisää päivä"}
+        {isPending ? "Tallennetaan..." : "Lisää päivä"}
       </button>
     </form>
   );
