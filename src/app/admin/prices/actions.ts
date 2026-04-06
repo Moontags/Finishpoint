@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 export async function updatePrice(
   formData: FormData
-): Promise<{ error: string | null }> {
+): Promise<{ error: string | null; success?: boolean }> {
   try {
     const supabase = getSupabaseAdminClient();
     if (!supabase) return { error: "Palvelinyhteys puuttuu" };
@@ -26,7 +26,7 @@ export async function updatePrice(
     }
 
     revalidatePath("/admin/prices");
-    return { error: null };
+    return { error: null, success: true };
   } catch (e) {
     console.error("updatePrice:", e);
     return { error: "Odottamaton virhe" };

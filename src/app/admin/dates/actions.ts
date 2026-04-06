@@ -3,7 +3,7 @@
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
 
-type ActionState = { error: string | null };
+type ActionState = { error: string | null; success?: boolean };
 
 export async function addBlockedDate(
   _prev: ActionState,
@@ -31,7 +31,7 @@ export async function addBlockedDate(
     }
 
     revalidatePath("/admin/dates");
-    return { error: null };
+    return { error: null, success: true };
   } catch (e) {
     console.error("addBlockedDate:", e);
     return { error: "Odottamaton virhe" };
