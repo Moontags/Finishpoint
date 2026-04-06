@@ -185,12 +185,12 @@ function AddressAutocompleteField({
         />
 
         {isFocused && suggestions.length > 0 ? (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-10 w-full overflow-hidden rounded-xl border border-slate-200 bg-white/10 shadow-lg backdrop-blur-sm">
+          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-[9999] w-full rounded-xl border border-slate-400 bg-white shadow-lg">
             {suggestions.map((suggestion) => (
               <button
                 key={suggestion.placeId || suggestion.label}
                 type="button"
-                className="block w-full border-b border-slate-200 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-white/20 hover:text-slate-900 last:border-b-0"
+                className="block w-full border-b border-slate-200 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 last:border-b-0"
                 onMouseDown={(event) => {
                   event.preventDefault();
                   onChange(suggestion.label);
