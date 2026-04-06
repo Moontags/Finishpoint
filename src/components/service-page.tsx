@@ -46,7 +46,7 @@ export function ServicePage({
         </div>
 
         <div className={`relative z-1 rounded-xl border p-5 ${service.heroBackgroundImage ? "border-white/30 bg-white/10 backdrop-blur-sm" : "border-slate-200 bg-slate-50"}`}>
-          <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${service.heroBackgroundImage ? "text-blue-200" : "text-blue-500"}`}>
+          <p className={`text-[13px] font-extrabold uppercase tracking-[0.22em] ${service.heroBackgroundImage ? "text-blue-200" : "text-blue-600"} sm:text-[15px]`}>
             Sisältää
           </p>
           <div className="mt-4">

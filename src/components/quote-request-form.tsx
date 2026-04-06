@@ -366,8 +366,8 @@ export function QuoteRequestForm() {
     >
       {/* Left – info */}
       <div className="space-y-4">
-        <div className="inline-flex max-w-full items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700 sm:text-xs">
-          <Mail className="h-3.5 w-3.5 text-blue-600" />
+        <div className="inline-flex max-w-full items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.18em] text-blue-700 sm:text-[15px]">
+          <Mail className="h-4 w-4 text-blue-700" />
           <span className="truncate sm:whitespace-normal">Vahvista tilaus ja maksa</span>
         </div>
         {isOrderFlow ? (

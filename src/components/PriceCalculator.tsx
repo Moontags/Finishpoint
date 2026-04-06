@@ -474,7 +474,7 @@ export function KappaletavaraPriceCalculator() {
 
   return (
     <section className={cardClass}>
-      <h2 className="max-w-full text-[1.75rem] font-bold leading-tight tracking-tight text-slate-900 wrap-anywhere sm:text-3xl">
+      <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Kappaletavara
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">

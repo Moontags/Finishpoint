@@ -59,7 +59,7 @@ export default function ServiceSelector({
   }, []);
   return (
     <div id="calculator" className="rounded-2xl bg-transparent p-3.5 sm:p-8">
-      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-500">Tilaa kuljetus</p>
+      <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">Tilaa kuljetus</p>
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         Valitse palvelutyyppi
       </h2>
