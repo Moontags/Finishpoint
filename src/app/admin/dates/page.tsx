@@ -1,12 +1,13 @@
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
-import { addBlockedDate, removeBlockedDate } from "./actions";
+import { removeBlockedDate } from "./actions";
 import { DeleteButton } from "./delete-button";
+import { AddDateForm } from "./add-date-form";
 
 export default async function DatesPage() {
   const supabase = getSupabaseAdminClient();
-  const { data: blockedDates } = supabase
+  const { data: blockedDates, error } = supabase
     ? await supabase.from("blocked_dates").select("*").order("blocked_date")
-    : { data: null };
+    : { data: null, error: null };
 
   return (
     <div className="max-w-2xl">
@@ -17,39 +18,7 @@ export default async function DatesPage() {
         <h2 className="text-lg font-semibold text-zinc-100 mb-4">
           Lisää suljettu päivä
         </h2>
-
-        <form action={addBlockedDate} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">
-              Päivämäärä *
-            </label>
-            <input
-              type="date"
-              name="date"
-              required
-              className="w-full bg-zinc-700 text-zinc-100 border border-zinc-600 rounded px-3 py-2 text-sm"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">
-              Syy
-            </label>
-            <input
-              type="text"
-              name="reason"
-              placeholder="esim. lomat, huolto"
-              className="w-full bg-zinc-700 text-zinc-100 border border-zinc-600 rounded px-3 py-2 text-sm"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium transition"
-          >
-            Lisää päivä
-          </button>
-        </form>
+        <AddDateForm />
       </div>
 
       {/* OSIO 2 — Lista lukituista päivistä */}
@@ -57,6 +26,12 @@ export default async function DatesPage() {
         <h2 className="text-lg font-semibold text-zinc-100 mb-4">
           Suljetut päivät ({blockedDates?.length ?? 0})
         </h2>
+
+        {error && (
+          <p className="text-red-400 text-sm mb-4">
+            Lataus epäonnistui: {error.message}
+          </p>
+        )}
 
         {blockedDates?.length ? (
           <div className="space-y-2">
@@ -78,9 +53,11 @@ export default async function DatesPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-6 text-zinc-400">
-            Ei suljettuja päiviä
-          </div>
+          !error && (
+            <div className="text-center py-6 text-zinc-400">
+              Ei suljettuja päiviä
+            </div>
+          )
         )}
       </div>
     </div>
