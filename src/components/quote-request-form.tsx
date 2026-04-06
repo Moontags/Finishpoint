@@ -46,7 +46,6 @@ function AddressAutocompleteField({
   disabled?: boolean;
 }) {
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
-  const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -71,20 +70,17 @@ function AddressAutocompleteField({
   useEffect(() => {
     if (disabled) {
       setSuggestions([]);
-      setLoading(false);
       return;
     }
 
     const query = value.trim();
     if (query.length < 3) {
       setSuggestions([]);
-      setLoading(false);
       return;
     }
 
     const controller = new AbortController();
     const timeoutId = window.setTimeout(async () => {
-      setLoading(true);
       try {
         const response = await fetch(`/api/places/autocomplete?input=${encodeURIComponent(query)}`, {
           method: "GET",
@@ -104,8 +100,6 @@ function AddressAutocompleteField({
         setSuggestions(result.suggestions ?? []);
       } catch {
         setSuggestions([]);
-      } finally {
-        setLoading(false);
       }
     }, 250);
 
@@ -165,7 +159,6 @@ function AddressAutocompleteField({
         ) : null}
       </div>
 
-      {!disabled && loading ? <span className="text-[12px] font-medium text-slate-500">Haetaan osoite-ehdotuksia...</span> : null}
     </label>
   );
 }
