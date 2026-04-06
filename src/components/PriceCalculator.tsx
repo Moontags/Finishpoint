@@ -128,12 +128,14 @@ function AddressAutocompleteField({
       return;
     }
 
+
     const controller = new AbortController();
     const timeoutId = window.setTimeout(async () => {
       setLoading(true);
       try {
+        // Korjattu: endpointin perään lisätty kauttaviiva App Router -yhteensopivaksi
         const response = await fetch(
-          `/api/places/autocomplete?input=${encodeURIComponent(query)}`,
+          `/api/places/autocomplete/?input=${encodeURIComponent(query)}`,
           {
             method: "GET",
             signal: controller.signal,
