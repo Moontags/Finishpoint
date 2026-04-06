@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { KalenteriVaraus } from "@/components/KalenteriVaraus";
 import { PriceSummary } from "@/components/PriceSummary";
 import {
@@ -101,24 +102,36 @@ function AddressAutocompleteField({
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [dropdownPos, setDropdownPos] = useState<{top: number, left: number, width: number}>({top: 0, left: 0, width: 0});
 
   useEffect(() => {
     const onDocumentMouseDown = (event: MouseEvent) => {
       if (!containerRef.current) {
         return;
       }
-
       const target = event.target as Node | null;
       if (target && !containerRef.current.contains(target)) {
         setIsFocused(false);
       }
     };
-
     document.addEventListener("mousedown", onDocumentMouseDown);
     return () => {
       document.removeEventListener("mousedown", onDocumentMouseDown);
     };
   }, []);
+
+  // Päivitä dropdownin sijainti kun suggestions näkyy
+  useEffect(() => {
+    if (isFocused && suggestions.length > 0 && inputRef.current) {
+      const rect = inputRef.current.getBoundingClientRect();
+      setDropdownPos({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    }
+  }, [isFocused, suggestions]);
 
   useEffect(() => {
     const query = value.trim();
@@ -175,6 +188,7 @@ function AddressAutocompleteField({
         style={{ touchAction: "pan-y" }}
       >
         <input
+          ref={inputRef}
           id={id}
           name={name}
           value={value}
@@ -183,14 +197,43 @@ function AddressAutocompleteField({
           placeholder={placeholder}
           className="w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:bg-white focus:ring-[3px] focus:ring-blue-200"
         />
-
-        {isFocused && suggestions.length > 0 ? (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-[9999] w-full rounded-xl border border-slate-400 bg-white shadow-lg">
+        {/* Portaalin kautta suggestions-lista suoraan bodyyn */}
+        {isFocused && suggestions.length > 0 && typeof document !== 'undefined' && createPortal(
+          <div
+            style={{
+              position: 'fixed',
+              top: dropdownPos.top,
+              left: dropdownPos.left,
+              width: dropdownPos.width,
+              zIndex: 99999,
+              background: 'white',
+              borderRadius: '12px',
+              border: '1px solid #cbd5e1',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+              padding: 0,
+              margin: 0,
+              maxHeight: 320,
+              overflowY: 'auto',
+            }}
+          >
             {suggestions.map((suggestion) => (
               <button
                 key={suggestion.placeId || suggestion.label}
                 type="button"
-                className="block w-full border-b border-slate-200 px-4 py-3 text-left text-[13px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 last:border-b-0"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  border: 0,
+                  borderBottom: '1px solid #e5e7eb',
+                  padding: '12px 18px',
+                  textAlign: 'left',
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: '#334155',
+                  background: 'none',
+                  cursor: 'pointer',
+                  transition: 'background 0.1s',
+                }}
                 onMouseDown={(event) => {
                   event.preventDefault();
                   onChange(suggestion.label);
@@ -201,8 +244,9 @@ function AddressAutocompleteField({
                 {suggestion.label}
               </button>
             ))}
-          </div>
-        ) : null}
+          </div>,
+          document.body
+        )}
       </div>
 
       {loading ? (
