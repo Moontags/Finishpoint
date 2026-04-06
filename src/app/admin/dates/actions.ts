@@ -1,49 +1,37 @@
 "use server";
 
-import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
-
-type ActionState = { error: string | null; success?: boolean };
+import { withAdminAction, formatSupabaseError, type ActionResult } from "@/lib/admin-action";
 
 export async function addBlockedDate(
-  _prev: ActionState,
+  _prev: ActionResult,
   formData: FormData
-): Promise<ActionState> {
-  try {
-    const supabase = getSupabaseAdminClient();
-    if (!supabase) {
-      return { error: "Palvelinyhteys puuttuu (SUPABASE_SERVICE_ROLE_KEY)" };
-    }
+): Promise<ActionResult> {
+  const date = formData.get("date") as string;
+  const reason = formData.get("reason") as string;
 
-    const date = formData.get("date") as string;
-    const reason = formData.get("reason") as string;
+  if (!date) return { error: "Päivämäärä on pakollinen" };
 
-    if (!date) return { error: "Päivämäärä puuttuu" };
+  return withAdminAction(async (db) => {
+    const { error } = await db
+      .from("blocked_dates")
+      .insert({ blocked_date: date, reason: reason || null });
 
-    const { error } = await supabase.from("blocked_dates").insert({
-      blocked_date: date,
-      reason: reason || null,
-    });
-
-    if (error) {
-      console.error("blocked_dates insert:", error);
-      return { error: `Tallennus epäonnistui: ${error.message}` };
-    }
+    if (error) return { error: formatSupabaseError(error.message) };
 
     revalidatePath("/admin/dates");
     return { error: null, success: true };
-  } catch (e) {
-    console.error("addBlockedDate:", e);
-    return { error: "Odottamaton virhe" };
-  }
+  });
 }
 
-export async function removeBlockedDate(id: string): Promise<void> {
-  const supabase = getSupabaseAdminClient();
-  if (!supabase) throw new Error("Supabase admin client puuttuu");
+export async function removeBlockedDate(id: string): Promise<ActionResult> {
+  if (!id) return { error: "ID puuttuu" };
 
-  const { error } = await supabase.from("blocked_dates").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  return withAdminAction(async (db) => {
+    const { error } = await db.from("blocked_dates").delete().eq("id", id);
+    if (error) return { error: formatSupabaseError(error.message) };
 
-  revalidatePath("/admin/dates");
+    revalidatePath("/admin/dates");
+    return { error: null, success: true };
+  });
 }

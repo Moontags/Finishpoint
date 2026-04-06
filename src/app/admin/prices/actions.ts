@@ -1,34 +1,24 @@
 "use server";
 
-import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
+import { withAdminAction, formatSupabaseError, type ActionResult } from "@/lib/admin-action";
 
-export async function updatePrice(
-  formData: FormData
-): Promise<{ error: string | null; success?: boolean }> {
-  try {
-    const supabase = getSupabaseAdminClient();
-    if (!supabase) return { error: "Palvelinyhteys puuttuu" };
+export async function updatePrice(formData: FormData): Promise<ActionResult> {
+  const key = formData.get("key") as string;
+  const value = parseFloat(formData.get("value") as string);
 
-    const key = formData.get("key") as string;
-    const value = parseFloat(formData.get("value") as string);
+  if (!key) return { error: "Hinta-avain puuttuu" };
+  if (isNaN(value) || value < 0) return { error: "Virheellinen hinta-arvo" };
 
-    if (!key || isNaN(value)) return { error: "Virheelliset arvot" };
-
-    const { error } = await supabase
+  return withAdminAction(async (db) => {
+    const { error } = await db
       .from("prices")
       .update({ value, updated_at: new Date().toISOString() })
       .eq("key", key);
 
-    if (error) {
-      console.error("prices update:", error);
-      return { error: error.message };
-    }
+    if (error) return { error: formatSupabaseError(error.message) };
 
     revalidatePath("/admin/prices");
     return { error: null, success: true };
-  } catch (e) {
-    console.error("updatePrice:", e);
-    return { error: "Odottamaton virhe" };
-  }
+  });
 }

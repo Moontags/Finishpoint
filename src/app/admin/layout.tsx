@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import AdminNav from "./AdminNav";
 import { SessionRefresher } from "./components/session-refresher";
@@ -18,14 +16,14 @@ export default async function AdminLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  // Middleware hoitaa redirectit — layout vain päättää mitä renderöidään
   if (!user) {
-    const headersList = headers();
-    const pathname = headersList.get("x-pathname") ?? "";
-    const isAuthPage = pathname.includes("/admin/login") || pathname.includes("/admin/auth");
-    if (!isAuthPage) {
-      redirect("/admin/login");
-    }
-    return <>{children}</>;
+    // Login-sivu tai auth callback: renderöi ilman admin-navigaatiota
+    return (
+      <div className="min-h-screen bg-[#252525] text-zinc-100 flex items-center justify-center p-4">
+        {children}
+      </div>
+    );
   }
 
   return (

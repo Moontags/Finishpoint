@@ -1,24 +1,27 @@
 "use client";
 
 import { useTransition } from "react";
-import { deleteVarausAction } from "../varaukset/[id]/actions";
 import { Toast, useToast } from "@/components/ui/toast";
 import type { ActionResult } from "@/lib/admin-action";
 
-export function DeleteButton({ id }: { id: string }) {
+export function DeleteDateButton({
+  id,
+  removeAction,
+}: {
+  id: string;
+  removeAction: (id: string) => Promise<ActionResult>;
+}) {
   const [isPending, startTransition] = useTransition();
   const { toast, showToast, hideToast } = useToast();
 
   function handleDelete() {
-    if (!confirm("Oletko varma että haluat poistaa tämän varauksen?")) return;
+    if (!confirm("Poistetaanko suljettu päivä?")) return;
     startTransition(async () => {
-      const fd = new FormData();
-      fd.set("id", id);
-      const result: ActionResult = await deleteVarausAction({ error: null }, fd);
+      const result = await removeAction(id);
       if (result.error) {
         showToast(`Poisto epäonnistui: ${result.error}`, "error");
       } else {
-        showToast("Varaus poistettu.", "success");
+        showToast("Päivä poistettu.", "success");
       }
     });
   }
@@ -29,9 +32,9 @@ export function DeleteButton({ id }: { id: string }) {
       <button
         onClick={handleDelete}
         disabled={isPending}
-        className="text-red-400 hover:text-red-300 disabled:opacity-40 text-xs font-medium"
+        className="text-red-400 hover:text-red-300 disabled:opacity-40 text-sm font-medium transition"
       >
-        {isPending ? "..." : "Poista"}
+        {isPending ? "Poistetaan..." : "Poista"}
       </button>
     </>
   );
