@@ -39,9 +39,17 @@ export async function middleware(request: NextRequest) {
     pathname === "/admin/login" ||
     pathname.startsWith("/admin/auth");
 
+  // Ei kirjautunut + suojattu reitti → ohjaa loginiin
   if (!user && !isPublicPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
+    return NextResponse.redirect(url);
+  }
+
+  // Kirjautunut + login-sivu → ohjaa dashboardiin
+  if (user && pathname === "/admin/login") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin";
     return NextResponse.redirect(url);
   }
 

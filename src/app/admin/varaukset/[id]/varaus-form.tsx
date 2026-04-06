@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useEffect } from "react";
+import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveVarausAction, deleteVarausAction } from "./actions";
 import { Toast, useToast } from "@/components/ui/toast";
+import { SubmitButton } from "@/components/ui/submit-button";
 import type { Varaus } from "@/lib/varaukset";
 import type { ActionResult } from "@/lib/admin-action";
 
@@ -14,8 +16,8 @@ export function VarausForm({ id, varaus }: { id: string; varaus: Varaus | null }
   const router = useRouter();
   const { toast, showToast, hideToast } = useToast();
 
-  const [saveState, saveAction, savePending] = useActionState(saveVarausAction, initial);
-  const [delState, deleteAction, deletePending] = useActionState(deleteVarausAction, initial);
+  const [saveState, saveAction] = useFormState(saveVarausAction, initial);
+  const [delState, deleteAction] = useFormState(deleteVarausAction, initial);
 
   useEffect(() => {
     if (saveState.success) {
@@ -185,13 +187,12 @@ export function VarausForm({ id, varaus }: { id: string; varaus: Varaus | null }
         </div>
 
         <div className="flex gap-3 pt-4">
-          <button
-            type="submit"
-            disabled={savePending}
+          <SubmitButton
+            pendingText="Tallennetaan..."
             className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2 rounded font-medium transition"
           >
-            {savePending ? "Tallennetaan..." : id === "new" ? "Luo varaus" : "Tallenna muutokset"}
-          </button>
+            {id === "new" ? "Luo varaus" : "Tallenna muutokset"}
+          </SubmitButton>
           <Link
             href="/admin"
             className="bg-zinc-700 hover:bg-zinc-600 text-zinc-100 px-4 py-2 rounded font-medium transition"
@@ -204,13 +205,12 @@ export function VarausForm({ id, varaus }: { id: string; varaus: Varaus | null }
       {id !== "new" && (
         <form action={deleteAction} className="mt-4">
           <input type="hidden" name="id" value={id} />
-          <button
-            type="submit"
-            disabled={deletePending}
+          <SubmitButton
+            pendingText="Poistetaan..."
             className="bg-red-700 hover:bg-red-600 disabled:opacity-60 text-white px-4 py-2 rounded font-medium transition"
           >
-            {deletePending ? "Poistetaan..." : "Poista varaus"}
-          </button>
+            Poista varaus
+          </SubmitButton>
         </form>
       )}
     </>

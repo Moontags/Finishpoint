@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useFormState } from "react-dom";
 import { addBlockedDate } from "./actions";
 import { Toast, useToast } from "@/components/ui/toast";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type State = { error: string | null; success?: boolean };
 const initial: State = { error: null };
@@ -11,7 +13,7 @@ export function AddDateForm() {
   const { toast, showToast, hideToast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [state, formAction, isPending] = useActionState(addBlockedDate, initial);
+  const [state, formAction] = useFormState(addBlockedDate, initial);
 
   useEffect(() => {
     if (state.success) {
@@ -51,13 +53,12 @@ export function AddDateForm() {
             />
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={isPending}
+        <SubmitButton
+          pendingText="Tallennetaan..."
           className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2 rounded text-sm font-medium transition"
         >
-          {isPending ? "Tallennetaan..." : "Lisää suljettu päivä"}
-        </button>
+          Lisää suljettu päivä
+        </SubmitButton>
       </form>
     </>
   );

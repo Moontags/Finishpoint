@@ -16,6 +16,11 @@ const primaryItems = [
 export default function AdminNav() {
   const pathname = usePathname();
 
+  // Login- ja auth-sivuilla ei näytetä navigaatiota
+  if (pathname === "/admin/login" || pathname.startsWith("/admin/auth")) {
+    return null;
+  }
+
   return (
     <aside className="border-r border-zinc-700/80 bg-[#1f1f1f] md:min-h-screen">
       <div className="p-4 border-b border-zinc-700/80">
