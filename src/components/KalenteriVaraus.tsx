@@ -22,11 +22,7 @@ type DistanceResponse = {
   durationMinutes?: number | null;
 };
 
-type ReservedBooking = {
-  varaus_pvm: string;
-  aloitusaika: string;
-  lopetusaika: string;
-};
+type VarausAika = { alku: string; loppu: string };
 
 function parseMinutes(value: number | null | undefined) {
   if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
@@ -92,7 +88,8 @@ export function KalenteriVaraus({
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [isTimeMenuOpen, setIsTimeMenuOpen] = useState(false);
-  const [reservedBookings, setReservedBookings] = useState<ReservedBooking[]>([]);
+  const [suljetutPaivat, setSuljetutPaivat] = useState<string[]>([]);
+  const [varausAjat, setVarausAjat] = useState<Record<string, VarausAika[]>>({});
   const [isLoadingReservedDays, setIsLoadingReservedDays] = useState(false);
   const [driveToDestinationMinutes, setDriveToDestinationMinutes] = useState<number | null>(null);
   const [driveFromRiihimakiMinutes, setDriveFromRiihimakiMinutes] = useState<number | null>(null);
@@ -129,17 +126,21 @@ export function KalenteriVaraus({
 
         const payload = (await response.json()) as {
           ok: boolean;
-          data?: ReservedBooking[];
+          suljetutPaivat?: string[];
+          varausAjat?: Record<string, VarausAika[]>;
         };
 
         if (!response.ok || !payload.ok) {
-          setReservedBookings([]);
+          setSuljetutPaivat([]);
+          setVarausAjat({});
           return;
         }
 
-        setReservedBookings(payload.data ?? []);
+        setSuljetutPaivat(payload.suljetutPaivat ?? []);
+        setVarausAjat(payload.varausAjat ?? {});
       } catch {
-        setReservedBookings([]);
+        setSuljetutPaivat([]);
+        setVarausAjat({});
       } finally {
         setIsLoadingReservedDays(false);
       }
@@ -239,58 +240,44 @@ export function KalenteriVaraus({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const getReservedBookingsForDay = (day: Date) => {
-    const dayIso = format(day, "yyyy-MM-dd");
-    return reservedBookings.filter((booking) => booking.varaus_pvm === dayIso);
-  };
-
-  const hasReservations = (day: Date) => getReservedBookingsForDay(day).length > 0;
   const isPast = (day: Date) => startOfDay(day) < startOfDay(new Date());
 
-  const isTimeSlotUnavailable = (slot: string) => {
-    if (!selectedDay) {
-      return false;
-    }
-
-    const dayIso = format(selectedDay, "yyyy-MM-dd");
+  const isSlotUnavailableForDate = (slot: string, dayIso: string, bookings: VarausAika[]): boolean => {
     const slotStart = parse(`${dayIso} ${slot}`, "yyyy-MM-dd HH:mm", new Date());
-
     if (driveToDestinationMinutes === null) {
-      return getReservedBookingsForDay(selectedDay).some((booking) => booking.aloitusaika === slot);
+      return bookings.some((b) => b.alku === slot);
     }
-
     const slotEnd = addMinutes(slotStart, WORK_DURATION_MINUTES + driveToDestinationMinutes);
-
-    return getReservedBookingsForDay(selectedDay).some((booking) => {
-      const bookingStart = parse(`${dayIso} ${booking.aloitusaika}`, "yyyy-MM-dd HH:mm", new Date());
-      const bookingEnd = parse(`${dayIso} ${booking.lopetusaika}`, "yyyy-MM-dd HH:mm", new Date());
+    return bookings.some((b) => {
+      const bookingStart = parse(`${dayIso} ${b.alku}`, "yyyy-MM-dd HH:mm", new Date());
+      const bookingEnd = parse(`${dayIso} ${b.loppu}`, "yyyy-MM-dd HH:mm", new Date());
       return slotStart < bookingEnd && slotEnd > bookingStart;
     });
   };
 
-  useEffect(() => {
-    if (!selectedDay || !selectedTime) {
-      return;
-    }
+  const isPaivaVarattu = (day: Date): boolean => {
+    const dayIso = format(day, "yyyy-MM-dd");
+    if (suljetutPaivat.includes(dayIso)) return true;
+    const bookings = varausAjat[dayIso] ?? [];
+    if (bookings.length === 0) return false;
+    return timeSlots.every((slot) => isSlotUnavailableForDate(slot, dayIso, bookings));
+  };
 
+  const isTimeSlotUnavailable = (slot: string): boolean => {
+    if (!selectedDay) return false;
     const dayIso = format(selectedDay, "yyyy-MM-dd");
-    const bookingsForDay = reservedBookings.filter((booking) => booking.varaus_pvm === dayIso);
-    const slotStart = parse(`${dayIso} ${selectedTime}`, "yyyy-MM-dd HH:mm", new Date());
+    if (suljetutPaivat.includes(dayIso)) return true;
+    const bookings = varausAjat[dayIso] ?? [];
+    return isSlotUnavailableForDate(slot, dayIso, bookings);
+  };
 
-    const selectedSlotUnavailable =
-      driveToDestinationMinutes === null
-        ? bookingsForDay.some((booking) => booking.aloitusaika === selectedTime)
-        : bookingsForDay.some((booking) => {
-            const slotEnd = addMinutes(slotStart, WORK_DURATION_MINUTES + driveToDestinationMinutes);
-            const bookingStart = parse(`${dayIso} ${booking.aloitusaika}`, "yyyy-MM-dd HH:mm", new Date());
-            const bookingEnd = parse(`${dayIso} ${booking.lopetusaika}`, "yyyy-MM-dd HH:mm", new Date());
-            return slotStart < bookingEnd && slotEnd > bookingStart;
-          });
-
-    if (selectedSlotUnavailable) {
+  useEffect(() => {
+    if (!selectedDay || !selectedTime) return;
+    if (isTimeSlotUnavailable(selectedTime)) {
       setSelectedTime("");
     }
-  }, [driveToDestinationMinutes, reservedBookings, selectedDay, selectedTime]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [driveToDestinationMinutes, varausAjat, suljetutPaivat, selectedDay, selectedTime]);
 
   const handleDayGridTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const touch = event.touches[0];
@@ -351,7 +338,7 @@ export function KalenteriVaraus({
         >
           {weekDays.map((day) => {
             const selected = selectedDay ? isSameDay(selectedDay, day) : false;
-            const reserved = hasReservations(day);
+            const reserved = isPaivaVarattu(day);
             const past = isPast(day);
             const disabled = past;
             const today = isSameDay(day, new Date());
@@ -410,23 +397,7 @@ export function KalenteriVaraus({
             Valitse kuljetusaika
           </label>
 
-          {getReservedBookingsForDay(selectedDay).length > 0 ? (
-            <div className="mb-3 rounded-[10px] border border-slate-200 bg-[#f8fafc] px-4 py-3 text-[13px] text-[#1a2e4a]">
-              <p className="font-semibold">Auto on jo varattu:</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {getReservedBookingsForDay(selectedDay).map((booking) => (
-                  <span
-                    key={`${booking.varaus_pvm}-${booking.aloitusaika}-${booking.lopetusaika}`}
-                    className="rounded-full border border-slate-200 bg-white px-3 py-1"
-                  >
-                    {booking.aloitusaika} - {booking.lopetusaika}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          <div className="overflow-hidden rounded-[10px] border border-slate-300 bg-white/10 backdrop-blur-sm">
+<div className="overflow-hidden rounded-[10px] border border-slate-300 bg-white/10 backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setIsTimeMenuOpen((current) => !current)}
