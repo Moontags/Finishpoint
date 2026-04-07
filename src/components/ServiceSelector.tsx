@@ -106,8 +106,8 @@ export default function ServiceSelector({
             onClick={() => setActive(id)}
             className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold shadow-sm backdrop-blur-sm transition ${
               active === id
-                ? "border border-slate-700/60 bg-slate-700/80 text-white"
-                : "border border-slate-200 bg-white/10 text-slate-700 hover:border-blue-300 hover:bg-white/20 hover:text-slate-900"
+                ? "border-0 bg-slate-700/80 text-white"
+                : "border border-slate-200 bg-white/10 text-slate-700 hover:bg-white/20 hover:text-slate-900"
             }`}
           >
             <Icon className="h-5 w-5" />

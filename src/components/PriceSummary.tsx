@@ -11,7 +11,7 @@ export function PriceSummary({ hintaAlv0, label = "Hinta" }: PriceSummaryProps) 
   const sisAlv = pyoristaAsiakkaalle(lisaaAlv(hintaAlv0));
 
   return (
-    <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-4">
+    <div className="mt-4 rounded-xl bg-transparent px-4 py-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600 [overflow-wrap-anywhere]">
         {label}
       </p>

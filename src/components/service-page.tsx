@@ -20,7 +20,7 @@ export function ServicePage({
         </div>
       ) : null}
 
-      <section className="relative grid gap-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <section className="relative grid gap-5 overflow-hidden rounded-2xl bg-white p-5 shadow-sm sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
         {service.heroBackgroundImage ? (
           <>
             <Image
@@ -45,7 +45,7 @@ export function ServicePage({
 
         </div>
 
-        <div className={`relative z-1 rounded-xl border p-5 ${service.heroBackgroundImage ? "border-white/30 bg-white/10 backdrop-blur-sm" : "border-slate-200 bg-slate-50"}`}>
+        <div className={`relative z-1 rounded-xl p-5 ${service.heroBackgroundImage ? "bg-white/10 backdrop-blur-sm" : "bg-slate-50"}`}>
           <p className={`text-[13px] font-extrabold uppercase tracking-[0.22em] ${service.heroBackgroundImage ? "text-blue-200" : "text-blue-600"} sm:text-[15px]`}>
             Sisältää
           </p>
@@ -55,7 +55,7 @@ export function ServicePage({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+      <section className="rounded-2xl bg-white p-5 shadow-sm sm:p-8">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{service.pricingTitle}</h2>
         <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           {service.pricingDescription}

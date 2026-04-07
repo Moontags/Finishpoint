@@ -383,20 +383,20 @@ export function AjoneuvoPriceCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
             <p className="mb-3 text-[12px] font-medium text-slate-500">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
@@ -552,20 +552,20 @@ export function KappaletavaraPriceCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
             <p className="mb-3 text-[12px] font-medium text-slate-500">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
