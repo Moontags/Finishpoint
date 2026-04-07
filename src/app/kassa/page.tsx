@@ -9,11 +9,7 @@ import { ORDER_DRAFT_STORAGE_KEY, type OrderDraft } from "@/lib/order-draft";
 
 function formatEuro(value: number | null) {
   if (value === null || !Number.isFinite(value)) return "-";
-  return new Intl.NumberFormat("fi-FI", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 2,
-  }).format(value);
+  return new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(value);
 }
 
 export default function CheckoutPage() {
@@ -21,38 +17,25 @@ export default function CheckoutPage() {
   const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : undefined;
   const success = searchParams?.get("success") === "1";
   const cancel = searchParams?.get("cancel") === "1";
-
   const [draft] = useState<OrderDraft | null>(() => {
     if (typeof window === "undefined") return null;
     const raw = window.sessionStorage.getItem(ORDER_DRAFT_STORAGE_KEY);
-    if (raw) {
-      try { return JSON.parse(raw) as OrderDraft; } catch { return null; }
-    }
+    if (raw) { try { return JSON.parse(raw) as OrderDraft; } catch { return null; } }
     return null;
   });
-
   const [accepted, setAccepted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-
   const canConfirm = useMemo(() => {
     if (!draft) return false;
     return (
-      draft.name.trim().length > 0 &&
-      draft.phone.trim().length > 0 &&
-      draft.email.trim().length > 0 &&
-      draft.addresses.trim().length > 0 &&
-      typeof draft.estimatedPriceVat0 === "number" &&
-      draft.estimatedPriceVat0 > 0 &&
-      accepted
+      draft.name.trim().length > 0 && draft.phone.trim().length > 0 &&
+      draft.email.trim().length > 0 && draft.addresses.trim().length > 0 &&
+      typeof draft.estimatedPriceVat0 === "number" && draft.estimatedPriceVat0 > 0 && accepted
     );
   }, [accepted, draft]);
-
   const confirmAndPay = async () => {
-    if (!draft) {
-      setError(t('checkout.confirming', 'Vahvistetaan...'));
-      return;
-    }
+    if (!draft) { setError(t('checkout.confirming', 'Vahvistetaan...')); return; }
     setSubmitting(true);
     setError("");
     try {
@@ -74,26 +57,20 @@ export default function CheckoutPage() {
       setError("Maksuun siirtyminen epaonnistui. Yrita uudelleen.");
     }
   };
-
   if (typeof window === "undefined") return null;
-
   return (
     <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
       <SiteHeader opaque noShadow />
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-600">Kassa</p>
-          <p className="mt-3 inline-flex w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">
-            Vaihe 2/2: Tarkistus ja maksu
-          </p>
+          <p className="mt-3 inline-flex w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">Vaihe 2/2: Tarkistus ja maksu</p>
           {success ? (
             <>
               <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">Maksu onnistui!</h1>
               <p className="mt-2 text-sm text-slate-600">Kiitos tilauksestasi. Olemme vastaanottaneet maksun ja käsittelemme tilauksesi pian.</p>
               <div className="mt-6 flex justify-center">
-                <Link href="/" className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600">
-                  Palaa etusivulle
-                </Link>
+                <Link href="/" className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600">Palaa etusivulle</Link>
               </div>
             </>
           ) : cancel ? (
@@ -101,12 +78,8 @@ export default function CheckoutPage() {
               <h1 className="mt-3 text-3xl font-bold tracking-tight text-rose-700">Maksu peruutettu</h1>
               <p className="mt-2 text-sm text-rose-600">Maksua ei suoritettu loppuun. Voit yrittää maksua uudelleen tai palata etusivulle.</p>
               <div className="mt-6 flex justify-center gap-4">
-                <Link href="/kassa" className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600">
-                  Yritä maksua uudelleen
-                </Link>
-                <Link href="/" className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-base font-bold text-slate-700 transition hover:bg-slate-100">
-                  Palaa etusivulle
-                </Link>
+                <Link href="/kassa" className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600">Yritä maksua uudelleen</Link>
+                <Link href="/" className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-base font-bold text-slate-700 transition hover:bg-slate-100">Palaa etusivulle</Link>
               </div>
             </>
           ) : (
@@ -144,13 +117,9 @@ export default function CheckoutPage() {
                 <input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} className="mt-0.5 h-4 w-4 accent-blue-600" disabled={!draft || submitting} />
                 Hyvaksyn tilauksen, maksun ja sopimusehdot.
               </label>
-              {error ? (
-                <p className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">{error}</p>
-              ) : null}
+              {error ? <p className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">{error}</p> : null}
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <Link href="/#quote" className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
-                  Takaisin vaiheeseen 1/2
-                </Link>
+                <Link href="/#quote" className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Takaisin vaiheeseen 1/2</Link>
                 <button type="button" onClick={confirmAndPay} disabled={!canConfirm || submitting} className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60">
                   {submitting ? t('checkout.confirming', 'Vahvistetaan...') : t('checkout.confirm_and_pay', 'Vahvista tilaus ja siirry maksuun')}
                 </button>

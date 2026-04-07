@@ -858,7 +858,7 @@ export function ProjektiPriceCalculator() {
 
 export function PriceCalculator({ category }: { category: ServiceCategory }) {
   const { t } = useLanguage();
-  if (category === "ajoneuvo") return <AjoneuvoPriceCalculator />;
+  if (category === "ajoneuvo") return <AjoneuvoCalculator />;
   if (category === "kappaletavara") return <KappaletavaraPriceCalculator />;
   return <ProjektiPriceCalculator />;
 }
