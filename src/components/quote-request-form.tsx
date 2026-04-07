@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCalculatorContext } from "@/lib/calculator-context";
@@ -212,6 +212,23 @@ export function QuoteRequestForm() {
     };
   }, [status, feedback]);
 
+  // Listen for autofill event from ChatWidget
+  useEffect(() => {
+    function handleAutofillQuote(e: Event) {
+      const detail = (e as CustomEvent).detail || {};
+      setFormData((current) => ({
+        ...current,
+        name: detail.name || current.name,
+        phone: detail.phone || current.phone,
+        email: detail.email || current.email,
+        pickupAddress: detail.pickupAddress || current.pickupAddress,
+        deliveryAddress: detail.deliveryAddress || current.deliveryAddress,
+        message: detail.message || current.message,
+      }));
+    }
+    window.addEventListener('fp-autofill-quote', handleAutofillQuote);
+    return () => window.removeEventListener('fp-autofill-quote', handleAutofillQuote);
+  }, []);
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {

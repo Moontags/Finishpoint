@@ -17,11 +17,11 @@ export function CalculatorFormSection({
       <section className="relative overflow-hidden">
         {/* Gradient background for calculator section */}
         <div className="pointer-events-none absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f6f8] via-[#e5e8ef] to-[#e3e7ed]" />
+          <div className="absolute inset-0 bg-linear-to-b from-[#f5f6f8] via-[#e5e8ef] to-[#e3e7ed]" />
           {/* Top fade for smooth transition */}
-          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f5f6f8] to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-20 bg-linear-to-b from-[#f5f6f8] to-transparent" />
           {/* Bottom fade for smooth transition (same as top, but flipped) */}
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#f5f6f8] to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#f5f6f8] to-transparent" />
         </div>
         <section className="relative z-10 mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
           <ServiceSelector initialCategory={initialCategory} />

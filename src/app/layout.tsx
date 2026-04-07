@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import dynamic from "next/dynamic";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -52,6 +53,8 @@ export const metadata: Metadata = {
   },
 };
   
+const ChatWidget = dynamic(() => import("@/components/ChatWidget"), { ssr: false });
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,6 +64,7 @@ export default function RootLayout({
     <html lang="fi" data-scroll-behavior="smooth">
       <body className={`${montserrat.variable} antialiased`}>
         {children}
+        <ChatWidget />
       </body>
     </html>
   );
