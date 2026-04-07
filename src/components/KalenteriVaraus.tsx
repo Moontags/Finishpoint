@@ -88,6 +88,23 @@ export function KalenteriVaraus({
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [isTimeMenuOpen, setIsTimeMenuOpen] = useState(false);
+  const timeMenuRef = useRef<HTMLDivElement | null>(null);
+    // Sulje aikavalikko kun klikataan/kosketetaan ulkopuolelle
+    useEffect(() => {
+      if (!isTimeMenuOpen) return;
+      function handlePointerDown(e: MouseEvent | TouchEvent) {
+        if (!timeMenuRef.current) return;
+        if (e.target instanceof Node && !timeMenuRef.current.contains(e.target)) {
+          setIsTimeMenuOpen(false);
+        }
+      }
+      document.addEventListener("mousedown", handlePointerDown);
+      document.addEventListener("touchstart", handlePointerDown);
+      return () => {
+        document.removeEventListener("mousedown", handlePointerDown);
+        document.removeEventListener("touchstart", handlePointerDown);
+      };
+    }, [isTimeMenuOpen]);
   const [suljetutPaivat, setSuljetutPaivat] = useState<string[]>([]);
   const [varausAjat, setVarausAjat] = useState<Record<string, VarausAika[]>>({});
   const [isLoadingReservedDays, setIsLoadingReservedDays] = useState(false);
@@ -397,7 +414,7 @@ export function KalenteriVaraus({
             Valitse kuljetusaika
           </label>
 
-<div className="overflow-hidden rounded-[10px] border border-slate-300 bg-white/10 backdrop-blur-sm">
+          <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] border border-slate-300 bg-white/10 backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setIsTimeMenuOpen((current) => !current)}
