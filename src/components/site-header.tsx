@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,6 +17,8 @@ export function SiteHeader({
 }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -24,6 +26,21 @@ export function SiteHeader({
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleOutside = (e: MouseEvent | TouchEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("touchstart", handleOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("touchstart", handleOutside);
+    };
+  }, [mobileMenuOpen]);
 
   const palvelutActive = useMemo(
     () => serviceNavigationOrder.some((slug) => pathname === `/${slug}`),
@@ -105,34 +122,43 @@ export function SiteHeader({
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-            <details className="relative mr-5 translate-y-0.5 sm:mr-0 sm:translate-y-0 sm:hidden">
-              <summary className="grid h-12 w-12 cursor-pointer list-none place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50">
+            <div ref={mobileMenuRef} className="relative mr-5 translate-y-0.5 sm:mr-0 sm:translate-y-0 sm:hidden">
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen((o) => !o)}
+                className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50"
+              >
                 <Menu className="h-6 w-6" />
-              </summary>
-              <div className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
-                {serviceNavigationLinks.map(({ href, label }) => (
+              </button>
+              {mobileMenuOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
+                  {serviceNavigationLinks.map(({ href, label }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                    >
+                      {label}
+                    </Link>
+                  ))}
                   <Link
-                    key={href}
-                    href={href}
+                    href="/laskuri"
+                    onClick={() => setMobileMenuOpen(false)}
                     className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                   >
-                    {label}
+                    Laskuri
                   </Link>
-                ))}
-                <Link
-                  href="/laskuri"
-                  className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
-                >
-                  Laskuri
-                </Link>
-                <Link
-                  href={quoteHref}
-                  className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
-                >
-                  {siteCta.quoteNavLabel}
-                </Link>
-              </div>
-            </details>
+                  <Link
+                    href={quoteHref}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                  >
+                    {siteCta.quoteNavLabel}
+                  </Link>
+                </div>
+              )}
+            </div>
             <Link
               href={quoteHref}
               className="hidden sm:inline-flex items-center gap-1 rounded-xl bg-slate-700/80 px-3 py-2 text-xs font-bold text-white shadow-[0_4px_14px_rgba(15,23,42,0.18)] transition hover:bg-slate-700/90 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"

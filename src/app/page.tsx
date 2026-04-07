@@ -60,11 +60,7 @@ export default function Home() {
             <a
               key={cardTitle}
               href={href}
-              className={`group relative flex min-h-[280px] w-full flex-col justify-end overflow-hidden rounded-2xl border transition sm:min-h-[320px] lg:min-h-[360px] ${
-                featured
-                  ? "border-2 border-blue-500 shadow-[0_0_0_4px_rgba(37,99,235,0.15),0_14px_32px_rgba(15,23,42,0.22)]"
-                  : "border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-xl"
-              }`}
+              className="group relative flex min-h-[280px] w-full flex-col justify-end overflow-hidden rounded-2xl border border-slate-200 shadow-sm transition hover:border-blue-300 hover:shadow-xl sm:min-h-[320px] lg:min-h-[360px]"
             >
               <Image
                 src={backgroundImage}
