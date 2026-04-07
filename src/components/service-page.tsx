@@ -1,9 +1,11 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { ServiceList } from "@/components/ServiceList";
 import type { ServiceContent } from "@/lib/services";
 import { siteCta } from "@/lib/site-config";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export function ServicePage({
   service,
@@ -12,6 +14,7 @@ export function ServicePage({
   service: ServiceContent;
   seasonBanner?: string;
 }) {
+  const { t } = useLanguage();
   return (
     <ServicePageLayout title={service.title} description={service.description}>
       {seasonBanner ? (
@@ -39,8 +42,7 @@ export function ServicePage({
             {service.valueProposition}
           </h2>
           <p className={`max-w-xl text-[14px] leading-[1.75] sm:text-base ${service.heroBackgroundImage ? "text-slate-200" : "text-slate-600"}`}>
-            Palvelemme joustavasti myös viikonloppuisin. Kerro tarpeesi, niin ehdotamme sinulle
-            sopivan aikataulun ja kuljetusratkaisun.
+            {t('service_page.flexible', 'Palvelemme joustavasti myös viikonloppuisin.')}
           </p>
 
         </div>

@@ -380,7 +380,7 @@ export function QuoteRequestForm() {
       <div className="space-y-4">
         <div className="inline-flex max-w-full items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.18em] text-blue-700 sm:text-[15px]">
           <Mail className="h-4 w-4 text-blue-700" />
-          <span className="truncate sm:whitespace-normal">Vahvista tilaus ja maksa</span>
+          <span className="truncate sm:whitespace-normal">{t('form.confirm_order', 'Vahvista tilaus ja maksa')}</span>
         </div>
         {isOrderFlow ? (
           <p className="mt-1 block w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">

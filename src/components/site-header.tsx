@@ -106,7 +106,7 @@ export function SiteHeader({
                       href={href}
                       className="block rounded-lg px-3 py-2 text-[13px] text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                     >
-                      {label}
+                      {t(`service.${label}`, label)}
                     </Link>
                   ))}
                 </div>
@@ -165,7 +165,7 @@ export function SiteHeader({
                       onClick={() => setMobileMenuOpen(false)}
                       className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                     >
-                      {label}
+                      {t(`service.${label}`, label)}
                     </Link>
                   ))}
                   <Link
