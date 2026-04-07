@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bike, Boxes, ChevronDown, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
 import { useCalculatorContext } from "@/lib/calculator-context";
+import { useLanguage } from "@/lib/LanguageContext";
 import { serviceCategories } from "@/lib/service-categories";
 import type { ServiceCategory } from "@/lib/types";
 
@@ -34,6 +35,7 @@ export default function ServiceSelector({
   initialCategory?: ServiceCategory;
 }) {
   const resolvedInitial = parseCategory(initialCategory ?? null) ?? "kappaletavara";
+  const { t } = useLanguage();
 
   const [active, setActive] = useState<ServiceCategory>(resolvedInitial);
   const [open, setOpen] = useState(false);
@@ -59,9 +61,9 @@ export default function ServiceSelector({
   }, []);
   return (
     <div id="calculator" className="rounded-2xl bg-transparent p-3.5 sm:p-8">
-      <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">Tilaa kuljetus</p>
+      <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">{t("calculator.orderTransport", "Tilaa kuljetus")}</p>
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        Valitse palvelutyyppi
+        {t("calculator.selectService", "Valitse palvelutyyppi")}
       </h2>
 
       <div className="mt-5 sm:hidden">
@@ -72,7 +74,7 @@ export default function ServiceSelector({
             className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition"
           >
             <span className="min-w-0 flex-1 wrap-break-word text-left leading-tight">
-              {categories.find((c) => c.id === active)?.label}
+              {(() => { const c = categories.find((c) => c.id === active); return c ? t(`serviceCategory.${c.id}.label`, c.label) : ""; })()}
             </span>
             <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
@@ -90,7 +92,7 @@ export default function ServiceSelector({
                   }`}
                 >
                   <Icon className="h-6 w-6 shrink-0" />
-                  <span className="wrap-break-word text-left leading-tight">{label}</span>
+                  <span className="wrap-break-word text-left leading-tight">{t(`serviceCategory.${id}.label`, label)}</span>
                 </button>
               ))}
             </div>
@@ -111,7 +113,7 @@ export default function ServiceSelector({
             }`}
           >
             <Icon className="h-5 w-5" />
-            <span>{label}</span>
+            <span>{t(`serviceCategory.${id}.label`, label)}</span>
           </button>
         ))}
       </div>

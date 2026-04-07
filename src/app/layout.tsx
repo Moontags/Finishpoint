@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import dynamic from "next/dynamic";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -63,8 +64,10 @@ export default function RootLayout({
   return (
     <html lang="fi" data-scroll-behavior="smooth">
       <body className={`${montserrat.variable} antialiased`}>
-        {children}
-        <ChatWidget />
+        <LanguageProvider>
+          {children}
+          <ChatWidget />
+        </LanguageProvider>
       </body>
     </html>
   );

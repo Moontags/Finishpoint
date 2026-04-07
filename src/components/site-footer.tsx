@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { serviceFooterLinks } from "@/lib/services";
 import { siteContact } from "@/lib/site-config";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export function SiteFooter() {
+  const { t } = useLanguage();
   return (
     <footer className="bg-[#f5f6f8]">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
@@ -13,7 +17,7 @@ export function SiteFooter() {
             <p className="text-[17px] font-medium text-slate-600">{siteContact.phoneDisplay}</p>
             <p className="break-all text-[17px] font-medium text-slate-600">{siteContact.email}</p>
             <p className="pt-2 text-[14px] leading-relaxed text-slate-600">
-              Hinnat sis. ALV 25,5 %. Yritys (ALV 0 %).
+              {t("footer.vatNote", "Hinnat sis. ALV 25,5 %. Yritys (ALV 0 %).")}
             </p>
             <a
               href="/images/sopimusehdot.pdf"
@@ -21,7 +25,7 @@ export function SiteFooter() {
               rel="noopener noreferrer"
               className="inline-block text-[14px] text-slate-600 underline underline-offset-2 transition hover:text-blue-600"
             >
-              Sopimusehdot
+              {t("footer.terms", "Sopimusehdot")}
             </a>
           </div>
 
@@ -34,11 +38,7 @@ export function SiteFooter() {
                   href={href}
                   className="rounded-md px-2 py-2 text-[15px] text-slate-600 transition hover:text-blue-600 hover:underline"
                 >
-                  {label === "Mönkijäkuljetus"
-                    ? "Mönkijä kuljetus"
-                    : label === "Moottoripyöräkuljetus"
-                      ? "Moottoripyörän kuljetus"
-                      : label}
+                  {t(`service.${label}`, label)}
                 </Link>
               ))}
             </div>
@@ -48,7 +48,7 @@ export function SiteFooter() {
 
         {/* Alareuna */}
         <div className="mt-4 border-t border-slate-700 pt-3 text-[13px] text-slate-500">
-          © {new Date().getFullYear()} FP-pikakuljetus. Kaikki oikeudet pidätetään.
+          © {new Date().getFullYear()} {t("footer.copyright", "FP-pikakuljetus. Kaikki oikeudet pidätetään.")}
         </div>
       </div>
     </footer>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 // ...existing code...
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -21,6 +22,7 @@ function formatEuro(value: number | null) {
 // (no trailing brace)
 
 export default function CheckoutPage() {
+  const { t } = useLanguage();
   const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : undefined;
   const success = searchParams?.get("success") === "1";
   const cancel = searchParams?.get("cancel") === "1";
@@ -57,30 +59,30 @@ export default function CheckoutPage() {
 
   const confirmAndPay = async () => {
     if (!draft) {
-      setError("Tilaustietoja ei loytynyt. Palaa lomakkeelle.");
+      setError(t('checkout.confirming', 'Vahvistetaan...'));
       return;
     }
 
     setSubmitting(true);
     setError("");
 
-    try {
-      // Optionally validate distance, but ignore response for now
-      await fetch("/api/distance");
-
-      // Send order draft to API
-      const orderResponse = await fetch("/api/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
-      });
-
-      const result = (await orderResponse.json()) as {
-        ok: boolean;
-        error?: string;
-        paymentUrl?: string;
-      };
-
+    return (
+      <>
+        <SiteHeader />
+        <main className="min-h-[60vh]">
+          {/* ...existing code... */}
+          <button
+            type="button"
+            disabled={!canConfirm || submitting}
+            onClick={confirmAndPay}
+            className="..."
+          >
+            {t('checkout.confirm_and_pay', 'Vahvista tilaus ja siirry maksuun')}
+          </button>
+          {/* ...existing code... */}
+        </main>
+        <SiteFooter />
+      </>
       if (!orderResponse.ok || !result.ok || !result.paymentUrl) {
         setSubmitting(false);
         setError(result.error ?? "Tilauksen vahvistus epaonnistui. Yrita uudelleen.");

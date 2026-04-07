@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCalculatorContext } from "@/lib/calculator-context";
@@ -164,6 +165,7 @@ function AddressAutocompleteField({
 }
 
 export function QuoteRequestForm() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -267,12 +269,12 @@ export function QuoteRequestForm() {
       if (!response.ok || !result.ok) {
         setActiveAction(null);
         setStatus("error");
-        setFeedback(result.error ?? "Lähetys epäonnistui. Yritä uudelleen.");
+        setFeedback(result.error ?? t('form.error_send', 'Lähetys epäonnistui. Yritä uudelleen.'));
         return;
       }
 
       setStatus("success");
-      setFeedback("Tarjouspyyntö lähetettiin onnistuneesti.");
+      setFeedback(t('form.success', 'Tarjouspyyntö lähetettiin onnistuneesti.'));
       setActiveAction(null);
       setHasCalculatorData(false);
       setFormData({
@@ -287,14 +289,14 @@ export function QuoteRequestForm() {
     } catch {
       setActiveAction(null);
       setStatus("error");
-      setFeedback("Palvelin ei vastannut. Tarkista yhteys ja yritä uudelleen.");
+      setFeedback(t('form.error_server', 'Palvelin ei vastannut. Tarkista yhteys ja yritä uudelleen.'));
     }
   };
 
   const handleOrderAndPayment = async () => {
     if (isOrderFlow && !addressesMatchCalculator) {
       setStatus("error");
-      setFeedback("Nouto- ja toimitusosoitteen tulee olla samat kuin laskurissa.");
+      setFeedback(t('form.error_address_match', 'Nouto- ja toimitusosoitteen tulee olla samat kuin laskurissa.'));
       return;
     }
 
@@ -336,7 +338,7 @@ export function QuoteRequestForm() {
     } catch {
       setActiveAction(null);
       setStatus("error");
-      setFeedback("Kassaan siirtyminen epäonnistui. Yritä uudelleen.");
+      setFeedback(t('form.error_checkout', 'Kassaan siirtyminen epäonnistui. Yritä uudelleen.'));
     }
   };
 
@@ -390,16 +392,16 @@ export function QuoteRequestForm() {
         </h2>
         <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           {isOrderFlow
-            ? "Täydennä yhteystietosi ja jatka kassaan. Tarkistat tilauksen vielä ennen maksua."
-            : "Voit lähettää tarjouspyynnön tai tilata suoraan, kun hinta on laskettu laskurissa."}
+            ? t('form.complete_and_checkout', 'Täydennä yhteystietosi...')
+            : t('form.send_quote_or_order', 'Voit lähettää tarjouspyyntön...')}
         </p>
 
         {/* Info strip */}
         <div className="space-y-2.5 pt-2">
           {[
-            "Vastaamme yleensä saman päivän aikana",
-            isOrderFlow ? "Seuraava vaihe: tarkista tiedot kassassa" : "Hinnat näytetään sis. ALV 25,5 %",
-            "Yritys (ALV 0 %)",
+            t('form.response_same_day', 'Vastaamme yleensä saman päivän aikana'),
+            isOrderFlow ? t('form.next_step_checkout', 'Seuraava vaihe...') : t('common.vat_incl', 'Hinnat näytetään sis. ALV 25,5 %'),
+            t('common.business_vat', 'Yritys (ALV 0 %)'),
           ].map((line) => (
             <div key={line} className="flex items-start gap-2 text-[13px] text-slate-700">
               <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
@@ -413,7 +415,7 @@ export function QuoteRequestForm() {
       <form className="grid w-full gap-4" onSubmit={handleSubmit}>
         <div className="grid gap-4 sm:grid-cols-2">
           <label htmlFor="quote-name" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Nimi
+            {t('form.name', 'Nimi')}
             <input
               id="quote-name"
               required
@@ -425,7 +427,7 @@ export function QuoteRequestForm() {
             />
           </label>
           <label htmlFor="quote-phone" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Puhelin
+            {t('form.phone', 'Puhelin')}
             <input
               id="quote-phone"
               required
@@ -441,7 +443,7 @@ export function QuoteRequestForm() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label htmlFor="quote-email" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Sähköposti
+            {t('form.email', 'Sähköposti')}
             <input
               id="quote-email"
               required
@@ -454,7 +456,7 @@ export function QuoteRequestForm() {
             />
           </label>
           <label htmlFor="quote-service-type" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-            Palvelutyyppi
+            {t('form.service_type', 'Palvelutyyppi')}
             <select
               id="quote-service-type"
               name="serviceType"
@@ -464,7 +466,7 @@ export function QuoteRequestForm() {
             >
               {serviceTypeOptions.map((option) => (
                 <option key={option} value={option}>
-                  {option}
+                  {t(`service.${option}`, option)}
                 </option>
               ))}
             </select>
@@ -475,25 +477,25 @@ export function QuoteRequestForm() {
           <AddressAutocompleteField
             id="quote-pickup-address"
             name="pickupAddress"
-            label="Mistä"
+            label={t('form.from', 'Mistä')}
             value={formData.pickupAddress}
             onChange={(pickupAddress) => setFormData((current) => ({ ...current, pickupAddress }))}
-            placeholder="Katuosoite, kaupunki"
+            placeholder={t('form.address_placeholder', 'Katuosoite, kaupunki')}
             disabled={isOrderFlow}
           />
           <AddressAutocompleteField
             id="quote-delivery-address"
             name="deliveryAddress"
-            label="Minne"
+            label={t('form.to', 'Minne')}
             value={formData.deliveryAddress}
             onChange={(deliveryAddress) => setFormData((current) => ({ ...current, deliveryAddress }))}
-            placeholder="Katuosoite, kaupunki"
+            placeholder={t('form.address_placeholder', 'Katuosoite, kaupunki')}
             disabled={isOrderFlow}
           />
         </div>
 
         <label htmlFor="quote-message" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-          Lisätietoja
+          {t('form.additional_info', 'Lisätietoja')}
           <textarea
             id="quote-message"
             name="message"
@@ -511,7 +513,7 @@ export function QuoteRequestForm() {
               disabled={status === "loading"}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
-              {status === "loading" && activeAction === "quote" ? "Lähetetään..." : "Lähetä tarjouspyyntö"}
+              {status === "loading" && activeAction === "quote" ? t('form.sending', 'Lähetetään...') : t('form.send_quote', 'Lähetä tarjouspyyntö')}
               <ArrowUpRight className="h-4 w-4" />
             </button>
           ) : (
@@ -521,7 +523,7 @@ export function QuoteRequestForm() {
               disabled={status === "loading" || !canAttemptOrder}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
-              {status === "loading" && activeAction === "order" ? "Siirrytään..." : "Tilaa ja jatka kassaan"}
+              {status === "loading" && activeAction === "order" ? t('form.redirecting', 'Siirrytään...') : t('form.order_checkout', 'Tilaa ja jatka kassaan')}
               <ArrowUpRight className="h-4 w-4" />
             </button>
           )}

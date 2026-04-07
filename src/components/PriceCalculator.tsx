@@ -15,6 +15,7 @@ import {
   type PriceConfig,
 } from "@/lib/pricing";
 import { useCalculatorContext } from "@/lib/calculator-context";
+import { useLanguage } from "@/lib/LanguageContext";
 import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
 const cardClass = "rounded-2xl border-0 bg-transparent p-0 shadow-none sm:border sm:border-slate-200 sm:p-8 sm:shadow-sm";
@@ -168,9 +169,10 @@ function AddressAutocompleteField({
     };
   }, [value]);
 
+  const { t } = useLanguage();
   return (
     <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
-      {label}
+      {t(label, label)}
       <div
         ref={containerRef}
         style={{ position: 'relative', overflow: 'visible', touchAction: 'pan-y' }}
@@ -182,7 +184,7 @@ function AddressAutocompleteField({
           value={value}
           onFocus={() => setIsFocused(true)}
           onChange={(event) => onChange(event.target.value)}
-          placeholder={placeholder}
+          placeholder={t(placeholder, placeholder)}
           style={{
             width: '100%',
             borderRadius: '12px',
@@ -240,13 +242,13 @@ function AddressAutocompleteField({
       </div>
 
       {loading ? (
-        <span className="text-[12px] font-medium text-slate-500">Haetaan osoite-ehdotuksia...</span>
+        <span className="text-[12px] font-medium text-slate-500">{t('calculator.loading.suggestions', 'Haetaan osoite-ehdotuksia...')}</span>
       ) : null}
     </label>
   );
 }
 
-export function AjoneuvoPriceCalculator() {
+export function AjoneuvoCalculator() {
   const prices = usePrices();
   const [km, setKm] = useState(60);
   const [pickupAddress, setPickupAddress] = useState("");
@@ -256,6 +258,7 @@ export function AjoneuvoPriceCalculator() {
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
   const calculatorContext = useCalculatorContext();
+  const { t } = useLanguage();
 
   useEffect(() => {
     calculatorContext?.setPickupAddress(pickupAddress);
@@ -282,7 +285,7 @@ export function AjoneuvoPriceCalculator() {
 
     if (!origin || !destination) {
       setDistanceStatus("error");
-      setDistanceMessage("Anna sekä nouto- että toimitusosoite.");
+      setDistanceMessage(t('calculator.error.missing.address', 'Anna sekä nouto- että toimitusosoite.'));
       setRouteSummary(null);
       return;
     }
@@ -309,7 +312,7 @@ export function AjoneuvoPriceCalculator() {
 
       if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
         setDistanceStatus("error");
-        setDistanceMessage(result.error ?? "Matkan haku epäonnistui. Tarkista osoitteet.");
+        setDistanceMessage(result.error ?? t('calculator.error_distance', 'Matkan haku epäonnistui. Tarkista osoitteet.'));
         setRouteSummary(null);
         return;
       }
@@ -329,7 +332,7 @@ export function AjoneuvoPriceCalculator() {
       });
     } catch {
       setDistanceStatus("error");
-      setDistanceMessage("Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.");
+      setDistanceMessage(t('calculator.error_connection', 'Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.'));
       setRouteSummary(null);
     }
   };
@@ -339,32 +342,32 @@ export function AjoneuvoPriceCalculator() {
   return (
     <section className="rounded-2xl bg-transparent p-4 sm:p-8">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        Ajoneuvokuljetukset
+        {t('calculator.vehicle_transport', 'Ajoneuvokuljetukset')}
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.
+        {t('calculator.vehicle_info', 'Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.')}
       </p>
       <p className="mt-1 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Lisäpyörän toimitus samaan toimipisteeseen 89 €.
+        {t('calculator.vehicle_extra', 'Lisäpyörän toimitus samaan toimipisteeseen 89 €.')}
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <AddressAutocompleteField
           id="ajoneuvo-nouto-osoite"
           name="ajoneuvoNoutoOsoite"
-          label="Mistä"
+          label="calculator.from"
           value={pickupAddress}
           onChange={setPickupAddress}
-          placeholder="Esim. Mannerheimintie 1, Helsinki"
+          placeholder="calculator.address_placeholder"
         />
 
         <AddressAutocompleteField
           id="ajoneuvo-toimitus-osoite"
           name="ajoneuvoToimitusOsoite"
-          label="Minne"
+          label="calculator.to"
           value={deliveryAddress}
           onChange={setDeliveryAddress}
-          placeholder="Esim. Hämeenkatu 10, Tampere"
+          placeholder="calculator.address_placeholder"
         />
 
         <KalenteriVaraus
@@ -379,25 +382,27 @@ export function AjoneuvoPriceCalculator() {
           disabled={distanceStatus === "loading"}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
-          {distanceStatus === "loading" ? "Lasketaan..." : "Laske hinta"}
+          {distanceStatus === "loading"
+            ? t('calculator.calculating', 'Lasketaan...')
+            : t('calculator.calculate_price', 'Laske hinta')}
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
           <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
             <p className="mb-3 text-[12px] font-medium text-slate-500">
-              Paivitetty juuri nyt ({routeSummary.calculatedAt})
+              {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.kilometers', 'Kilometrit')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.duration', 'Ajoaika')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.price', 'Hinta')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
@@ -420,6 +425,7 @@ export function AjoneuvoPriceCalculator() {
 
 export function KappaletavaraPriceCalculator() {
   const prices = usePrices();
+  const { t } = useLanguage();
   const [km, setKm] = useState(40);
   const [pickupAddress, setPickupAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -454,7 +460,7 @@ export function KappaletavaraPriceCalculator() {
 
     if (!origin || !destination) {
       setDistanceStatus("error");
-      setDistanceMessage("Anna sekä nouto- että toimitusosoite.");
+      setDistanceMessage(t('calculator.error_missing_address', 'Anna sekä nouto- että toimitusosoite.'));
       setRouteSummary(null);
       return;
     }
@@ -481,7 +487,7 @@ export function KappaletavaraPriceCalculator() {
 
       if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
         setDistanceStatus("error");
-        setDistanceMessage(result.error ?? "Matkan haku epäonnistui. Tarkista osoitteet.");
+        setDistanceMessage(result.error ?? t('calculator.error_distance', 'Matkan haku epäonnistui. Tarkista osoitteet.'));
         setRouteSummary(null);
         return;
       }
@@ -501,7 +507,7 @@ export function KappaletavaraPriceCalculator() {
       });
     } catch {
       setDistanceStatus("error");
-      setDistanceMessage("Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.");
+      setDistanceMessage(t('calculator.error_connection', 'Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.'));
       setRouteSummary(null);
     }
   };
@@ -511,29 +517,29 @@ export function KappaletavaraPriceCalculator() {
   return (
     <section className={cardClass}>
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        Kappaletavara
+        {t('calculator.goods_transport', 'Kappaletavara')}
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km.
+        {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km.')}
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <AddressAutocompleteField
           id="kappaletavara-nouto-osoite"
           name="kappaletavaraNoutoOsoite"
-          label="Mistä"
+          label="calculator.from"
           value={pickupAddress}
           onChange={setPickupAddress}
-          placeholder="Esim. Mannerheimintie 1, Helsinki"
+          placeholder="calculator.address_placeholder"
         />
 
         <AddressAutocompleteField
           id="kappaletavara-toimitus-osoite"
           name="kappaletavaraToimitusOsoite"
-          label="Minne"
+          label="calculator.to"
           value={deliveryAddress}
           onChange={setDeliveryAddress}
-          placeholder="Esim. Hämeenkatu 10, Tampere"
+          placeholder="calculator.address_placeholder"
         />
 
         <KalenteriVaraus
@@ -548,25 +554,27 @@ export function KappaletavaraPriceCalculator() {
           disabled={distanceStatus === "loading"}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
-          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+          {distanceStatus === "loading"
+            ? t('calculator.calculating_price', 'Lasketaan hintaa...')
+            : t('calculator.calculate_price', 'Laske hinta')}
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
           <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
             <p className="mb-3 text-[12px] font-medium text-slate-500">
-              Paivitetty juuri nyt ({routeSummary.calculatedAt})
+              {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.kilometers', 'Kilometrit')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.duration', 'Ajoaika')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.price', 'Hinta')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
@@ -582,12 +590,13 @@ export function KappaletavaraPriceCalculator() {
         ) : null}
       </div>
 
-      <PriceSummary hintaAlv0={hinta} label="Kappaletavarakuljetus" />
+      <PriceSummary hintaAlv0={hinta} label={t('calculator.goods_transport', 'Kappaletavarakuljetus')} />
     </section>
   );
 }
 
 export function ProjektiPriceCalculator() {
+  const { t } = useLanguage();
   const prices = usePrices();
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
   const [lisakuormat, setLisakuormat] = useState(0);
@@ -620,7 +629,7 @@ export function ProjektiPriceCalculator() {
 
     if (!origin || !destination) {
       setDistanceStatus("error");
-      setDistanceMessage("Anna sekä nouto- että toimitusosoite.");
+      setDistanceMessage(t('calculator.error_missing_address', 'Anna sekä nouto- että toimitusosoite.'));
       setRouteSummary(null);
       return;
     }
@@ -647,7 +656,7 @@ export function ProjektiPriceCalculator() {
 
       if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
         setDistanceStatus("error");
-        setDistanceMessage(result.error ?? "Matkan haku epäonnistui. Tarkista osoitteet.");
+        setDistanceMessage(result.error ?? t('calculator.error_distance', 'Matkan haku epäonnistui. Tarkista osoitteet.'));
         setRouteSummary(null);
         return;
       }
@@ -667,7 +676,7 @@ export function ProjektiPriceCalculator() {
       });
     } catch {
       setDistanceStatus("error");
-      setDistanceMessage("Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.");
+      setDistanceMessage(t('calculator.error_connection', 'Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.'));
       setRouteSummary(null);
     }
   };
@@ -696,19 +705,19 @@ export function ProjektiPriceCalculator() {
         <AddressAutocompleteField
           id="projekti-nouto-osoite"
           name="projektiNoutoOsoite"
-          label="Mistä"
+          label={t('form.from', 'Mistä')}
           value={pickupAddress}
           onChange={setPickupAddress}
-          placeholder="Esim. Mannerheimintie 1, Helsinki"
+          placeholder={t('calculator.address_placeholder', 'Katuosoite, kaupunki')}
         />
 
         <AddressAutocompleteField
           id="projekti-toimitus-osoite"
           name="projektiToimitusOsoite"
-          label="Minne"
+          label={t('form.to', 'Minne')}
           value={deliveryAddress}
           onChange={setDeliveryAddress}
-          placeholder="Esim. Hämeenkatu 10, Tampere"
+          placeholder={t('calculator.address_placeholder', 'Katuosoite, kaupunki')}
         />
 
         <KalenteriVaraus
@@ -787,7 +796,7 @@ export function ProjektiPriceCalculator() {
           disabled={distanceStatus === "loading"}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
-          {distanceStatus === "loading" ? "Lasketaan hintaa..." : "Laske hinta"}
+          {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>
 
         {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
@@ -848,6 +857,7 @@ export function ProjektiPriceCalculator() {
 }
 
 export function PriceCalculator({ category }: { category: ServiceCategory }) {
+  const { t } = useLanguage();
   if (category === "ajoneuvo") return <AjoneuvoPriceCalculator />;
   if (category === "kappaletavara") return <KappaletavaraPriceCalculator />;
   return <ProjektiPriceCalculator />;
