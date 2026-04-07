@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { getReservedBookings } from "@/lib/bookings";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
+// Älä cacheta — data muuttuu varausten ja suljettujen päivien mukaan
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const alku = searchParams.get("alku")?.trim() ?? "";
