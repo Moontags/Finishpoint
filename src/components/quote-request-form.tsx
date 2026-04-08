@@ -412,7 +412,7 @@ export function QuoteRequestForm() {
       </div>
 
       {/* Right – form */}
-      <form className="grid w-full gap-4" onSubmit={handleSubmit}>
+      <form className="grid w-full gap-4" data-testid="quote-form" onSubmit={handleSubmit}>
         <div className="grid gap-4 sm:grid-cols-2">
           <label htmlFor="quote-name" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             {t('form.name', 'Nimi')}
@@ -420,6 +420,7 @@ export function QuoteRequestForm() {
               id="quote-name"
               required
               name="name"
+              data-testid="quote-name"
               autoComplete="name"
               value={formData.name}
               onChange={handleChange}
@@ -432,6 +433,7 @@ export function QuoteRequestForm() {
               id="quote-phone"
               required
               name="phone"
+              data-testid="quote-phone"
               type="tel"
               autoComplete="tel"
               value={formData.phone}
@@ -448,6 +450,7 @@ export function QuoteRequestForm() {
               id="quote-email"
               required
               name="email"
+              data-testid="quote-email"
               type="email"
               autoComplete="email"
               value={formData.email}
@@ -510,6 +513,7 @@ export function QuoteRequestForm() {
           {!isOrderFlow ? (
             <button
               type="submit"
+              data-testid="quote-submit"
               disabled={status === "loading"}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
@@ -537,6 +541,7 @@ export function QuoteRequestForm() {
 
         {feedback ? (
           <p
+            data-testid="quote-feedback"
             className={`rounded-xl border px-4 py-3 text-[13px] font-medium ${
               status === "success"
                 ? "border-emerald-200 bg-emerald-50 text-emerald-700"

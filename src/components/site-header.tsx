@@ -203,6 +203,7 @@ export function SiteHeader({
             <button
               type="button"
               aria-label={language === "fi" ? "Switch to English" : "Vaihda suomeksi"}
+              data-testid="language-toggle"
               onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
               className="hidden md:grid place-items-center transition hover:bg-[#f8fafc]"
               style={{ width: 32, height: 32, borderRadius: "50%", border: "0.5px solid #e2e8f0", background: "transparent", fontSize: 11, fontWeight: 700, color: "#64748b", cursor: "pointer" }}

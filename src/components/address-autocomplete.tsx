@@ -122,6 +122,13 @@ export function AddressAutocompleteField({
           id={id}
           type="text"
           name={name}
+          data-testid={
+            name.toLowerCase().includes('nouto') || name === 'pickupAddress'
+              ? 'pickup-address-input'
+              : name.toLowerCase().includes('toimitus') || name === 'deliveryAddress'
+              ? 'delivery-address-input'
+              : undefined
+          }
           value={value}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -133,10 +140,6 @@ export function AddressAutocompleteField({
           autoComplete="off"
           className="w-full bg-zinc-700 text-zinc-100 border border-zinc-600 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
-        {/* DEBUG: näkyvä tila inputin jälkeen */}
-        <div style={{ fontSize: '11px', color: 'red', marginTop: '2px' }}>
-          DEBUG: suggestions={suggestions.length} show={String(showSuggestions)} loading={String(loading)}
-        </div>
         {loading && (
           <div
             style={{

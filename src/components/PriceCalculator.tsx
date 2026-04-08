@@ -181,6 +181,13 @@ function AddressAutocompleteField({
           ref={inputRef}
           id={id}
           name={name}
+          data-testid={
+            name.toLowerCase().includes('nouto') || name === 'pickupAddress'
+              ? 'pickup-address-input'
+              : name.toLowerCase().includes('toimitus') || name === 'deliveryAddress'
+              ? 'delivery-address-input'
+              : undefined
+          }
           value={value}
           onFocus={() => setIsFocused(true)}
           onChange={(event) => onChange(event.target.value)}
@@ -378,6 +385,7 @@ export function AjoneuvoCalculator() {
 
         <button
           type="button"
+          data-testid="calculate-button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
@@ -388,7 +396,7 @@ export function AjoneuvoCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
             <p className="mb-3 text-[12px] font-medium text-slate-500">
               {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>
@@ -552,6 +560,7 @@ export function KappaletavaraPriceCalculator() {
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
+          data-testid="calculate-button"
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
@@ -560,7 +569,7 @@ export function KappaletavaraPriceCalculator() {
         </button>
 
         {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
             <p className="mb-3 text-[12px] font-medium text-slate-500">
               {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>

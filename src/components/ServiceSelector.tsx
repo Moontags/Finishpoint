@@ -105,6 +105,7 @@ export default function ServiceSelector({
           <button
             key={id}
             type="button"
+            data-testid={`service-tab-${id}`}
             onClick={() => setActive(id)}
             className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold shadow-sm backdrop-blur-sm transition ${
               active === id

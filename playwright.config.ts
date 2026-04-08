@@ -1,10 +1,15 @@
 import { defineConfig } from '@playwright/test';
-
 export default defineConfig({
-  testDir: './tests',        // Only look for tests in tests/
-  testMatch: '**/*.spec.ts', // Only .spec.ts files
+  testDir: './tests',
+  testMatch: '**/*.spec.ts',
   use: {
     baseURL: 'http://localhost:3000',
+    headless: true,
   },
-  // ... other settings as needed
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
+  },
 });

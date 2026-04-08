@@ -128,6 +128,7 @@ export default function ChatWidget() {
       {/* Floating button */}
       <button
         aria-label="Avaa chat"
+        data-testid="chat-open"
         onClick={() => setOpen(true)}
         style={{
           position: 'fixed',
@@ -154,6 +155,7 @@ export default function ChatWidget() {
       {/* Chat panel */}
       {open && (
         <div
+          data-testid="chat-panel"
           style={{
             position: 'fixed',
             right: 16,
@@ -176,7 +178,7 @@ export default function ChatWidget() {
             <span style={{fontWeight:700,fontSize:18,color:BUTTON_COLOR}}>Finishpoint Asiakaspalvelu</span>
             <div style={{display:'flex',gap:8}}>
               <button onClick={toggleLang} style={{fontSize:13,padding:'2px 8px',borderRadius:6,border:'1px solid #e5e7eb',background:'#f5f6f8',color:BUTTON_COLOR}}>{language==='fi'?'EN':'FI'}</button>
-              <button aria-label="Sulje chat" onClick={()=>setOpen(false)} style={{background:'none',border:'none',fontSize:24,color:'#6b7a8d',marginLeft:8,cursor:'pointer'}}><X size={24}/></button>
+              <button aria-label="Sulje chat" data-testid="chat-close" onClick={()=>setOpen(false)} style={{background:'none',border:'none',fontSize:24,color:'#6b7a8d',marginLeft:8,cursor:'pointer'}}><X size={24}/></button>
             </div>
           </div>
           {/* Messages */}
