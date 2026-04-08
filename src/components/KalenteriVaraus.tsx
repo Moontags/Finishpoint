@@ -155,6 +155,8 @@ export function KalenteriVaraus({
 
         setSuljetutPaivat(payload.suljetutPaivat ?? []);
         setVarausAjat(payload.varausAjat ?? {});
+        console.log("varausAjat:", payload.varausAjat);
+        console.log("suljetutPaivat:", payload.suljetutPaivat);
       } catch {
         setSuljetutPaivat([]);
         setVarausAjat({});
@@ -262,12 +264,17 @@ export function KalenteriVaraus({
   const isSlotUnavailableForDate = (slot: string, dayIso: string, bookings: VarausAika[]): boolean => {
     const slotStart = parse(`${dayIso} ${slot}`, "yyyy-MM-dd HH:mm", new Date());
     if (driveToDestinationMinutes === null) {
-      return bookings.some((b) => b.alku === slot);
+      return bookings.some((b) => {
+        const bStart = parse(`${dayIso} ${b.alku.slice(0, 5)}`, "yyyy-MM-dd HH:mm", new Date());
+        const bEnd = parse(`${dayIso} ${b.loppu.slice(0, 5)}`, "yyyy-MM-dd HH:mm", new Date());
+        const sEnd = addMinutes(slotStart, WORK_DURATION_MINUTES);
+        return slotStart < bEnd && sEnd > bStart;
+      });
     }
     const slotEnd = addMinutes(slotStart, WORK_DURATION_MINUTES + driveToDestinationMinutes);
     return bookings.some((b) => {
-      const bookingStart = parse(`${dayIso} ${b.alku}`, "yyyy-MM-dd HH:mm", new Date());
-      const bookingEnd = parse(`${dayIso} ${b.loppu}`, "yyyy-MM-dd HH:mm", new Date());
+      const bookingStart = parse(`${dayIso} ${b.alku.slice(0, 5)}`, "yyyy-MM-dd HH:mm", new Date());
+      const bookingEnd = parse(`${dayIso} ${b.loppu.slice(0, 5)}`, "yyyy-MM-dd HH:mm", new Date());
       return slotStart < bookingEnd && slotEnd > bookingStart;
     });
   };
