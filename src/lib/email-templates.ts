@@ -148,41 +148,34 @@ export function generateReceiptHtml(order: OrderData): string {
   const showCustomerAddress = order.totalWithVat > 400;
 
   return `
-    <div style="${baseStyles}">
-      <div style="background:#1a1a2e;padding:24px;text-align:center;">
-        <h1 style="color:#ffffff;margin:0;font-size:22px;">
-          Finishpoint Pikakuljetus
-        </h1>
+    <div style="font-family:Arial,sans-serif;color:#1a1a1a;max-width:600px;width:100%;margin:0 auto;box-sizing:border-box;">
+      <div style="background:#1a1a2e;padding:20px;text-align:center;">
+        <h1 style="color:#ffffff;margin:0;font-size:20px;">Finishpoint Pikakuljetus</h1>
       </div>
 
-      <div style="padding:24px;">
+      <div style="padding:20px;">
 
-        <table style="width:100%;margin-bottom:24px;">
+        <!-- Header: myyjä + kuitti info stacked for mobile -->
+        <table style="width:100%;margin-bottom:20px;border-collapse:collapse;">
           <tr>
-            <td style="vertical-align:top;width:50%;">
+            <td style="vertical-align:top;padding-bottom:12px;font-size:13px;line-height:1.6;">
               <strong>Myyjä</strong><br/>
               Finishpoint Pikakuljetus<br/>
               Petsamonkatu 27, Riihimäki<br/>
               Y-tunnus: 3163260-9<br/>
               ALV-tunnus: FI31632609
             </td>
-            <td style="vertical-align:top;text-align:right;">
-              <h2 style="margin:0;font-size:20px;">KUITTI / LASKU</h2>
-              <p style="margin:4px 0;color:#555;">
-                Laskunumero: <strong>${escapeHtml(order.orderId)}</strong>
-              </p>
-              <p style="margin:4px 0;color:#555;">
-                Päivämäärä: <strong>${dateStr}</strong>
-              </p>
-              ${order.vippsReference ? `
-              <p style="margin:4px 0;color:#555;font-size:12px;">
-                Maksuviite: ${escapeHtml(order.vippsReference)}
-              </p>` : ""}
+            <td style="vertical-align:top;text-align:right;padding-bottom:12px;font-size:13px;line-height:1.6;">
+              <strong style="font-size:18px;display:block;">KUITTI</strong>
+              <span style="color:#555;">Numero: <strong>${escapeHtml(order.orderId)}</strong></span><br/>
+              <span style="color:#555;">Päivämäärä: <strong>${dateStr}</strong></span>
+              ${order.vippsReference ? `<br/><span style="color:#555;font-size:11px;">Viite: ${escapeHtml(order.vippsReference)}</span>` : ""}
             </td>
           </tr>
         </table>
 
-        <div style="background:#f9f9f9;padding:12px;border-radius:4px;margin-bottom:20px;">
+        <!-- Ostaja -->
+        <div style="background:#f9f9f9;padding:12px;border-radius:4px;margin-bottom:20px;font-size:13px;line-height:1.6;">
           <strong>Ostaja</strong><br/>
           ${escapeHtml(order.customerName)}<br/>
           ${escapeHtml(order.customerPhone)}<br/>
@@ -192,69 +185,57 @@ export function generateReceiptHtml(order: OrderData): string {
             : ""}
         </div>
 
-        <h3 style="font-size:15px;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">
+        <!-- Palvelun erittely -->
+        <h3 style="font-size:14px;border-bottom:2px solid #e0e0e0;padding-bottom:6px;margin-bottom:0;">
           Palvelun erittely
         </h3>
-        <table style="${tableStyles}">
+        <table style="width:100%;border-collapse:collapse;margin:0 0 16px;">
           <thead>
             <tr>
-              <th style="${thStyles}">Kuvaus</th>
-              <th style="${thStyles};text-align:right;">Veroton hinta</th>
-              <th style="${thStyles};text-align:right;">ALV %</th>
-              <th style="${thStyles};text-align:right;">ALV EUR</th>
-              <th style="${thStyles};text-align:right;">Yhteensä</th>
+              <th style="background:#f5f5f5;padding:6px 8px;text-align:left;border:1px solid #e0e0e0;font-size:12px;">Kuvaus</th>
+              <th style="background:#f5f5f5;padding:6px 8px;text-align:right;border:1px solid #e0e0e0;font-size:12px;">Veroton</th>
+              <th style="background:#f5f5f5;padding:6px 8px;text-align:right;border:1px solid #e0e0e0;font-size:12px;">ALV %</th>
+              <th style="background:#f5f5f5;padding:6px 8px;text-align:right;border:1px solid #e0e0e0;font-size:12px;font-weight:bold;">Yht.</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="${tdStyles}">
+              <td style="padding:8px;border:1px solid #e0e0e0;font-size:13px;word-break:break-word;max-width:200px;">
                 ${escapeHtml(order.serviceDescription)}<br/>
-                <span style="font-size:12px;color:#666;">
-                  ${escapeHtml(order.pickupAddress)} -> ${escapeHtml(order.deliveryAddress)}
+                <span style="font-size:11px;color:#666;">
+                  ${escapeHtml(order.pickupAddress)} → ${escapeHtml(order.deliveryAddress)}
                 </span>
               </td>
-              <td style="${tdStyles};text-align:right;">
+              <td style="padding:8px;border:1px solid #e0e0e0;font-size:13px;text-align:right;white-space:nowrap;">
                 ${asEuro(order.netAmount)}
               </td>
-              <td style="${tdStyles};text-align:right;">
+              <td style="padding:8px;border:1px solid #e0e0e0;font-size:13px;text-align:right;white-space:nowrap;">
                 ${order.vatRate} %
               </td>
-              <td style="${tdStyles};text-align:right;">
-                ${asEuro(order.vatAmount)}
-              </td>
-              <td style="${tdStyles};text-align:right;font-weight:bold;">
+              <td style="padding:8px;border:1px solid #e0e0e0;font-size:13px;text-align:right;font-weight:bold;white-space:nowrap;">
                 ${asEuro(order.totalWithVat)}
               </td>
             </tr>
           </tbody>
         </table>
 
-        <table style="width:300px;margin-left:auto;margin-top:8px;">
+        <!-- Yhteenveto -->
+        <table style="width:100%;border-collapse:collapse;margin-top:4px;">
           <tr>
-            <td style="padding:4px 8px;font-size:13px;">Veroton hinta:</td>
-            <td style="padding:4px 8px;text-align:right;font-size:13px;">
-              ${asEuro(order.netAmount)}
-            </td>
+            <td style="padding:4px 8px;font-size:13px;color:#555;">Veroton hinta:</td>
+            <td style="padding:4px 8px;text-align:right;font-size:13px;">${asEuro(order.netAmount)}</td>
           </tr>
           <tr>
-            <td style="padding:4px 8px;font-size:13px;">
-              ALV ${order.vatRate} %:
-            </td>
-            <td style="padding:4px 8px;text-align:right;font-size:13px;">
-              ${asEuro(order.vatAmount)}
-            </td>
+            <td style="padding:4px 8px;font-size:13px;color:#555;">ALV ${order.vatRate} %:</td>
+            <td style="padding:4px 8px;text-align:right;font-size:13px;">${asEuro(order.vatAmount)}</td>
           </tr>
           <tr style="border-top:2px solid #1a1a2e;">
-            <td style="padding:8px;font-weight:bold;">
-              Maksettava yhteensä:
-            </td>
-            <td style="padding:8px;text-align:right;font-weight:bold;font-size:16px;">
-              ${asEuro(order.totalWithVat)}
-            </td>
+            <td style="padding:10px 8px;font-weight:bold;font-size:14px;">Maksettu yhteensä:</td>
+            <td style="padding:10px 8px;text-align:right;font-weight:bold;font-size:16px;">${asEuro(order.totalWithVat)}</td>
           </tr>
         </table>
 
-        <p style="margin-top:24px;font-size:13px;color:#555;">
+        <p style="margin-top:20px;font-size:13px;color:#555;">
           Maksu vastaanotettu: ${
             order.paymentMethod === "mobilepay"
               ? "MobilePay / Vipps"
@@ -262,7 +243,7 @@ export function generateReceiptHtml(order: OrderData): string {
           }
         </p>
 
-        <p style="font-size:12px;color:#888;margin-top:16px;">
+        <p style="font-size:12px;color:#888;margin-top:12px;">
           Säilytä tämä kuitti kirjanpitoa varten.
         </p>
       </div>
