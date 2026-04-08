@@ -134,12 +134,10 @@ export async function POST(request: Request) {
           }),
         });
       // Vahvista varaus maksetuksi
-      if (order.bookingSelection) {
-        try {
-          await updateBookingStatus(order.orderId, "vahvistettu");
-        } catch (error) {
-          console.error("Booking status update failed", { orderId: order.orderId, error });
-        }
+      try {
+        await updateBookingStatus(order.orderId, "vahvistettu");
+      } catch (error) {
+        console.error("Booking status update failed", { orderId: order.orderId, error });
       }
       } catch (error) {
         console.error("Receipt email sending failed", {
