@@ -15,8 +15,10 @@ export function ServicePage({
   seasonBanner?: string;
 }) {
   const { t } = useLanguage();
+  const title = t(`services.${service.slug}.title`, service.title);
+  const description = t(`services.${service.slug}.description`, service.description);
   return (
-    <ServicePageLayout title={service.title} description={service.description}>
+    <ServicePageLayout title={title} description={description}>
       {seasonBanner ? (
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-[14px] font-semibold text-emerald-700 sm:text-[15px]">
           {seasonBanner}
@@ -39,7 +41,7 @@ export function ServicePage({
 
         <div className="relative z-1 space-y-4">
           <h2 className={`text-2xl font-bold tracking-tight sm:text-4xl ${service.heroBackgroundImage ? "text-white" : "text-slate-900"}`}>
-            {service.valueProposition}
+            {t(`services.${service.slug}.valueProposition`, service.valueProposition)}
           </h2>
           <p className={`max-w-xl text-[14px] leading-[1.75] sm:text-base ${service.heroBackgroundImage ? "text-slate-200" : "text-slate-600"}`}>
             {t('service_page.flexible', 'Palvelemme joustavasti myös viikonloppuisin.')}
@@ -52,13 +54,13 @@ export function ServicePage({
             Sisältää
           </p>
           <div className="mt-4">
-            <ServiceList items={service.includes} />
+            <ServiceList items={service.includes.map((item, i) => t(`services.${service.slug}.includes.${i}`, item))} />
           </div>
         </div>
       </section>
 
       <section className="rounded-2xl bg-white p-5 shadow-sm sm:p-8">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{service.pricingTitle}</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{t(`services.${service.slug}.pricingTitle`, service.pricingTitle)}</h2>
         <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           {service.pricingDescription}
         </p>
