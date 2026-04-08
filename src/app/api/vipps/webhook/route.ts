@@ -104,10 +104,6 @@ export async function POST(request: Request) {
   const eventName = getEventName(payload);
   const reference = getReference(payload);
 
-  console.info("Vipps webhook headers", {
-    authorization: request.headers.get("authorization"),
-    allHeaders: Object.fromEntries(request.headers.entries()),
-  });
   console.info("Vipps webhook received", {
     eventName,
     reference: reference || "unknown",
