@@ -343,7 +343,8 @@ export async function POST(request: Request) {
           ajoaika_riihimaelta_min: sel.driveFromRiihimakiMinutes,
           hinta_alv: data.estimatedPriceVatIncl ?? null,
           hinta_alv0: estimatedPriceVat0,
-          status: "vahvistettu",
+          status: "odottaa_maksua",
+          order_id: orderId,
         });
       } catch (bookingError) {
         // Ei estä tilausta — kirjataan vain virhe lokiin
@@ -374,6 +375,7 @@ export async function POST(request: Request) {
         vatAmount,
         netAmount,
         paymentMethod: "mobilepay",
+        bookingSelection: data.bookingSelection ?? null,
       });
     } catch (saveError) {
       console.error("saveOrder failed", saveError);

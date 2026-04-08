@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/email";
 import { generateReceiptHtml } from "../../../../lib/email-templates";
 import { getOrderByReference, markOrderAsPaid } from "@/lib/order-store";
+import { saveBooking, updateBookingStatus } from "@/lib/bookings";
 
 function getExpectedToken() {
   return process.env.VIPPS_WEBHOOK_AUTH_TOKEN?.trim() ?? "";
@@ -129,6 +130,14 @@ export async function POST(request: Request) {
             vippsReference: reference,
           }),
         });
+      // Vahvista varaus maksetuksi
+      if (order.bookingSelection) {
+        try {
+          await updateBookingStatus(order.orderId, "vahvistettu");
+        } catch (error) {
+          console.error("Booking status update failed", { orderId: order.orderId, error });
+        }
+      }
       } catch (error) {
         console.error("Receipt email sending failed", {
           orderId: order.orderId,

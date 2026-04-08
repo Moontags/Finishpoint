@@ -23,6 +23,7 @@ export type OrderData = {
   netAmount: number;
   paymentMethod: "mobilepay" | "invoice";
   vippsReference?: string;
+  bookingSelection?: BookingSelectionData | null;
 };
 
 export type QuoteRequestData = {

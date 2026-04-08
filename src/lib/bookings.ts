@@ -14,7 +14,8 @@ export type BookingInsertPayload = {
   ajoaika_riihimaelta_min: number;
   hinta_alv?: number | null;
   hinta_alv0?: number | null;
-  status?: "vahvistettu" | "peruttu" | "valmis";
+  status?: "vahvistettu" | "odottaa_maksua" | "peruttu" | "valmis";
+  order_id?: string;
 };
 
 export type ReservedBooking = {
@@ -38,7 +39,7 @@ export async function getReservedBookings(alkuPvm: string, loppuPvm: string) {
     .select("varaus_pvm, aloitusaika, lopetusaika")
     .gte("varaus_pvm", asIsoDate(alkuPvm))
     .lte("varaus_pvm", asIsoDate(loppuPvm))
-    .eq("status", "vahvistettu")
+    .in("status", ["vahvistettu", "odottaa_maksua"])
     .order("varaus_pvm", { ascending: true });
 
   if (error) {
@@ -68,4 +69,18 @@ export async function saveBooking(payload: BookingInsertPayload) {
   }
 
   return data as { id: string };
+}
+
+export async function updateBookingStatus(orderId: string, newStatus: "vahvistettu" | "odottaa_maksua" | "peruttu" | "valmis") {
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    throw new Error("Supabase is not configured for bookings.");
+  }
+  const { error } = await client
+    .from("varaukset")
+    .update({ status: newStatus })
+    .eq("order_id", orderId);
+  if (error) {
+    throw new Error(`Booking status update failed: ${error.message}`);
+  }
 }
