@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -14,9 +14,13 @@ function formatEuro(value: number | null) {
 
 export default function CheckoutPage() {
   const { t } = useLanguage();
-  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : undefined;
-  const success = searchParams?.get("success") === "1";
-  const cancel = searchParams?.get("cancel") === "1";
+  const [success, setSuccess] = useState(false);
+  const [cancel, setCancel] = useState(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setSuccess(params.get("success") === "1");
+    setCancel(params.get("cancel") === "1");
+  }, []);
   const [draft] = useState<OrderDraft | null>(() => {
     if (typeof window === "undefined") return null;
     const raw = window.sessionStorage.getItem(ORDER_DRAFT_STORAGE_KEY);

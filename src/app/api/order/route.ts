@@ -301,9 +301,10 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from: fromAddress,
       to: recipient,
-      subject: `Tilaus ja maksu: ${data.serviceType}`,
+      subject: `Uusi tarjouspyynto / maksu kesken: ${data.serviceType}`,,
       text: [
-        "Uusi tilaus vastaanotettu.",
+        "HUOM: Maksu on viela kesken. Tilaus vahvistuu kun asiakas maksaa.",
+        "",
         "",
         `Nimi: ${data.name}`,
         `Puhelin: ${data.phone}`,
