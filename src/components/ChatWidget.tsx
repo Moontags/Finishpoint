@@ -157,18 +157,18 @@ export default function ChatWidget() {
           style={{
             position: 'fixed',
             right: 16,
-            bottom: 16,
+            bottom: 80,
             width: 380,
-            maxWidth: '100vw',
+            maxWidth: 'calc(100vw - 32px)',
             height: 520,
-            maxHeight: '90vh',
+            maxHeight: 'calc(100vh - 100px)',
             borderRadius: 18,
             background: '#fff',
             boxShadow: '0 4px 32px rgba(0,0,0,0.18)',
             zIndex: 1001,
             display: 'flex',
             flexDirection: 'column',
-            ...(window.innerWidth < 500 ? { left: 0, right: 0, width: '100vw', height: '100vh', borderRadius: 0 } : {})
+            ...(window.innerWidth < 500 ? { left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh', maxHeight: '100vh', borderRadius: 0 } : {})
           }}
         >
           {/* Header */}
