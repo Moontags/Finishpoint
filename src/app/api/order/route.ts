@@ -7,6 +7,7 @@ import {
   MobilePayApiError,
 } from "../../../lib/mobilepay-api";
 import { saveBooking } from "@/lib/bookings";
+import { saveOrder } from "@/lib/order-store";
 import type { BookingSelectionData } from "@/lib/types";
 
 type OrderPayload = {
@@ -353,6 +354,30 @@ export async function POST(request: Request) {
       }
     }
 
+    // Tallenna tilaus order-storeen jotta webhook löytää sen
+    try {
+      const vatRate = 0.255;
+      const netAmount = estimatedPriceVat0;
+      const totalWithVat = data.estimatedPriceVatIncl ?? estimatedPriceVat0;
+      const vatAmount = totalWithVat - netAmount;
+      await saveOrder({
+        orderId,
+        orderDate: new Date().toISOString(),
+        customerName: data.name,
+        customerEmail: data.email,
+        customerPhone: data.phone,
+        serviceDescription: `${data.serviceType} - ${data.addresses}`,
+        pickupAddress: data.pickupAddress || "",
+        deliveryAddress: data.deliveryAddress || "",
+        totalWithVat,
+        vatRate,
+        vatAmount,
+        netAmount,
+        paymentMethod: "mobilepay",
+      });
+    } catch (saveError) {
+      console.error("saveOrder failed", saveError);
+    }
     return NextResponse.json({ ok: true, paymentUrl });
   } catch {
     return NextResponse.json(
