@@ -123,9 +123,9 @@ export function AddressAutocompleteField({
           type="text"
           name={name}
           data-testid={
-            name.toLowerCase().includes('nouto') || name === 'pickupAddress'
+            name?.toLowerCase().includes('nouto') || name === 'pickupAddress'
               ? 'pickup-address-input'
-              : name.toLowerCase().includes('toimitus') || name === 'deliveryAddress'
+              : name?.toLowerCase().includes('toimitus') || name === 'deliveryAddress'
               ? 'delivery-address-input'
               : undefined
           }
