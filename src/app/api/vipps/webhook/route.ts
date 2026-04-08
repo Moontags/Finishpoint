@@ -77,7 +77,9 @@ function isReceiptEvent(eventName: string) {
     normalized.includes("payment_capture") ||
     normalized.includes("payment_authorized") ||
     normalized.includes("payment.captured") ||
-    normalized.includes("payment.authorized")
+    normalized.includes("payment.authorized") ||
+    normalized === "authorized" ||
+    normalized === "captured"
   );
 }
 
