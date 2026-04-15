@@ -125,29 +125,16 @@ export function SiteHeader({
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 mr-3 sm:mr-0 sm:gap-2.5">
-            {/* Mobile: pill toggle to the left of hamburger */}
-            <div className="flex sm:hidden" style={{ background: "#f1f5f9", borderRadius: 8, padding: 3, gap: 2 }}>
-              <button
-                type="button"
-                onClick={() => setLanguage("fi")}
-                style={language === "fi"
-                  ? { background: "#ffffff", color: "#0C447C", boxShadow: "0 1px 3px rgba(0,0,0,0.10)", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none" }
-                  : { background: "transparent", color: "#64748b", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none" }
-                }
-              >
-                FI
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage("en")}
-                style={language === "en"
-                  ? { background: "#ffffff", color: "#0C447C", boxShadow: "0 1px 3px rgba(0,0,0,0.10)", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none" }
-                  : { background: "transparent", color: "#64748b", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none" }
-                }
-              >
-                EN
-              </button>
-            </div>
+            {/* Desktop: kielinappi samaan riviin Tarjous/Soita kanssa, mobiilissa pyöreä nappi */}
+            <button
+              type="button"
+              aria-label="Vaihda kieli"
+              onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
+              className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50 sm:hidden"
+              style={{ fontWeight: 700, fontSize: 15 }}
+            >
+              {language === "fi" ? "EN" : "FI"}
+            </button>
             <div ref={mobileMenuRef} className="relative translate-y-0.5 sm:translate-y-0 sm:hidden">
               <button
                 type="button"
@@ -199,16 +186,16 @@ export function SiteHeader({
               <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("nav.call")}</span>
             </a>
-            {/* Language toggle — desktop only: circular button showing active language */}
+            {/* Language toggle — desktop only: samanlainen kuin Tarjous/Soita-napit */}
             <button
               type="button"
               aria-label={language === "fi" ? "Switch to English" : "Vaihda suomeksi"}
               data-testid="language-toggle"
               onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
-              className="hidden md:grid place-items-center transition hover:bg-[#f8fafc]"
-              style={{ width: 32, height: 32, borderRadius: "50%", border: "0.5px solid #e2e8f0", background: "transparent", fontSize: 11, fontWeight: 700, color: "#64748b", cursor: "pointer" }}
+              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-white border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 shadow-sm transition hover:bg-slate-50"
+              style={{ fontWeight: 700, fontSize: 15 }}
             >
-              {language.toUpperCase()}
+              {language === "fi" ? "EN" : "FI"}
             </button>
           </div>
         </div>
