@@ -18,7 +18,7 @@ import { useCalculatorContext } from "@/lib/calculator-context";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
-const cardClass = "rounded-2xl border-0 bg-transparent p-0 shadow-none sm:border sm:border-slate-200 sm:p-8 sm:shadow-sm";
+const cardClass = "bg-transparent p-0 sm:p-8";
 
 let _cachedPrices: PriceConfig | null = null;
 

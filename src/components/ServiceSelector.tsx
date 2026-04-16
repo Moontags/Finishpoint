@@ -60,7 +60,7 @@ export default function ServiceSelector({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <div id="calculator" className="rounded-2xl bg-transparent p-3.5 sm:p-8">
+    <div id="calculator" className="bg-transparent p-3.5 sm:p-8">
       <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">{t("calculator.orderTransport", "Tilaa kuljetus")}</p>
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         {t("calculator.selectService", "Valitse palvelutyyppi")}
