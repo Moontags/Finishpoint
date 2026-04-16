@@ -384,11 +384,11 @@ export function QuoteRequestForm() {
         </div>
         {isOrderFlow ? (
           <p className="mt-1 block w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">
-            Vaihe 1/2: Yhteystiedot
+            {t("form.step1_contact")}
           </p>
         ) : null}
         <h2 className="hidden text-[1.85rem] font-bold tracking-tight text-slate-900 sm:block sm:text-4xl">
-          Täytä yhteystietosi
+          {t("form.fill_details")}
         </h2>
         <p className="max-w-xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
           {isOrderFlow
