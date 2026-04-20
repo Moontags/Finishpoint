@@ -8,7 +8,7 @@ export async function POST(req: Request) {
       name = "-", phone = "-", email = "-", pickupAddress = "-", deliveryAddress = "-", message = "-"
     } = data || {};
     const html = `
-      <h2>Finishpoint Chat-automaattitäyttö</h2>
+      <h2>Pakuvie Chat-automaattitäyttö</h2>
       <ul>
         <li><b>Nimi:</b> ${name}</li>
         <li><b>Puhelin:</b> ${phone}</li>
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       <p>Viesti lähetetty automaattitäytön yhteydessä chatista.</p>
     `;
     await sendEmail({
-      to: "kuljetus@finishpoint.fi",
+      to: "kuljetus@pakuvie.fi",
       subject: "Chat-automaattitäyttö: uusi tarjous/varaus",
       html,
     });

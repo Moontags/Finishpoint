@@ -1,4 +1,4 @@
-# Deployment Checklist — Finishpoint
+# Deployment Checklist — Pakuvie
 
 Tarkistuslista tuotantoon siirtymistä varten.
 
@@ -25,7 +25,7 @@ npm run build && npm start
 
 ### 3. Tarkista Ympäristömuuttujat
 Katso `.env.local` ja varmista että kaikki arvot ovat oikein:
-- [ ] `NEXT_PUBLIC_SITE_URL=https://www.finishpoint.fi`
+- [ ] `NEXT_PUBLIC_SITE_URL=https://www.pakuvie.fi`
 - [ ] SMTP-asetukset (sähköpostit)
 - [ ] Supabase-avaimet
 - [ ] Google Maps API -avain
@@ -40,7 +40,7 @@ Lisää kaikki `.env.local`-muuttujat Vercelin dashboardiin:
 
 **Production Environment Variables:**
 ```
-NEXT_PUBLIC_SITE_URL=https://www.finishpoint.fi
+NEXT_PUBLIC_SITE_URL=https://www.pakuvie.fi
 NEXT_PUBLIC_SUPABASE_URL=https://sjrtejcihqplxjickbue.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<kopioi .env.local:sta>
 SUPABASE_SERVICE_ROLE_KEY=<kopioi .env.local:sta>
@@ -50,10 +50,10 @@ GOOGLE_MAPS_API_KEY=<kopioi .env.local:sta>
 SMTP_HOST=posti.zoner.fi
 SMTP_PORT=465
 SMTP_SECURE=true
-SMTP_USER=kuljetus@finishpoint.fi
+SMTP_USER=kuljetus@pakuvie.fi
 SMTP_PASS=<kopioi .env.local:sta>
-SMTP_FROM=kuljetus@finishpoint.fi
-QUOTE_RECIPIENT=kuljetus@finishpoint.fi
+SMTP_FROM=kuljetus@pakuvie.fi
+QUOTE_RECIPIENT=kuljetus@pakuvie.fi
 
 # Vipps/MobilePay
 VIPPS_CLIENT_ID=<kopioi .env.local:sta>
@@ -63,17 +63,17 @@ VIPPS_MERCHANT_SERIAL_NUMBER=2090122
 VIPPS_PAYMENTS_URL=https://api.vipps.no/epayment/v1/payments
 VIPPS_TOKEN_URL=https://api.vipps.no/accessToken/get
 VIPPS_CURRENCY=EUR
-VIPPS_RETURN_URL=https://www.finishpoint.fi/kassa?success=1
-VIPPS_CANCEL_URL=https://www.finishpoint.fi/kassa?cancel=1
-VIPPS_CALLBACK_PREFIX=https://www.finishpoint.fi/api/vipps
+VIPPS_RETURN_URL=https://www.pakuvie.fi/kassa?success=1
+VIPPS_CANCEL_URL=https://www.pakuvie.fi/kassa?cancel=1
+VIPPS_CALLBACK_PREFIX=https://www.pakuvie.fi/api/vipps
 MOBILEPAY_MERCHANT_ID=2090122
 MOBILEPAY_CURRENCY=EUR
 ```
 
 ### 2. Domain-asetukset
-- [ ] `www.finishpoint.fi` osoittaa Verceliin
+- [ ] `www.pakuvie.fi` osoittaa Verceliin
 - [ ] SSL-sertifikaatti aktiivinen (Vercel hoitaa automaattisesti)
-- [ ] Redirect `finishpoint.fi` → `www.finishpoint.fi`
+- [ ] Redirect `pakuvie.fi` → `www.pakuvie.fi`
 
 ### 3. Deploy
 ```bash
@@ -89,9 +89,9 @@ Vercel deployaa automaattisesti kun pushaat `main`-branchiin.
 ## ✅ **TUOTANNON JÄLKEEN**
 
 ### 1. Smoke Tests
-- [ ] Käy osoitteessa https://www.finishpoint.fi/
+- [ ] Käy osoitteessa https://www.pakuvie.fi/
 - [ ] Testaa tilauslomake (älä lähetä oikeaa tilausta)
-- [ ] Testaa admin-kirjautuminen: https://www.finishpoint.fi/admin/login
+- [ ] Testaa admin-kirjautuminen: https://www.pakuvie.fi/admin/login
 - [ ] Tarkista että sähköpostit lähtevät (testaa tarjouspyyntö)
 
 ### 2. Vipps/MobilePay -testaus

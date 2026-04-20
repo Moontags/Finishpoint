@@ -7,7 +7,7 @@ import { LaskuriHero } from "@/components/LaskuriHero";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
-  title: "Kuljetuslaskuri | Finishpoint",
+  title: "Kuljetuslaskuri | Pakuvie",
   description:
     "Valitse kuljetuspalvelun kategoria ja laske hinta-arvio nopeasti: ajoneuvo, kappaletavara tai projekti.",
 };

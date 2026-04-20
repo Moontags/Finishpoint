@@ -3,7 +3,7 @@ import { getSupabaseAdminClient } from "./supabase-admin";
 
 const orderById = new Map<string, OrderData>();
 
-const ORDER_KEY_PREFIX = "finishpoint:order:";
+const ORDER_KEY_PREFIX = "pakuvie:order:";
 const DEFAULT_ORDER_TTL_SECONDS = 60 * 60 * 24 * 30;
 
 type KvConfig = {

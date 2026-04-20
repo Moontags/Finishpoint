@@ -24,7 +24,7 @@ export default function AdminNav() {
   return (
     <aside className="border-r border-zinc-700/80 bg-[#1f1f1f] md:min-h-screen">
       <div className="p-4 border-b border-zinc-700/80">
-        <p className="text-lg font-bold leading-none">Finishpoint</p>
+        <p className="text-lg font-bold leading-none">Pakuvie</p>
         <p className="text-xs text-zinc-400 mt-1">Hallintapaneeli</p>
       </div>
 

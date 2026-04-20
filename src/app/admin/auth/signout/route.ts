@@ -5,5 +5,5 @@ export async function GET() {
   const supabase = await createClient();
   await supabase.auth.signOut();
 
-  return NextResponse.redirect("https://www.finishpoint.fi");
+  return NextResponse.redirect("https://www.pakuvie.fi");
 }

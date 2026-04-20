@@ -10,15 +10,15 @@ const CONFIG = {
 };
 
 export const metadata: Metadata = {
-  title: "Kuljetuspalvelu Hyvinkää – Muutto, rahti & pienkuormat | Finishpoint",
+  title: "Kuljetuspalvelu Hyvinkää – Muutto, rahti & pienkuormat | Pakuvie",
   description:
     "Luotettava kuljetuspalvelu Hyvinkäällä. Muuttokuljetukset, yrityskuljetukset, tavarankuljetus ja pienkuormat. Nopea tarjous – palvelemme koko Hyvinkään alueen.",
-  alternates: { canonical: "https://www.finishpoint.fi/alueet/hyvinkaa" },
+  alternates: { canonical: "https://www.pakuvie.fi/alueet/hyvinkaa" },
   openGraph: {
-    title: "Kuljetuspalvelu Hyvinkää – Finishpoint",
+    title: "Kuljetuspalvelu Hyvinkää – Pakuvie",
     description:
       "Luotettava kuljetuspalvelu Hyvinkäällä. Muuttokuljetukset, yrityskuljetukset, tavarankuljetus ja pienkuormat.",
-    url: "https://www.finishpoint.fi/alueet/hyvinkaa",
+    url: "https://www.pakuvie.fi/alueet/hyvinkaa",
   },
 };
 
@@ -31,10 +31,10 @@ export default function AlueHyvinkaaPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MovingCompany",
-            name: "Finishpoint",
-            url: "https://www.finishpoint.fi",
+            name: "Pakuvie",
+            url: "https://www.pakuvie.fi",
             telephone: "0503547763",
-            email: "kuljetus@finishpoint.fi",
+            email: "kuljetus@pakuvie.fi",
             areaServed: { "@type": "City", name: CONFIG.kaupunki },
             serviceType: ["Muuttokuljetukset", "Yrityskuljetukset", "Tavarankuljetus", "Pienkuormat"],
           }),

@@ -1,6 +1,6 @@
-# Finishpoint
+# Pakuvie
 
-Single-page website for Finishpoint, a logistics company focused on motorcycle transport, moving services, and custom freight jobs.
+Single-page website for Pakuvie, a logistics company focused on motorcycle transport, moving services, and custom freight jobs.
 
 ## Stack
 
@@ -28,7 +28,7 @@ Address suggestions are fetched from `/api/places/autocomplete` using Google Pla
 
 1. Create `.env.local` from `.env.example`.
 2. Fill in SMTP credentials.
-3. Set `QUOTE_RECIPIENT` if quotes should go somewhere else than `kuljetus@finishpoint.fi`.
+3. Set `QUOTE_RECIPIENT` if quotes should go somewhere else than `kuljetus@pakuvie.fi`.
 4. Add the same variables to your hosting provider's server-side environment settings before deploying.
 
 Note: `SMTP_SECURE` must be the string `true` or `false` in the env file. The API route parses it with `process.env.SMTP_SECURE === "true"` so the value is converted to a real boolean before creating the Nodemailer transport.
@@ -68,7 +68,7 @@ Optional future browser-side variable:
 Apply the schema in Supabase before enabling the integration:
 
 1. Open the Supabase SQL editor for your project.
-2. Run [supabase/schema.sql](/Users/jari/finishpoint/supabase/schema.sql).
+2. Run [supabase/schema.sql](/Users/jari/pakuvie/supabase/schema.sql).
 3. Add `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to Vercel for Development, Preview, and Production.
 4. Redeploy the project.
 
@@ -156,7 +156,7 @@ If `GOOGLE_MAPS_API_KEY` is missing in production, address autocomplete falls ba
 
 ## Contact
 
-- Company: Finishpoint
+- Company: Pakuvie
 - Owner: Mediasata
 - Phone: 050 354 7763
-- Email: kuljetus@finishpoint.fi
+- Email: kuljetus@pakuvie.fi

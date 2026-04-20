@@ -11,7 +11,7 @@
 Summary:
 
 - Built a Next.js App Router project in the current workspace with Tailwind CSS, TypeScript, and lucide-react.
-- Implemented a responsive single-page Finishpoint website with a sticky header, hero, services, motorcycle pricing calculator, quote request form, and footer.
+- Implemented a responsive single-page Pakuvie website with a sticky header, hero, services, motorcycle pricing calculator, quote request form, and footer.
 - Installed dependencies, passed ESLint, and passed a production build.
 - Created and started a development task using `npm run dev`.
 - Added project documentation to `README.md` and cleaned this file by removing HTML comments.

@@ -60,7 +60,7 @@ export function AdminApp() {
     <div className="flex min-h-screen bg-[#252525] text-zinc-100">
       <nav className="w-56 bg-zinc-900 border-r border-zinc-800 flex flex-col">
         <div className="p-4 border-b border-zinc-800">
-          <div className="font-semibold text-zinc-100">Finishpoint</div>
+          <div className="font-semibold text-zinc-100">Pakuvie</div>
           <div className="text-xs text-zinc-500">Hallintapaneeli</div>
         </div>
 

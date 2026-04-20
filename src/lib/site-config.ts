@@ -1,8 +1,8 @@
 export const siteContact = {
   phoneDisplay: "050 354 7763",
   phoneHref: "tel:0503547763",
-  email: "kuljetus@finishpoint.fi",
-  emailHref: "mailto:kuljetus@finishpoint.fi",
+  email: "kuljetus@pakuvie.fi",
+  emailHref: "mailto:kuljetus@pakuvie.fi",
 } as const;
 
 export const siteCta = {

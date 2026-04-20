@@ -1,6 +1,6 @@
 import type { BookingSelectionData } from "@/lib/types";
 
-export const ORDER_DRAFT_STORAGE_KEY = "finishpoint.orderDraft";
+export const ORDER_DRAFT_STORAGE_KEY = "pakuvie.orderDraft";
 
 export type OrderDraft = {
   name: string;

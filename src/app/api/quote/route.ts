@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const smtpPass = process.env.SMTP_PASS;
     const smtpPort = Number(process.env.SMTP_PORT ?? "587");
     const smtpSecure = process.env.SMTP_SECURE === "true";
-    const recipient = process.env.QUOTE_RECIPIENT ?? "kuljetus@finishpoint.fi";
+    const recipient = process.env.QUOTE_RECIPIENT ?? "kuljetus@pakuvie.fi";
     const fromAddress = process.env.SMTP_FROM ?? smtpUser;
 
     if (!smtpHost || !smtpUser || !smtpPass || !fromAddress) {

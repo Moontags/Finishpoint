@@ -4,15 +4,15 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Finishpoint",
+  title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Pakuvie",
   description:
-    "Finishpoint tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa ja Tuusulassa. Muuttokuljetukset, tavarankuljetus ja pienkuormat.",
-  alternates: { canonical: "https://www.finishpoint.fi/alueet" },
+    "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa ja Tuusulassa. Muuttokuljetukset, tavarankuljetus ja pienkuormat.",
+  alternates: { canonical: "https://www.pakuvie.fi/alueet" },
   openGraph: {
-    title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Finishpoint",
+    title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Pakuvie",
     description:
-      "Finishpoint tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa ja Tuusulassa.",
-    url: "https://www.finishpoint.fi/alueet",
+      "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa ja Tuusulassa.",
+    url: "https://www.pakuvie.fi/alueet",
   },
 };
 
@@ -54,7 +54,7 @@ export default function AlueetPage() {
             <p className="area-hero__tag">Palvelualueet</p>
             <h1 className="area-hero__title">Kuljetuspalvelu lähellä sinua</h1>
             <p className="area-hero__sub">
-              Finishpoint toimii useilla paikkakunnilla Etelä-Suomessa. Valitse alueesi ja kysy tarjous – vastaamme saman päivän aikana.
+              Pakuvie toimii useilla paikkakunnilla Etelä-Suomessa. Valitse alueesi ja kysy tarjous – vastaamme saman päivän aikana.
             </p>
           </div>
         </section>

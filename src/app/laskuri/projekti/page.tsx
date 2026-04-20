@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Muutto- ja kierratyslaskuri | Finishpoint",
+  title: "Muutto- ja kierratyslaskuri | Pakuvie",
   description:
     "Laske muuton tai kierratyspalvelun hinta-arvio, tai pyydä tarjous suurelle muutolle.",
 };

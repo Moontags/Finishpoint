@@ -127,7 +127,7 @@ export async function POST(request: Request) {
       try {
         await sendEmail({
           to: order.customerEmail,
-          subject: `Kuitti ${order.orderId} - Finishpoint`,
+          subject: `Kuitti ${order.orderId} - Pakuvie`,
           html: generateReceiptHtml({
             ...order,
             vippsReference: reference,

@@ -115,7 +115,7 @@ export default function ChatWidget() {
       ? 'Lomake täytetty automaattisesti. Tarkista tiedot ja lähetä!'
       : 'Form auto-filled. Please review and submit!');
 
-    // 5. Send email notification to kuljetus@finishpoint.fi
+    // 5. Send email notification to kuljetus@pakuvie.fi
     fetch('/api/quote/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -175,7 +175,7 @@ export default function ChatWidget() {
         >
           {/* Header */}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 20px 12px 20px',borderBottom:'1px solid #e5e7eb'}}>
-            <span style={{fontWeight:700,fontSize:18,color:BUTTON_COLOR}}>Finishpoint Asiakaspalvelu</span>
+            <span style={{fontWeight:700,fontSize:18,color:BUTTON_COLOR}}>Pakuvie Asiakaspalvelu</span>
             <div style={{display:'flex',gap:8}}>
               <button onClick={toggleLang} style={{fontSize:13,padding:'2px 8px',borderRadius:6,border:'1px solid #e5e7eb',background:'#f5f6f8',color:BUTTON_COLOR}}>{language==='fi'?'EN':'FI'}</button>
               <button aria-label="Sulje chat" data-testid="chat-close" onClick={()=>setOpen(false)} style={{background:'none',border:'none',fontSize:24,color:'#6b7a8d',marginLeft:8,cursor:'pointer'}}><X size={24}/></button>

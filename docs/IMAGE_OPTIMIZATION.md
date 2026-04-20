@@ -25,7 +25,7 @@ brew install webp
 
 # Konvertoi kaikki pakukuvat
 cd public/images
-for file in paku*.png finishpoint-logo.png; do
+for file in paku*.png pakuvie-logo.png; do
   cwebp -q 85 -m 6 "$file" -o "${file%.png}.webp"
 done
 ```

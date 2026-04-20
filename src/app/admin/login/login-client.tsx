@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const OTP_COOLDOWN_SECONDS = 60;
-const OTP_LAST_SENT_KEY = "finishpoint_admin_otp_last_sent";
+const OTP_LAST_SENT_KEY = "pakuvie_admin_otp_last_sent";
 
 function getRemainingCooldownSeconds() {
   if (typeof window === "undefined") {
@@ -113,7 +113,7 @@ export default function AdminLoginPageClient({ errorMessage }: { errorMessage?: 
   return (
     <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
       <h1 className="text-xl font-bold text-slate-800 mb-1">
-        Finishpoint Admin
+        Pakuvie Admin
       </h1>
       <p className="text-sm text-slate-500 mb-6">Kirjaudu sähköpostilinkin avulla</p>
 

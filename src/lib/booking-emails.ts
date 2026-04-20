@@ -73,7 +73,7 @@ function operatorTemplate(payload: BookingEmailPayload) {
 }
 
 export async function sendBookingEmails(payload: BookingEmailPayload) {
-  const operatorRecipient = process.env.QUOTE_RECIPIENT?.trim() || "kuljetus@finishpoint.fi";
+  const operatorRecipient = process.env.QUOTE_RECIPIENT?.trim() || "kuljetus@pakuvie.fi";
 
   await sendEmail({
     to: payload.customerEmail,

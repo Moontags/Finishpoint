@@ -187,7 +187,7 @@ export async function POST(req: Request) {
     try {
       await sendEmail({
         to: order.customerEmail,
-        subject: `Tilausvahvistus ${order.orderId} - Finishpoint`,
+        subject: `Tilausvahvistus ${order.orderId} - Pakuvie`,
         html: generateOrderConfirmationHtml(order),
       });
     } catch (error) {

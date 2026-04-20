@@ -71,8 +71,8 @@ export function SiteHeader({
         <div className="flex translate-y-2 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
           <Link href="/" className="ml-4 flex min-w-0 shrink-0 items-center gap-2 sm:ml-0" aria-label="Etusivu">
             <Image
-              src="/images/finishpoint-logo.png"
-              alt="Finishpoint"
+              src="/images/pakuvie-logo.png"
+              alt="Pakuvie"
               width={160}
               height={80}
               className="h-auto w-32 object-contain hidden sm:block sm:w-44"

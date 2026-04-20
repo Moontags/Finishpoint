@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // Saavutettavuus- ja käytettävyystestit varauslomakkeelle ja kalenterille
 
-test.describe('Finishpoint saavutettavuus', () => {
+test.describe('Pakuvie saavutettavuus', () => {
   test('kaikki lomakekentät ovat saavutettavia', async ({ page }) => {
     await page.goto('/laskuri/kappaletavara');
     // Fokusoidaan suoraan kenttiin, koska Tab ei välttämättä toimi odotetusti Next.js-sivulla

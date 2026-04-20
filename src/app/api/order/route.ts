@@ -184,7 +184,7 @@ export async function POST(request: Request) {
     const smtpPass = process.env.SMTP_PASS;
     const smtpPort = Number(process.env.SMTP_PORT ?? "587");
     const smtpSecure = process.env.SMTP_SECURE === "true";
-    const recipient = process.env.QUOTE_RECIPIENT ?? "kuljetus@finishpoint.fi";
+    const recipient = process.env.QUOTE_RECIPIENT ?? "kuljetus@pakuvie.fi";
     const fromAddress = process.env.SMTP_FROM ?? smtpUser;
     const mobilePayLink = process.env.NEXT_PUBLIC_MOBILEPAY_PAYMENT_LINK?.trim() ?? "";
 
@@ -234,7 +234,7 @@ export async function POST(request: Request) {
         paymentUrl = await createMobilePayPayment({
           orderId,
           amount: data.estimatedPriceVatIncl ?? estimatedPriceVat0,
-          description: `Finishpoint ${data.serviceType}`,
+          description: `Pakuvie ${data.serviceType}`,
           customerEmail: data.email,
           customerPhone: data.phone,
           returnUrl,

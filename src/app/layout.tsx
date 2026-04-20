@@ -16,9 +16,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Finishpoint | Kuljetukset ja muutot",
+  title: "Pakuvie | Kuljetukset ja muutot",
   // description removed
-  applicationName: "Finishpoint",
+  applicationName: "Pakuvie",
   keywords: [
     "kuljetuspalvelu",
     "tavarakuljetus",
@@ -26,26 +26,26 @@ export const metadata: Metadata = {
     "moottoripyöräkuljetus",
     "kierrätys",
   ],
-  metadataBase: new URL("https://www.finishpoint.fi"),
+  metadataBase: new URL("https://www.pakuvie.fi"),
   openGraph: {
     type: "website",
     locale: "fi_FI",
-    url: "https://www.finishpoint.fi",
-    title: "Finishpoint | Kuljetukset ja muutot",
+    url: "https://www.pakuvie.fi",
+    title: "Pakuvie | Kuljetukset ja muutot",
     // description removed
-    siteName: "Finishpoint",
+    siteName: "Pakuvie",
     images: [
       {
         url: "/images/paku2.png",
         width: 1200,
         height: 630,
-        alt: "Finishpoint kuljetuspalvelu",
+        alt: "Pakuvie kuljetuspalvelu",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Finishpoint | Kuljetukset ja muutot",
+    title: "Pakuvie | Kuljetukset ja muutot",
     // description removed
   },
   robots: {

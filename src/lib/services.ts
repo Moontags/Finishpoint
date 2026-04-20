@@ -44,9 +44,9 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Hinnoittelu moottoripyörille",
     pricingDescription:
       `${serviceCategoryContentById.ajoneuvo.cardDescription} Lisäpyörän toimitus samaan toimipisteeseen 89 €.`,
-    metadataTitle: "Moottoripyörän kuljetus | Finishpoint",
+    metadataTitle: "Moottoripyörän kuljetus | Pakuvie",
     metadataDescription:
-      "Nopea ja turvallinen moottoripyörän kuljetus. Pyydä tarjous Finishpointilta.",
+      "Nopea ja turvallinen moottoripyörän kuljetus. Pyydä tarjous Pakuvieilta.",
     keywords: ["moottoripyöräkuljetus", "moottoripyörän kuljetus", "pyörän kuljetus"],
     calculatorCategory: "ajoneuvo",
     heroBackgroundImage: "/images/moottoripyörä.jpeg",
@@ -67,7 +67,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Hinta-arvio mönkijäkuljetukselle",
     pricingDescription:
       serviceCategoryContentById.ajoneuvo.cardDescription,
-    metadataTitle: "Mönkijän kuljetus | Finishpoint",
+    metadataTitle: "Mönkijän kuljetus | Pakuvie",
     metadataDescription:
       "Turvallinen mönkijän kuljetus joustavasti koko Suomessa. Pyydä tarjous nopeasti.",
     keywords: ["mönkijäkuljetus", "mönkijän kuljetus", "atv kuljetus"],
@@ -90,7 +90,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Pesukonekuljetuksen hinnoittelu",
     pricingDescription:
       serviceCategoryContentById.kappaletavara.cardDescription,
-    metadataTitle: "Pesukoneen kuljetus | Finishpoint",
+    metadataTitle: "Pesukoneen kuljetus | Pakuvie",
     metadataDescription:
       "Pesukoneen kuljetus nopeasti ja turvallisesti. Nouto ja toimitus joustavasti.",
     keywords: ["pesukoneen kuljetus", "kodinkonekuljetus", "pesukone siirto"],
@@ -113,9 +113,9 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Sohvakuljetuksen arvio",
     pricingDescription:
       serviceCategoryContentById.kappaletavara.cardDescription,
-    metadataTitle: "Sohvan kuljetus | Finishpoint",
+    metadataTitle: "Sohvan kuljetus | Pakuvie",
     metadataDescription:
-      "Sohvan kuljetus turvallisesti ja täsmällisesti. Pyydä tarjous nopeasti Finishpointilta.",
+      "Sohvan kuljetus turvallisesti ja täsmällisesti. Pyydä tarjous nopeasti Pakuvieilta.",
     keywords: ["sohvan kuljetus", "huonekalukuljetus", "sohvan siirto"],
     calculatorCategory: "kappaletavara",
     heroBackgroundImage: "/images/paku1.png",
@@ -136,7 +136,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Sänkykuljetuksen hinnoittelu",
     pricingDescription:
       serviceCategoryContentById.kappaletavara.cardDescription,
-    metadataTitle: "Sängyn kuljetus | Finishpoint",
+    metadataTitle: "Sängyn kuljetus | Pakuvie",
     metadataDescription:
       "Sängyn kuljetus nopeasti ja turvallisesti. Nouto ja toimitus sovitusti.",
     keywords: ["sängyn kuljetus", "patjan kuljetus", "huonekalujen kuljetus"],
@@ -159,7 +159,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Kierrätyksen hinta-arvio",
     pricingDescription:
       serviceCategoryContentById.projekti.cardDescription,
-    metadataTitle: "Kierrätyspalvelu | Finishpoint",
+    metadataTitle: "Kierrätyspalvelu | Pakuvie",
     metadataDescription:
       "Kierrätyspalvelu ja tavaran poistot nopeasti. Nouto ja vastuullinen käsittely.",
     keywords: ["kierrätys", "tavaran poisto", "kodinkoneiden kierrätys"],
@@ -182,7 +182,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Muuttojen hinnoittelu",
     pricingDescription:
       serviceCategoryContentById.projekti.cardDescription,
-    metadataTitle: "Muuttopalvelu | Finishpoint",
+    metadataTitle: "Muuttopalvelu | Pakuvie",
     metadataDescription:
       "Muuttopalvelut koteihin ja pienyrityksille. Selkeä hinnoittelu ja luotettava toteutus.",
     keywords: ["muuttopalvelu", "muutto", "muuttokuljetus"],
@@ -205,7 +205,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     pricingTitle: "Venesiirron hinta-arvio",
     pricingDescription:
       "Hinta määräytyy veneen koon, reitin sekä nosto- ja laskujärjestelyjen perusteella. Kysy arvio kauden aikataulun mukaan.",
-    metadataTitle: "Venesiirto | Finishpoint",
+    metadataTitle: "Venesiirto | Pakuvie",
     metadataDescription:
       "Venesiirrot sesonkiaikaan turvallisesti ja luotettavasti. Pyydä tarjous venekuljetukselle.",
     keywords: ["venesiirto", "venekuljetus", "veneiden kuljetus"],

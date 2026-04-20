@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Ajoneuvokuljetusten laskuri | Finishpoint",
+  title: "Ajoneuvokuljetusten laskuri | Pakuvie",
   description:
     "Laske moottoripyoran, monkijan, ruohonleikkurin tai mopon kuljetuksen hinta-arvio nopeasti.",
 };
