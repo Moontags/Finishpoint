@@ -79,7 +79,7 @@ export function SiteHeader({
               priority
             />
             <span className="flex shrink-0 flex-col leading-none sm:hidden">
-              <span className="text-[23px] font-black tracking-[0.04em] text-slate-900">PAKUVIE</span>
+              <span className="text-[23px] font-black tracking-[0.04em] text-slate-900">pakuvie.fi</span>
             </span>
           </Link>
 
