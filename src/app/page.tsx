@@ -33,7 +33,7 @@ export default function Home() {
                 textShadow: "0 2px 24px rgba(0,0,0,0.18), 0 1px 0 #fff"
               }}
             >
-              FP-pikakuljetus
+              Pakuvie
             </h1>
             <p className="mt-6 text-slate-700/90 text-2xl xl:text-3xl font-semibold italic leading-snug tracking-wide drop-shadow-sm">
               hoitaa kuljetukset puolestasi<br />alusta loppuun.

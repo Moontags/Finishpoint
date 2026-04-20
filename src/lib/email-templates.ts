@@ -63,7 +63,7 @@ export function generateOrderConfirmationHtml(order: OrderData): string {
     <div style="${baseStyles}">
       <div style="background:#1a1a2e;padding:24px;text-align:center;">
         <h1 style="color:#ffffff;margin:0;font-size:22px;">
-          Pakuvie Pikakuljetus
+          Pakuvie
         </h1>
       </div>
 
@@ -135,7 +135,7 @@ export function generateOrderConfirmationHtml(order: OrderData): string {
       </div>
 
       <div style="background:#f5f5f5;padding:16px;text-align:center;font-size:12px;color:#888;">
-        Pakuvie Pikakuljetus |
+        Pakuvie |
         Y-tunnus: 3163260-9 |
         <a href="https://pakuvie.fi">pakuvie.fi</a>
       </div>
@@ -150,7 +150,7 @@ export function generateReceiptHtml(order: OrderData): string {
   return `
     <div style="font-family:Arial,sans-serif;color:#1a1a1a;max-width:600px;width:100%;margin:0 auto;box-sizing:border-box;">
       <div style="background:#1a1a2e;padding:20px;text-align:center;">
-        <h1 style="color:#ffffff;margin:0;font-size:20px;">Pakuvie Pikakuljetus</h1>
+        <h1 style="color:#ffffff;margin:0;font-size:20px;">Pakuvie</h1>
       </div>
 
       <div style="padding:20px;">
@@ -160,7 +160,7 @@ export function generateReceiptHtml(order: OrderData): string {
           <tr>
             <td style="vertical-align:top;padding-bottom:12px;font-size:13px;line-height:1.6;">
               <strong>Myyjä</strong><br/>
-              Pakuvie Pikakuljetus<br/>
+              Pakuvie<br/>
               Petsamonkatu 27, Riihimäki<br/>
               Y-tunnus: 3163260-9<br/>
               ALV-tunnus: FI31632609
@@ -249,7 +249,7 @@ export function generateReceiptHtml(order: OrderData): string {
       </div>
 
       <div style="background:#f5f5f5;padding:16px;text-align:center;font-size:12px;color:#888;">
-        Pakuvie Pikakuljetus | Y-tunnus: 3163260-9 |
+        Pakuvie | Y-tunnus: 3163260-9 |
         <a href="https://pakuvie.fi">pakuvie.fi</a> |
         kuljetus@pakuvie.fi | 050 354 7763
       </div>

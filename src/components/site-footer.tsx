@@ -48,7 +48,7 @@ export function SiteFooter() {
 
         {/* Alareuna */}
         <div className="mt-4 border-t border-slate-700 pt-3 text-[13px] text-slate-500">
-          © {new Date().getFullYear()} {t("footer.copyright", "FP-pikakuljetus. Kaikki oikeudet pidätetään.")}
+          © 2026 Pakuvie
         </div>
       </div>
     </footer>
