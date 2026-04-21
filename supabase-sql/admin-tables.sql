@@ -1,7 +1,4 @@
--- ============================================================
 -- Finishpoint — Admin Panel Migration
--- Run this in Supabase Dashboard → SQL Editor
--- ============================================================
 
 -- 1. PRICES TABLE (dynamic pricing for the calculator)
 -- ============================================================

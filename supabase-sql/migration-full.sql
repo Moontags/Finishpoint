@@ -1,7 +1,4 @@
--- ============================================================
 -- Finishpoint — täydellinen tietokantamigraatio
--- Aja Supabase Dashboard → SQL Editor
--- ============================================================
 
 -- 1. Pakota schema cache reload
 NOTIFY pgrst, 'reload schema';

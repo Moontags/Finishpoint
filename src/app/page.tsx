@@ -36,7 +36,7 @@ export default function Home() {
               Pakuvie.fi
             </h1>
             <p className="mt-6 text-slate-700/90 text-2xl xl:text-3xl font-semibold italic leading-snug tracking-wide drop-shadow-sm">
-              hoitaa kuljetukset puolestasi<br />alusta loppuun.
+              Tie kuin tie – Paku perille vie.
             </p>
           </div>
         </div>
