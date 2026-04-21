@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Pakuvie | Kuljetukset ja muutot",
-  // description removed
+  description: "Pakuvie hoitaa kuljetukset puolestasi. Paku- ja tavarakuljetukset, muutot ja kierrätys Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
   applicationName: "Pakuvie",
   keywords: [
     "kuljetuspalvelu",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     locale: "fi_FI",
     url: "https://www.pakuvie.fi",
     title: "Pakuvie | Kuljetukset ja muutot",
-    // description removed
+    description: "Pakuvie hoitaa kuljetukset puolestasi. Paku- ja tavarakuljetukset, muutot ja kierrätys Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
     siteName: "Pakuvie",
     images: [
       {
