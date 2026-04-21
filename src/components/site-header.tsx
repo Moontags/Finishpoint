@@ -141,6 +141,7 @@ export function SiteHeader({
               { nimi: "Järvenpää", slug: "jarvenpaa" },
               { nimi: "Hämeenlinna", slug: "hameenlinna" },
               { nimi: "Tuusula", slug: "tuusula" },
+              { nimi: "Vantaa", slug: "vantaa" },
             ].map((a) => (
               <Link
                 key={a.slug}
