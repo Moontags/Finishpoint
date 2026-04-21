@@ -71,8 +71,8 @@ export default function CheckoutPage() {
           <p className="mt-3 inline-flex w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">Vaihe 2/2: Tarkistus ja maksu</p>
           {success ? (
             <>
-              <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">Maksu onnistui!</h1>
-              <p className="mt-2 text-sm text-slate-600">Kiitos tilauksestasi. Olemme vastaanottaneet maksun ja käsittelemme tilauksesi pian.</p>
+              <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">Tilaus vastaanotettu!</h1>
+              <p className="mt-2 text-sm text-slate-600">Kiitos tilauksestasi. Saat vahvistuksen sähköpostiin kun maksu on käsitelty.</p>
               <div className="mt-6 flex justify-center">
                 <Link href="/" className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white transition hover:bg-blue-600">Palaa etusivulle</Link>
               </div>
