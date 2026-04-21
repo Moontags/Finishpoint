@@ -224,7 +224,7 @@ export async function POST(request: Request) {
     }
 
     let paymentUrl = mobilePayLink;
-    const orderId = data.orderId?.trim() || `FP-${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`;
+    const orderId = data.orderId?.trim() || `PV-${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`;
     const origin = new URL(request.url).origin;
     const returnUrl = process.env.VIPPS_RETURN_URL?.trim() || `${origin}/kassa`;
     const cancelUrl = process.env.VIPPS_CANCEL_URL?.trim() || `${origin}/#quote`;

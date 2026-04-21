@@ -53,7 +53,7 @@ export function calculateVat(totalWithVat: number, vatRate = 25.5) {
 export function generateInvoiceNumber(): string {
   const year = new Date().getFullYear();
   const seq = Date.now().toString().slice(-4);
-  return `FP-${year}-${seq}`;
+  return `PV-${year}-${seq}`;
 }
 
 export function generateOrderConfirmationHtml(order: OrderData): string {
