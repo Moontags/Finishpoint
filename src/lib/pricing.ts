@@ -18,7 +18,7 @@ export const defaultPriceConfig: PriceConfig = {
   base_ajoneuvo_40: 129,
   base_ajoneuvo_80: 169,
   km_rate_ajoneuvo: 1.29,
-  base_kappaletavara: 89,
+  base_kappaletavara: 50,
   km_rate_tavara: 1.29,
   base_muutto: 269,
   base_kierratys: 54.99,
