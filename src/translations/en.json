@@ -30,7 +30,7 @@
   "calculator.calculating": "Calculating...",
   "calculator.calculating_price": "Calculating price...",
   "calculator.goods_transport": "Goods transport",
-  "calculator.goods_info": "Washing machine, sofa, bed. 0-40 km €89, over 40 km +€1.29/km.",
+  "calculator.goods_info": "Washing machine, sofa, bed. 0-40 km €50, over 40 km +€1.29/km.",
   "calculator.vehicle_transport": "Vehicle transport",
   "calculator.vehicle_info": "Motorcycles, ATVs, lawnmowers, mopeds. 0-40 km €129, 41-80 km €169, then €1.29/km.",
   "calculator.vehicle_extra": "Extra bike delivery to same location €89.",

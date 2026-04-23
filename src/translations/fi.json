@@ -13,7 +13,7 @@
   "calculator.calculating": "Lasketaan...",
   "calculator.calculating_price": "Lasketaan hintaa...",
   "calculator.goods_transport": "Kappaletavara",
-  "calculator.goods_info": "Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km.",
+  "calculator.goods_info": "Pesukone, sohva ja sänky. 0-40 km 50 €, yli 40 km +1,29 €/km.",
   "calculator.vehicle_transport": "Ajoneuvokuljetukset",
   "calculator.vehicle_info": "Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.",
   "calculator.vehicle_extra": "Lisäpyörän toimitus samaan toimipisteeseen 89 €.",
