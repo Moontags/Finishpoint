@@ -205,14 +205,14 @@ export function SiteHeader({
             </div>
             <Link
               href={quoteHref}
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden sm:inline-flex items-center gap-1 rounded-xl border-[0.5px] border-slate-400 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("nav.quote")}</span>
             </Link>
             <a
               href={siteContact.phoneHref}
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden sm:inline-flex items-center gap-1 rounded-xl border-[0.5px] border-slate-400 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("nav.call")}</span>

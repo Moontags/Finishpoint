@@ -336,7 +336,7 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div data-testid="calendar" className="rounded-[10px] border-0 bg-white/10 p-0 shadow-none sm:col-span-2 sm:border sm:border-slate-400 sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
+    <div data-testid="calendar" className="rounded-[10px] border-0 bg-white/10 p-0 shadow-none sm:col-span-2 sm:border sm:border-slate-400 sm:bg-white/30 sm:backdrop-blur-sm sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
       <div className="mb-3 flex items-center justify-between gap-2 lg:mb-1.5">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">Varaa ajankohta</p>
         {isLoadingReservedDays ? (
@@ -349,7 +349,7 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
           disabled={!canGoBack}
-          className="hidden shrink-0 rounded-lg border border-slate-400 bg-white/75 px-3 py-2 text-[#1a2e4a] transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex focus:ring-[3px] focus:ring-blue-200"
+          className="hidden shrink-0 rounded-lg border border-slate-400 bg-white/30 backdrop-blur-sm px-3 py-2 text-[#1a2e4a] transition hover:bg-white/60 disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex focus:ring-[3px] focus:ring-blue-200"
           aria-label="Edellinen jakso"
         >
           ←
@@ -380,8 +380,8 @@ export function KalenteriVaraus({
                 className={`rounded-lg border px-1 py-2 text-center transition lg:py-1 ${
                   selected
                     ? "border-[#1a2e4a] bg-[#1a2e4a] text-white"
-                    : "border-slate-400 bg-transparent text-[#1a2e4a] hover:border-[#1a2e4a] hover:bg-white/20"
-                } ${disabled ? "cursor-not-allowed opacity-40 hover:border-slate-400 hover:bg-transparent" : ""}`}
+                    : "border-slate-400 bg-white/30 backdrop-blur-sm text-[#1a2e4a] hover:border-[#1a2e4a] hover:bg-white/50"
+                } ${disabled ? "cursor-not-allowed opacity-40 hover:border-slate-400 hover:bg-white/30" : ""}`}
               >
                 <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-white/80" : "text-slate-600"}`}>
                   {format(day, "EE", { locale: fi })}
@@ -408,7 +408,7 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
           disabled={!canGoForward}
-          className="hidden shrink-0 rounded-lg border border-slate-400 bg-white/75 px-3 py-2 text-[#1a2e4a] transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex focus:ring-[3px] focus:ring-blue-200"
+          className="hidden shrink-0 rounded-lg border border-slate-400 bg-white/30 backdrop-blur-sm px-3 py-2 text-[#1a2e4a] transition hover:bg-white/60 disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex focus:ring-[3px] focus:ring-blue-200"
           aria-label="Seuraava jakso"
         >
           →
@@ -421,7 +421,7 @@ export function KalenteriVaraus({
             Valitse kuljetusaika
           </label>
 
-          <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] border border-slate-400 bg-white/10 backdrop-blur-sm">
+          <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] border border-slate-400 bg-white/30 backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setIsTimeMenuOpen((current) => !current)}

@@ -213,7 +213,8 @@ function AddressAutocompleteField({
             width: '100%',
             borderRadius: '12px',
             border: '1px solid #94a3b8',
-            background: 'transparent',
+            background: 'rgba(255,255,255,0.30)',
+            backdropFilter: 'blur(8px)',
             padding: '12px 18px',
             fontSize: 15,
             color: '#1e293b',
@@ -398,7 +399,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
           data-testid="calculate-button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating', 'Lasketaan...')
@@ -571,7 +572,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           data-testid="calculate-button"
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating_price', 'Lasketaan hintaa...')
@@ -748,7 +749,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
             name="projektiTyyppi"
             value={tyyppi}
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
-            className="w-full rounded-xl border border-slate-400 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-slate-600 focus:bg-white/20"
+            className="w-full rounded-xl border border-slate-400 bg-white/30 backdrop-blur-sm px-4 py-3 text-[14px] text-slate-900 shadow-sm outline-none transition focus:border-slate-600 focus:bg-white/50"
           >
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>
@@ -813,7 +814,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>

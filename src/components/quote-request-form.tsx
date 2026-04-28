@@ -22,7 +22,7 @@ const categoryDefaultServiceType: Record<ServiceCategory, string> = {
 };
 
 const inputClass =
-  "w-full rounded-xl border border-slate-400 bg-transparent px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white/30 focus:ring-[3px] focus:ring-blue-200";
+  "w-full rounded-xl border border-slate-400 bg-white/30 backdrop-blur-sm px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white/50 focus:ring-[3px] focus:ring-blue-200";
 
 type AddressSuggestion = {
   label: string;
@@ -515,7 +515,7 @@ export function QuoteRequestForm() {
               type="submit"
               data-testid="quote-submit"
               disabled={status === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? t('form.sending', 'Lähetetään...') : t('form.send_quote', 'Lähetä tarjouspyyntö')}
               <ArrowUpRight className="h-4 w-4" />
@@ -525,7 +525,7 @@ export function QuoteRequestForm() {
               type="button"
               onClick={handleOrderAndPayment}
               disabled={status === "loading" || !canAttemptOrder}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "order" ? t('form.redirecting', 'Siirrytään...') : t('form.order_checkout', 'Tilaa ja jatka kassaan')}
               <ArrowUpRight className="h-4 w-4" />
