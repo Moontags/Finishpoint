@@ -57,8 +57,6 @@ export function SiteHeader({
     return hasLocalQuoteSection ? siteCta.quoteSectionHref : `/${siteCta.quoteSectionHref}`;
   }, [pathname]);
 
-  const laskuriActive = pathname.startsWith("/laskuri");
-
   return (
     <header className={`relative z-50 w-full bg-white pt-0 pb-0 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
       <div className={`w-full rounded-none sm:rounded-2xl px-0 pt-2 pb-3 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
@@ -69,7 +67,17 @@ export function SiteHeader({
             : "bg-white md:bg-transparent"
       }`}>
         <div className="flex translate-y-2 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
-          <Link href="/" className="ml-4 flex min-w-0 shrink-0 items-center gap-2 sm:ml-0" aria-label="Etusivu">
+          <Link
+            href="/"
+            aria-label="Etusivu"
+            className="ml-4 flex min-w-0 shrink-0 items-center gap-2 sm:ml-0"
+            onClick={(e) => {
+              if (pathname === "/") {
+                e.preventDefault();
+                window.location.href = "/";
+              }
+            }}
+          >
             <Image
               src="/images/pakuvie-logo.png"
               alt="Pakuvie"
@@ -111,16 +119,6 @@ export function SiteHeader({
                 </div>
               </div>
             </div>
-            <Link
-              href="/laskuri"
-              className={`rounded-lg border-b-2 px-3.5 py-2 transition ${
-                laskuriActive
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900"
-              }`}
-            >
-              {t("nav.calculator")}
-            </Link>
             {/* md–xl: yksittäinen Alueet-linkki */}
             <Link
               href="/alueet"
@@ -188,13 +186,6 @@ export function SiteHeader({
                       {t(`service.${label}`, label)}
                     </Link>
                   ))}
-                  <Link
-                    href="/laskuri"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-800 transition hover:bg-slate-100 hover:text-slate-900"
-                  >
-                    Laskuri
-                  </Link>
                   <Link
                     href="/alueet"
                     onClick={() => setMobileMenuOpen(false)}
