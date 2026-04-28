@@ -1,8 +1,6 @@
 import { CalculatorFormSection } from "@/components/CalculatorFormSection";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { ServiceCards } from "@/components/ServiceCards";
-import { serviceCategories } from "@/lib/service-categories";
 import Image from "next/image";
 
 export default function Home() {
@@ -43,8 +41,6 @@ export default function Home() {
       </section>
 
       <CalculatorFormSection />
-
-      <ServiceCards categories={serviceCategories} />
 
       <SiteFooter />
     </main>
