@@ -62,9 +62,9 @@ export default function ServiceSelector({
   return (
     <div id="calculator" className="bg-transparent p-3.5 sm:p-8">
       <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">{t("calculator.orderTransport", "Tilaa kuljetus")}</p>
-      <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+      {/* <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         {t("calculator.selectService", "Valitse palvelutyyppi")}
-      </h2>
+      </h2> */}
 
       <div className="mt-5 sm:hidden">
         <div ref={dropdownRef} className="relative">
@@ -100,7 +100,7 @@ export default function ServiceSelector({
         </div>
       </div>
 
-      <div className="mt-5 hidden gap-2 sm:grid sm:grid-cols-3">
+      <div className="mt-5 hidden gap-2 sm:grid sm:grid-cols-3 sm:col-span-2">
         {categories.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -113,7 +113,7 @@ export default function ServiceSelector({
                 : "border border-slate-200 bg-white/10 text-slate-700 hover:bg-white/20 hover:text-slate-900"
             }`}
           >
-            <Icon className="h-5 w-5" />
+            {/* Ikoni poistettu */}
             <span>{t(`serviceCategory.${id}.label`, label)}</span>
           </button>
         ))}

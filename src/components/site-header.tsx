@@ -83,7 +83,7 @@ export function SiteHeader({
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 text-[14px] font-medium text-slate-600 md:flex">
+          <nav className="hidden min-w-0 items-center gap-1 text-[14px] font-medium text-slate-600 md:flex">
             <div className="group relative">
               <button
                 type="button"
@@ -121,10 +121,10 @@ export function SiteHeader({
             >
               {t("nav.calculator")}
             </Link>
-            {/* md–lg: yksittäinen Alueet-linkki */}
+            {/* md–xl: yksittäinen Alueet-linkki */}
             <Link
               href="/alueet"
-              className={`xl:hidden rounded-lg border-b-2 px-3.5 py-2 transition ${
+              className={`2xl:hidden rounded-lg border-b-2 px-3.5 py-2 transition ${
                 pathname.startsWith("/alueet")
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
@@ -133,8 +133,8 @@ export function SiteHeader({
               {t("nav.areas")}
             </Link>
 
-            {/* xl+: kaupunkilinkit vierekkäin */}
-            <span className="hidden xl:block mx-1 h-4 w-px bg-slate-300" />
+            {/* 2xl+: kaupunkilinkit vierekkäin */}
+            <span className="hidden 2xl:block mx-1 h-4 w-px bg-slate-300" />
             {[
               { nimi: "Riihimäki", slug: "riihimaki" },
               { nimi: "Hyvinkää", slug: "hyvinkaa" },
@@ -146,7 +146,7 @@ export function SiteHeader({
               <Link
                 key={a.slug}
                 href={`/alueet/${a.slug}`}
-                className={`hidden xl:inline-flex rounded-lg border-b-2 px-2.5 py-2 text-[13px] transition ${
+                className={`hidden 2xl:inline-flex rounded-lg border-b-2 px-2.5 py-2 text-[13px] transition ${
                   pathname === `/alueet/${a.slug}`
                     ? "border-blue-600 text-blue-600"
                     : "border-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900"

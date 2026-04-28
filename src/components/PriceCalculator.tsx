@@ -18,7 +18,7 @@ import { useCalculatorContext } from "@/lib/calculator-context";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
 
-const cardClass = "bg-transparent p-0 sm:p-8";
+const cardClass = "bg-transparent";
 
 let _cachedPrices: PriceConfig | null = null;
 
@@ -347,7 +347,7 @@ export function AjoneuvoCalculator() {
   const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta));
 
   return (
-    <section className="rounded-2xl bg-transparent p-4 sm:p-8">
+    <section className="rounded-2xl bg-transparent">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         {t('calculator.vehicle_transport', 'Ajoneuvokuljetukset')}
       </h2>
@@ -528,7 +528,7 @@ export function KappaletavaraPriceCalculator() {
         {t('calculator.goods_transport', 'Kappaletavara')}
       </h2>
       <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km.')}
+        {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 50 €, yli 40 km +1,29 €/km.')}
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -598,8 +598,6 @@ export function KappaletavaraPriceCalculator() {
           </p>
         ) : null}
       </div>
-
-      <PriceSummary hintaAlv0={hinta} label={t('calculator.goods_transport', 'Kappaletavarakuljetus')} />
     </section>
   );
 }
