@@ -469,7 +469,7 @@ export function KalenteriVaraus({
           </div>
 
           {selectedTime && driveToDestinationMinutes !== null && driveFromRiihimakiMinutes !== null ? (
-            <div className="mt-3 rounded-[10px] bg-[#f0f2f5] px-4 py-3 text-[13px] leading-7 text-[#1a2e4a]">
+            <div className="mt-3 rounded-[10px] bg-transparent px-4 py-3 text-[13px] leading-7 text-[#1a2e4a]">
               <p>📍 Saapuminen kohteeseen: ~{selectedTime}</p>
               <p>
                 ⏱ Arvioitu kuljetuksen kokonaiskesto: {durationLabel(WORK_DURATION_MINUTES + driveToDestinationMinutes)}
