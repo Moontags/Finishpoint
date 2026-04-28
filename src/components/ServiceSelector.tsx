@@ -76,7 +76,7 @@ export default function ServiceSelector({
                   <button
                     type="button"
                     onClick={() => setOpen((v) => !v)}
-                    className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition"
+                    className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-400 bg-white/10 px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition"
                   >
                     <span className="min-w-0 flex-1 wrap-break-word text-left leading-tight">
                       {(() => { const c = categories.find((c) => c.id === active); return c ? t(`serviceCategory.${c.id}.label`, c.label) : ""; })()}
@@ -92,7 +92,7 @@ export default function ServiceSelector({
                           onClick={() => { setActive(id); setOpen(false); }}
                           className={`flex w-full min-w-0 items-center gap-4 px-5 py-5 text-[17px] font-bold transition ${
                             active === id
-                              ? "bg-slate-700/80 text-white"
+                              ? "bg-slate-200/70 text-slate-900"
                               : "text-slate-800 hover:bg-slate-100"
                           }`}
                         >
@@ -111,10 +111,10 @@ export default function ServiceSelector({
                     type="button"
                     data-testid={`service-tab-${id}`}
                     onClick={() => setActive(id)}
-                    className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold shadow-sm backdrop-blur-sm transition ${
+                    className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold transition ${
                       active === id
-                        ? "border-0 bg-slate-700/80 text-white"
-                        : "border border-slate-200 bg-white/10 text-slate-700 hover:bg-white/20 hover:text-slate-900"
+                        ? "border border-slate-400 bg-slate-200/70 text-slate-900"
+                        : "border border-slate-400 bg-transparent text-slate-700 hover:bg-slate-100/60 hover:text-slate-900"
                     }`}
                   >
                     {/* Ikoni poistettu */}

@@ -212,7 +212,7 @@ function AddressAutocompleteField({
           style={{
             width: '100%',
             borderRadius: '12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid #94a3b8',
             background: 'transparent',
             padding: '12px 18px',
             fontSize: 15,
@@ -398,7 +398,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
           data-testid="calculate-button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating', 'Lasketaan...')
@@ -571,7 +571,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           data-testid="calculate-button"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating_price', 'Lasketaan hintaa...')
@@ -748,7 +748,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
             name="projektiTyyppi"
             value={tyyppi}
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
-            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-slate-400 focus:bg-white/20"
+            className="w-full rounded-xl border border-slate-400 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-slate-600 focus:bg-white/20"
           >
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>
@@ -813,7 +813,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>

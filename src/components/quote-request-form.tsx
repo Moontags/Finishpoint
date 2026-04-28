@@ -515,7 +515,7 @@ export function QuoteRequestForm() {
               type="submit"
               data-testid="quote-submit"
               disabled={status === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? t('form.sending', 'Lähetetään...') : t('form.send_quote', 'Lähetä tarjouspyyntö')}
               <ArrowUpRight className="h-4 w-4" />
@@ -525,7 +525,7 @@ export function QuoteRequestForm() {
               type="button"
               onClick={handleOrderAndPayment}
               disabled={status === "loading" || !canAttemptOrder}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-700/90 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "order" ? t('form.redirecting', 'Siirrytään...') : t('form.order_checkout', 'Tilaa ja jatka kassaan')}
               <ArrowUpRight className="h-4 w-4" />
