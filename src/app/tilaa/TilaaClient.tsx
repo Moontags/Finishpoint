@@ -35,7 +35,11 @@ function TilaaContent() {
   const priceNum = Number(price);
   const serviceLabel = serviceLabels[service] ?? service;
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   useEffect(() => {
     if (!ctx) return;
@@ -62,7 +66,7 @@ function TilaaContent() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <section className="relative grow overflow-hidden">
+    <section className="relative grow min-h-screen overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
         <Image
           src="/images/paku5.png"

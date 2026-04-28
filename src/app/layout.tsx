@@ -63,7 +63,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fi" data-scroll-behavior="smooth">
-      <body className={`${montserrat.variable} antialiased`}>
+      <body className={`${montserrat.variable} antialiased min-h-screen flex flex-col`}>
         <LanguageProvider>
           {children}
           <ChatWidget />

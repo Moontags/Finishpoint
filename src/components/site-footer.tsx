@@ -8,7 +8,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 export function SiteFooter() {
   const { t } = useLanguage();
   return (
-    <footer className="bg-[#f5f6f8]">
+    <footer className="bg-[#f5f6f8] pb-16">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
 
