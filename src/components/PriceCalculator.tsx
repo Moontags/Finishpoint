@@ -20,6 +20,23 @@ import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/li
 
 const cardClass = "bg-transparent";
 
+function slowScrollToQuote() {
+  const el = document.getElementById("quote");
+  if (!el) return;
+  const targetY = el.getBoundingClientRect().top + window.scrollY;
+  const startY = window.scrollY;
+  const diff = targetY - startY;
+  const duration = 1200;
+  const startTime = performance.now();
+  function step(now: number) {
+    const t = Math.min((now - startTime) / duration, 1);
+    const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    window.scrollTo(0, startY + diff * ease);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
 let _cachedPrices: PriceConfig | null = null;
 
 function usePrices(): PriceConfig {
@@ -248,9 +265,6 @@ function AddressAutocompleteField({
         )}
       </div>
 
-      {loading ? (
-        <span className="text-[12px] font-medium text-slate-500">{t('calculator.loading.suggestions', 'Haetaan osoite-ehdotuksia...')}</span>
-      ) : null}
     </label>
   );
 }
@@ -328,6 +342,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
       setKm(roundedKm);
       setDistanceStatus("success");
       setDistanceMessage("");
+      setTimeout(slowScrollToQuote, 2000);
       setRouteSummary({
         distanceKm: roundedKm,
         durationMinutes:
@@ -499,6 +514,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
       setKm(roundedKm);
       setDistanceStatus("success");
       setDistanceMessage("");
+      setTimeout(slowScrollToQuote, 300);
       setRouteSummary({
         distanceKm: roundedKm,
         durationMinutes:
@@ -668,6 +684,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
       setKierratysKm(roundedKm);
       setDistanceStatus("success");
       setDistanceMessage("");
+      setTimeout(slowScrollToQuote, 300);
       setRouteSummary({
         distanceKm: roundedKm,
         durationMinutes:
