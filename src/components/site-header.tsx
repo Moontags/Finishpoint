@@ -5,7 +5,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Mail, Menu, Phone } from "lucide-react";
+import { Mail, Menu, Phone } from "lucide-react";
 import { serviceNavigationLinks, serviceNavigationOrder } from "@/lib/services";
 import { siteContact, siteCta } from "@/lib/site-config";
 
@@ -44,11 +44,6 @@ export function SiteHeader({
   }, [mobileMenuOpen]);
 
   const { language, setLanguage, t } = useLanguage();
-
-  const palvelutActive = useMemo(
-    () => serviceNavigationOrder.some((slug) => pathname === `/${slug}`),
-    [pathname],
-  );
 
   const quoteHref = useMemo(() => {
     const hasLocalQuoteSection =
@@ -92,33 +87,6 @@ export function SiteHeader({
           </Link>
 
           <nav className="hidden min-w-0 items-center gap-1 text-[14px] font-medium text-slate-700 md:flex">
-            <div className="group relative">
-              <button
-                type="button"
-                className={`inline-flex items-center gap-1 rounded-lg border-b-2 px-3.5 py-2 transition ${
-                  palvelutActive
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent hover:bg-slate-100 hover:text-slate-900"
-                }`}
-                aria-label={t("nav.services")}
-              >
-                {t("nav.services")}
-                <ChevronDown className="h-3.5 w-3.5" />
-              </button>
-              <div className="pointer-events-none absolute left-0 top-full pt-2 opacity-0 transition group-hover:pointer-events-auto group-hover:opacity-100">
-                <div className="w-64 rounded-xl border border-slate-200 bg-white/90 p-2 shadow-lg backdrop-blur-xl">
-                  {serviceNavigationLinks.map(({ href, label }) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      className="block rounded-lg px-3 py-2 text-[13px] text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
-                    >
-                      {t(`service.${label}`, label)}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
             {/* md–xl: yksittäinen Alueet-linkki */}
             <Link
               href="/alueet"
