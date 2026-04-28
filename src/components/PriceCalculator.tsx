@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { KalenteriVaraus } from "@/components/KalenteriVaraus";
 import { PriceSummary } from "@/components/PriceSummary";
@@ -255,7 +255,7 @@ function AddressAutocompleteField({
   );
 }
 
-export function AjoneuvoCalculator() {
+export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: ReactNode }) {
   const prices = usePrices();
   const [km, setKm] = useState(60);
   const [pickupAddress, setPickupAddress] = useState("");
@@ -348,16 +348,6 @@ export function AjoneuvoCalculator() {
 
   return (
     <section className="rounded-2xl bg-transparent">
-      <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        {t('calculator.vehicle_transport', 'Ajoneuvokuljetukset')}
-      </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        {t('calculator.vehicle_info', 'Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.')}
-      </p>
-      <p className="mt-1 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        {t('calculator.vehicle_extra', 'Lisäpyörän toimitus samaan toimipisteeseen 89 €.')}
-      </p>
-
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <AddressAutocompleteField
           id="ajoneuvo-nouto-osoite"
@@ -383,6 +373,11 @@ export function AjoneuvoCalculator() {
           onDateTimeSelect={setBookingSelection}
         />
 
+        {serviceTabsSlot}
+
+        <p className="text-[14px] leading-7 text-slate-600 sm:col-span-2 sm:text-[15px]">
+          {t('calculator.vehicle_info', 'Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.')}
+        </p>
         <button
           type="button"
           data-testid="calculate-button"
@@ -431,7 +426,7 @@ export function AjoneuvoCalculator() {
   );
 }
 
-export function KappaletavaraPriceCalculator() {
+export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?: ReactNode }) {
   const prices = usePrices();
   const { t } = useLanguage();
   const [km, setKm] = useState(40);
@@ -524,13 +519,6 @@ export function KappaletavaraPriceCalculator() {
 
   return (
     <section className={cardClass}>
-      <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        {t('calculator.goods_transport', 'Kappaletavara')}
-      </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 50 €, yli 40 km +1,29 €/km.')}
-      </p>
-
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <AddressAutocompleteField
           id="kappaletavara-nouto-osoite"
@@ -555,6 +543,12 @@ export function KappaletavaraPriceCalculator() {
           kohde={deliveryAddress}
           onDateTimeSelect={setBookingSelection}
         />
+
+        {serviceTabsSlot}
+
+        <p className="text-[14px] leading-7 text-slate-600 sm:col-span-2 sm:text-[15px]">
+          {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 50 €, yli 40 km +1,29 €/km.')}
+        </p>
 
         <button
           type="button"
@@ -602,7 +596,7 @@ export function KappaletavaraPriceCalculator() {
   );
 }
 
-export function ProjektiPriceCalculator() {
+export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?: ReactNode }) {
   const { t } = useLanguage();
   const prices = usePrices();
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
@@ -701,13 +695,6 @@ export function ProjektiPriceCalculator() {
 
   return (
     <section className={cardClass}>
-      <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-        Muuttopalvelut
-      </h2>
-      <p className="mt-2 text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-        Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Aloitushintaan sisältyy 40 km, jonka jälkeen lisäkilometrit 0,69 €/km.
-      </p>
-
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <AddressAutocompleteField
           id="projekti-nouto-osoite"
@@ -732,6 +719,8 @@ export function ProjektiPriceCalculator() {
           kohde={deliveryAddress}
           onDateTimeSelect={setBookingSelection}
         />
+
+        {serviceTabsSlot}
 
         <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
           Palvelutyyppi
@@ -796,6 +785,10 @@ export function ProjektiPriceCalculator() {
             <option value={50}>Suuri kuorma - 50 € (sis. ALV)</option>
           </select>
         </label>
+
+        <p className="text-[14px] leading-7 text-slate-600 sm:col-span-2 sm:text-[15px]">
+          Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Aloitushintaan sisältyy 40 km, jonka jälkeen lisäkilometrit 0,69 €/km.
+        </p>
 
         <button
           type="button"
@@ -863,9 +856,8 @@ export function ProjektiPriceCalculator() {
   );
 }
 
-export function PriceCalculator({ category }: { category: ServiceCategory }) {
-  const { t } = useLanguage();
-  if (category === "ajoneuvo") return <AjoneuvoCalculator />;
-  if (category === "kappaletavara") return <KappaletavaraPriceCalculator />;
-  return <ProjektiPriceCalculator />;
+export function PriceCalculator({ category, serviceTabsSlot }: { category: ServiceCategory; serviceTabsSlot?: ReactNode }) {
+  if (category === "ajoneuvo") return <AjoneuvoCalculator serviceTabsSlot={serviceTabsSlot} />;
+  if (category === "kappaletavara") return <KappaletavaraPriceCalculator serviceTabsSlot={serviceTabsSlot} />;
+  return <ProjektiPriceCalculator serviceTabsSlot={serviceTabsSlot} />;
 }
