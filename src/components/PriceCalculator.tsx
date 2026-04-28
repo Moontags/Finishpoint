@@ -592,6 +592,8 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           </p>
         ) : null}
       </div>
+
+      <PriceSummary hintaAlv0={hinta} label="Kappaletavara" />
     </section>
   );
 }
