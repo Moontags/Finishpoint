@@ -19,6 +19,8 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  background-color: #f5f6f8;
 }
 
 body {
@@ -299,4 +301,27 @@ body {
   border-color: #2563eb;
   color: #2563eb;
   background: #eff6ff;
+}
+
+/* ===== SAAVUTETTAVUUS – WCAG 2.1 AA ===== */
+
+/* CTA-napit: tummennettaan ~25 % (outline-light jätetään rauhaan – valkoinen teksti tummalla taustalla) */
+.btn:not(.btn--outline-light) {
+  filter: brightness(0.75);
+}
+.btn:not(.btn--outline-light):hover {
+  filter: brightness(0.65);
+}
+
+/* area-cta:n leipäteksti – poistetaan opacity jotta kontrasti säilyy */
+.area-cta p {
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Fokus-indikaattorit näppäimistökäyttäjille */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
 }

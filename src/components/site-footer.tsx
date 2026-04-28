@@ -14,8 +14,8 @@ export function SiteFooter() {
 
           {/* Vasempi palsta: yhteystiedot */}
           <div className="space-y-3">
-            <p className="text-[17px] font-medium text-slate-600">{siteContact.phoneDisplay}</p>
-            <p className="break-all text-[17px] font-medium text-slate-600">{siteContact.email}</p>
+            <a href={siteContact.phoneHref} className="block text-[17px] font-medium text-slate-700 underline underline-offset-2 transition hover:text-blue-600">{siteContact.phoneDisplay}</a>
+            <a href={siteContact.emailHref} className="block break-all text-[17px] font-medium text-slate-700 underline underline-offset-2 transition hover:text-blue-600">{siteContact.email}</a>
             <p className="pt-2 text-[14px] leading-relaxed text-slate-600">
               {t("footer.vatNote", "Hinnat sis. ALV 25,5 %. Yritys (ALV 0 %).")}
             </p>
@@ -47,7 +47,7 @@ export function SiteFooter() {
         </div>
 
         {/* Alareuna */}
-        <div className="mt-4 border-t border-slate-700 pt-3 text-[13px] text-slate-500">
+        <div className="mt-4 border-t border-slate-700 pt-3 text-[13px] text-slate-600">
           © 2026 Pakuvie
         </div>
       </div>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function TilaaPage() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
+    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#f5f6f8] text-slate-900">
       <SiteHeader opaque noShadow />
       <Suspense>
         <TilaaClient />

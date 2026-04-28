@@ -22,7 +22,7 @@ const categoryDefaultServiceType: Record<ServiceCategory, string> = {
 };
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white/75 px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white focus:ring-[3px] focus:ring-blue-200";
+  "w-full rounded-xl border border-slate-400 bg-transparent px-4 py-3 text-[14px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:bg-white/30 focus:ring-[3px] focus:ring-blue-200";
 
 type AddressSuggestion = {
   label: string;

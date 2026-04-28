@@ -35,6 +35,8 @@ function TilaaContent() {
   const priceNum = Number(price);
   const serviceLabel = serviceLabels[service] ?? service;
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   useEffect(() => {
     if (!ctx) return;
     if (from) ctx.setPickupAddress(from);
@@ -60,7 +62,7 @@ function TilaaContent() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative grow overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
         <Image
           src="/images/paku5.png"

@@ -83,7 +83,7 @@ export function SiteHeader({
             </span>
           </Link>
 
-          <nav className="hidden min-w-0 items-center gap-1 text-[14px] font-medium text-slate-600 md:flex">
+          <nav className="hidden min-w-0 items-center gap-1 text-[14px] font-medium text-slate-700 md:flex">
             <div className="group relative">
               <button
                 type="button"
@@ -116,7 +116,7 @@ export function SiteHeader({
               className={`rounded-lg border-b-2 px-3.5 py-2 transition ${
                 laskuriActive
                   ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  : "border-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900"
               }`}
             >
               {t("nav.calculator")}
@@ -127,7 +127,7 @@ export function SiteHeader({
               className={`2xl:hidden rounded-lg border-b-2 px-3.5 py-2 transition ${
                 pathname.startsWith("/alueet")
                   ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  : "border-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900"
               }`}
             >
               {t("nav.areas")}
@@ -149,7 +149,7 @@ export function SiteHeader({
                 className={`hidden 2xl:inline-flex rounded-lg border-b-2 px-2.5 py-2 text-[13px] transition ${
                   pathname === `/alueet/${a.slug}`
                     ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                    : "border-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                 }`}
               >
                 {a.nimi}
@@ -163,7 +163,7 @@ export function SiteHeader({
               type="button"
               aria-label="Vaihda kieli"
               onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
-              className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50 sm:hidden"
+              className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-300 bg-transparent text-slate-800 transition hover:bg-slate-100 sm:hidden"
               style={{ fontWeight: 700, fontSize: 15 }}
             >
               {language === "fi" ? "EN" : "FI"}
@@ -183,7 +183,7 @@ export function SiteHeader({
                       key={href}
                       href={href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                      className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-800 transition hover:bg-slate-100 hover:text-slate-900"
                     >
                       {t(`service.${label}`, label)}
                     </Link>
@@ -191,21 +191,21 @@ export function SiteHeader({
                   <Link
                     href="/laskuri"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-800 transition hover:bg-slate-100 hover:text-slate-900"
                   >
                     Laskuri
                   </Link>
                   <Link
                     href="/alueet"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-800 transition hover:bg-slate-100 hover:text-slate-900"
                   >
                     {t("nav.areas")}
                   </Link>
                   <Link
                     href={quoteHref}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-800 transition hover:bg-slate-100 hover:text-slate-900"
                   >
                     {siteCta.quoteNavLabel}
                   </Link>
@@ -232,7 +232,7 @@ export function SiteHeader({
               aria-label={language === "fi" ? "Switch to English" : "Vaihda suomeksi"}
               data-testid="language-toggle"
               onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
-              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-white border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 shadow-sm transition hover:bg-slate-50"
+              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-transparent border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 transition hover:bg-slate-100"
               style={{ fontWeight: 700, fontSize: 15 }}
             >
               {language === "fi" ? "EN" : "FI"}
