@@ -114,7 +114,7 @@ export default function ServiceSelector({
                     className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold transition ${
                       active === id
                         ? "border border-slate-300 bg-white/50 backdrop-blur-sm text-slate-900"
-                        : "border border-slate-300 bg-white/30 backdrop-blur-sm text-slate-700 hover:bg-white/50 hover:text-slate-900"
+                        : "border border-slate-300 bg-white/30 backdrop-blur-sm text-slate-900 hover:bg-white/50 hover:text-slate-900"
                     }`}
                   >
                     {/* Ikoni poistettu */}

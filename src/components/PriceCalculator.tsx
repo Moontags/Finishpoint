@@ -188,7 +188,7 @@ function AddressAutocompleteField({
 
   const { t } = useLanguage();
   return (
-    <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+    <label htmlFor={id} className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
       {t(label, label)}
       <div
         ref={containerRef}
@@ -391,7 +391,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
 
         {serviceTabsSlot}
 
-        <p className="text-[14px] leading-7 text-slate-600 sm:col-span-2 sm:text-[15px]">
+        <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
           {t('calculator.vehicle_info', 'Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.')}
         </p>
         <button
@@ -408,20 +408,20 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
 
         {distanceStatus === "success" && routeSummary ? (
           <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
-            <p className="mb-3 text-[12px] font-medium text-slate-500">
+            <p className="mb-3 text-[12px] font-medium text-slate-700">
               {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.kilometers', 'Kilometrit')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.kilometers', 'Kilometrit')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.duration', 'Ajoaika')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.duration', 'Ajoaika')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.price', 'Hinta')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.price', 'Hinta')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
@@ -563,7 +563,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
 
         {serviceTabsSlot}
 
-        <p className="text-[14px] leading-7 text-slate-600 sm:col-span-2 sm:text-[15px]">
+        <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
           {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 50 €, yli 40 km +1,29 €/km.')}
         </p>
 
@@ -581,20 +581,20 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
 
         {distanceStatus === "success" && routeSummary ? (
           <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
-            <p className="mb-3 text-[12px] font-medium text-slate-500">
+            <p className="mb-3 text-[12px] font-medium text-slate-700">
               {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.kilometers', 'Kilometrit')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.kilometers', 'Kilometrit')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.duration', 'Ajoaika')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.duration', 'Ajoaika')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t('calculator.price', 'Hinta')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.price', 'Hinta')}</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
@@ -742,7 +742,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
         {serviceTabsSlot}
 
-        <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
           Palvelutyyppi
           <select
             id="projekti-tyyppi"
@@ -758,7 +758,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
         </label>
 
         {tyyppi === "kierratys_lisa" ? (
-          <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
             Lisäkuormat
             <input
               id="projekti-lisakuormat"
@@ -775,7 +775,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
         ) : null}
 
         {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-          <label htmlFor="projekti-kierratysmaksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+          <label htmlFor="projekti-kierratysmaksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
             Kierrätysmaksu
             <select
               id="projekti-kierratysmaksu"
@@ -791,7 +791,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           </label>
         ) : null}
 
-        <label htmlFor="kierratys-1-maksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
+        <label htmlFor="kierratys-1-maksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
           Kierrätysmaksu
           <select
             id="kierratys-1-maksu"
@@ -806,7 +806,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           </select>
         </label>
 
-        <p className="text-[14px] leading-7 text-slate-600 sm:col-span-2 sm:text-[15px]">
+        <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
           Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Aloitushintaan sisältyy 40 km, jonka jälkeen lisäkilometrit 0,69 €/km.
         </p>
 
@@ -821,20 +821,20 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
         {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
           <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
-            <p className="mb-3 text-[12px] font-medium text-slate-500">
+            <p className="mb-3 text-[12px] font-medium text-slate-700">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Kilometrit</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">Kilometrit</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Ajoaika</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Hinta</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">Hinta</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
             </div>
@@ -852,7 +852,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
       </div>
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-        <p className="mt-3 text-[13px] text-slate-700">
+        <p className="mt-3 text-[13px] text-slate-900">
           Kierrätyksessä hinta muodostuu perushinnasta 54,99 €, yli 40 km osuudesta (0,69 €/km), lisäkuormista ja asemamaksusta.
         </p>
       ) : null}
