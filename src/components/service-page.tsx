@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { ServiceList } from "@/components/ServiceList";
@@ -20,37 +19,23 @@ export function ServicePage({
   return (
     <ServicePageLayout title={title} description={description}>
       {seasonBanner ? (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-[14px] font-semibold text-emerald-700 sm:text-[15px]">
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 px-5 py-4 text-[14px] font-semibold text-emerald-700 backdrop-blur-sm sm:text-[15px]">
           {seasonBanner}
         </div>
       ) : null}
 
-      <section className="relative grid gap-5 overflow-hidden rounded-2xl bg-white p-5 shadow-sm sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
-        {service.heroBackgroundImage ? (
-          <>
-            <Image
-              src={service.heroBackgroundImage}
-              alt=""
-              fill
-              sizes="(max-width: 1023px) 100vw, 42vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-slate-900/55" />
-          </>
-        ) : null}
-
+      <section className="relative grid gap-5 overflow-hidden rounded-2xl border border-slate-300 bg-white/30 p-5 shadow-sm backdrop-blur-sm sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="relative z-1 space-y-4">
-          <h2 className={`text-2xl font-bold tracking-tight sm:text-4xl ${service.heroBackgroundImage ? "text-white" : "text-slate-900"}`}>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {t(`services.${service.slug}.valueProposition`, service.valueProposition)}
           </h2>
-          <p className={`max-w-xl text-[14px] leading-[1.75] sm:text-base ${service.heroBackgroundImage ? "text-slate-200" : "text-slate-600"}`}>
+          <p className="max-w-xl text-[14px] leading-[1.75] text-slate-700 sm:text-base">
             {t('service_page.flexible', 'Palvelemme joustavasti myös viikonloppuisin.')}
           </p>
-
         </div>
 
-        <div className={`relative z-1 rounded-xl p-5 ${service.heroBackgroundImage ? "bg-white/10 backdrop-blur-sm" : "bg-slate-50"}`}>
-          <p className={`text-[13px] font-extrabold uppercase tracking-[0.22em] ${service.heroBackgroundImage ? "text-blue-200" : "text-blue-600"} sm:text-[15px]`}>
+        <div className="relative z-1 rounded-xl border border-slate-300 bg-white/40 p-5 backdrop-blur-sm">
+          <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">
             Sisältää
           </p>
           <div className="mt-4">
@@ -59,15 +44,21 @@ export function ServicePage({
         </div>
       </section>
 
-      <section className="rounded-2xl bg-white p-5 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-slate-300 bg-white/30 p-5 shadow-sm backdrop-blur-sm sm:p-8">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{t(`services.${service.slug}.pricingTitle`, service.pricingTitle)}</h2>
-        <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-600 sm:text-base">
+        <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-700 sm:text-base">
           {service.pricingDescription}
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Link
-            href="/#quote"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700/80 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-slate-700/90 active:scale-[0.97] sm:w-auto"
+            href={`/${siteCta.calculatorHref}`}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98] sm:w-auto"
+          >
+            {t('service_page.order', 'Tilaa')}
+          </Link>
+          <Link
+            href={`/${siteCta.quoteSectionHref}`}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98] sm:w-auto"
           >
             {siteCta.pricingLinkLabel}
           </Link>

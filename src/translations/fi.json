@@ -72,6 +72,7 @@
   "service_page.includes": "Sisältää",
   "service_page.pricing": "Hinnoittelu",
   "service_page.order_now": "Tilaa kuljetus",
+  "service_page.order": "Tilaa",
   "service_page.request_quote": "Pyydä tarjous",
   "services.pyorakuljetus.title": "Moottoripyöräkuljetus",
   "services.pyorakuljetus.description": "Nopea ja turvallinen moottoripyörän kuljetus koko Suomessa.",
