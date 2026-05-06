@@ -1,14 +1,14 @@
-/**
- * @jest-environment node
- */
-import { POST as handler } from '../../app/api/order/route';
-import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
+import { vi } from 'vitest';
 
-const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'mock-id' });
-jest.mock('nodemailer', () => ({
-  createTransport: () => ({ sendMail: mockSendMail })
+const mockSendMail = vi.hoisted(() => vi.fn().mockResolvedValue({ messageId: 'mock-id' }));
+
+vi.mock('nodemailer', () => ({
+  default: {
+    createTransport: () => ({ sendMail: mockSendMail }),
+  },
+  createTransport: () => ({ sendMail: mockSendMail }),
 }));
-jest.mock('@/lib/supabase-admin', () => ({
+vi.mock('@/lib/supabase-admin', () => ({
   getSupabaseAdminClient: () => ({
     from: () => ({
       select: () => ({ gte: () => ({ lte: () => ({ eq: () => ({ order: () => ({ data: [], error: null }) }) }) }) }),
@@ -17,9 +17,9 @@ jest.mock('@/lib/supabase-admin', () => ({
     })
   })
 }));
-jest.mock('@/lib/order-store', () => ({
-  saveOrder: jest.fn().mockResolvedValue({ id: 'mock-order-id' }),
-  getOrderByReference: jest.fn().mockResolvedValue({
+vi.mock('@/lib/order-store', () => ({
+  saveOrder: vi.fn().mockResolvedValue({ id: 'mock-order-id' }),
+  getOrderByReference: vi.fn().mockResolvedValue({
     orderId: 'FP-TEST-001',
     customerEmail: 'test@test.com',
     customerName: 'Test User',
@@ -30,8 +30,11 @@ jest.mock('@/lib/order-store', () => ({
     vatAmount: 18.08,
     paymentMethod: 'mobilepay',
   }),
-  markOrderAsPaid: jest.fn().mockResolvedValue(undefined),
+  markOrderAsPaid: vi.fn().mockResolvedValue(undefined),
 }));
+
+import { POST as handler } from '../../app/api/order/route';
+import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
 
 beforeAll(() => {
   process.env.SMTP_HOST = 'smtp.test.com';
@@ -81,7 +84,7 @@ describe('/api/order', () => {
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.paymentUrl).toBeDefined();
-    const orderStore = require('@/lib/order-store');
+    const orderStore = await import('@/lib/order-store');
     expect(orderStore.saveOrder).toHaveBeenCalled();
   });
 });

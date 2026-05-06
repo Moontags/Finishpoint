@@ -1,6 +1,4 @@
-/**
- * @jest-environment node
- */
+import { vi } from 'vitest';
 import { TextDecoder, TextEncoder } from 'util';
 if (!globalThis.TextDecoder) globalThis.TextDecoder = TextDecoder;
 if (!globalThis.TextEncoder) globalThis.TextEncoder = TextEncoder;
@@ -15,9 +13,9 @@ if (!globalThis.Request) {
   globalThis.Headers = NodeHeaders;
 }
 
-import { POST as handler } from '../../app/api/quote/route';
+const mockSendMail = vi.hoisted(() => vi.fn().mockResolvedValue({ messageId: 'mock-id' }));
 
-jest.mock('@/lib/supabase-admin', () => ({
+vi.mock('@/lib/supabase-admin', () => ({
   getSupabaseAdminClient: () => ({
     from: () => ({
       select: () => ({ gte: () => ({ lte: () => ({ eq: () => ({ order: () => ({ data: [], error: null }) }) }) }) }),
@@ -27,12 +25,16 @@ jest.mock('@/lib/supabase-admin', () => ({
   })
 }));
 
-const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'mock-id' });
-jest.mock('nodemailer', () => ({
+vi.mock('nodemailer', () => ({
+  default: {
+    createTransport: () => ({ sendMail: mockSendMail }),
+  },
   createTransport: () => ({
     sendMail: mockSendMail
-  })
+  }),
 }));
+
+import { POST as handler } from '../../app/api/quote/route';
 
 describe('/api/quote', () => {
 beforeAll(() => {

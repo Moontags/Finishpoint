@@ -168,9 +168,7 @@ export function KalenteriVaraus({
     run();
 
     return () => {
-      if (!controller.signal.aborted) {
-        controller.abort();
-      }
+      controller.abort();
     };
   }, [weekStart]);
 
@@ -204,25 +202,27 @@ export function KalenteriVaraus({
     };
 
     const run = async () => {
-      const [fromCustomerToDestination, fromRiihimakiToDestination] = await Promise.all([
-        fetchDuration(origin, destination),
-        fetchDuration(RIIHIMAKI, destination),
-      ]);
+      try {
+        const [fromCustomerToDestination, fromRiihimakiToDestination] = await Promise.all([
+          fetchDuration(origin, destination),
+          fetchDuration(RIIHIMAKI, destination),
+        ]);
 
-      if (controller.signal.aborted) {
-        return;
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setDriveToDestinationMinutes(fromCustomerToDestination);
+        setDriveFromRiihimakiMinutes(fromRiihimakiToDestination);
+      } catch {
+        // abort tai verkkovirhe — ei tarvita toimenpiteitä
       }
-
-      setDriveToDestinationMinutes(fromCustomerToDestination);
-      setDriveFromRiihimakiMinutes(fromRiihimakiToDestination);
     };
 
     void run();
 
     return () => {
-      if (!controller.signal.aborted) {
-        controller.abort();
-      }
+      controller.abort();
     };
   }, [kohde, lahto, onDateTimeSelect]);
 
@@ -336,27 +336,32 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div data-testid="calendar" className="rounded-[10px] border-0 bg-white/10 p-0 shadow-none sm:col-span-2 sm:border sm:border-slate-300 sm:bg-white/30 sm:backdrop-blur-sm sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
-      <div className="mb-3 flex items-center justify-between gap-2 lg:mb-1.5">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">Varaa ajankohta</p>
+    <div data-testid="calendar" className="rounded-xl border border-slate-300/60 bg-white/20 p-3 backdrop-blur-sm shadow-none sm:col-span-2 sm:border-slate-300 sm:bg-white/30 sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
+      <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
+        <div>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">Varaa ajankohta</p>
+          <p className="mt-0.5 text-[11px] text-slate-500 sm:hidden">
+            {format(weekDays[0], "d.M", { locale: fi })}–{format(weekDays[weekDays.length - 1], "d.M.", { locale: fi })}
+          </p>
+        </div>
         {isLoadingReservedDays ? (
-          <span className="hidden text-[11px] font-medium text-slate-600 sm:inline">Paivitetaan saatavuutta...</span>
+          <span className="text-[11px] font-medium text-slate-500">Päivitetään...</span>
         ) : null}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2">
         <button
           type="button"
           onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
           disabled={!canGoBack}
-          className="hidden shrink-0 rounded-lg border border-slate-300 bg-white/30 backdrop-blur-sm px-3 py-2 text-[#1a2e4a] transition hover:bg-white/60 disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex focus:ring-[3px] focus:ring-blue-200"
+          className="shrink-0 rounded-lg border border-slate-300/70 bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:border-slate-300 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
           aria-label="Edellinen jakso"
         >
           ←
         </button>
 
         <div
-          className="grid min-w-0 flex-1 grid-cols-3 gap-1.5 sm:grid-cols-7 sm:gap-2 lg:gap-1.5"
+          className="grid min-w-0 flex-1 grid-cols-3 gap-1 sm:grid-cols-7 sm:gap-2 lg:gap-1.5"
           onTouchStart={handleDayGridTouchStart}
           onTouchEnd={handleDayGridTouchEnd}
         >
@@ -377,22 +382,22 @@ export function KalenteriVaraus({
                   setSelectedTime("");
                   setIsTimeMenuOpen(false);
                 }}
-                className={`rounded-lg border px-1 py-2 text-center transition lg:py-1 ${
+                className={`rounded-lg border px-1 py-2.5 text-center transition sm:py-2 lg:py-1 ${
                   selected
                     ? "border-[#1a2e4a] bg-[#1a2e4a] text-white"
-                    : "border-slate-300 bg-white/30 backdrop-blur-sm text-[#1a2e4a] hover:border-[#1a2e4a] hover:bg-white/50"
-                } ${disabled ? "cursor-not-allowed opacity-40 hover:border-slate-300 hover:bg-white/30" : ""}`}
+                    : "border-slate-300/70 bg-white/10 text-[#1a2e4a] hover:border-[#1a2e4a] hover:bg-white/30"
+                } ${disabled ? "cursor-not-allowed opacity-40 hover:border-slate-300/70 hover:bg-white/10" : ""}`}
               >
-                <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-white/80" : "text-slate-600"}`}>
+                <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-white/80" : "text-slate-500"}`}>
                   {format(day, "EE", { locale: fi })}
                 </span>
-                <span className="mt-0.5 block text-[18px] font-semibold lg:text-[16px]">{format(day, "d")}</span>
-                <span className={`block text-[10px] lg:text-[9px] ${selected ? "text-white/80" : "text-slate-600"}`}>
+                <span className="mt-0.5 block text-[17px] font-bold sm:text-[18px] lg:text-[16px]">{format(day, "d")}</span>
+                <span className={`block text-[10px] lg:text-[9px] ${selected ? "text-white/80" : "text-slate-500"}`}>
                   {format(day, "LLL", { locale: fi })}
                 </span>
                 <span className="mt-1 block h-3 text-[10px]">
                   {reserved ? (
-                    <span className={`inline-block rounded-full px-1.5 py-0.5 ${selected ? "bg-white/15 text-white" : "bg-[#f0f2f5] text-[#1a2e4a]"}`}>
+                    <span className={`inline-block rounded-full px-1.5 py-0.5 text-[9px] ${selected ? "bg-white/15 text-white" : "bg-white/40 text-slate-600"}`}>
                       Varattu
                     </span>
                   ) : today ? (
@@ -408,7 +413,7 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
           disabled={!canGoForward}
-          className="hidden shrink-0 rounded-lg border border-slate-300 bg-white/30 backdrop-blur-sm px-3 py-2 text-[#1a2e4a] transition hover:bg-white/60 disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex focus:ring-[3px] focus:ring-blue-200"
+          className="shrink-0 rounded-lg border border-slate-300/70 bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:border-slate-300 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
           aria-label="Seuraava jakso"
         >
           →

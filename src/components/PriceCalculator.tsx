@@ -273,13 +273,13 @@ function AddressAutocompleteField({
 export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: ReactNode }) {
   const prices = usePrices();
   const [km, setKm] = useState(60);
-  const [pickupAddress, setPickupAddress] = useState("");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const calculatorContext = useCalculatorContext();
+  const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
+  const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
-  const calculatorContext = useCalculatorContext();
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -446,13 +446,13 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
   const prices = usePrices();
   const { t } = useLanguage();
   const [km, setKm] = useState(40);
-  const [pickupAddress, setPickupAddress] = useState("");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const calculatorContext = useCalculatorContext();
+  const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
+  const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
-  const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
     calculatorContext?.setPickupAddress(pickupAddress);
@@ -618,17 +618,17 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
 export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?: ReactNode }) {
   const { t } = useLanguage();
   const prices = usePrices();
+  const calculatorContext = useCalculatorContext();
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
   const [lisakuormat, setLisakuormat] = useState(0);
   const [kierratysKm, setKierratysKm] = useState(20);
   const [kierratysMaksu, setKierratysMaksu] = useState(35);
-  const [pickupAddress, setPickupAddress] = useState("");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
+  const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
-  const calculatorContext = useCalculatorContext();
 
   useEffect(() => {
     calculatorContext?.setPickupAddress(pickupAddress);

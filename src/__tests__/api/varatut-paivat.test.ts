@@ -1,8 +1,24 @@
-/**
- * @jest-environment node
- */
+import { vi } from 'vitest';
 import { GET as handler } from '../../app/api/varatut-paivat/route';
 import { Request as NodeRequest } from 'undici';
+
+vi.mock('@/lib/supabase-admin', () => ({
+  getSupabaseAdminClient: () => ({
+    from: () => ({
+      select: () => ({
+        gte: () => ({
+          lte: () => ({
+            in: () => ({
+              order: () => ({ data: [], error: null }),
+            }),
+            data: [],
+            error: null,
+          }),
+        }),
+      }),
+    }),
+  }),
+}));
 
 describe('/api/varatut-paivat', () => {
   it('returns empty arrays if no alku param', async () => {

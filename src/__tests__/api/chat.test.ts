@@ -1,16 +1,19 @@
-/**
- * @jest-environment node
- */
+import { vi } from 'vitest';
 import { POST as handler } from '../../app/api/chat/route';
 import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
 
 beforeAll(() => {
-  global.fetch = jest.fn().mockResolvedValue({
+  process.env.ANTHROPIC_API_KEY = 'test-key';
+  global.fetch = vi.fn().mockResolvedValue({
     ok: true,
     json: () => Promise.resolve({
       content: [{ type: 'text', text: 'Mocked AI reply' }]
     })
-  }) as jest.Mock;
+  }) as ReturnType<typeof vi.fn>;
+});
+
+afterAll(() => {
+  delete process.env.ANTHROPIC_API_KEY;
 });
 
 describe('/api/chat', () => {

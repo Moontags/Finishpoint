@@ -1,22 +1,23 @@
-/**
- * @jest-environment node
- */
+import { vi } from 'vitest';
+
+const mockSendMail = vi.hoisted(() => vi.fn().mockResolvedValue({ messageId: 'mock-id' }));
+const mockMarkOrderAsPaid = vi.hoisted(() => vi.fn());
+const mockGetOrderByReference = vi.hoisted(() => vi.fn());
+
+vi.mock('nodemailer', () => ({
+  default: {
+    createTransport: () => ({ sendMail: (...args: unknown[]) => mockSendMail(...args) }),
+  },
+  createTransport: () => ({ sendMail: (...args: unknown[]) => mockSendMail(...args) }),
+}));
+vi.mock('@/lib/order-store', () => ({
+  markOrderAsPaid: (...args: unknown[]) => mockMarkOrderAsPaid(...args),
+  getOrderByReference: (...args: unknown[]) => mockGetOrderByReference(...args),
+  saveOrder: vi.fn(),
+}));
+
 import { POST as handler } from '../../app/api/vipps/webhook/route';
 import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
-
-// Use var for hoisting compatibility
-var mockSendMail = jest.fn().mockResolvedValue({ messageId: 'mock-id' });
-var mockMarkOrderAsPaid = jest.fn();
-var mockGetOrderByReference = jest.fn();
-
-jest.mock('nodemailer', () => ({
-  createTransport: () => ({ sendMail: (...args) => mockSendMail(...args) })
-}));
-jest.mock('@/lib/order-store', () => ({
-  markOrderAsPaid: (...args) => mockMarkOrderAsPaid(...args),
-  getOrderByReference: (...args) => mockGetOrderByReference(...args),
-  saveOrder: jest.fn(),
-}));
 
 beforeAll(() => {
   process.env.SMTP_HOST = 'smtp.test.com';
