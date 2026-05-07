@@ -12,9 +12,11 @@ import { siteContact, siteCta } from "@/lib/site-config";
 export function SiteHeader({
   opaque = false,
   noShadow = false,
+  forceTransparent = false,
 }: {
   opaque?: boolean;
   noShadow?: boolean;
+  forceTransparent?: boolean;
 }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -53,13 +55,19 @@ export function SiteHeader({
   }, [pathname]);
 
   return (
-    <header className={`relative z-50 w-full bg-white pt-0 pb-0 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${opaque ? "" : "md:bg-transparent"}`}>
+    <header className={`relative z-50 w-full pt-0 pb-0 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${forceTransparent ? "bg-transparent" : opaque ? "bg-white" : "bg-white md:bg-transparent"}`}>
       <div className={`w-full rounded-none sm:rounded-2xl px-0 pt-2 pb-3 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
         scrolled
-          ? "bg-white/75 backdrop-blur-xl"
+          ? forceTransparent
+            ? "bg-transparent"
+            : "bg-white/75 backdrop-blur-xl"
           : opaque
-            ? "bg-white"
-            : "bg-white md:bg-transparent"
+            ? forceTransparent
+              ? "bg-transparent"
+              : "bg-white"
+            : forceTransparent
+              ? "bg-transparent"
+              : "bg-white md:bg-transparent"
       }`}>
         <div className="flex translate-y-2 items-center justify-between gap-2.5 sm:translate-y-0 sm:gap-5">
           <Link

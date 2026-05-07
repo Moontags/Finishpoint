@@ -54,7 +54,6 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
 
   return (
     <>
-      <SiteHeader opaque />
       <main className="overflow-x-clip">
         <div className="relative w-full overflow-hidden">
           {/* Background image — fills the full container, fades to #f5f6f8 toward bottom */}
@@ -79,7 +78,11 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[#f5f6f8] via-[#f5f6f8]/90 to-transparent" />
           </div>
 
-          <div className="relative z-10 mx-auto max-w-5xl px-5 pt-10 pb-0 sm:px-8 lg:px-12">
+          <div className="absolute inset-x-0 top-0 z-20">
+            <SiteHeader forceTransparent noShadow />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-5xl px-5 pt-28 pb-0 sm:px-8 sm:pt-32 lg:px-12">
             {/* Service cards */}
             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-600">
               {t("area.services_label")} {inCity}
