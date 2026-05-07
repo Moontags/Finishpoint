@@ -336,7 +336,7 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div data-testid="calendar" className="rounded-xl border border-slate-300/60 bg-white/20 p-3 backdrop-blur-sm shadow-none sm:col-span-2 sm:border-slate-300 sm:bg-white/30 sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
+    <div data-testid="calendar" className="rounded-xl bg-white/20 p-3 backdrop-blur-sm shadow-none sm:col-span-2 sm:bg-white/30 sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
       <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">Varaa ajankohta</p>
@@ -354,7 +354,7 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
           disabled={!canGoBack}
-          className="shrink-0 rounded-lg border border-slate-300/70 bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:border-slate-300 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
+          className="shrink-0 rounded-lg bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
           aria-label="Edellinen jakso"
         >
           ←
@@ -382,11 +382,11 @@ export function KalenteriVaraus({
                   setSelectedTime("");
                   setIsTimeMenuOpen(false);
                 }}
-                className={`rounded-lg border px-1 py-2.5 text-center transition sm:py-2 lg:py-1 ${
+                className={`rounded-lg px-1 py-2.5 text-center transition sm:py-2 lg:py-1 ${
                   selected
-                    ? "border-[#1a2e4a] bg-[#1a2e4a] text-white"
-                    : "border-slate-300/70 bg-white/10 text-[#1a2e4a] hover:border-[#1a2e4a] hover:bg-white/30"
-                } ${disabled ? "cursor-not-allowed opacity-40 hover:border-slate-300/70 hover:bg-white/10" : ""}`}
+                    ? "bg-[#1a2e4a] text-white"
+                    : "bg-white/10 text-[#1a2e4a] hover:bg-white/30"
+                } ${disabled ? "cursor-not-allowed opacity-40 hover:bg-white/10" : ""}`}
               >
                 <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-white/80" : "text-slate-500"}`}>
                   {format(day, "EE", { locale: fi })}
@@ -413,7 +413,7 @@ export function KalenteriVaraus({
           type="button"
           onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
           disabled={!canGoForward}
-          className="shrink-0 rounded-lg border border-slate-300/70 bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:border-slate-300 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
+          className="shrink-0 rounded-lg bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
           aria-label="Seuraava jakso"
         >
           →
@@ -426,7 +426,7 @@ export function KalenteriVaraus({
             Valitse kuljetusaika
           </label>
 
-          <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] border border-slate-300 bg-white/30 backdrop-blur-sm">
+          <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] bg-white/30 backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setIsTimeMenuOpen((current) => !current)}
@@ -439,7 +439,7 @@ export function KalenteriVaraus({
             </button>
 
             {isTimeMenuOpen ? (
-              <div className="max-h-52 overflow-y-auto border-t border-slate-200 lg:max-h-44">
+              <div className="max-h-52 overflow-y-auto lg:max-h-44">
                 {timeSlots.map((slot) => (
                   <button
                     key={slot}

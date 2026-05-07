@@ -212,7 +212,7 @@ function AddressAutocompleteField({
           style={{
             width: '100%',
             borderRadius: '12px',
-            border: '1px solid #cbd5e1',
+            border: 'none',
             background: 'rgba(255,255,255,0.30)',
             backdropFilter: 'blur(8px)',
             padding: '12px 18px',
@@ -399,7 +399,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
           data-testid="calculate-button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating', 'Lasketaan...')
@@ -430,7 +430,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
 
         {distanceStatus === "error" && distanceMessage ? (
           <p
-            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+            className="rounded-xl bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
           >
             {distanceMessage}
           </p>
@@ -572,7 +572,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           data-testid="calculate-button"
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating_price', 'Lasketaan hintaa...')
@@ -603,7 +603,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
 
         {distanceStatus === "error" && distanceMessage ? (
           <p
-            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+            className="rounded-xl bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
           >
             {distanceMessage}
           </p>
@@ -749,7 +749,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
             name="projektiTyyppi"
             value={tyyppi}
             onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
-            className="w-full rounded-xl border border-slate-300 bg-white/30 backdrop-blur-sm px-4 py-3 text-[14px] text-slate-900 shadow-sm outline-none transition focus:border-slate-500 focus:bg-white/50"
+            className="w-full rounded-xl bg-white/30 backdrop-blur-sm px-4 py-3 text-[14px] text-slate-900 shadow-sm outline-none transition focus:bg-white/50"
           >
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>
@@ -769,7 +769,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
               onChange={(event) =>
                 setLisakuormat(Math.max(0, Number(event.target.value) || 0))
               }
-              className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
             />
           </label>
         ) : null}
@@ -782,7 +782,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
               name="projektiKierratysmaksu"
               value={kierratysMaksu}
               onChange={(event) => setKierratysMaksu(Number(event.target.value))}
-              className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
             >
               <option value={25}>Pieni kuorma - 25 € (sis. ALV)</option>
               <option value={35}>Normaalikuorma - 35 € (sis. ALV)</option>
@@ -798,7 +798,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
             name="kierratysMaksu"
             value={kierratysMaksu}
             onChange={(event) => setKierratysMaksu(Number(event.target.value))}
-            className="w-full rounded-xl border border-slate-200 bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:border-blue-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
           >
             <option value={25}>Pieni kuorma - 25 € (sis. ALV)</option>
             <option value={35}>Normaalikuorma - 35 € (sis. ALV)</option>
@@ -814,26 +814,26 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>
 
         {distanceStatus === "success" && routeSummary && hintaSisAlv !== null ? (
-          <div className="rounded-xl border border-slate-200 bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
+          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2">
             <p className="mb-3 text-[12px] font-medium text-slate-700">
               Paivitetty juuri nyt ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">Kilometrit</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">Ajoaika</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white/10 px-3 py-3">
+              <div className="rounded-lg bg-white/10 px-3 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">Hinta</p>
                 <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
               </div>
@@ -843,7 +843,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
         {distanceStatus === "error" && distanceMessage ? (
           <p
-            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
+            className="rounded-xl bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
           >
             {distanceMessage}
           </p>
@@ -858,7 +858,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
       ) : null}
 
       {hinta === null ? (
-        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-[14px] text-amber-800">
+        <div className="mt-4 rounded-xl bg-amber-50 px-4 py-4 text-[14px] text-amber-800">
           Suuri muutto hinnoitellaan tarjouksena, koska se vaatii useamman kuljetuskerran. Jätä tarjouspyyntö, niin palaamme nopeasti.
           <div className="mt-3">
             <Link

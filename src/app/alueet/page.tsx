@@ -135,9 +135,10 @@ export default function AlueetPage() {
               </div>
             </div>
           </section>
+
+          <SiteFooter className="relative z-10 bg-transparent" />
         </div>
       </main>
-      <SiteFooter />
     </>
   );
 }
