@@ -14,7 +14,7 @@ export default function Home() {
           {/* Taustakuva – kaikilla näyttökoilla */}
           <div className="relative w-full h-[58%] sm:h-[65%] lg:h-[72%] overflow-hidden">
             <Image
-              src="/images/paku2.png"
+              src="/images/paku.png"
               alt="Pakuvie kuljetus"
               fill
               sizes="100vw"
