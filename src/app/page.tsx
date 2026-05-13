@@ -12,7 +12,7 @@ export default function Home() {
       <section id="top" className="relative w-full min-h-80 sm:min-h-125 md:min-h-150 lg:min-h-175 xl:min-h-[820px] 2xl:min-h-[920px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
         <div className="absolute inset-0 z-0">
           {/* Taustakuva – kaikilla näyttökoilla */}
-          <div className="relative w-full h-[58%] sm:h-[65%] lg:h-[72%] overflow-hidden">
+          <div className="relative w-full h-[50%] sm:h-[57%] lg:h-[64%] overflow-hidden">
             <Image
               src="/images/paku.png"
               alt="Pakuvie kuljetus"
