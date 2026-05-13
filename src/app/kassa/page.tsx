@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -63,10 +64,24 @@ export default function CheckoutPage() {
   };
   if (typeof window === "undefined") return null;
   return (
-    <main className="min-h-screen overflow-x-clip bg-white text-slate-900">
+    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
       <SiteHeader opaque noShadow />
-      <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <Image
+            src="/images/paku.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-white/65" />
+          <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#f5f6f8] to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#f5f6f8] to-transparent" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
+        <div className="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm backdrop-blur-sm sm:p-8">
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-600">Kassa</p>
           <p className="mt-3 inline-flex w-fit px-0 py-0 text-[11px] font-semibold text-slate-900">Vaihe 2/2: Tarkistus ja maksu</p>
           {success ? (
@@ -130,6 +145,7 @@ export default function CheckoutPage() {
               </div>
             </>
           )}
+        </div>
         </div>
       </section>
       <SiteFooter />

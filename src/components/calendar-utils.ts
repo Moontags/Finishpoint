@@ -1,8 +1,19 @@
 import { parse, addMinutes } from "date-fns";
 
 export const WORK_DURATION_MINUTES = 60;
+export const MIN_LEAD_TIME_MINUTES = 120;
 
 export type VarausAika = { alku: string; loppu: string };
+
+export function isSlotBeforeMinLeadTime(
+  slot: string,
+  dayIso: string,
+  now: Date,
+  minLeadMinutes: number = MIN_LEAD_TIME_MINUTES,
+): boolean {
+  const slotStart = parse(`${dayIso} ${slot}`, "yyyy-MM-dd HH:mm", new Date());
+  return slotStart.getTime() < now.getTime() + minLeadMinutes * 60_000;
+}
 
 /**
  * Returns true if the slot is unavailable for the given bookings and drive time.

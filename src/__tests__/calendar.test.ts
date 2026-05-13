@@ -1,4 +1,4 @@
-import { isSlotUnavailableForDate, WORK_DURATION_MINUTES, VarausAika } from "../components/calendar-utils";
+import { isSlotUnavailableForDate, isSlotBeforeMinLeadTime, WORK_DURATION_MINUTES, VarausAika } from "../components/calendar-utils";
 
 describe("isSlotUnavailableForDate", () => {
   const dayIso = "2024-04-08";
@@ -37,5 +37,40 @@ describe("isSlotUnavailableForDate", () => {
     expect(isSlotUnavailableForDate("09:00", dayIso, bookings, 60)).toBe(true);
     // slot 07:00, 60min work + 60min drive = 07:00-09:00 does not overlap
     expect(isSlotUnavailableForDate("07:00", dayIso, bookings, 60)).toBe(false);
+  });
+});
+
+describe("isSlotBeforeMinLeadTime", () => {
+  const dayIso = "2026-05-13";
+
+  it("blocks slots in the past", () => {
+    const now = new Date("2026-05-13T14:00:00");
+    expect(isSlotBeforeMinLeadTime("10:00", dayIso, now)).toBe(true);
+    expect(isSlotBeforeMinLeadTime("13:59", dayIso, now)).toBe(true);
+  });
+
+  it("blocks slots within 2 hour buffer from now", () => {
+    const now = new Date("2026-05-13T14:00:00");
+    // 2h buffer => any slot before 16:00 is blocked
+    expect(isSlotBeforeMinLeadTime("14:00", dayIso, now)).toBe(true);
+    expect(isSlotBeforeMinLeadTime("15:30", dayIso, now)).toBe(true);
+    expect(isSlotBeforeMinLeadTime("15:59", dayIso, now)).toBe(true);
+  });
+
+  it("allows slots at or after the 2 hour buffer", () => {
+    const now = new Date("2026-05-13T14:00:00");
+    expect(isSlotBeforeMinLeadTime("16:00", dayIso, now)).toBe(false);
+    expect(isSlotBeforeMinLeadTime("17:00", dayIso, now)).toBe(false);
+  });
+
+  it("allows all slots on future days", () => {
+    const now = new Date("2026-05-13T14:00:00");
+    expect(isSlotBeforeMinLeadTime("07:00", "2026-05-14", now)).toBe(false);
+    expect(isSlotBeforeMinLeadTime("07:00", "2026-05-20", now)).toBe(false);
+  });
+
+  it("blocks all slots on past days", () => {
+    const now = new Date("2026-05-13T14:00:00");
+    expect(isSlotBeforeMinLeadTime("18:00", "2026-05-12", now)).toBe(true);
   });
 });

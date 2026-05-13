@@ -12,6 +12,7 @@ import {
 } from "date-fns";
 import { fi } from "date-fns/locale";
 import type { BookingSelectionData } from "@/lib/types";
+import { isSlotBeforeMinLeadTime } from "@/components/calendar-utils";
 
 const RIIHIMAKI = "Riihimaki, Finland";
 const WORK_DURATION_MINUTES = 60;
@@ -114,8 +115,8 @@ export function KalenteriVaraus({
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
 
-  const daysCount = isMobile ? 3 : 7;
-  const navStep = isMobile ? 3 : 7;
+  const daysCount = isMobile ? 9 : 7;
+  const navStep = isMobile ? 9 : 7;
 
   const weekDays = useMemo(
     () => Array.from({ length: daysCount }, (_, index) => addDays(weekStart, index)),
@@ -283,14 +284,21 @@ export function KalenteriVaraus({
     const dayIso = format(day, "yyyy-MM-dd");
     if (suljetutPaivat.includes(dayIso)) return true;
     const bookings = varausAjat[dayIso] ?? [];
-    if (bookings.length === 0) return false;
-    return timeSlots.every((slot) => isSlotUnavailableForDate(slot, dayIso, bookings));
+    const isToday = isSameDay(day, new Date());
+    if (bookings.length === 0 && !isToday) return false;
+    const now = new Date();
+    return timeSlots.every(
+      (slot) =>
+        isSlotBeforeMinLeadTime(slot, dayIso, now) ||
+        isSlotUnavailableForDate(slot, dayIso, bookings),
+    );
   };
 
   const isTimeSlotUnavailable = (slot: string): boolean => {
     if (!selectedDay) return false;
     const dayIso = format(selectedDay, "yyyy-MM-dd");
     if (suljetutPaivat.includes(dayIso)) return true;
+    if (isSlotBeforeMinLeadTime(slot, dayIso, new Date())) return true;
     const bookings = varausAjat[dayIso] ?? [];
     return isSlotUnavailableForDate(slot, dayIso, bookings);
   };
