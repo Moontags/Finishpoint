@@ -80,7 +80,7 @@ function TilaaContent() {
         <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#f5f6f8] to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-12 pb-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
         <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
 
           {/* Left: order summary */}
