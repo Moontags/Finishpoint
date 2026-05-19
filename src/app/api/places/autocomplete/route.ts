@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     const params = new URLSearchParams({
       input,
-      types: "address",
+      types: "geocode",
       language: "fi",
       components: "country:fi",
       key: apiKey,
