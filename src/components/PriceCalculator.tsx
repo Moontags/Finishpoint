@@ -391,9 +391,6 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
 
         {serviceTabsSlot}
 
-        <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
-          {t('calculator.vehicle_info', 'Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.')}
-        </p>
         <button
           type="button"
           data-testid="calculate-button"
@@ -562,10 +559,6 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         />
 
         {serviceTabsSlot}
-
-        <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
-          {t('calculator.goods_info', 'Pesukone, sohva ja sänky. 0-40 km 50 €, yli 40 km +1,29 €/km.')}
-        </p>
 
         <button
           type="button"
@@ -791,10 +784,6 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
             </div>
           </div>
         ) : null}
-
-        <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
-          Muutot alkaen 269 €.
-        </p>
 
         <button
           type="button"
