@@ -20,7 +20,7 @@ export default function Home() {
                 alt=""
                 fill
                 sizes="100vw"
-                className="object-contain object-center opacity-[0.11] md:opacity-[0.13]"
+                className="object-contain object-center opacity-[0.18] md:opacity-[0.22]"
                 aria-hidden
                 priority
               />
