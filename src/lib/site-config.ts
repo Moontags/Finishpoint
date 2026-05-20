@@ -13,5 +13,5 @@ export const siteCta = {
   quoteNavLabel: "Tarjous",
   quoteSectionHref: "#quote",
   calculatorHref: "#calculator",
-  pricingLinkLabel: "Siiry tilaamaan",
+  pricingLinkLabel: "Siirry tilaamaan",
 } as const;

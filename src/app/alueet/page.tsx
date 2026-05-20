@@ -8,12 +8,12 @@ import { siteCta } from "@/lib/site-config";
 export const metadata: Metadata = {
   title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Pakuvie",
   description:
-    "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa, Tuusulassa ja Vantaalla. Muuttokuljetukset, tavarankuljetus ja pienkuormat.",
+    "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa, Tuusulassa, Vantaalla ja Helsingissä. Muuttokuljetukset, tavarankuljetus ja pienkuormat.",
   alternates: { canonical: "https://www.pakuvie.fi/alueet" },
   openGraph: {
     title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Pakuvie",
     description:
-      "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa, Tuusulassa ja Vantaalla.",
+      "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa, Tuusulassa, Vantaalla ja Helsingissä.",
     url: "https://www.pakuvie.fi/alueet",
   },
 };
@@ -48,6 +48,11 @@ const ALUEET = [
     nimi: "Vantaa",
     slug: "vantaa",
     kuvaus: "Kuljetuspalvelu Vantaalla – muutot, tavarankuljetus ja pienkuormat koko Vantaan alueella.",
+  },
+  {
+    nimi: "Helsinki",
+    slug: "helsinki",
+    kuvaus: "Kuljetuspalvelu Helsingissä – muutot, tavarankuljetus ja pienkuormat koko Helsingin alueella.",
   },
 ];
 

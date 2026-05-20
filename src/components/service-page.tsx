@@ -36,7 +36,7 @@ export function ServicePage({
 
         <div className="relative z-1 rounded-xl border border-slate-300 bg-white/40 p-5 backdrop-blur-sm">
           <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-blue-600 sm:text-[15px]">
-            Sisältää
+            {t('service_page.includes', 'Sisältää')}
           </p>
           <div className="mt-4">
             <ServiceList items={service.includes.map((item, i) => t(`services.${service.slug}.includes.${i}`, item))} />
@@ -47,20 +47,14 @@ export function ServicePage({
       <section className="rounded-2xl border border-slate-300 bg-white/30 p-5 shadow-sm backdrop-blur-sm sm:p-8">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{t(`services.${service.slug}.pricingTitle`, service.pricingTitle)}</h2>
         <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-700 sm:text-base">
-          {service.pricingDescription}
+          {t(`services.${service.slug}.pricingDescription`, service.pricingDescription)}
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Link
-            href={`/${siteCta.calculatorHref}`}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98] sm:w-auto"
-          >
-            {t('service_page.order', 'Tilaa')}
-          </Link>
           <Link
             href={`/${siteCta.quoteSectionHref}`}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98] sm:w-auto"
           >
-            {siteCta.pricingLinkLabel}
+            {t('service_page.go_to_order', 'Siirry tilaamaan')}
           </Link>
         </div>
       </section>
