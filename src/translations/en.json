@@ -179,9 +179,7 @@
   "area.small_loads_title": "Small loads & pickup",
   "area.small_loads_body": "Smaller loads, IKEA pickups, auction purchases, construction waste. Flexible scheduling.",
   "area.local_label": "Local service",
-  "area.local_title_prefix": "We know",
-  "area.local_title_suffix": "– and its surrounding areas",
-  "area.local_body_prefix": "Pakuvie serves",
-  "area.local_body_suffix": "and the surrounding area. We know the local routes and addresses – deliveries run smoothly without surprises.",
+  "area.local_title_prefix": "We serve",
+  "area.local_title_suffix": "and its surrounding areas",
   "area.nearby": "+ nearby municipalities"
 }

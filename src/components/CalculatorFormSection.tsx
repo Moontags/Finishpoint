@@ -15,7 +15,7 @@ export function CalculatorFormSection({
     <CalculatorProvider>
       {/* ── Calculator ─────────────────────────────────────────── */}
       <section className="relative z-10">
-        <section className="relative z-10 mx-auto max-w-7xl px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
+        <section className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
           <ServiceSelector initialCategory={initialCategory} />
         </section>
       </section>

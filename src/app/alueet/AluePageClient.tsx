@@ -20,8 +20,6 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
 
   const inCity =
     language === "fi" ? config.kaupunkiSijaintimuoto : config.kaupunki;
-  const ofCity =
-    language === "fi" ? config.kaupunkiGenitiivimuoto : config.kaupunki;
 
   const palvelut = [
     {
@@ -119,13 +117,9 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
               <p className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-600">
                 {t("area.local_label")}
               </p>
-              <h2 className="mb-2 text-xl font-extrabold text-slate-900 sm:text-2xl">
-                {t("area.local_title_prefix")} {ofCity} {t("area.local_title_suffix")}
+              <h2 className="mb-4 text-xl font-extrabold text-slate-900 sm:text-2xl">
+                {t("area.local_title_prefix")} {inCity} {t("area.local_title_suffix")}
               </h2>
-              <p className="mb-4 max-w-2xl text-slate-500">
-                {t("area.local_body_prefix")} {inCity}{" "}
-                {t("area.local_body_suffix")}
-              </p>
               <div className="flex flex-wrap gap-2">
                 {[config.kaupunki, ...config.lahialueet, t("area.nearby")].map((a) => (
                   <span

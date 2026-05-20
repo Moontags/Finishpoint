@@ -352,7 +352,7 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div data-testid="calendar" className="rounded-xl bg-white/20 p-3 backdrop-blur-sm shadow-none sm:col-span-2 sm:bg-white/30 sm:p-5 sm:shadow-[0_1px_4px_rgba(0,0,0,0.08)] lg:p-3.5">
+    <div data-testid="calendar" className="rounded-xl bg-white/20 p-3 backdrop-blur-sm shadow-md ring-1 ring-slate-900/5 sm:col-span-2 sm:bg-white/30 sm:p-5 lg:p-3.5">
       <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">Varaa ajankohta</p>
