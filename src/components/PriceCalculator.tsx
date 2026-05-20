@@ -212,13 +212,13 @@ function AddressAutocompleteField({
           style={{
             width: '100%',
             borderRadius: '12px',
-            border: 'none',
-            background: 'rgba(255,255,255,0.30)',
+            border: '1px solid rgba(203, 213, 225, 0.6)',
+            background: 'rgba(255,255,255,0.40)',
             backdropFilter: 'blur(8px)',
             padding: '12px 18px',
             fontSize: 15,
             color: '#1e293b',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1), 0 0 0 1px rgba(15,23,42,0.05)',
             outline: 'none',
             marginBottom: 0,
           }}
@@ -399,7 +399,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
           data-testid="calculate-button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300/60 bg-white/40 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:bg-white/70 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating', 'Lasketaan...')
@@ -572,7 +572,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           data-testid="calculate-button"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300/60 bg-white/40 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:bg-white/70 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating_price', 'Lasketaan hintaa...')
@@ -622,7 +622,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
   const [lisakuormat, setLisakuormat] = useState(0);
   const [kierratysKm, setKierratysKm] = useState(20);
-  const [kierratysMaksu, setKierratysMaksu] = useState(35);
+  const kierratysMaksu = 35;
   const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
   const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -742,7 +742,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
         {serviceTabsSlot}
 
-        <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
+        <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-900 sm:col-span-2">
           Palvelutyyppi
           <select
             id="projekti-tyyppi"
@@ -774,47 +774,15 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           </label>
         ) : null}
 
-        {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-          <label htmlFor="projekti-kierratysmaksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
-            Kierrätysmaksu
-            <select
-              id="projekti-kierratysmaksu"
-              name="projektiKierratysmaksu"
-              value={kierratysMaksu}
-              onChange={(event) => setKierratysMaksu(Number(event.target.value))}
-              className="w-full rounded-xl bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
-            >
-              <option value={25}>Pieni kuorma - 25 € (sis. ALV)</option>
-              <option value={35}>Normaalikuorma - 35 € (sis. ALV)</option>
-              <option value={50}>Suuri kuorma - 50 € (sis. ALV)</option>
-            </select>
-          </label>
-        ) : null}
-
-        <label htmlFor="kierratys-1-maksu" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
-          Kierrätysmaksu
-          <select
-            id="kierratys-1-maksu"
-            name="kierratysMaksu"
-            value={kierratysMaksu}
-            onChange={(event) => setKierratysMaksu(Number(event.target.value))}
-            className="w-full rounded-xl bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
-          >
-            <option value={25}>Pieni kuorma - 25 € (sis. ALV)</option>
-            <option value={35}>Normaalikuorma - 35 € (sis. ALV)</option>
-            <option value={50}>Suuri kuorma - 50 € (sis. ALV)</option>
-          </select>
-        </label>
-
         <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
-          Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Aloitushintaan sisältyy 40 km, jonka jälkeen lisäkilometrit 0,69 €/km.
+          Muutot alkaen 269 €.
         </p>
 
         <button
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300/60 bg-white/40 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:bg-white/70 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
         >
           {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>

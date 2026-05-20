@@ -24,10 +24,10 @@ export const serviceCategories: ServiceCategoryContent[] = [
   },
   {
     id: "projekti",
-    label: "Muutot ja kierrätys",
+    label: "Muutto",
     cardTitle: "Muuttopalvelut ja kierrätys",
     cardDescription:
-      "Muutot alkaen 269 € ja kierrätys alkaen 54,99 €. Aloitushintaan sisältyy 40 km, jonka jälkeen lisäkilometrit 0,69 €/km.",
+      "Muutot alkaen 269 €.",
     cardAccent: "Muutot ja poistot",
     href: "/muutot",
     backgroundImage: "/images/paku3.png",

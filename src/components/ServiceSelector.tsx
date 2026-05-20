@@ -111,10 +111,10 @@ export default function ServiceSelector({
                     type="button"
                     data-testid={`service-tab-${id}`}
                     onClick={() => setActive(id)}
-                    className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-semibold transition ${
+                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold transition duration-200 active:scale-[0.98] ${
                       active === id
                         ? "bg-white/50 backdrop-blur-sm text-slate-900"
-                        : "bg-white/30 backdrop-blur-sm text-slate-900 hover:bg-white/50 hover:text-slate-900"
+                        : "bg-white/30 backdrop-blur-sm text-slate-900 hover:bg-white/60 hover:text-slate-900"
                     }`}
                   >
                     {/* Ikoni poistettu */}

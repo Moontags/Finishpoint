@@ -390,6 +390,7 @@ export function KalenteriVaraus({
 
           <div
             className="grid grid-cols-2 gap-2"
+            style={{ touchAction: "pan-y" }}
             onTouchStart={handleDayGridTouchStart}
             onTouchEnd={handleDayGridTouchEnd}
           >
@@ -397,7 +398,7 @@ export function KalenteriVaraus({
               const past = isPast(day);
               const reserved = isPaivaVarattu(day);
               const isSelectedDay = selectedDay ? isSameDay(selectedDay, day) : false;
-              const showSlots = !!selectedDay && !isPast(selectedDay);
+              const showSlots = !!selectedDay && !isPast(selectedDay) && !selectedTime;
 
               return (
                 <div key={day.toISOString()} className="flex flex-col gap-1.5">
@@ -420,11 +421,13 @@ export function KalenteriVaraus({
                     <span className="block text-[14px] font-semibold capitalize">
                       {format(day, "EEEEEE", { locale: fi })} {format(day, "d.M.", { locale: fi })}
                     </span>
-                    {reserved && !past ? (
-                      <span className={`mt-1 inline-block rounded-full px-1.5 py-0.5 text-[10px] ${isSelectedDay ? "bg-white/15 text-white" : "bg-white/40 text-slate-600"}`}>
-                        Varattu
-                      </span>
-                    ) : null}
+                    <span className="mt-1 block h-4 text-[10px]">
+                      {reserved && !past ? (
+                        <span className={`inline-block rounded-full px-1.5 py-0.5 text-[10px] ${isSelectedDay ? "bg-white/15 text-white" : "bg-white/40 text-slate-600"}`}>
+                          Varattu
+                        </span>
+                      ) : null}
+                    </span>
                   </button>
 
                   {showSlots ? (
