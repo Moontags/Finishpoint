@@ -753,25 +753,43 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           >
             <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
             <option value="kierratys_1">Kierrätys, 1 kuorma</option>
-            <option value="kierratys_lisa">Kierrätys, lisäkuormat</option>
+            <option value="kierratys_lisa">Lisäkuormat</option>
           </select>
         </label>
 
         {tyyppi === "kierratys_lisa" ? (
-          <label htmlFor="projekti-lisakuormat" className="grid gap-1.5 text-[13px] font-semibold text-slate-900">
-            Lisäkuormat
-            <input
-              id="projekti-lisakuormat"
-              name="projektiLisakuormat"
-              type="number"
-              min={0}
-              value={lisakuormat}
-              onChange={(event) =>
-                setLisakuormat(Math.max(0, Number(event.target.value) || 0))
-              }
-              className="w-full rounded-xl bg-white/10 px-4 py-3 text-[14px] text-slate-900 shadow-sm backdrop-blur-sm outline-none transition focus:bg-white/20 focus:ring-2 focus:ring-blue-100"
-            />
-          </label>
+          <div className="grid gap-1.5 text-[13px] font-semibold text-slate-900 sm:col-span-2">
+            <label htmlFor="projekti-lisakuormat">Lisäkuormat</label>
+            <div className="flex items-stretch w-full rounded-xl border border-slate-300/60 bg-white/40 backdrop-blur-sm shadow-md ring-1 ring-slate-900/5 overflow-hidden">
+              <button
+                type="button"
+                aria-label="Vähennä lisäkuormaa"
+                onClick={() => setLisakuormat((n) => Math.max(0, n - 1))}
+                className="px-6 py-3.5 text-sm font-bold text-slate-900 transition hover:bg-white/70 active:scale-[0.98]"
+              >
+                −
+              </button>
+              <input
+                id="projekti-lisakuormat"
+                name="projektiLisakuormat"
+                type="number"
+                min={0}
+                value={lisakuormat}
+                onChange={(event) =>
+                  setLisakuormat(Math.max(0, Number(event.target.value) || 0))
+                }
+                className="flex-1 min-w-0 bg-transparent px-2 py-3.5 text-center text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
+              <button
+                type="button"
+                aria-label="Lisää lisäkuormaa"
+                onClick={() => setLisakuormat((n) => n + 1)}
+                className="px-6 py-3.5 text-sm font-bold text-slate-900 transition hover:bg-white/70 active:scale-[0.98]"
+              >
+                +
+              </button>
+            </div>
+          </div>
         ) : null}
 
         <p className="text-[14px] leading-7 text-slate-800 sm:col-span-2 sm:text-[15px]">
