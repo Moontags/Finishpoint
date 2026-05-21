@@ -9,11 +9,11 @@ export default function Home() {
       <SiteHeader />
 
       {/* Hero */}
-      <section id="top" className="relative w-full min-h-80 sm:min-h-125 md:min-h-150 lg:min-h-175 xl:min-h-[820px] 2xl:min-h-[920px] md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
+      <section id="top" className="relative w-full min-h-80 sm:min-h-125 md:min-h-150 lg:min-h-175 xl:min-h-205 2xl:min-h-230 md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
         <div className="absolute inset-0 z-0">
           <div className="home-hero-bg absolute inset-0" />
 
-          <div className="absolute inset-0 px-4 sm:px-8 md:px-12 lg:px-16 -top-40 sm:-top-48 md:-top-48 lg:-top-64 h-[calc(100%+160px)] sm:h-[calc(100%+192px)] md:h-[calc(100%+192px)] lg:h-[calc(100%+256px)]">
+          <div className="absolute inset-0 px-4 sm:px-8 md:px-12 lg:px-16 -top-104 sm:-top-116 md:-top-136 lg:-top-184 h-[calc(100%+416px)] sm:h-[calc(100%+464px)] md:h-[calc(100%+544px)] lg:h-[calc(100%+736px)]">
             <div className="relative h-full w-full max-w-450 mx-auto">
               <Image
                 src="/images/paku.png"
