@@ -399,7 +399,8 @@ export function QuoteRequestForm() {
         {/* Info strip */}
         <div className="space-y-2.5 pt-2">
           {[
-            t('form.response_same_day', 'Vastaamme yleensä saman päivän aikana'),
+            t('form.response_same_day', 'Vastaamme saman päivän aikana'),
+            t('form.payment_mobilepay_or_invoice', 'Maksu MobilePay tai lasku'),
             isOrderFlow ? t('form.next_step_checkout', 'Seuraava vaihe...') : t('common.vat_incl', 'Hinnat näytetään sis. ALV 25,5 %'),
             t('common.business_vat', 'Yritys (ALV 0 %)'),
           ].map((line) => (
