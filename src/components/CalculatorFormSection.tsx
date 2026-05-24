@@ -4,6 +4,7 @@ import Image from "next/image";
 import { CalculatorProvider } from "@/lib/calculator-context";
 import ServiceSelector from "@/components/ServiceSelector";
 import { QuoteRequestForm } from "@/components/quote-request-form";
+import { useLanguage } from "@/lib/LanguageContext";
 import type { ServiceCategory } from "@/lib/types";
 
 export function CalculatorFormSection({
@@ -11,11 +12,15 @@ export function CalculatorFormSection({
 }: {
   initialCategory?: ServiceCategory;
 }) {
+  const { t } = useLanguage();
   return (
     <CalculatorProvider>
       {/* ── Calculator ─────────────────────────────────────────── */}
       <section className="relative z-10">
         <section className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
+          <p className="mb-4 text-center text-sm font-semibold text-slate-700 sm:mb-6 sm:text-base md:text-lg">
+            {t("hero.slogan", "Nopea. Luotettava. Kuljetukset alkaen 50 €.")}
+          </p>
           <ServiceSelector initialCategory={initialCategory} />
         </section>
       </section>

@@ -34,7 +34,7 @@ export default function ServiceSelector({
 }: {
   initialCategory?: ServiceCategory;
 }) {
-  const resolvedInitial = parseCategory(initialCategory ?? null) ?? "projekti";
+  const resolvedInitial = parseCategory(initialCategory ?? null) ?? "kappaletavara";
   const { t } = useLanguage();
 
   const [active, setActive] = useState<ServiceCategory>(resolvedInitial);
