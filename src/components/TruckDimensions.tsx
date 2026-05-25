@@ -7,7 +7,7 @@ const dimensions = [
 
 export default function TruckDimensions() {
   return (
-    <div className="w-full py-4 px-2">
+    <div className="w-full py-4 px-2 sm:mt-36">
       <p className="text-center text-[11px] text-gray-500 uppercase tracking-widest mb-2">
         Tavaratilan mitat
       </p>
