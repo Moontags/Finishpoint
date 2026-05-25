@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Bike, Boxes, ChevronDown, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
+import TruckDimensions from "@/components/TruckDimensions";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import { useLanguage } from "@/lib/LanguageContext";
 import { serviceCategories } from "@/lib/service-categories";
@@ -126,6 +127,8 @@ export default function ServiceSelector({
           }
         />
       </div>
+
+      <TruckDimensions />
     </div>
   );
 }
