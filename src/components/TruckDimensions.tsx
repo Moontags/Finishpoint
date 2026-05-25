@@ -1,15 +1,21 @@
-const dimensions = [
-  { label: "Pituus", value: "3,30 m", icon: "↔" },
-  { label: "Leveys", value: "1,55 m", icon: "↕" },
-  { label: "Korkeus", value: "1,90 m", icon: "↨" },
-  { label: "Tilavuus", value: "9,71 m³", icon: "□" },
-];
+"use client";
+
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function TruckDimensions() {
+  const { t } = useLanguage();
+
+  const dimensions = [
+    { label: t("truck.length", "Pituus"), value: "3,30 m", icon: "↔" },
+    { label: t("truck.width", "Leveys"), value: "1,55 m", icon: "↕" },
+    { label: t("truck.height", "Korkeus"), value: "1,90 m", icon: "↨" },
+    { label: t("truck.volume", "Tilavuus"), value: "9,71 m³", icon: "□" },
+  ];
+
   return (
     <div className="w-full py-4 px-2 sm:mt-36">
       <p className="text-center text-[11px] text-gray-500 uppercase tracking-widest mb-2">
-        Tavaratilan mitat
+        {t("truck.cargo_dimensions", "Tavaratilan mitat")}
       </p>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 max-w-md mx-auto">
         {dimensions.map((d) => (
