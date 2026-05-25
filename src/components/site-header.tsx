@@ -55,7 +55,7 @@ export function SiteHeader({
   }, [pathname]);
 
   return (
-    <header className={`relative z-50 w-full pt-0 pb-0 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${forceTransparent ? "bg-transparent" : opaque ? "bg-white" : "bg-white md:bg-transparent"}`}>
+    <header className={`relative z-50 w-full pt-0 pb-3 sm:px-5 sm:pt-0 sm:pb-3 lg:px-8 ${forceTransparent ? "bg-transparent" : opaque ? "bg-white" : "bg-white md:bg-transparent"}`}>
       <div className={`w-full rounded-none sm:rounded-2xl px-0 pt-2 pb-3 transition-all duration-200 sm:px-6 sm:py-3.5 ${noShadow ? "shadow-none" : ""} ${
         scrolled
           ? forceTransparent
@@ -90,7 +90,7 @@ export function SiteHeader({
               priority
             />
             <span className="flex shrink-0 flex-col leading-none sm:hidden">
-              <span className="text-[25px] font-black tracking-[0.04em] text-slate-900">pakuvie.fi</span>
+              <span className="text-[32px] font-black tracking-[0.04em] text-slate-900">pakuvie.fi</span>
             </span>
           </Link>
 

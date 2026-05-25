@@ -369,7 +369,7 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
               disabled={!canGoBack}
-              className="shrink-0 rounded-lg bg-white/20 px-4 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg bg-[#1a2e4a] px-4 py-2 text-white transition hover:bg-[#1a2e4a]/80 disabled:cursor-not-allowed disabled:opacity-30 focus:ring-[3px] focus:ring-blue-200"
               aria-label="Edellinen jakso"
             >
               ←
@@ -381,7 +381,7 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
               disabled={!canGoForward}
-              className="shrink-0 rounded-lg bg-white/20 px-4 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg bg-[#1a2e4a] px-4 py-2 text-white transition hover:bg-[#1a2e4a]/80 disabled:cursor-not-allowed disabled:opacity-30 focus:ring-[3px] focus:ring-blue-200"
               aria-label="Seuraava jakso"
             >
               →
@@ -486,7 +486,7 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
               disabled={!canGoBack}
-              className="shrink-0 rounded-lg bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg bg-[#1a2e4a] px-2 py-2 text-white transition hover:bg-[#1a2e4a]/80 disabled:cursor-not-allowed disabled:opacity-30 sm:px-3 focus:ring-[3px] focus:ring-blue-200"
               aria-label="Edellinen jakso"
             >
               ←
@@ -541,7 +541,7 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
               disabled={!canGoForward}
-              className="shrink-0 rounded-lg bg-white/20 px-2 py-2 text-[#1a2e4a] transition hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-30 sm:bg-white/30 sm:px-3 sm:backdrop-blur-sm focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg bg-[#1a2e4a] px-2 py-2 text-white transition hover:bg-[#1a2e4a]/80 disabled:cursor-not-allowed disabled:opacity-30 sm:px-3 focus:ring-[3px] focus:ring-blue-200"
               aria-label="Seuraava jakso"
             >
               →

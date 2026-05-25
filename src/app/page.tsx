@@ -11,7 +11,7 @@ export default function Home() {
       {/* Hero */}
       <section id="top" className="relative w-full min-h-80 sm:min-h-125 md:min-h-150 lg:min-h-175 xl:min-h-205 2xl:min-h-230 md:-mt-31 md:pt-31 lg:-mt-37 lg:pt-37">
         <div className="absolute inset-0 z-0">
-          <div className="home-hero-bg absolute inset-0" />
+          <div className="home-hero-bg absolute inset-0 hidden md:block" />
 
           <div className="absolute inset-0 px-4 sm:px-8 md:px-12 lg:px-16 -top-104 sm:-top-116 md:-top-136 lg:-top-184 h-[calc(100%+416px)] sm:h-[calc(100%+464px)] md:h-[calc(100%+544px)] lg:h-[calc(100%+736px)]">
             <div className="relative h-full w-full max-w-450 mx-auto">
@@ -28,7 +28,7 @@ export default function Home() {
           </div>
 
           {/* Siirtymä sivun taustaväriin */}
-          <div className="absolute inset-x-0 bottom-0 h-[55%] bg-linear-to-t from-[#f5f6f8] via-[#f5f6f8]/88 to-transparent sm:h-[50%] lg:h-[45%]" />
+          <div className="absolute inset-x-0 bottom-0 hidden h-[55%] bg-linear-to-t from-[#f5f6f8] via-[#f5f6f8]/88 to-transparent sm:h-[50%] md:block lg:h-[45%]" />
         </div>
 
         <div className="relative z-10">
