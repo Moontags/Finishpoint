@@ -4,6 +4,9 @@ import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 // Älä cacheta — data muuttuu varausten ja suljettujen päivien mukaan
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
+const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,7 +14,10 @@ export async function GET(request: Request) {
   const loppu = searchParams.get("loppu")?.trim() ?? alku;
 
   if (!alku) {
-    return NextResponse.json({ ok: true, suljetutPaivat: [], varausAjat: {} });
+    return NextResponse.json(
+      { ok: true, suljetutPaivat: [], varausAjat: {} },
+      { headers: NO_STORE },
+    );
   }
 
   try {
@@ -39,9 +45,15 @@ export async function GET(request: Request) {
       varausAjat[v.varaus_pvm].push({ alku: v.aloitusaika, loppu: v.lopetusaika });
     }
 
-    return NextResponse.json({ ok: true, suljetutPaivat, varausAjat });
+    return NextResponse.json(
+      { ok: true, suljetutPaivat, varausAjat },
+      { headers: NO_STORE },
+    );
   } catch (error) {
     console.error("varatut-paivat fetch failed", error);
-    return NextResponse.json({ ok: true, suljetutPaivat: [], varausAjat: {} });
+    return NextResponse.json(
+      { ok: true, suljetutPaivat: [], varausAjat: {} },
+      { headers: NO_STORE },
+    );
   }
 }
