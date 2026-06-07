@@ -85,5 +85,6 @@ export async function sendBookingEmails(payload: BookingEmailPayload) {
     to: operatorRecipient,
     subject: `Uusi varaus ${payload.reservationDate} klo ${payload.arrivalTime} - ${payload.destinationAddress}`,
     html: operatorTemplate(payload),
+    replyTo: payload.customerEmail,
   });
 }

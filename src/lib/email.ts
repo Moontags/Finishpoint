@@ -14,6 +14,7 @@ export async function sendEmail(options: {
   to: string;
   subject: string;
   html: string;
+  replyTo?: string;
 }) {
   await transporter.sendMail({
     from: process.env.SMTP_FROM,

@@ -45,7 +45,10 @@ export async function POST(request: Request) {
     const smtpPass = process.env.SMTP_PASS;
     const smtpPort = Number(process.env.SMTP_PORT ?? "587");
     const smtpSecure = process.env.SMTP_SECURE === "true";
-    const recipient = process.env.QUOTE_RECIPIENT ?? "kuljetus@pakuvie.fi";
+    const recipient =
+      process.env.QUOTE_RECIPIENT ??
+      process.env.SMTP_RECIPIENT ??
+      "kuljetus@pakuvie.fi";
     const fromAddress = process.env.SMTP_FROM ?? smtpUser;
 
     if (!smtpHost || !smtpUser || !smtpPass || !fromAddress) {
@@ -72,16 +75,23 @@ export async function POST(request: Request) {
 
     const data = payload as QuotePayload;
 
-    await saveQuoteRequest({
-      name: data.name,
-      phone: data.phone,
-      email: data.email,
-      serviceType: data.serviceType,
-      addresses: data.addresses,
-      message: data.message || "",
-      source: "website",
-      status: "received",
-    });
+    // Tallennus on toissijainen: jos se epäonnistuu, sähköposti pitää silti
+    // saada lähtemään, jotta tarjouspyyntö ei katoa. Lokitetaan virhe mutta
+    // ei keskeytetä pyyntöä.
+    try {
+      await saveQuoteRequest({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        serviceType: data.serviceType,
+        addresses: data.addresses,
+        message: data.message || "",
+        source: "website",
+        status: "received",
+      });
+    } catch (saveError) {
+      console.error("[quote] Tarjouspyynnön tallennus epäonnistui:", saveError);
+    }
 
     await transporter.sendMail({
       from: fromAddress,
@@ -100,7 +110,8 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (error) {
+    console.error("[quote] Tarjouspyynnön lähetys epäonnistui:", error);
     return NextResponse.json(
       {
         ok: false,
