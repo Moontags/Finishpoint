@@ -354,7 +354,7 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div data-testid="calendar" className="rounded-xl bg-white/20 p-3 backdrop-blur-sm shadow-md ring-1 ring-slate-900/5 sm:col-span-2 sm:bg-white/30 sm:p-5 lg:p-3.5">
+    <div data-testid="calendar" className="rounded-xl border border-slate-400 bg-white/20 p-3 backdrop-blur-sm shadow-md ring-1 ring-slate-900/5 sm:col-span-2 sm:bg-white/30 sm:p-5 lg:p-3.5">
       <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">{t("calendar.book_time", "Varaa ajankohta")}</p>
@@ -412,7 +412,7 @@ export function KalenteriVaraus({
                       setSelectedTime("");
                       setIsTimeMenuOpen(false);
                     }}
-                    className={`rounded-lg px-2 py-3 text-center transition ${
+                    className={`rounded-lg border border-slate-400 px-2 py-3 text-center transition ${
                       past
                         ? "cursor-not-allowed bg-white/10 text-slate-400 opacity-60"
                         : isSelectedDay
@@ -512,7 +512,7 @@ export function KalenteriVaraus({
                       setSelectedTime("");
                       setIsTimeMenuOpen(false);
                     }}
-                    className={`rounded-lg px-1 py-2.5 text-center transition sm:py-2 lg:py-1 ${
+                    className={`rounded-lg border border-slate-400 px-1 py-2.5 text-center transition sm:py-2 lg:py-1 ${
                       selected
                         ? "bg-[#1a2e4a] text-white"
                         : "bg-white/10 text-[#1a2e4a] hover:bg-white/30"

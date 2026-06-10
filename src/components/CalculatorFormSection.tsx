@@ -18,9 +18,20 @@ export function CalculatorFormSection({
       {/* ── Calculator ─────────────────────────────────────────── */}
       <section className="relative z-10">
         <section className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
-          <p className="mb-4 text-center text-sm font-semibold text-slate-700 sm:mb-6 sm:text-base md:text-lg">
-            {t("hero.slogan", "Nopea. Luotettava. Kuljetukset alkaen 50 €.")}
-          </p>
+          <div className="mx-auto mb-6 max-w-150 text-center sm:mb-8">
+            <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl lg:text-[1.75rem]">
+              {t("hero.promo_title", "Kuljetukset silloin kun tarvitset")}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+              {t(
+                "hero.promo_sub",
+                "Pikakuljetukset, pienmuutot ja tavarakuljetukset yhdellä yhteydenotolla.",
+              )}{" "}
+              <a href="#quote" className="underline-offset-2 hover:underline">
+                {t("hero.promo_cta", "Pyydä tarjous jo tänään.")}
+              </a>
+            </p>
+          </div>
           <ServiceSelector initialCategory={initialCategory} />
         </section>
       </section>
