@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import dynamic from "next/dynamic";
 import { LanguageProvider } from "@/lib/LanguageContext";
@@ -64,6 +65,18 @@ export default function RootLayout({
   return (
     <html lang="fi" data-scroll-behavior="smooth">
       <body className={`${montserrat.variable} antialiased min-h-screen flex flex-col`}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-RTNG5S3TSZ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-RTNG5S3TSZ');
+          `}
+        </Script>
         <LanguageProvider>
           {children}
           <ChatWidget />
