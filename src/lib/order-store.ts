@@ -1,4 +1,4 @@
-import type { OrderData } from "@/lib/types";
+import type { EmailDeliveryStatus, OrderData } from "@/lib/types";
 import { getSupabaseAdminClient } from "./supabase-admin";
 
 const orderById = new Map<string, OrderData>();
@@ -29,7 +29,12 @@ type OrderRow = {
   payment_method: OrderData["paymentMethod"];
   payment_status: string;
   vipps_reference: string | null;
+  email_delivery_status: EmailDeliveryStatus | null;
+  email_delivery_error: string | null;
 };
+
+const ORDER_COLUMNS =
+  "order_id, order_date, customer_name, customer_email, customer_phone, customer_address, service_description, pickup_address, delivery_address, total_with_vat, vat_rate, vat_amount, net_amount, payment_method, payment_status, vipps_reference, email_delivery_status, email_delivery_error";
 
 function getKvConfig(): KvConfig | null {
   const url = process.env.KV_REST_API_URL?.trim() ?? "";
@@ -69,6 +74,8 @@ function toOrderRow(order: OrderData): OrderRow {
     payment_method: order.paymentMethod,
     payment_status: order.paymentMethod === "invoice" ? "invoice_pending" : "payment_pending",
     vipps_reference: order.vippsReference ?? null,
+    email_delivery_status: order.emailDeliveryStatus ?? "pending",
+    email_delivery_error: order.emailDeliveryError ?? null,
   };
 }
 
@@ -93,6 +100,8 @@ function fromOrderRow(row: OrderRow): OrderData {
     netAmount: asNumber(row.net_amount),
     paymentMethod: row.payment_method,
     vippsReference: row.vipps_reference ?? undefined,
+    emailDeliveryStatus: row.email_delivery_status ?? undefined,
+    emailDeliveryError: row.email_delivery_error ?? undefined,
   };
 }
 
@@ -121,7 +130,7 @@ async function getOrderByReferenceFromSupabase(reference: string) {
 
   const byOrderId = await client
     .from("orders")
-    .select("order_id, order_date, customer_name, customer_email, customer_phone, customer_address, service_description, pickup_address, delivery_address, total_with_vat, vat_rate, vat_amount, net_amount, payment_method, payment_status, vipps_reference")
+    .select(ORDER_COLUMNS)
     .eq("order_id", reference)
     .maybeSingle<OrderRow>();
 
@@ -135,7 +144,7 @@ async function getOrderByReferenceFromSupabase(reference: string) {
 
   const byVippsReference = await client
     .from("orders")
-    .select("order_id, order_date, customer_name, customer_email, customer_phone, customer_address, service_description, pickup_address, delivery_address, total_with_vat, vat_rate, vat_amount, net_amount, payment_method, payment_status, vipps_reference")
+    .select(ORDER_COLUMNS)
     .eq("vipps_reference", reference)
     .maybeSingle<OrderRow>();
 
@@ -302,6 +311,47 @@ export async function markOrderAsPaid(orderId: string, vippsReference: string) {
     orderById.set(orderId, {
       ...inMemoryOrder,
       vippsReference,
+    });
+  }
+}
+
+// Kirjaa kuitin/vahvistuksen sähköpostin toimitustilan tilaukselle.
+// Best-effort: virheet lokitetaan mutta ne eivät kaada kutsuvaa reittiä.
+export async function markOrderEmailStatus(
+  orderId: string,
+  status: EmailDeliveryStatus,
+  errorMessage?: string,
+) {
+  try {
+    const client = getSupabaseAdminClient();
+    if (client) {
+      const { error } = await client
+        .from("orders")
+        .update({
+          email_delivery_status: status,
+          email_delivery_error: errorMessage ? errorMessage.slice(0, 500) : null,
+        })
+        .eq("order_id", orderId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      return;
+    }
+  } catch (error) {
+    console.error("markOrderEmailStatus failed, falling back to in-memory store", {
+      orderId,
+      status,
+      error,
+    });
+  }
+
+  const inMemoryOrder = orderById.get(orderId);
+  if (inMemoryOrder) {
+    orderById.set(orderId, {
+      ...inMemoryOrder,
+      emailDeliveryStatus: status,
+      emailDeliveryError: errorMessage,
     });
   }
 }

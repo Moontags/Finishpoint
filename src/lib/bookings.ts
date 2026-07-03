@@ -1,3 +1,4 @@
+import type { EmailDeliveryStatus } from "./types";
 import { getSupabaseAdminClient } from "./supabase-admin";
 
 export type BookingInsertPayload = {
@@ -82,5 +83,22 @@ export async function updateBookingStatus(orderId: string, newStatus: "vahvistet
     .eq("order_id", orderId);
   if (error) {
     throw new Error(`Booking status update failed: ${error.message}`);
+  }
+}
+
+// Kirjaa kuitin/vahvistuksen sähköpostin toimitustilan varaukselle, jotta
+// admin-näkymä (KeikkaView) voi näyttää selkeän varoituksen epäonnistuneesta
+// lähetyksestä. Best-effort: virheet lokitetaan mutta niitä ei heitetä.
+export async function markBookingEmailStatus(orderId: string, status: EmailDeliveryStatus) {
+  const client = getSupabaseAdminClient();
+  if (!client) {
+    return;
+  }
+  const { error } = await client
+    .from("varaukset")
+    .update({ email_delivery_status: status })
+    .eq("order_id", orderId);
+  if (error) {
+    console.error("Booking email status update failed", { orderId, status, error: error.message });
   }
 }

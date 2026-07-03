@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ORDER_DRAFT_STORAGE_KEY, type OrderDraft } from "@/lib/order-draft";
+import { INVALID_EMAIL_MESSAGE, isValidEmail } from "@/lib/email-validation";
 
 function formatEuro(value: number | null) {
   if (value === null || !Number.isFinite(value)) return "-";
@@ -41,6 +42,10 @@ export default function CheckoutPage() {
   }, [accepted, draft]);
   const confirmAndPay = async () => {
     if (!draft) { setError(t('checkout.confirming', 'Vahvistetaan...')); return; }
+    if (!isValidEmail(draft.email)) {
+      setError(t('checkout.invalid_email', INVALID_EMAIL_MESSAGE));
+      return;
+    }
     setSubmitting(true);
     setError("");
     try {

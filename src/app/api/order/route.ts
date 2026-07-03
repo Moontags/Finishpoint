@@ -8,6 +8,7 @@ import {
 } from "../../../lib/mobilepay-api";
 import { saveBooking } from "@/lib/bookings";
 import { saveOrder } from "@/lib/order-store";
+import { INVALID_EMAIL_MESSAGE, isValidEmail, normalizeEmail } from "@/lib/email-validation";
 import type { BookingSelectionData } from "@/lib/types";
 
 type OrderPayload = {
@@ -41,8 +42,8 @@ function validatePayload(payload: Partial<OrderPayload>) {
     }
   }
 
-  if (!payload.email?.includes("@")) {
-    return "Sahkoposti ei ole kelvollinen.";
+  if (!isValidEmail(payload.email)) {
+    return INVALID_EMAIL_MESSAGE;
   }
 
   if (
@@ -211,6 +212,7 @@ export async function POST(request: Request) {
     });
 
     const data = payload as OrderPayload;
+    data.email = normalizeEmail(data.email);
     const estimatedPriceVat0 = data.estimatedPriceVat0;
 
     if (estimatedPriceVat0 === null) {
@@ -357,7 +359,10 @@ export async function POST(request: Request) {
 
     // Tallenna tilaus order-storeen jotta webhook löytää sen
     try {
-      const vatRate = 0.255;
+      // ALV-kanta tallennetaan prosenttilukuna (25.5), jotta se näkyy kuitilla
+      // oikein "25,5 %". Aiemmin tässä oli murtoluku 0.255, joka pyöristyi
+      // orders.vat_rate numeric(5,2) -sarakkeessa arvoon 0.26 ja näkyi väärin.
+      const vatRate = 25.5;
       const netAmount = estimatedPriceVat0;
       const totalWithVat = data.estimatedPriceVatIncl ?? estimatedPriceVat0;
       const vatAmount = totalWithVat - netAmount;

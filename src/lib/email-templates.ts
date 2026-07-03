@@ -40,6 +40,17 @@ function asEuro(value: number) {
   return `${value.toFixed(2)} EUR`;
 }
 
+// Näyttää ALV-kannan aina prosenttilukuna Suomen muodossa (esim. "25,5").
+// Puolustautuu vanhaa dataa vastaan: jos kanta on tallennettu murtolukuna
+// (esim. 0.255), se muunnetaan prosentiksi ennen näyttöä.
+export function formatVatRate(vatRate: number): string {
+  if (!Number.isFinite(vatRate)) {
+    return "0";
+  }
+  const percent = vatRate > 0 && vatRate < 1 ? vatRate * 100 : vatRate;
+  return percent.toLocaleString("fi-FI", { maximumFractionDigits: 2 });
+}
+
 export function calculateVat(totalWithVat: number, vatRate = 25.5) {
   const net = totalWithVat / (1 + vatRate / 100);
   const vat = totalWithVat - net;
@@ -114,7 +125,7 @@ export function generateOrderConfirmationHtml(order: OrderData): string {
             <td style="${tdStyles}">${asEuro(order.netAmount)}</td>
           </tr>
           <tr>
-            <th style="${thStyles}">ALV ${order.vatRate} %</th>
+            <th style="${thStyles}">ALV ${formatVatRate(order.vatRate)} %</th>
             <td style="${tdStyles}">${asEuro(order.vatAmount)}</td>
           </tr>
           <tr>
@@ -210,7 +221,7 @@ export function generateReceiptHtml(order: OrderData): string {
                 ${asEuro(order.netAmount)}
               </td>
               <td style="padding:8px;border:1px solid #e0e0e0;font-size:13px;text-align:right;white-space:nowrap;">
-                ${order.vatRate} %
+                ${formatVatRate(order.vatRate)} %
               </td>
               <td style="padding:8px;border:1px solid #e0e0e0;font-size:13px;text-align:right;font-weight:bold;white-space:nowrap;">
                 ${asEuro(order.totalWithVat)}
@@ -226,7 +237,7 @@ export function generateReceiptHtml(order: OrderData): string {
             <td style="padding:4px 8px;text-align:right;font-size:13px;">${asEuro(order.netAmount)}</td>
           </tr>
           <tr>
-            <td style="padding:4px 8px;font-size:13px;color:#555;">ALV ${order.vatRate} %:</td>
+            <td style="padding:4px 8px;font-size:13px;color:#555;">ALV ${formatVatRate(order.vatRate)} %:</td>
             <td style="padding:4px 8px;text-align:right;font-size:13px;">${asEuro(order.vatAmount)}</td>
           </tr>
           <tr style="border-top:2px solid #1a1a2e;">

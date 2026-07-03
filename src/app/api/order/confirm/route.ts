@@ -5,8 +5,9 @@ import {
   generateInvoiceNumber,
   generateOrderConfirmationHtml,
 } from "../../../../lib/email-templates";
-import { saveOrder } from "@/lib/order-store";
-import { saveBooking } from "../../../../lib/bookings";
+import { markOrderEmailStatus, saveOrder } from "@/lib/order-store";
+import { INVALID_EMAIL_MESSAGE, isValidEmail } from "@/lib/email-validation";
+import { markBookingEmailStatus, saveBooking } from "../../../../lib/bookings";
 import { sendBookingEmails } from "../../../../lib/booking-emails";
 import type { BookingSelectionData, OrderData } from "../../../../lib/types";
 
@@ -54,8 +55,8 @@ function parsePayload(raw: unknown): { ok: true; value: ConfirmOrderPayload } | 
     }
   }
 
-  if (!payload.customerEmail?.includes("@")) {
-    return { ok: false, error: "Sahkoposti ei ole kelvollinen." };
+  if (!isValidEmail(payload.customerEmail)) {
+    return { ok: false, error: INVALID_EMAIL_MESSAGE };
   }
 
   if (typeof payload.totalWithVat !== "number" || !Number.isFinite(payload.totalWithVat) || payload.totalWithVat <= 0) {
@@ -190,9 +191,13 @@ export async function POST(req: Request) {
         subject: `Tilausvahvistus ${order.orderId} - Pakuvie`,
         html: generateOrderConfirmationHtml(order),
       });
+      await markOrderEmailStatus(order.orderId, "sent");
     } catch (error) {
       console.error("Order confirmation email failed in /api/order/confirm", error);
       warnings.push("Tilausvahvistuksen sahkoposti epaonnistui.");
+      const reason = error instanceof Error ? error.message : "Tuntematon virhe";
+      await markOrderEmailStatus(order.orderId, "failed", reason);
+      await markBookingEmailStatus(order.orderId, "failed");
     }
 
     return NextResponse.json({ ok: true, orderId: order.orderId, warnings });

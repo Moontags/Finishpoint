@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/email";
 import { generateReceiptHtml } from "../../../../lib/email-templates";
-import { getOrderByReference, markOrderAsPaid } from "@/lib/order-store";
-import { saveBooking, updateBookingStatus } from "@/lib/bookings";
+import { getOrderByReference, markOrderAsPaid, markOrderEmailStatus } from "@/lib/order-store";
+import { markBookingEmailStatus, updateBookingStatus } from "@/lib/bookings";
 
 function getExpectedToken() {
   return process.env.VIPPS_WEBHOOK_AUTH_TOKEN?.trim() ?? "";
@@ -133,18 +133,27 @@ export async function POST(request: Request) {
             vippsReference: reference,
           }),
         });
-      // Vahvista varaus maksetuksi
-      try {
-        await updateBookingStatus(order.orderId, "vahvistettu");
+        await markOrderEmailStatus(order.orderId, "sent");
+        await markBookingEmailStatus(order.orderId, "sent");
       } catch (error) {
-        console.error("Booking status update failed", { orderId: order.orderId, error });
-      }
-      } catch (error) {
+        // Kuitin lähetys epäonnistui (esim. bounce / virheellinen osoite).
+        // Tallennetaan tila, jotta myyjä näkee sen admin-näkymässä eikä sitä
+        // tarvitse etsiä manuaalisesti roskaposti- tai bounce-viesteistä.
+        const reason = error instanceof Error ? error.message : "Tuntematon virhe";
         console.error("Receipt email sending failed", {
           orderId: order.orderId,
           reference,
           error,
         });
+        await markOrderEmailStatus(order.orderId, "failed", reason);
+        await markBookingEmailStatus(order.orderId, "failed");
+      }
+
+      // Vahvista varaus maksetuksi (riippumaton kuitin lähetyksestä).
+      try {
+        await updateBookingStatus(order.orderId, "vahvistettu");
+      } catch (error) {
+        console.error("Booking status update failed", { orderId: order.orderId, error });
       }
     }
   }

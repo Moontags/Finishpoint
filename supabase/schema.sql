@@ -39,7 +39,10 @@ create table if not exists public.orders (
   payment_method text not null check (payment_method in ('mobilepay', 'invoice')),
   payment_status text not null default 'pending',
   paid_at timestamptz,
-  vipps_reference text unique
+  vipps_reference text unique,
+  email_delivery_status text not null default 'pending'
+    check (email_delivery_status in ('pending', 'sent', 'failed')),
+  email_delivery_error text
 );
 
 create index if not exists orders_order_date_idx
@@ -90,7 +93,8 @@ create table if not exists public.varaukset (
   ajoaika_riihimaelta_min integer,
   hinta_alv numeric(10,2),
   hinta_alv0 numeric(10,2),
-  status text not null default 'vahvistettu'
+  status text not null default 'vahvistettu',
+  email_delivery_status text
 );
 
 create index if not exists varaukset_pvm_idx

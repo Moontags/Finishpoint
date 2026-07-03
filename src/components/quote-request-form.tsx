@@ -6,6 +6,7 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import { ORDER_DRAFT_STORAGE_KEY } from "@/lib/order-draft";
+import { INVALID_EMAIL_MESSAGE, isValidEmail } from "@/lib/email-validation";
 import { quoteServiceOptions } from "@/lib/services";
 import type { ServiceCategory } from "@/lib/types";
 
@@ -241,6 +242,12 @@ export function QuoteRequestForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (!isValidEmail(formData.email)) {
+      setStatus("error");
+      setFeedback(t('form.error_invalid_email', INVALID_EMAIL_MESSAGE));
+      return;
+    }
+
     setActiveAction("quote");
     setStatus("loading");
     setFeedback("");
@@ -297,6 +304,12 @@ export function QuoteRequestForm() {
     if (isOrderFlow && !addressesMatchCalculator) {
       setStatus("error");
       setFeedback(t('form.error_address_match', 'Nouto- ja toimitusosoitteen tulee olla samat kuin laskurissa.'));
+      return;
+    }
+
+    if (!isValidEmail(formData.email)) {
+      setStatus("error");
+      setFeedback(t('form.error_invalid_email', INVALID_EMAIL_MESSAGE));
       return;
     }
 

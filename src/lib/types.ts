@@ -23,8 +23,12 @@ export type OrderData = {
   netAmount: number;
   paymentMethod: "mobilepay" | "invoice";
   vippsReference?: string;
+  emailDeliveryStatus?: EmailDeliveryStatus;
+  emailDeliveryError?: string;
   bookingSelection?: BookingSelectionData | null;
 };
+
+export type EmailDeliveryStatus = "pending" | "sent" | "failed";
 
 export type QuoteRequestData = {
   name: string;

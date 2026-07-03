@@ -18,6 +18,7 @@ type Varaus = {
   hinta_alv: number | null
   hinta_alv0: number | null
   status: string | null
+  email_delivery_status: string | null
   created_at: string | null
   updated_at: string | null
 }
@@ -81,6 +82,8 @@ export function KeikkaView() {
     open: varaukset.filter(v => v.status === 'vahvistettu').length,
   }
 
+  const failedEmails = varaukset.filter(v => v.email_delivery_status === 'failed')
+
   if (mode !== 'list') {
     const existing = mode === 'new' ? null : varaukset.find(v => v.id === mode) ?? null
     return (
@@ -97,6 +100,25 @@ export function KeikkaView() {
   return (
     <div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
+
+      {failedEmails.length > 0 && (
+        <div className="mb-6 rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-200">
+          <div className="font-semibold">
+            ⚠️ Kuitin/vahvistuksen sähköposti epäonnistui {failedEmails.length} varauksessa
+          </div>
+          <div className="mt-1 text-red-300/90">
+            Tarkista asiakkaan sähköpostiosoite ja lähetä kuitti tarvittaessa uudelleen. Osoite voi olla virheellinen (esim. kirjoitusvirhe tai välilyönti).
+          </div>
+          <ul className="mt-2 list-inside list-disc space-y-0.5 text-red-200/90">
+            {failedEmails.slice(0, 5).map(v => (
+              <li key={v.id}>
+                {v.asiakas_nimi ?? '—'} — {v.asiakas_email ?? '—'}
+                {v.varaus_pvm ? ` (${new Date(v.varaus_pvm + 'T00:00:00').toLocaleDateString('fi-FI')})` : ''}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
@@ -150,6 +172,14 @@ export function KeikkaView() {
                     <span className={`inline-flex px-2 py-0.5 rounded border text-xs font-medium ${STATUS_COLORS[v.status ?? ''] ?? 'bg-zinc-700 text-zinc-300 border-zinc-600'}`}>
                       {v.status ?? '—'}
                     </span>
+                    {v.email_delivery_status === 'failed' && (
+                      <span
+                        title="Kuitin/vahvistuksen sähköposti epäonnistui — tarkista osoite"
+                        className="ml-2 inline-flex items-center gap-1 rounded border border-red-500/40 bg-red-500/20 px-2 py-0.5 text-xs font-medium text-red-300"
+                      >
+                        ⚠️ sähköposti
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button

@@ -14,6 +14,11 @@ vi.mock('@/lib/order-store', () => ({
   markOrderAsPaid: (...args: unknown[]) => mockMarkOrderAsPaid(...args),
   getOrderByReference: (...args: unknown[]) => mockGetOrderByReference(...args),
   saveOrder: vi.fn(),
+  markOrderEmailStatus: vi.fn(),
+}));
+vi.mock('@/lib/bookings', () => ({
+  updateBookingStatus: vi.fn(),
+  markBookingEmailStatus: vi.fn(),
 }));
 
 import { POST as handler } from '../../app/api/vipps/webhook/route';
