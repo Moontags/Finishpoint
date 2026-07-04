@@ -3,6 +3,7 @@ import { sendEmail } from "@/lib/email";
 import { generateReceiptHtml } from "../../../../lib/email-templates";
 import { getOrderByReference, markOrderAsPaid, markOrderEmailStatus } from "@/lib/order-store";
 import { markBookingEmailStatus, updateBookingStatus } from "@/lib/bookings";
+import { isValidEmail } from "@/lib/email-validation";
 
 function getExpectedToken() {
   return process.env.VIPPS_WEBHOOK_AUTH_TOKEN?.trim() ?? "";
@@ -124,7 +125,17 @@ export async function POST(request: Request) {
         });
       }
 
-      try {
+      // Varmistus ennen lähetystä: ennen validoinnin käyttöönottoa tallennetut
+      // tilaukset voivat sisältää virheellisen osoitteen. Ei yritetä lähettää
+      // varmasti bouncaavaan osoitteeseen, vaan merkitään tila suoraan.
+      if (!isValidEmail(order.customerEmail)) {
+        console.error("Receipt email skipped: invalid recipient", {
+          orderId: order.orderId,
+          reference,
+        });
+        await markOrderEmailStatus(order.orderId, "failed", "Virheellinen sähköpostiosoite");
+        await markBookingEmailStatus(order.orderId, "failed");
+      } else try {
         await sendEmail({
           to: order.customerEmail,
           subject: `Kuitti ${order.orderId} - Pakuvie`,

@@ -179,9 +179,15 @@ export function QuoteRequestForm() {
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
   const [hasCalculatorData, setHasCalculatorData] = useState(false);
   const [activeAction, setActiveAction] = useState<"quote" | "order" | null>(null);
   const calculatorContext = useCalculatorContext();
+
+  // Sähköposti validoidaan reaaliaikaisesti, jotta virheellistä osoitetta
+  // (esim. välilyönti domainissa) ei voi lähettää eteenpäin.
+  const emailIsValid = isValidEmail(formData.email);
+  const showEmailError = emailTouched && formData.email.trim().length > 0 && !emailIsValid;
 
   useEffect(() => {
     if (!calculatorContext) return;
@@ -219,6 +225,9 @@ export function QuoteRequestForm() {
   useEffect(() => {
     function handleAutofillQuote(e: Event) {
       const detail = (e as CustomEvent).detail || {};
+      if (detail.email) {
+        setEmailTouched(true);
+      }
       setFormData((current) => ({
         ...current,
         name: detail.name || current.name,
@@ -358,7 +367,7 @@ export function QuoteRequestForm() {
   const hasContactFields =
     formData.name.trim().length > 0 &&
     formData.phone.trim().length > 0 &&
-    formData.email.trim().length > 0 &&
+    emailIsValid &&
     formData.pickupAddress.trim().length > 0 &&
     formData.deliveryAddress.trim().length > 0;
 
@@ -473,8 +482,16 @@ export function QuoteRequestForm() {
               autoComplete="email"
               value={formData.email}
               onChange={handleChange}
-              className={inputClass}
+              onBlur={() => setEmailTouched(true)}
+              aria-invalid={showEmailError}
+              aria-describedby={showEmailError ? "quote-email-error" : undefined}
+              className={`${inputClass}${showEmailError ? " border-rose-400 focus:border-rose-500 focus:ring-rose-200" : ""}`}
             />
+            {showEmailError ? (
+              <span id="quote-email-error" data-testid="quote-email-error" className="text-[12px] font-medium text-rose-600">
+                {t('form.error_invalid_email', INVALID_EMAIL_MESSAGE)}
+              </span>
+            ) : null}
           </label>
           <label htmlFor="quote-service-type" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             {t('form.service_type', 'Palvelutyyppi')}
@@ -532,7 +549,7 @@ export function QuoteRequestForm() {
             <button
               type="submit"
               data-testid="quote-submit"
-              disabled={status === "loading"}
+              disabled={status === "loading" || !emailIsValid}
               className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? t('form.sending', 'Lähetetään...') : t('form.send_quote', 'Lähetä tarjouspyyntö')}

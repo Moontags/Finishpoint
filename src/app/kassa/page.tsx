@@ -36,7 +36,7 @@ export default function CheckoutPage() {
     if (!draft) return false;
     return (
       draft.name.trim().length > 0 && draft.phone.trim().length > 0 &&
-      draft.email.trim().length > 0 && draft.addresses.trim().length > 0 &&
+      isValidEmail(draft.email) && draft.addresses.trim().length > 0 &&
       typeof draft.estimatedPriceVat0 === "number" && draft.estimatedPriceVat0 > 0 && accepted
     );
   }, [accepted, draft]);
