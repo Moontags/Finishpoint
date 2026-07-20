@@ -25,7 +25,7 @@ export function CalculatorFormSection({
             <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
               {t(
                 "hero.promo_sub",
-                "Pikakuljetukset, pienmuutot ja tavarakuljetukset yhdellä yhteydenotolla.",
+                "Pikakuljetukset, apuvälinekuljetukset, pienmuutot ja tavarakuljetukset yhdellä yhteydenotolla.",
               )}{" "}
               <a href="#quote" className="underline-offset-2 hover:underline">
                 {t("hero.promo_cta", "Pyydä tarjous jo tänään.")}
