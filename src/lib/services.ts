@@ -6,6 +6,7 @@ export type ServiceSlug =
   | "pesukone-kuljetus"
   | "sohvan-kuljetus"
   | "sangyn-kuljetus"
+  | "apuvalinekuljetus"
   | "kierratys"
   | "muutot"
   | "venesiirto";
@@ -143,6 +144,36 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     calculatorCategory: "kappaletavara",
     heroBackgroundImage: "/images/paku1.png",
   },
+  apuvalinekuljetus: {
+    slug: "apuvalinekuljetus",
+    navLabel: "Apuvälinekuljetus",
+    title: "Apuvälinekuljetus",
+    description:
+      "Pakuvie kuljettaa apuvälineitä – pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet – turvallisesti ja varovasti kotien, hoivakotien, kotihoidon ja apteekkien välillä.",
+    valueProposition:
+      "Kuljetamme apuvälineet turvallisesti ja varovasti yksityishenkilöille, omaisille, kotihoidolle, hoivakodeille ja vammaispalveluille.",
+    includes: [
+      "Nouto kotoa, hoivakodista, apteekista tai varastosta",
+      "Varovainen käsittely ja huolellinen suojaus kuljetuksen ajaksi",
+      "Toimitus sovittuna aikana perille asti",
+      "Pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet",
+    ],
+    pricingTitle: "Apuvälinekuljetuksen hinnoittelu",
+    pricingDescription:
+      serviceCategoryContentById.kappaletavara.cardDescription,
+    metadataTitle: "Apuvälinekuljetus | Pakuvie",
+    metadataDescription:
+      "Pakuvie kuljettaa apuvälineet — pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt — turvallisesti Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
+    keywords: [
+      "apuvälinekuljetus",
+      "pyörätuolin kuljetus",
+      "rollaattorin kuljetus",
+      "sähkömopon kuljetus",
+      "sairaalasängyn kuljetus",
+    ],
+    calculatorCategory: "kappaletavara",
+    heroBackgroundImage: "/images/paku2.png",
+  },
   kierratys: {
     slug: "kierratys",
     navLabel: "Kierrätys",
@@ -221,6 +252,7 @@ export const serviceNavigationOrder: ServiceSlug[] = [
   "pesukone-kuljetus",
   "sohvan-kuljetus",
   "sangyn-kuljetus",
+  "apuvalinekuljetus",
   "kierratys",
   "muutot",
 ];
