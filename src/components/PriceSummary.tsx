@@ -24,7 +24,7 @@ export function PriceSummary({ hintaAlv0, label = "Hinta" }: PriceSummaryProps) 
         </p>
       </div>
       <p className="mt-2 text-[12px] text-slate-700">
-        {t('calculator.order_via_form', 'Tilaus ja maksu tehdään alla olevalla lomakkeella.')}
+        {t('calculator.order_via_form', 'Täytä osoite- ja tavaratiedot laskurissa tilataksesi ja maksaaksesi suoraan, tai lähetä tarjouspyyntö alla olevalla lomakkeella.')}
       </p>
     </div>
   );
