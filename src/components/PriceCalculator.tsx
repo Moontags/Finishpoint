@@ -572,7 +572,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         {distanceStatus === "success" && routeSummary ? (
           <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
             <p className="mb-3 text-[12px] font-medium text-slate-700">
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
+              {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-white/10 px-3 py-3">

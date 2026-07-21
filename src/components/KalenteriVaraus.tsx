@@ -114,8 +114,13 @@ export function KalenteriVaraus({
   const [driveToDestinationMinutes, setDriveToDestinationMinutes] = useState<number | null>(null);
   const [driveFromRiihimakiMinutes, setDriveFromRiihimakiMinutes] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const daysCount = isMobile ? 2 : 7;
   const navStep = isMobile ? 2 : 7;
@@ -352,6 +357,22 @@ export function KalenteriVaraus({
       setWeekStart((current) => addDays(current, -navStep));
     }
   };
+
+  if (!mounted) {
+    return (
+      <div
+        data-testid="calendar"
+        className="rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5"
+      >
+        <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">
+            {t("calendar.book_time", "Varaa ajankohta")}
+          </p>
+        </div>
+        <div className="h-40 animate-pulse rounded-lg bg-slate-100" aria-hidden="true" />
+      </div>
+    );
+  }
 
   return (
     <div data-testid="calendar" className="rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5">
