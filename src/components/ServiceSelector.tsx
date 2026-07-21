@@ -77,12 +77,12 @@ export default function ServiceSelector({
                   <button
                     type="button"
                     onClick={() => setOpen((v) => !v)}
-                    className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-400 bg-white/30 backdrop-blur-sm px-4 py-3 text-[14px] font-semibold text-slate-800 shadow-sm transition"
+                    className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-400 bg-transparent px-4 py-3 text-[14px] font-semibold text-slate-800"
                   >
                     <span className="min-w-0 flex-1 wrap-break-word text-left leading-tight">
                       {(() => { const c = categories.find((c) => c.id === active); return c ? t(`serviceCategory.${c.id}.label`, c.label) : ""; })()}
                     </span>
-                    <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`h-5 w-5 ${open ? "rotate-180" : ""}`} />
                   </button>
                   {open && (
                     <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-y-auto max-h-60 rounded-2xl bg-white shadow-xl">
@@ -91,10 +91,10 @@ export default function ServiceSelector({
                           key={id}
                           type="button"
                           onClick={() => { setActive(id); setOpen(false); }}
-                          className={`flex w-full min-w-0 items-center gap-4 px-5 py-5 text-[17px] font-bold transition ${
+                          className={`flex w-full min-w-0 items-center gap-4 bg-transparent px-5 py-5 text-[17px] font-bold ${
                             active === id
-                              ? "bg-slate-200/70 text-slate-900"
-                              : "text-slate-800 hover:bg-slate-100"
+                              ? "text-slate-900"
+                              : "text-slate-800"
                           }`}
                         >
                           <Icon className="h-6 w-6 shrink-0" />
@@ -112,10 +112,10 @@ export default function ServiceSelector({
                     type="button"
                     data-testid={`service-tab-${id}`}
                     onClick={() => setActive(id)}
-                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 px-6 py-3.5 text-sm font-bold shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:shadow-lg active:scale-[0.98] ${
+                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold ${
                       active === id
-                        ? "bg-white/50 backdrop-blur-sm text-slate-900"
-                        : "bg-white/30 backdrop-blur-sm text-slate-900 hover:bg-white/60 hover:text-slate-900"
+                        ? "text-slate-900"
+                        : "text-slate-900"
                     }`}
                   >
                     {/* Ikoni poistettu */}

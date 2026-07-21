@@ -64,7 +64,6 @@ INSERT INTO public.prices (key, value, label) VALUES
   ('km_rate_tavara',     1.29,   'Lisäkilometri tavara'),
   ('km_rate_muutto',     0.69,   'Lisäkilometri muutto'),
   ('km_rate_ajoneuvo',   1.29,   'Lisäkilometri ajoneuvo'),
-  ('floor_extra',        5.00,   'Kerroslisä/kerros'),
   ('vat_rate',           0.255,  'ALV-kerroin')
 ON CONFLICT (key) DO NOTHING;
 

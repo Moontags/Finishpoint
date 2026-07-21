@@ -10,7 +10,6 @@ export async function getPrices(): Promise<Record<string, number>> {
     km_rate_tavara: 1.29,
     km_rate_muutto: 0.69,
     km_rate_ajoneuvo: 1.29,
-    floor_extra: 5,
     vat_rate: 0.255,
   };
 

@@ -17,7 +17,7 @@ export const serviceCategories: ServiceCategoryContent[] = [
     label: "Kappaletavara",
     cardTitle: "Kappaletavarakuljetukset",
     cardDescription:
-      "Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km. Kerroslisä ilman hissiä 5 €/kerros.",
+      "Pesukone, sohva ja sänky. 0-40 km 89 €, yli 40 km +1,29 €/km.",
     cardAccent: "Alkaen 89 €",
     href: "/pesukone-kuljetus",
     backgroundImage: "/images/paku1.png",

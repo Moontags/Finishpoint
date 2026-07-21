@@ -213,8 +213,7 @@ function AddressAutocompleteField({
             width: '100%',
             borderRadius: '12px',
             border: '1px solid #94a3b8',
-            background: 'rgba(255,255,255,0.30)',
-            backdropFilter: 'blur(8px)',
+            background: 'transparent',
             padding: '12px 18px',
             fontSize: 15,
             color: '#1e293b',
@@ -235,7 +234,6 @@ function AddressAutocompleteField({
               backgroundColor: '#1e1e2e',
               border: '1px solid #444',
               borderRadius: '8px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
               overflow: 'visible',
             }}
           >
@@ -395,7 +393,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
           data-testid="calculate-button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-white/40 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:bg-white/70 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating', 'Lasketaan...')
@@ -433,7 +431,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
         ) : null}
       </div>
 
-      <PriceSummary hintaAlv0={hinta} label="Ajoneuvokuljetus" />
+      <PriceSummary hintaAlv0={hinta} label="Ajoneuvot" />
     </section>
   );
 }
@@ -564,7 +562,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           data-testid="calculate-button"
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-white/40 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:bg-white/70 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating_price', 'Lasketaan hintaa...')
@@ -574,7 +572,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         {distanceStatus === "success" && routeSummary ? (
           <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
             <p className="mb-3 text-[12px] font-medium text-slate-700">
-              {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-white/10 px-3 py-3">
@@ -602,7 +600,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         ) : null}
       </div>
 
-      <PriceSummary hintaAlv0={hinta} label="Kappaletavara" />
+      <PriceSummary hintaAlv0={hinta} label="Pikakuljetus" />
     </section>
   );
 }
@@ -757,7 +755,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
                 type="button"
                 aria-label="Vähennä lisäkuormaa"
                 onClick={() => setLisakuormat((n) => Math.max(0, n - 1))}
-                className="px-6 py-3.5 text-sm font-bold text-slate-900 transition hover:bg-white/70 active:scale-[0.98]"
+                className="bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900"
               >
                 −
               </button>
@@ -776,7 +774,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
                 type="button"
                 aria-label="Lisää lisäkuormaa"
                 onClick={() => setLisakuormat((n) => n + 1)}
-                className="px-6 py-3.5 text-sm font-bold text-slate-900 transition hover:bg-white/70 active:scale-[0.98]"
+                className="bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900"
               >
                 +
               </button>
@@ -788,7 +786,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-white/40 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 shadow-md ring-1 ring-slate-900/5 transition duration-200 hover:bg-white/70 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
         >
           {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>
@@ -837,7 +835,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           <div className="mt-3">
             <Link
               href="/#quote"
-              className="inline-flex w-full items-center justify-center rounded-xl bg-slate-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-600 sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-xl border border-slate-400 bg-transparent px-5 py-3 text-sm font-bold text-slate-900 sm:w-auto"
             >
               Avaa tarjouslomake
             </Link>

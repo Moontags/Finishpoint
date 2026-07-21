@@ -5,7 +5,6 @@ const PRICE_CATEGORIES = {
   "Kappaletavara": [
     { key: "base_kappaletavara", label: "Perustaksa" },
     { key: "km_rate_tavara", label: "Km-hinta" },
-    { key: "floor_extra", label: "Kerrosraha" },
   ],
   "Muutto & kierrätys": [
     { key: "base_muutto", label: "Muuton perustaksa" },

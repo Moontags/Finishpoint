@@ -149,11 +149,11 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     navLabel: "Apuvälinekuljetus",
     title: "Apuvälinekuljetus",
     description:
-      "Pakuvie kuljettaa apuvälineitä – pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet – turvallisesti ja varovasti kotien, hoivakotien, kotihoidon ja apteekkien välillä.",
+      "Pakuvie kuljettaa apuvälineitä – pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet – kotien, hoivakotien ja kotihoidon välillä.",
     valueProposition:
-      "Kuljetamme apuvälineet turvallisesti ja varovasti yksityishenkilöille, omaisille, kotihoidolle, hoivakodeille ja vammaispalveluille.",
+      "Kuljetamme apuvälineet yksityishenkilöille, omaisille, kotihoidolle, hoivakodeille ja vammaispalveluille.",
     includes: [
-      "Nouto kotoa, hoivakodista, apteekista tai varastosta",
+      "Nouto kotoa, hoivakodista tai varastosta",
       "Varovainen käsittely ja huolellinen suojaus kuljetuksen ajaksi",
       "Toimitus sovittuna aikana perille asti",
       "Pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet",

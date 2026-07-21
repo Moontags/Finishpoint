@@ -354,7 +354,7 @@ export function KalenteriVaraus({
   };
 
   return (
-    <div data-testid="calendar" className="rounded-xl border border-slate-400 bg-white/20 p-3 backdrop-blur-sm shadow-md ring-1 ring-slate-900/5 sm:col-span-2 sm:bg-white/30 sm:p-5 lg:p-3.5">
+    <div data-testid="calendar" className="rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5">
       <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">{t("calendar.book_time", "Varaa ajankohta")}</p>
@@ -371,19 +371,19 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
               disabled={!canGoBack}
-              className="shrink-0 rounded-lg bg-slate-300 px-4 py-2 text-slate-700 transition hover:bg-slate-400 disabled:cursor-not-allowed disabled:opacity-30 focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg border border-slate-400 bg-transparent px-4 py-2 text-slate-700 disabled:cursor-not-allowed"
               aria-label={t("calendar.previous_period", "Edellinen jakso")}
             >
               ←
             </button>
-            <div className="flex-1 rounded-lg border border-white/30 bg-white/10 px-2 py-2 text-center text-[14px] font-semibold text-[#1a2e4a]">
+            <div className="flex-1 rounded-lg border border-slate-400 bg-transparent px-2 py-2 text-center text-[14px] font-semibold text-[#1a2e4a]">
               {format(weekDays[0], "d.M.", { locale: fi })} – {format(weekDays[weekDays.length - 1], "d.M.", { locale: fi })}
             </div>
             <button
               type="button"
               onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
               disabled={!canGoForward}
-              className="shrink-0 rounded-lg bg-slate-300 px-4 py-2 text-slate-700 transition hover:bg-slate-400 disabled:cursor-not-allowed disabled:opacity-30 focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg border border-slate-400 bg-transparent px-4 py-2 text-slate-700 disabled:cursor-not-allowed"
               aria-label={t("calendar.next_period", "Seuraava jakso")}
             >
               →
@@ -412,12 +412,12 @@ export function KalenteriVaraus({
                       setSelectedTime("");
                       setIsTimeMenuOpen(false);
                     }}
-                    className={`rounded-lg border border-slate-400 px-2 py-3 text-center transition ${
+                    className={`rounded-lg border border-slate-400 bg-transparent px-2 py-3 text-center ${
                       past
-                        ? "cursor-not-allowed bg-white/10 text-slate-400 opacity-60"
+                        ? "cursor-not-allowed text-slate-400"
                         : isSelectedDay
-                        ? "bg-[#1a2e4a] text-white"
-                        : "bg-white/20 text-[#1a2e4a] hover:bg-white/40"
+                        ? "text-[#1a2e4a] font-semibold"
+                        : "text-[#1a2e4a]"
                     }`}
                   >
                     <span className="block text-[14px] font-semibold capitalize">
@@ -425,7 +425,7 @@ export function KalenteriVaraus({
                     </span>
                     <span className="mt-1 block h-4 text-[10px]">
                       {reserved && !past ? (
-                        <span className={`inline-block rounded-full px-1.5 py-0.5 text-[10px] ${isSelectedDay ? "bg-white/15 text-white" : "bg-white/40 text-slate-600"}`}>
+                        <span className="inline-block rounded-full border border-slate-400 bg-transparent px-1.5 py-0.5 text-[10px] text-slate-600">
                           {t("calendar.reserved", "Varattu")}
                         </span>
                       ) : null}
@@ -434,9 +434,9 @@ export function KalenteriVaraus({
 
                   {showSlots ? (
                     past ? (
-                      <div className="rounded-lg bg-white/10 px-2 py-3 text-center text-[12px] text-slate-500">—</div>
+                      <div className="rounded-lg border border-slate-300 bg-transparent px-2 py-3 text-center text-[12px] text-slate-500">—</div>
                     ) : reserved ? (
-                      <div className="rounded-lg bg-white/10 px-2 py-3 text-center text-[12px] text-slate-600">{t("calendar.reserved", "Varattu")}</div>
+                      <div className="rounded-lg border border-slate-300 bg-transparent px-2 py-3 text-center text-[12px] text-slate-600">{t("calendar.reserved", "Varattu")}</div>
                     ) : (
                       timeSlots.map((slot) => {
                         const unavailable = isTimeSlotUnavailableForDay(slot, day);
@@ -452,12 +452,12 @@ export function KalenteriVaraus({
                               setSelectedTime(slot);
                               setIsTimeMenuOpen(false);
                             }}
-                            className={`flex w-full items-center justify-between rounded-lg border px-3 py-2.5 text-left transition ${
+                            className={`flex w-full items-center justify-between rounded-lg border bg-transparent px-3 py-2.5 text-left ${
                               unavailable
-                                ? "cursor-not-allowed border-white/20 bg-white/5 text-slate-400 line-through"
+                                ? "cursor-not-allowed border-slate-300 text-slate-400 line-through"
                                 : isCurrentSelection
-                                ? "border-[#1a2e4a] bg-[#1a2e4a] text-white"
-                                : "border-[#1a2e4a]/20 bg-white/30 text-[#1a2e4a] hover:bg-white/50"
+                                ? "border-[#1a2e4a] text-[#1a2e4a] font-semibold"
+                                : "border-[#1a2e4a]/20 text-[#1a2e4a]"
                             }`}
                           >
                             <span className="text-[15px] font-semibold">{slot}</span>
@@ -488,7 +488,7 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
               disabled={!canGoBack}
-              className="shrink-0 rounded-lg bg-slate-300 px-2 py-2 text-slate-700 transition hover:bg-slate-400 disabled:cursor-not-allowed disabled:opacity-30 sm:px-3 focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg border border-slate-400 bg-transparent px-2 py-2 text-slate-700 disabled:cursor-not-allowed sm:px-3"
               aria-label={t("calendar.previous_period", "Edellinen jakso")}
             >
               ←
@@ -512,26 +512,26 @@ export function KalenteriVaraus({
                       setSelectedTime("");
                       setIsTimeMenuOpen(false);
                     }}
-                    className={`rounded-lg border border-slate-400 px-1 py-2.5 text-center transition sm:py-2 lg:py-1 ${
+                    className={`rounded-lg border border-slate-400 bg-transparent px-1 py-2.5 text-center sm:py-2 lg:py-1 ${
                       selected
-                        ? "bg-[#1a2e4a] text-white"
-                        : "bg-white/10 text-[#1a2e4a] hover:bg-white/30"
-                    } ${disabled ? "cursor-not-allowed opacity-40 hover:bg-white/10" : ""}`}
+                        ? "text-[#1a2e4a] font-semibold"
+                        : "text-[#1a2e4a]"
+                    } ${disabled ? "cursor-not-allowed text-slate-400" : ""}`}
                   >
-                    <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-white/80" : "text-slate-500"}`}>
+                    <span className={`block text-[11px] uppercase tracking-[0.06em] lg:text-[10px] ${selected ? "text-slate-700" : "text-slate-500"}`}>
                       {format(day, "EE", { locale: fi })}
                     </span>
                     <span className="mt-0.5 block text-[17px] font-bold sm:text-[18px] lg:text-[16px]">{format(day, "d")}</span>
-                    <span className={`block text-[10px] lg:text-[9px] ${selected ? "text-white/80" : "text-slate-500"}`}>
+                    <span className={`block text-[10px] lg:text-[9px] ${selected ? "text-slate-700" : "text-slate-500"}`}>
                       {format(day, "LLL", { locale: fi })}
                     </span>
                     <span className="mt-1 block h-3 text-[10px]">
                       {reserved ? (
-                        <span className={`inline-block rounded-full px-1.5 py-0.5 text-[9px] ${selected ? "bg-white/15 text-white" : "bg-white/40 text-slate-600"}`}>
+                        <span className="inline-block rounded-full border border-slate-400 bg-transparent px-1.5 py-0.5 text-[9px] text-slate-600">
                           {t("calendar.reserved", "Varattu")}
                         </span>
                       ) : today ? (
-                        <span className={`mx-auto block h-1.5 w-1.5 rounded-full ${selected ? "bg-white" : "bg-[#1a2e4a]"}`} />
+                        <span className="mx-auto block h-1.5 w-1.5 rounded-full bg-[#1a2e4a]" />
                       ) : null}
                     </span>
                   </button>
@@ -543,7 +543,7 @@ export function KalenteriVaraus({
               type="button"
               onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
               disabled={!canGoForward}
-              className="shrink-0 rounded-lg bg-slate-300 px-2 py-2 text-slate-700 transition hover:bg-slate-400 disabled:cursor-not-allowed disabled:opacity-30 sm:px-3 focus:ring-[3px] focus:ring-blue-200"
+              className="shrink-0 rounded-lg border border-slate-400 bg-transparent px-2 py-2 text-slate-700 disabled:cursor-not-allowed sm:px-3"
               aria-label={t("calendar.next_period", "Seuraava jakso")}
             >
               →
@@ -551,21 +551,21 @@ export function KalenteriVaraus({
           </div>
 
           {selectedDay && !isPast(selectedDay) ? (
-            <div className="mt-4 animate-[fadein_200ms_ease-in-out] lg:mt-2.5">
+            <div className="mt-4 lg:mt-2.5">
               <label className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">
                 {t("calendar.select_transport_time", "Valitse kuljetusaika")}
               </label>
 
-              <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] bg-white/30 backdrop-blur-sm">
+              <div ref={timeMenuRef} className="overflow-hidden rounded-[10px] border border-slate-400 bg-transparent">
                 <button
                   type="button"
                   onClick={() => setIsTimeMenuOpen((current) => !current)}
-                  className="flex w-full items-center justify-between px-4 py-3 text-left text-[17px] text-[#1a2e4a] transition hover:bg-white/20 lg:py-2.5"
+                  className="flex w-full items-center justify-between bg-transparent px-4 py-3 text-left text-[17px] text-[#1a2e4a] lg:py-2.5"
                   aria-expanded={isTimeMenuOpen}
                   aria-label={t("calendar.select_arrival_time", "Valitse saapumisaika")}
                 >
                   <span>{selectedTime || t("calendar.select_time_placeholder", "-- Valitse aika --")}</span>
-                  <span className={`text-[14px] text-slate-600 transition ${isTimeMenuOpen ? "rotate-180" : ""}`}>⌄</span>
+                  <span className={`text-[14px] text-slate-600 ${isTimeMenuOpen ? "rotate-180" : ""}`}>⌄</span>
                 </button>
 
                 {isTimeMenuOpen ? (
@@ -583,12 +583,12 @@ export function KalenteriVaraus({
                           setSelectedTime(slot);
                           setIsTimeMenuOpen(false);
                         }}
-                        className={`w-full px-4 py-3 text-left text-[17px] transition lg:py-2.5 ${
+                        className={`w-full bg-transparent px-4 py-3 text-left text-[17px] lg:py-2.5 ${
                           isTimeSlotUnavailable(slot)
-                            ? "cursor-not-allowed bg-white/5 text-slate-400 line-through"
+                            ? "cursor-not-allowed text-slate-400 line-through"
                             : selectedTime === slot
-                            ? "bg-[#1a2e4a] text-white"
-                            : "bg-white/10 text-[#1a2e4a] hover:bg-white/20"
+                            ? "text-[#1a2e4a] font-semibold"
+                            : "text-[#1a2e4a]"
                         }`}
                       >
                         <span className="flex items-center justify-between gap-3">

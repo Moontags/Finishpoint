@@ -11,8 +11,8 @@ import { quoteServiceOptions } from "@/lib/services";
 import type { ServiceCategory } from "@/lib/types";
 
 const orderServiceTypeOptions = [
-  "Ajoneuvokuljetukset",
-  "Kappaletavara",
+  "Ajoneuvot",
+  "Pikakuljetus",
   "Muutot ja kierrätys",
 ] as const;
 
