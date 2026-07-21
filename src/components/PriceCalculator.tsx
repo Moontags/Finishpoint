@@ -26,7 +26,9 @@ function slowScrollToQuote() {
   const targetY = el.getBoundingClientRect().top + window.scrollY;
   const startY = window.scrollY;
   const diff = targetY - startY;
-  const duration = 1200;
+  // Hidas vieritys, jotta asiakas ehtii nähdä hinta- ja aikatauluyhteenvedon
+  // ennen kuin sivu siirtyy yhteystietolomakkeeseen.
+  const duration = 4000;
   const startTime = performance.now();
   function step(now: number) {
     const t = Math.min((now - startTime) / duration, 1);
