@@ -77,7 +77,7 @@ describe('/api/order', () => {
   it('returns 200 with paymentUrl on valid payload', async () => {
     const req = new NodeRequest('http://localhost/api/order', {
       method: 'POST',
-      body: JSON.stringify({ email: 'test@example.com', name: 'Test User', phone: '0401234567', serviceType: 'Kappaletavara', addresses: 'Nouto: Katu 1 -> Toimitus: Katu 2', pickupAddress: 'Katu 1', deliveryAddress: 'Katu 2', message: '', estimatedPriceVat0: 89, estimatedPriceVatIncl: 112 }),
+      body: JSON.stringify({ email: 'test@example.com', name: 'Test User', phone: '0401234567', serviceType: 'Kappaletavara', addresses: 'Nouto: Katu 1 -> Toimitus: Katu 2', pickupAddress: 'Katu 1', deliveryAddress: 'Katu 2', message: '', estimatedPriceVat0: 47.01, estimatedPriceVatIncl: 59 }),
       headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);

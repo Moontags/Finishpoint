@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function getPrices(): Promise<Record<string, number>> {
   const fallback: Record<string, number> = {
-    base_kappaletavara: 89,
+    base_kappaletavara: 59,
     base_muutto: 269,
     base_kierratys: 54.99,
     base_ajoneuvo_40: 129,

@@ -12,13 +12,13 @@ function poistaAlv(hintaSisAlv: number) {
 
 describe("kappaletavaraHinta", () => {
   it("returns correct price for 0-40km", () => {
-    expect(kappaletavaraHinta(20)).toBeCloseTo(poistaAlv(50), 2); // ~39.84
+    expect(kappaletavaraHinta(20)).toBeCloseTo(poistaAlv(59), 2); // ~47.01
   });
   it("returns correct price for over 40km", () => {
     // base + 10km extra
-    const base = poistaAlv(50); // ~39.84
-    const extra = 10 * poistaAlv(1.29); // ~7.97
-    expect(kappaletavaraHinta(50)).toBeCloseTo(base + extra, 2); // ~47.81
+    const base = poistaAlv(59); // ~47.01
+    const extra = 10 * poistaAlv(1.29); // 10 * 1.03 = ~10.30
+    expect(kappaletavaraHinta(50)).toBeCloseTo(base + extra, 2); // ~57.31
   });
 });
 

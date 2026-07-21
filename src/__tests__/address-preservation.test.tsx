@@ -31,7 +31,7 @@ function mockFetchDefaults() {
     ok: true,
     json: () => Promise.resolve({
       baseKm: 40,
-      basePriceVat0: 39.84,
+      basePriceVat0: 47.01,
       pricePerKmVat0: 1.028,
       vehicleBaseUpTo40km: 102.79,
       vehicleBase41to80km: 134.66,
