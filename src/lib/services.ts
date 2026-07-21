@@ -182,7 +182,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     description:
       "Pakuvie kuljettaa veneitä – jollat, kumiveneet, pienet moottoriveneet ja niiden trailerit – turvallisesti ostajalta myyjälle, kesäpaikalle tai talvisäilytykseen.",
     valueProposition:
-      "Kuljetamme veneet yksityishenkilöille Tori.fi- ja Nettivene-kaupoissa, veneilijöille kausisiirroissa sekä venekerhoille.",
+      "Kuljetamme veneet yksityishenkilöille kaupanteon yhteydessä, esimerkiksi Tori.fi- ja Nettivene-ostoissa ja -myynneissä, veneilijöille kausisiirroissa sekä venekerhoille.",
     includes: [
       "Nouto rannasta, pihalta tai telakalta",
       "Trailerikuljetus sovittuun kohteeseen",
