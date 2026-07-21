@@ -7,6 +7,7 @@ export type ServiceSlug =
   | "sohvan-kuljetus"
   | "sangyn-kuljetus"
   | "apuvalinekuljetus"
+  | "veneen-kuljetus"
   | "kierratys"
   | "muutot"
   | "venesiirto";
@@ -174,6 +175,36 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     calculatorCategory: "kappaletavara",
     heroBackgroundImage: "/images/paku2.png",
   },
+  "veneen-kuljetus": {
+    slug: "veneen-kuljetus",
+    navLabel: "Veneen kuljetus",
+    title: "Veneen kuljetus",
+    description:
+      "Pakuvie kuljettaa veneitä – jollat, kumiveneet, pienet moottoriveneet ja niiden trailerit – turvallisesti ostajalta myyjälle, kesäpaikalle tai talvisäilytykseen.",
+    valueProposition:
+      "Kuljetamme veneet yksityishenkilöille Tori.fi- ja Nettivene-kaupoissa, veneilijöille kausisiirroissa sekä venekerhoille.",
+    includes: [
+      "Nouto rannasta, pihalta tai telakalta",
+      "Trailerikuljetus sovittuun kohteeseen",
+      "Varovainen kiinnitys ja suojaus kuljetuksen ajaksi",
+      "Toimitus sovittuna aikana perille asti",
+    ],
+    pricingTitle: "Veneen kuljetuksen hinnoittelu",
+    pricingDescription:
+      "0–40 km 129 €, 41–80 km 169 €, sen jälkeen 1,29 €/km.",
+    metadataTitle: "Veneen kuljetus | Pakuvie",
+    metadataDescription:
+      "Pakuvie kuljettaa veneet, jollat ja kumiveneet trailerilla turvallisesti Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
+    keywords: [
+      "veneen kuljetus",
+      "jollan kuljetus",
+      "kumiveneen kuljetus",
+      "venetrailerin kuljetus",
+      "veneen siirto",
+    ],
+    calculatorCategory: "ajoneuvo",
+    heroBackgroundImage: "/images/paku2.png",
+  },
   kierratys: {
     slug: "kierratys",
     navLabel: "Kierrätys",
@@ -253,6 +284,7 @@ export const serviceNavigationOrder: ServiceSlug[] = [
   "sohvan-kuljetus",
   "sangyn-kuljetus",
   "apuvalinekuljetus",
+  "veneen-kuljetus",
   "kierratys",
   "muutot",
 ];

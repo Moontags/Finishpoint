@@ -36,7 +36,7 @@ export default function AlueVantaaPage() {
             telephone: "0503547763",
             email: "kuljetus@pakuvie.fi",
             areaServed: { "@type": "City", name: CONFIG.kaupunki },
-            serviceType: ["Muuttokuljetukset", "Yrityskuljetukset", "Tavarankuljetus", "Pienkuormat", "Apuvälinekuljetus"],
+            serviceType: ["Muuttokuljetukset", "Yrityskuljetukset", "Tavarankuljetus", "Pienkuormat", "Apuvälinekuljetus", "Veneen kuljetus"],
           }),
         }}
       />
