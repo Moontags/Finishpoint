@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { formatVatPercent } from "@/lib/pricing";
+import { getPriceConfig } from "@/lib/price-config";
 
 const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
-const SYSTEM_PROMPT_FI = `Olet Pakuvie-yrityksen ystävällinen ja asiantunteva asiakaspalveluassistentti. Pakuvie tarjoaa kuljetus-, muutto- ja toimituspalveluita Etelä-Suomessa, erityisesti Helsingissä, Tampereella ja lähialueilla.
+const buildSystemPromptFi = (vatPercent: string) => `Olet Pakuvie-yrityksen ystävällinen ja asiantunteva asiakaspalveluassistentti. Pakuvie tarjoaa kuljetus-, muutto- ja toimituspalveluita Etelä-Suomessa, erityisesti Helsingissä, Tampereella ja lähialueilla.
 
 PALVELUT:
 - Kappaletavarakuljetus (pesukone, sohva, sänky): 0–40 km 59 €, yli 40 km +1,29 €/km.
@@ -11,7 +13,7 @@ PALVELUT:
 - Ajoneuvokuljetukset (moottoripyörä, mönkijä): 0–40 km 129 €, 41–80 km 169 €, sen jälkeen 1,29 €/km
 
 HINNOITTELU:
-- Kaikki hinnat sisältävät ALV 25,5 %
+- Kaikki hinnat sisältävät ALV ${vatPercent} %
 - Yrityksille hinnat ALV 0 %
 - Minimiveloitus 59 €
 - Isommat ja erikoistyöt: tarjouspohjainen
@@ -39,7 +41,7 @@ OHJEET:
 - Ohjaa aina käyttämään laskuria tai tarjouslomaketta
 - ÄLÄ vastaa: oikeudelliset riidat, vakuutusasiat
 - Jos asiakas on tyytymätön tai haluaa ihmisen → anna yhteystiedot: 050 354 7763`;
-const SYSTEM_PROMPT_EN = `You are a friendly and professional customer service assistant for Pakuvie, a transport and moving company in Southern Finland (Helsinki, Tampere and surrounding regions).
+const buildSystemPromptEn = (vatPercent: string) => `You are a friendly and professional customer service assistant for Pakuvie, a transport and moving company in Southern Finland (Helsinki, Tampere and surrounding regions).
 
 SERVICES:
 - Goods transport (washing machine, sofa, bed): 0–40 km €59, over 40 km +€1.29/km.
@@ -48,7 +50,7 @@ SERVICES:
 - Vehicle transport (motorcycle, ATV): 0–40 km €129, 41–80 km €169, then €1.29/km
 
 PRICING:
-- All prices include VAT 25.5%
+- All prices include VAT ${vatPercent}%
 - Business prices available excl. VAT
 - Minimum charge €59
 - Larger or special jobs: quote-based
@@ -83,7 +85,11 @@ export async function POST(req: NextRequest) {
   if (!apiKey) {
     return NextResponse.json({ error: "Missing API key" }, { status: 500 });
   }
-  const systemPrompt = language === 'en' ? SYSTEM_PROMPT_EN : SYSTEM_PROMPT_FI;
+  const prices = await getPriceConfig();
+  const systemPrompt =
+    language === 'en'
+      ? buildSystemPromptEn(formatVatPercent(prices, 'en-US'))
+      : buildSystemPromptFi(formatVatPercent(prices));
   const payload = {
     model: MODEL,
     system: systemPrompt,

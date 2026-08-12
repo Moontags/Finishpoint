@@ -20,7 +20,9 @@ INSERT INTO prices (key, value, label) VALUES
   ('km_rate_tavara',     1.29,   'Lisäkilometri tavara'),
   ('km_rate_muutto',     0.69,   'Lisäkilometri muutto'),
   ('km_rate_ajoneuvo',   1.29,   'Lisäkilometri ajoneuvo'),
-  ('vat_rate',           0.255,  'ALV-kerroin')
+  -- ALV prosenttilukuna (25.50 = 25,5 %). EI murtolukua: value on
+  -- numeric(8,2), joten 0.255 pyöristyisi arvoon 0.26.
+  ('vat_rate',           25.50,  'ALV-prosentti (%)')
 ON CONFLICT (key) DO NOTHING;
 
 -- 2. BLOCKED_DATES TABLE (calendar day locking)

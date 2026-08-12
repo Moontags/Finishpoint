@@ -30,7 +30,7 @@
   "calculator.kilometers": "Kilometrit",
   "calculator.duration": "Ajoaika",
   "calculator.price": "Hinta",
-  "common.vat_incl": "sis. ALV 25,5 %",
+  "common.vat_incl": "sis. ALV {rate} %",
   "common.business_vat": "Yritys (ALV 0 %)",
   "form.name": "Nimi",
   "form.phone": "Puhelin",

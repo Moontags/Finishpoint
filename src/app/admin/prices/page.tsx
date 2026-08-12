@@ -16,7 +16,7 @@ const PRICE_CATEGORIES = {
     { key: "base_ajoneuvo_80", label: "Perustaksa (8t)" },
     { key: "km_rate_ajoneuvo", label: "Km-hinta" },
   ],
-  "Verotus": [{ key: "vat_rate", label: "ALV-prosentti" }],
+  "Verotus": [{ key: "vat_rate", label: "ALV-prosentti (%)" }],
 };
 
 export default async function PricesPage() {
@@ -40,6 +40,12 @@ export default async function PricesPage() {
             <h2 className="text-lg font-semibold text-zinc-100 mb-4">
               {category}
             </h2>
+
+            {category === "Verotus" && (
+              <p className="mb-4 rounded border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
+                ⚠ Muutos vaikuttaa kaikkiin hintoihin heti. Anna arvo prosenttilukuna (esim. 25,5), ei kertoimena (0,255).
+              </p>
+            )}
 
             <div className="space-y-3">
               {items.map(({ key, label }) => (

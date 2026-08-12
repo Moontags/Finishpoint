@@ -10,6 +10,8 @@ import { saveBooking } from "@/lib/bookings";
 import { saveOrder } from "@/lib/order-store";
 import { INVALID_EMAIL_MESSAGE, isValidEmail, normalizeEmail } from "@/lib/email-validation";
 import type { BookingSelectionData } from "@/lib/types";
+import { normalizeVatRate } from "@/lib/pricing";
+import { getPriceConfig } from "@/lib/price-config";
 
 type OrderPayload = {
   orderId?: string;
@@ -359,10 +361,11 @@ export async function POST(request: Request) {
 
     // Tallenna tilaus order-storeen jotta webhook löytää sen
     try {
-      // ALV-kanta tallennetaan prosenttilukuna (25.5), jotta se näkyy kuitilla
-      // oikein "25,5 %". Aiemmin tässä oli murtoluku 0.255, joka pyöristyi
-      // orders.vat_rate numeric(5,2) -sarakkeessa arvoon 0.26 ja näkyi väärin.
-      const vatRate = 25.5;
+      // ALV-kanta luetaan kannasta (prices.vat_rate) ja tallennetaan
+      // prosenttilukuna (25.5), jotta se näkyy kuitilla oikein "25,5 %".
+      // Aiemmin tässä oli murtoluku 0.255, joka pyöristyi orders.vat_rate
+      // numeric(5,2) -sarakkeessa arvoon 0.26 ja näkyi väärin.
+      const vatRate = normalizeVatRate((await getPriceConfig()).vat_rate);
       const netAmount = estimatedPriceVat0;
       const totalWithVat = data.estimatedPriceVatIncl ?? estimatedPriceVat0;
       const vatAmount = totalWithVat - netAmount;

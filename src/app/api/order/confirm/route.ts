@@ -10,6 +10,8 @@ import { INVALID_EMAIL_MESSAGE, isValidEmail } from "@/lib/email-validation";
 import { markBookingEmailStatus, saveBooking } from "../../../../lib/bookings";
 import { sendBookingEmails } from "../../../../lib/booking-emails";
 import type { BookingSelectionData, OrderData } from "../../../../lib/types";
+import { normalizeVatRate } from "@/lib/pricing";
+import { getPriceConfig } from "@/lib/price-config";
 
 type ConfirmOrderPayload = {
   customerName?: string;
@@ -94,7 +96,11 @@ export async function POST(req: Request) {
     }
 
     const payload = parsed.value;
-    const { netAmount, vatAmount, vatRate } = calculateVat(payload.totalWithVat ?? 0, 25.5);
+    const prices = await getPriceConfig();
+    const { netAmount, vatAmount, vatRate } = calculateVat(
+      payload.totalWithVat ?? 0,
+      normalizeVatRate(prices.vat_rate),
+    );
 
     const order: OrderData = {
       orderId: generateInvoiceNumber(),

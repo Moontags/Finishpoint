@@ -8,6 +8,7 @@ import { useCalculatorContext } from "@/lib/calculator-context";
 import { ORDER_DRAFT_STORAGE_KEY } from "@/lib/order-draft";
 import { INVALID_EMAIL_MESSAGE, isValidEmail } from "@/lib/email-validation";
 import { quoteServiceOptions } from "@/lib/services";
+import { useVatRateText } from "@/lib/use-prices";
 import type { ServiceCategory } from "@/lib/types";
 
 const orderServiceTypeOptions = [
@@ -167,6 +168,7 @@ function AddressAutocompleteField({
 
 export function QuoteRequestForm() {
   const { t } = useLanguage();
+  const withVatRate = useVatRateText();
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -427,7 +429,7 @@ export function QuoteRequestForm() {
           {[
             t('form.response_same_day', 'Vastaamme saman päivän aikana'),
             t('form.payment_mobilepay_or_invoice', 'Maksu MobilePay, korttimaksu tai lasku'),
-            isOrderFlow ? t('form.next_step_checkout', 'Seuraava vaihe...') : t('common.vat_incl', 'Hinnat näytetään sis. ALV 25,5 %'),
+            isOrderFlow ? t('form.next_step_checkout', 'Seuraava vaihe...') : withVatRate(t('common.vat_incl', 'Hinnat näytetään sis. ALV {rate} %')),
             t('common.business_vat', 'Yritys (ALV 0 %)'),
           ].map((line) => (
             <div key={line} className="flex items-start gap-2 text-[13px] text-slate-700">

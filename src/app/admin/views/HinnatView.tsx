@@ -22,7 +22,7 @@ const PRICE_CATEGORIES: Record<string, { key: string; label: string }[]> = {
     { key: 'km_rate_ajoneuvo', label: 'Km-hinta' },
   ],
   'Verotus': [
-    { key: 'vat_rate', label: 'ALV-prosentti' },
+    { key: 'vat_rate', label: 'ALV-prosentti (%)' },
   ],
 }
 
@@ -63,6 +63,11 @@ export function HinnatView() {
         {Object.entries(PRICE_CATEGORIES).map(([category, items]) => (
           <div key={category} className="bg-zinc-800/50 rounded-lg p-6 border border-zinc-700">
             <h2 className="text-base font-semibold text-zinc-100 mb-4">{category}</h2>
+            {category === 'Verotus' && (
+              <p className="mb-4 rounded border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
+                ⚠ Muutos vaikuttaa kaikkiin hintoihin heti. Anna arvo prosenttilukuna (esim. 25,5), ei kertoimena (0,255).
+              </p>
+            )}
             <div className="space-y-3">
               {items.map(({ key, label }) => (
                 <PriceRow

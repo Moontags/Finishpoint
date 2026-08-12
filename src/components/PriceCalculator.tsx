@@ -11,9 +11,8 @@ import {
   lisaaAlv,
   pyoristaAsiakkaalle,
   projektiHinta,
-  defaultPriceConfig,
-  type PriceConfig,
 } from "@/lib/pricing";
+import { usePrices } from "@/lib/use-prices";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { BookingSelectionData, ProjektiTyyppi, ServiceCategory } from "@/lib/types";
@@ -37,32 +36,6 @@ function slowScrollToQuote() {
     if (t < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
-}
-
-let _cachedPrices: PriceConfig | null = null;
-
-function usePrices(): PriceConfig {
-  const [prices, setPrices] = useState<PriceConfig>(defaultPriceConfig);
-
-  useEffect(() => {
-    if (_cachedPrices) {
-      setTimeout(() => {
-        setPrices(_cachedPrices!);
-      }, 0);
-      return;
-    }
-    fetch("/api/prices")
-      .then((r) => r.json() as Promise<PriceConfig>)
-      .then((data) => {
-        _cachedPrices = data;
-        setPrices(data);
-      })
-      .catch(() => {
-        // keep defaults on error
-      });
-  }, []);
-
-  return prices;
 }
 
 type AddressSuggestion = {
@@ -293,7 +266,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
-    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta)));
+    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta, prices)));
   }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -359,7 +332,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
     }
   };
 
-  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta));
+  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta, prices));
 
   return (
     <section className="rounded-2xl bg-transparent">
@@ -433,7 +406,7 @@ export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: Reac
         ) : null}
       </div>
 
-      <PriceSummary hintaAlv0={hinta} label="Ajoneuvot" />
+      <PriceSummary hintaAlv0={hinta} label="Ajoneuvot" prices={prices} />
     </section>
   );
 }
@@ -462,7 +435,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
-    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta)));
+    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta, prices)));
   }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -528,7 +501,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
     }
   };
 
-  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta));
+  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta, prices));
 
   return (
     <section className={cardClass}>
@@ -602,7 +575,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         ) : null}
       </div>
 
-      <PriceSummary hintaAlv0={hinta} label="Pikakuljetus" />
+      <PriceSummary hintaAlv0={hinta} label="Pikakuljetus" prices={prices} />
     </section>
   );
 }
@@ -696,7 +669,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
     }
   };
 
-  const hintaSisAlv = hinta === null ? null : pyoristaAsiakkaalle(lisaaAlv(hinta));
+  const hintaSisAlv = hinta === null ? null : pyoristaAsiakkaalle(lisaaAlv(hinta, prices));
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
@@ -849,7 +822,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           </div>
         </div>
       ) : (
-        <PriceSummary hintaAlv0={hinta} label="Muuttopalvelu" />
+        <PriceSummary hintaAlv0={hinta} label="Muuttopalvelu" prices={prices} />
       )}
     </section>
   );

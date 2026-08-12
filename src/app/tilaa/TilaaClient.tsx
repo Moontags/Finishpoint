@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { CalculatorProvider, useCalculatorContext } from "@/lib/calculator-context";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import type { ServiceCategory } from "@/lib/types";
+import { vatMultiplier } from "@/lib/pricing";
+import { usePrices } from "@/lib/use-prices";
 
 const serviceLabels: Record<string, string> = {
   ajoneuvo: "Ajoneuvokuljetukset",
@@ -24,6 +26,7 @@ function formatPrice(value: number) {
 function TilaaContent() {
   const params = useSearchParams();
   const ctx = useCalculatorContext();
+  const prices = usePrices();
 
   const from = params.get("from") ?? "";
   const to = params.get("to") ?? "";
@@ -47,9 +50,7 @@ function TilaaContent() {
     if (to) ctx.setDeliveryAddress(to);
     if (service) ctx.setServiceCategory(service as ServiceCategory);
     if (price) {
-      const p = Number(price);
-      ctx.setEstimatedPriceVatIncl(p);
-      ctx.setEstimatedPriceVat0(p / 1.255);
+      ctx.setEstimatedPriceVatIncl(Number(price));
     }
     if (date) {
       ctx.setBookingSelection({
@@ -64,6 +65,16 @@ function TilaaContent() {
       });
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ALV 0 % -hinta lasketaan omassa efektissään, jotta se päivittyy kun
+  // /api/prices palauttaa kannan ALV-kannan — ilman että yllä oleva
+  // URL-parametreista täyttävä efekti ajetaan uudelleen lomakkeen päälle.
+  useEffect(() => {
+    if (!ctx || !price) return;
+    const p = Number(price);
+    if (!Number.isFinite(p)) return;
+    ctx.setEstimatedPriceVat0(p / vatMultiplier(prices));
+  }, [prices, price]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section className="relative grow min-h-screen overflow-hidden">

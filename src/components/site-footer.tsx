@@ -4,9 +4,11 @@ import Link from "next/link";
 import { serviceFooterLinks } from "@/lib/services";
 import { siteContact } from "@/lib/site-config";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useVatRateText } from "@/lib/use-prices";
 
 export function SiteFooter({ className = "" }: { className?: string }) {
   const { t } = useLanguage();
+  const withVatRate = useVatRateText();
   return (
     <footer className={`bg-[#f5f6f8] pb-16 ${className}`}>
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
@@ -17,7 +19,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
             <a href={siteContact.phoneHref} className="block text-[17px] font-medium text-slate-700 underline underline-offset-2 transition hover:text-blue-600">{siteContact.phoneDisplay}</a>
             <a href={siteContact.emailHref} className="block break-all text-[17px] font-medium text-slate-700 underline underline-offset-2 transition hover:text-blue-600">{siteContact.email}</a>
             <p className="pt-2 text-[14px] leading-relaxed text-slate-600">
-              {t("footer.vatNote", "Hinnat sis. ALV 25,5 %. Yritys (ALV 0 %).")}
+              {withVatRate(t("footer.vatNote", "Hinnat sis. ALV {rate} %. Yritys (ALV 0 %)."))}
             </p>
             <a
               href="/images/sopimusehdot.pdf"

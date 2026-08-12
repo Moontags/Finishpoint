@@ -3,7 +3,14 @@ import {
   ajoneuvohinta,
   projektiHinta,
   lisaaAlv,
+  poistaAlv as poistaAlvConfig,
   pyoristaAsiakkaalle,
+  normalizeVatRate,
+  vatMultiplier,
+  formatVatPercent,
+  defaultPriceConfig,
+  ALV_PROSENTTI,
+  type PriceConfig,
 } from "../lib/pricing";
 
 function poistaAlv(hintaSisAlv: number) {
@@ -74,5 +81,106 @@ describe("pyoristaAsiakkaalle", () => {
     expect(pyoristaAsiakkaalle(89.4)).toBe(89);
     expect(pyoristaAsiakkaalle(89.5)).toBe(90);
     expect(pyoristaAsiakkaalle(125.3)).toBe(125);
+  });
+});
+
+// ALV-kanta luetaan PriceConfigista (kanta = totuuden lähde). Kanta tallentaa
+// arvon prosenttilukuna (25.50), koska prices.value on numeric(8,2) eikä
+// pysty tallentamaan murtolukua 0.255 tarkasti.
+function config(overrides: Partial<PriceConfig> = {}): PriceConfig {
+  return { ...defaultPriceConfig, ...overrides };
+}
+
+describe("normalizeVatRate", () => {
+  it("hyväksyy prosenttiluvun sellaisenaan", () => {
+    expect(normalizeVatRate(25.5)).toBe(25.5);
+    expect(normalizeVatRate(24)).toBe(24);
+  });
+
+  it("tulkitsee alle 1:n arvot vanhaksi kerroinmuodoksi", () => {
+    expect(normalizeVatRate(0.255)).toBeCloseTo(25.5, 5);
+    // Tuotannossa ollut 0.26 (numeric(8,2):n pyöristämä 0.255) ei saa
+    // tarkoittaa 0,26 %:n ALV:tä.
+    expect(normalizeVatRate(0.26)).toBeCloseTo(26, 5);
+  });
+
+  it("palaa oletukseen kelvottomilla arvoilla", () => {
+    expect(normalizeVatRate(0)).toBe(ALV_PROSENTTI);
+    expect(normalizeVatRate(-5)).toBe(ALV_PROSENTTI);
+    expect(normalizeVatRate(NaN)).toBe(ALV_PROSENTTI);
+    expect(normalizeVatRate(null)).toBe(ALV_PROSENTTI);
+    expect(normalizeVatRate(undefined)).toBe(ALV_PROSENTTI);
+  });
+});
+
+describe("vatMultiplier", () => {
+  it("käyttää oletusta 25,5 % ilman configia", () => {
+    expect(vatMultiplier()).toBeCloseTo(1.255, 5);
+  });
+
+  it("seuraa configin vat_rate-arvoa", () => {
+    expect(vatMultiplier(config({ vat_rate: 24 }))).toBeCloseTo(1.24, 5);
+    expect(vatMultiplier(config({ vat_rate: 0 }))).toBeCloseTo(1.255, 5);
+  });
+});
+
+describe("ALV-kanta tulee PriceConfigista eikä ole kiinteä", () => {
+  it("lisaaAlv/poistaAlv seuraavat vat_rate-arvoa", () => {
+    expect(lisaaAlv(100, config({ vat_rate: 24 }))).toBeCloseTo(124, 2);
+    expect(lisaaAlv(100, config({ vat_rate: 25.5 }))).toBeCloseTo(125.5, 2);
+    expect(poistaAlvConfig(124, config({ vat_rate: 24 }))).toBeCloseTo(100, 2);
+  });
+
+  it("laskurin ALV-sisältävä hinta muuttuu kun vat_rate vaihdetaan 24:ään", () => {
+    const oletus = config();
+    const alv24 = config({ vat_rate: 24 });
+
+    const hintaOletus = ajoneuvohinta(20, false, oletus);
+    const hinta24 = ajoneuvohinta(20, false, alv24);
+
+    // Verollinen 129 € pysyy samana, joten pienempi ALV-kanta kasvattaa
+    // veroprosentitonta hintaa — ja verollinen hinta pysyy asiakkaan näkemänä.
+    expect(hinta24).not.toBeCloseTo(hintaOletus, 2);
+    expect(hinta24).toBeCloseTo(129 / 1.24, 2);
+    expect(pyoristaAsiakkaalle(lisaaAlv(hinta24, alv24))).toBe(129);
+
+    // Ilman kytkentää tämä olisi jäänyt kiinteäksi 1.255-kertoimeen:
+    expect(lisaaAlv(hinta24, oletus)).not.toBeCloseTo(129, 2);
+  });
+
+  it("kierrätyksen hinta seuraa vat_rate-arvoa kaikissa laskentapoluissa", () => {
+    const alv24 = config({ vat_rate: 24 });
+    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 0, alv24)!;
+    expect(alv0).toBeCloseTo(79 / 1.24, 2);
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0, alv24))).toBe(79);
+  });
+
+  it("kappaletavaran km-lisät käyttävät samaa kantaa", () => {
+    const alv24 = config({ vat_rate: 24 });
+    const odotettu = 59 / 1.24 + 10 * +(1.29 / 1.24).toFixed(2);
+    expect(kappaletavaraHinta(50, alv24)).toBeCloseTo(odotettu, 1);
+  });
+
+  it("vanha kerroinmuoto kannassa ei romahduta hintoja", () => {
+    // Jos tuotannon 0.26 ehtii koodin nähtäväksi ennen kantapäivitystä,
+    // se tulkitaan 26 %:ksi eikä 0,26 %:ksi.
+    const legacy = config({ vat_rate: 0.26 });
+    expect(lisaaAlv(100, legacy)).toBeCloseTo(126, 2);
+    expect(lisaaAlv(100, legacy)).not.toBeCloseTo(100.26, 2);
+  });
+
+  it("kierrätys pysyy 79,00 € oletuskannalla (25,5 %)", () => {
+    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 0)!;
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(79);
+  });
+});
+
+describe("formatVatPercent", () => {
+  it("näyttää kannan lokaalin mukaisessa muodossa", () => {
+    expect(formatVatPercent()).toBe("25,5");
+    expect(formatVatPercent(config({ vat_rate: 24 }))).toBe("24");
+    expect(formatVatPercent(defaultPriceConfig, "en-US")).toBe("25.5");
+    // Vanha kerroinmuoto ei saa näkyä käyttäjälle muodossa "0,26".
+    expect(formatVatPercent(config({ vat_rate: 0.26 }))).toBe("26");
   });
 });

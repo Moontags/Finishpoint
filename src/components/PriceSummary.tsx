@@ -1,22 +1,29 @@
 "use client";
-import { lisaaAlv, pyoristaAsiakkaalle } from "@/lib/pricing";
+import { lisaaAlv, pyoristaAsiakkaalle, type PriceConfig } from "@/lib/pricing";
 import { useLanguage } from "@/lib/LanguageContext";
+import { usePrices, useVatRateText } from "@/lib/use-prices";
 
 interface PriceSummaryProps {
   hintaAlv0: number;
   label?: string;
+  // Laskuri antaa oman configinsa, jotta emo ja lapsi laskevat samalla
+  // ALV-kannalla myös sillä hetkellä kun /api/prices on vielä latautumassa.
+  prices?: PriceConfig;
 }
 
-export function PriceSummary({ hintaAlv0, label = "Hinta" }: PriceSummaryProps) {
+export function PriceSummary({ hintaAlv0, label = "Hinta", prices: pricesProp }: PriceSummaryProps) {
   const { t } = useLanguage();
-  const sisAlv = pyoristaAsiakkaalle(lisaaAlv(hintaAlv0));
+  const fetchedPrices = usePrices();
+  const prices = pricesProp ?? fetchedPrices;
+  const sisAlv = pyoristaAsiakkaalle(lisaaAlv(hintaAlv0, prices));
+  const withVatRate = useVatRateText(prices);
   return (
     <div className="mt-4 rounded-xl bg-transparent px-4 py-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-800 [overflow-wrap-anywhere]">
         {label}
       </p>
       <p className="mt-2 text-3xl font-bold text-slate-900">
-        {sisAlv.toFixed(2)} € <span className="text-[13px] font-medium text-slate-700">({t('common.vat_incl', 'sis. ALV 25,5 %')})</span>
+        {sisAlv.toFixed(2)} € <span className="text-[13px] font-medium text-slate-700">({withVatRate(t('common.vat_incl', 'sis. ALV {rate} %'))})</span>
       </p>
       <div className="mt-1 flex items-center justify-between gap-3">
         <p className="text-[13px] text-slate-800">

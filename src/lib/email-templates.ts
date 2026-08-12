@@ -1,4 +1,5 @@
 import type { OrderData } from "@/lib/types";
+import { ALV_PROSENTTI, normalizeVatRate } from "@/lib/pricing";
 
 const baseStyles = `
   font-family: Arial, sans-serif;
@@ -51,13 +52,16 @@ export function formatVatRate(vatRate: number): string {
   return percent.toLocaleString("fi-FI", { maximumFractionDigits: 2 });
 }
 
-export function calculateVat(totalWithVat: number, vatRate = 25.5) {
-  const net = totalWithVat / (1 + vatRate / 100);
+export function calculateVat(totalWithVat: number, vatRate: number = ALV_PROSENTTI) {
+  // Hyväksytään myös vanha murtolukumuoto (0.255) samalla logiikalla kuin
+  // formatVatRate, jotta kuiteille ei koskaan päädy 0,26 %:n ALV-laskelmaa.
+  const percent = normalizeVatRate(vatRate);
+  const net = totalWithVat / (1 + percent / 100);
   const vat = totalWithVat - net;
   return {
     netAmount: Math.round(net * 100) / 100,
     vatAmount: Math.round(vat * 100) / 100,
-    vatRate,
+    vatRate: percent,
   };
 }
 

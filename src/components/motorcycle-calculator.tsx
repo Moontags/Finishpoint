@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Bike, Route } from "lucide-react";
 import { ajoneuvohinta, lisaaAlv } from "@/lib/pricing";
+import { usePrices, useVatRateText } from "@/lib/use-prices";
 
 type RouteMode = "single" | "multistop";
 
@@ -17,13 +18,15 @@ function formatPrice(value: number) {
 export function MotorcycleCalculator() {
   const [routeMode, setRouteMode] = useState<RouteMode>("single");
   const [kilometers, setKilometers] = useState(60);
+  const prices = usePrices();
+  const withVatRate = useVatRateText(prices);
 
   const vatExclusivePrice = useMemo(
-    () => ajoneuvohinta(kilometers, routeMode === "multistop"),
-    [kilometers, routeMode],
+    () => ajoneuvohinta(kilometers, routeMode === "multistop", prices),
+    [kilometers, routeMode, prices],
   );
 
-  const vatInclusivePrice = lisaaAlv(vatExclusivePrice);
+  const vatInclusivePrice = lisaaAlv(vatExclusivePrice, prices);
 
   return (
     <div
@@ -161,7 +164,7 @@ export function MotorcycleCalculator() {
           </div>
 
           <div className="mt-4 rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-[12px] text-slate-700">
-            Hinta näytetään sis. ALV 25,5 %. Yrityksille näytetään ALV 0 %.
+            {withVatRate("Hinta näytetään sis. ALV {rate} %. Yrityksille näytetään ALV 0 %.")}
           </div>
         </div>
       </div>
