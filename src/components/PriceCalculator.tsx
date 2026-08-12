@@ -614,7 +614,9 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
   const [lisakuormat, setLisakuormat] = useState(0);
   const [kierratysKm, setKierratysKm] = useState(20);
-  const kierratysMaksu = 35;
+  // Asemamaksu ei sisally arvioon oletuksena: vain maksulliset jatelajit
+  // (sekajate, kipsi, kattohuopa) veloitetaan aseman taksan mukaan erikseen.
+  const kierratysMaksu = 0;
   const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
   const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -827,7 +829,10 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
       {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
         <p className="mt-3 text-[13px] text-slate-900">
-          Kierrätyksessä hinta muodostuu perushinnasta 54,99 €, yli 40 km osuudesta (0,69 €/km), lisäkuormista ja asemamaksusta.
+          Kierrätyksessä hinta muodostuu perushinnasta {formatPrice(prices.base_kierratys)} (sis. lajittelun) sekä
+          mahdollisesta yli 40 km osuudesta ({formatPrice(prices.km_rate_muutto)}/km) ja lisäkuormista.
+          Jos jäte on maksullista lajia (esim. sekajäte, kipsi, kattohuopa), kierrätysaseman asemamaksu lisätään
+          hintaan erikseen – puu ja metalli ovat yleensä maksuttomia.
         </p>
       ) : null}
 

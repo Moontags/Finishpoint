@@ -21,7 +21,7 @@ export const defaultPriceConfig: PriceConfig = {
   base_kappaletavara: 59,
   km_rate_tavara: 1.29,
   base_muutto: 269,
-  base_kierratys: 54.99,
+  base_kierratys: 79,
   km_rate_muutto: 0.69,
   vat_rate: 25.5,
 };

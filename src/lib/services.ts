@@ -1,4 +1,8 @@
 import { serviceCategoryContentById } from "@/lib/service-categories";
+import { defaultPriceConfig } from "@/lib/pricing";
+
+const euroa = (arvo: number) =>
+  new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR" }).format(arvo);
 
 export type ServiceSlug =
   | "pyorakuljetus"
@@ -209,7 +213,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "kierratys",
     navLabel: "Kierrätys",
     title: "Kierrätyspalvelu",
-    description: "Kierrätyspalvelu alkaen 54,99 € sis. ALV. Aloitushintaan sisältyy 40 km.",
+    description: `Kierrätyspalvelu alkaen ${euroa(defaultPriceConfig.base_kierratys)} sis. ALV. Aloitushintaan sisältyy 40 km.`,
     valueProposition:
       "Helppo tapa päästä eroon ylimääräisestä tavarasta vastuullisesti.",
     includes: [

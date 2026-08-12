@@ -44,7 +44,18 @@ describe("projektiHinta", () => {
     expect(projektiHinta("pieni_muutto", undefined, undefined, 0)).toBeCloseTo(poistaAlv(269), 2); // ~214.46
   });
   it("returns correct price for kierratys_1", () => {
-    expect(projektiHinta("kierratys_1", undefined, undefined, 0, 0)).toBeCloseTo(poistaAlv(54.99), 2); // ~43.82
+    expect(projektiHinta("kierratys_1", undefined, undefined, 0, 0)).toBeCloseTo(poistaAlv(79), 2); // ~62.95
+  });
+  it("returns 79,00 € incl. VAT for kierratys_1 under 40 km without asemamaksu", () => {
+    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 0)!;
+    expect(alv0).toBeCloseTo(62.95, 2);
+    expect(lisaaAlv(alv0)).toBeCloseTo(79, 2);
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(79);
+  });
+  it("adds asemamaksu to kierratys_1 when one is given", () => {
+    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 20)!;
+    expect(alv0).toBeCloseTo(62.95 + poistaAlv(20), 2); // 62.95 + 15.94 = 78.89
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(99);
   });
   it("returns null for suuri_muutto", () => {
     expect(projektiHinta("suuri_muutto")).toBeNull();

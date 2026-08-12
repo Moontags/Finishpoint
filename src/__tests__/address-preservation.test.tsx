@@ -39,7 +39,7 @@ function mockFetchDefaults() {
       projektiPieniMuuttoBase: 214.46,
       projektiPieniMuuttoKmLimit: 40,
       projektiPricePerKm: 0.549,
-      kierratys1Base: 43.82,
+      kierratys1Base: 62.95,
       kierratysLisaPerKuorma: 30,
     }),
   });
