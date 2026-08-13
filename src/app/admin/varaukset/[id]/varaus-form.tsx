@@ -90,7 +90,10 @@ export function VarausForm({ id, varaus }: { id: string; varaus: Varaus | null }
             <option value="">Valitse...</option>
             <option value="Ajoneuvokuljetukset">Ajoneuvokuljetukset</option>
             <option value="Kappaletavara">Kappaletavara</option>
-            <option value="Muutot ja kierrätys">Muutot ja kierrätys</option>
+            <option value="Muutot">Muutot</option>
+            <option value="Kierrätys">Kierrätys</option>
+            {/* Vanhoissa varauksissa muutto ja kierrätys olivat sama palvelu. */}
+            <option value="Muutot ja kierrätys">Muutot ja kierrätys (vanha)</option>
             <option value="Muu kuljetus">Muu kuljetus</option>
           </select>
         </div>

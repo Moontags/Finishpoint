@@ -1,8 +1,4 @@
 import { serviceCategoryContentById } from "@/lib/service-categories";
-import { defaultPriceConfig } from "@/lib/pricing";
-
-const euroa = (arvo: number) =>
-  new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR" }).format(arvo);
 
 export type ServiceSlug =
   | "pyorakuljetus"
@@ -212,23 +208,31 @@ export const services: Record<ServiceSlug, ServiceContent> = {
   kierratys: {
     slug: "kierratys",
     navLabel: "Kierrätys",
-    title: "Kierrätyspalvelu",
-    description: `Kierrätyspalvelu alkaen ${euroa(defaultPriceConfig.base_kierratys)} sis. ALV. Aloitushintaan sisältyy 40 km.`,
+    title: "Kierrätys ja jätteiden poisto — me hoidamme kuljetuksen ja lajittelun",
+    description:
+      "Täysi vintti, kellari tai varasto? Tuomme, lajittelemme ja viemme tavarasi oikeaan paikkaan — sinä maksat vain jätemaksun suoraan kierrätysasemalle, me hoidamme loput.",
     valueProposition:
       "Helppo tapa päästä eroon ylimääräisestä tavarasta vastuullisesti.",
     includes: [
-      "Nouto kotiovelta tai varastosta",
-      "Lajittelu ja kuljetus kierrätyspisteisiin",
-      "Huonekalujen ja kodinkoneiden poistot",
-      "Selkeä hinnoittelu etukäteen",
+      "Kodin tyhjennykset ja muuttosiivoukset",
+      "Vintti-, kellari- ja varastotyhjennykset",
+      "Sekajäte, puu, metalli, pahvi ja muut kierrätettävät jakeet",
+      "Isot ja painavat esineet, jotka eivät mahdu omaan autoon",
     ],
-    pricingTitle: "Kierrätyksen hinta-arvio",
+    pricingTitle: "Hinnoittelu",
     pricingDescription:
-      serviceCategoryContentById.projekti.cardDescription,
-    metadataTitle: "Kierrätyspalvelu | Pakuvie",
+      "Kierrätyspalvelumme hinta perustuu kuljetukseen ja lajitteluun käytettyyn aikaan sekä matkaan — ei sisällä kierrätysaseman jätemaksua, joka maksetaan aina erikseen suoraan kierrätysasemalle.",
+    metadataTitle: "Kierrätys ja jätteiden poisto — Pakuvie",
     metadataDescription:
-      "Kierrätyspalvelu ja tavaran poistot nopeasti. Nouto ja vastuullinen käsittely.",
-    keywords: ["kierrätys", "tavaran poisto", "kodinkoneiden kierrätys"],
+      "Tuomme, lajittelemme ja kuljetamme jätteesi kierrätysasemalle. Kodin, vintin ja varaston tyhjennykset pääkaupunkiseudulla ja Riihimäen alueella.",
+    keywords: [
+      "kierrätys",
+      "jätteiden poisto",
+      "tavaran poisto",
+      "vintin tyhjennys",
+      "kellarin tyhjennys",
+      "varaston tyhjennys",
+    ],
     calculatorCategory: "projekti",
     heroBackgroundImage: "/images/paku1.png",
   },
@@ -299,16 +303,10 @@ export const serviceNavigationLinks = serviceNavigationOrder.map((slug) => ({
   slug,
 }));
 
-export const serviceFooterLinks = [
-  {
-    href: "/laskuri/projekti",
-    label: serviceCategoryContentById.projekti.label,
-  },
-  ...serviceNavigationLinks.filter(({ slug }) => slug !== "muutot" && slug !== "kierratys").map(({ href, label }) => ({
-    href,
-    label,
-  })),
-];
+export const serviceFooterLinks = serviceNavigationLinks.map(({ href, label }) => ({
+  href,
+  label,
+}));
 
 export const quoteServiceOptions = [
   ...serviceNavigationOrder.map((slug) => services[slug].navLabel),

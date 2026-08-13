@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Bike, Boxes, ChevronDown, Truck } from "lucide-react";
+import Link from "next/link";
+import { Bike, Boxes, ChevronDown, Recycle, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
 import TruckDimensions from "@/components/TruckDimensions";
 import { useCalculatorContext } from "@/lib/calculator-context";
 import { useLanguage } from "@/lib/LanguageContext";
 import { serviceCategories } from "@/lib/service-categories";
+import { services } from "@/lib/services";
 import type { ServiceCategory } from "@/lib/types";
 
 const categoryIcons = {
@@ -22,6 +24,16 @@ const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Bike 
     icon: categoryIcons[id],
   }),
 );
+
+// Kierrätys on oma pääpalvelunsa muiden kolmen rinnalla, mutta se on
+// tarjouspohjainen eikä sille lasketa hintaa täällä — valinta ohjaa
+// kierrätyssivun omaan tarjouspyyntölomakkeeseen.
+const kierratysItem = {
+  id: services.kierratys.slug,
+  href: `/${services.kierratys.slug}`,
+  label: services.kierratys.navLabel,
+  icon: Recycle,
+};
 
 function parseCategory(value: string | null): ServiceCategory | null {
   if (value === "ajoneuvo" || value === "kappaletavara" || value === "projekti") {
@@ -101,11 +113,22 @@ export default function ServiceSelector({
                           <span className="wrap-break-word text-left leading-tight">{t(`serviceCategory.${id}.label`, label)}</span>
                         </button>
                       ))}
+                      <Link
+                        href={kierratysItem.href}
+                        data-testid={`service-tab-${kierratysItem.id}`}
+                        onClick={() => setOpen(false)}
+                        className="flex w-full min-w-0 items-center gap-4 bg-transparent px-5 py-5 text-[17px] font-bold text-slate-800"
+                      >
+                        <kierratysItem.icon className="h-6 w-6 shrink-0" />
+                        <span className="wrap-break-word text-left leading-tight">
+                          {t(`service.${kierratysItem.label}`, kierratysItem.label)}
+                        </span>
+                      </Link>
                     </div>
                   )}
                 </div>
               </div>
-              <div className="mb-4 hidden gap-2 sm:col-span-2 sm:grid sm:grid-cols-3">
+              <div className="mb-4 hidden gap-2 sm:col-span-2 sm:grid sm:grid-cols-2 lg:grid-cols-4">
                 {categories.map(({ id, label }) => (
                   <button
                     key={id}
@@ -122,6 +145,13 @@ export default function ServiceSelector({
                     <span>{t(`serviceCategory.${id}.label`, label)}</span>
                   </button>
                 ))}
+                <Link
+                  href={kierratysItem.href}
+                  data-testid={`service-tab-${kierratysItem.id}`}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-center text-sm font-bold text-slate-900"
+                >
+                  <span>{t(`service.${kierratysItem.label}`, kierratysItem.label)}</span>
+                </Link>
               </div>
             </>
           }

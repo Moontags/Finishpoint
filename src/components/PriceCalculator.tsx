@@ -584,12 +584,10 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
   const { t } = useLanguage();
   const prices = usePrices();
   const calculatorContext = useCalculatorContext();
-  const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
-  const [lisakuormat, setLisakuormat] = useState(0);
-  const [kierratysKm, setKierratysKm] = useState(20);
-  // Asemamaksu ei sisally arvioon oletuksena: vain maksulliset jatelajit
-  // (sekajate, kipsi, kattohuopa) veloitetaan aseman taksan mukaan erikseen.
-  const kierratysMaksu = 0;
+  // Kierrätys on siirtynyt omaksi pääpalvelukseen (/kierratys) ja on
+  // tarjouspohjainen, joten muuttolaskuri hinnoittelee vain pienen muuton.
+  const tyyppi: ProjektiTyyppi = "pieni_muutto";
+  const [muuttoKm, setMuuttoKm] = useState(20);
   const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
   const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -606,8 +604,8 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
   }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hinta = useMemo(
-    () => projektiHinta(tyyppi, undefined, lisakuormat, kierratysKm, kierratysMaksu, prices),
-    [tyyppi, lisakuormat, kierratysKm, kierratysMaksu, prices],
+    () => projektiHinta(tyyppi, undefined, muuttoKm, prices),
+    [tyyppi, muuttoKm, prices],
   );
 
   const haeGoogleMatka = async () => {
@@ -649,7 +647,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
       }
 
       const roundedKm = Math.max(0, Math.round(result.distanceKm));
-      setKierratysKm(roundedKm);
+      setMuuttoKm(roundedKm);
       setDistanceStatus("success");
       setDistanceMessage("");
       setTimeout(slowScrollToQuote, 300);
@@ -709,56 +707,6 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
         {serviceTabsSlot}
 
-        <label htmlFor="projekti-tyyppi" className="grid gap-1.5 text-[13px] font-semibold text-slate-900 sm:col-span-2">
-          Palvelutyyppi
-          <select
-            id="projekti-tyyppi"
-            name="projektiTyyppi"
-            value={tyyppi}
-            onChange={(event) => setTyyppi(event.target.value as ProjektiTyyppi)}
-            className="w-full rounded-xl border border-slate-400 bg-white/30 backdrop-blur-sm px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:bg-white/50"
-          >
-            <option value="pieni_muutto">Pieni muutto (1-2 huonetta)</option>
-            <option value="kierratys_1">Kierrätys, 1 kuorma</option>
-            <option value="kierratys_lisa">Lisäkuormat</option>
-          </select>
-        </label>
-
-        {tyyppi === "kierratys_lisa" ? (
-          <div className="grid gap-1.5 text-[13px] font-semibold text-slate-900 sm:col-span-2">
-            <label htmlFor="projekti-lisakuormat">Lisäkuormat</label>
-            <div className="flex items-stretch w-full rounded-xl border border-slate-400 bg-white/40 backdrop-blur-sm shadow-md ring-1 ring-slate-900/5 overflow-hidden">
-              <button
-                type="button"
-                aria-label="Vähennä lisäkuormaa"
-                onClick={() => setLisakuormat((n) => Math.max(0, n - 1))}
-                className="bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900"
-              >
-                −
-              </button>
-              <input
-                id="projekti-lisakuormat"
-                name="projektiLisakuormat"
-                type="number"
-                min={0}
-                value={lisakuormat}
-                onChange={(event) =>
-                  setLisakuormat(Math.max(0, Number(event.target.value) || 0))
-                }
-                className="flex-1 min-w-0 bg-transparent px-2 py-3.5 text-center text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              />
-              <button
-                type="button"
-                aria-label="Lisää lisäkuormaa"
-                onClick={() => setLisakuormat((n) => n + 1)}
-                className="bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        ) : null}
-
         <button
           type="button"
           onClick={haeGoogleMatka}
@@ -800,14 +748,15 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
       </div>
 
-      {(tyyppi === "kierratys_1" || tyyppi === "kierratys_lisa") ? (
-        <p className="mt-3 text-[13px] text-slate-900">
-          Kierrätyksessä hinta muodostuu perushinnasta {formatPrice(prices.base_kierratys)} (sis. lajittelun) sekä
-          mahdollisesta yli 40 km osuudesta ({formatPrice(prices.km_rate_muutto)}/km) ja lisäkuormista.
-          Jos jäte on maksullista lajia (esim. sekajäte, kipsi, kattohuopa), kierrätysaseman asemamaksu lisätään
-          hintaan erikseen – puu ja metalli ovat yleensä maksuttomia.
-        </p>
-      ) : null}
+      <p className="mt-3 text-[13px] text-slate-900">
+        {t(
+          "calculator.muutto_note",
+          "Pienen muuton hinta muodostuu perushinnasta",
+        )}{" "}
+        {formatPrice(prices.base_muutto)}{" "}
+        {t("calculator.muutto_note_km", "sekä mahdollisesta yli 40 km osuudesta")}{" "}
+        ({formatPrice(prices.km_rate_muutto)}/km).
+      </p>
 
       {hinta === null ? (
         <div className="mt-4 rounded-xl bg-amber-50 px-4 py-4 text-[14px] text-amber-800">

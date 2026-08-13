@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServicePage } from "@/components/service-page";
+import { KierratysPage } from "@/components/kierratys-page";
 import { services } from "@/lib/services";
 
 const service = services.kierratys;
@@ -10,6 +10,6 @@ export const metadata: Metadata = {
   keywords: service.keywords,
 };
 
-export default function KierratysPage() {
-  return <ServicePage service={service} />;
+export default function Page() {
+  return <KierratysPage />;
 }

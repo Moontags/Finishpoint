@@ -25,10 +25,10 @@ export const serviceCategories: ServiceCategoryContent[] = [
   {
     id: "projekti",
     label: "Muutto",
-    cardTitle: "Muuttopalvelut ja kierrätys",
+    cardTitle: "Muuttopalvelut",
     cardDescription:
       "Muutot alkaen 269 €.",
-    cardAccent: "Muutot ja poistot",
+    cardAccent: "Muutot",
     href: "/muutot",
     backgroundImage: "/images/paku3.png",
   },

@@ -21,8 +21,11 @@ function toAmount(v: VarausRow): number {
 function normalizeService(s: string | null): string {
   const v = (s ?? '').toLowerCase()
   if (v.includes('kappale')) return 'kappaletavara'
-  if (v.includes('muutto')) return 'muutto'
+  // Kierrätystarkistus on ennen muuttoa, jotta vanha yhdistetty
+  // "Muutot ja kierrätys" pysyy samassa lokerossa kuin ennenkin.
   if (v.includes('kierr')) return 'kierratys'
+  // Sekä "Muutto" että "Muutot" — pelkkä 'muutto' ei osu monikkomuotoon.
+  if (v.includes('muutto') || v.includes('muutot')) return 'muutto'
   if (v.includes('ajoneuvo')) return 'ajoneuvo'
   return 'muu'
 }

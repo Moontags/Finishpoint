@@ -48,21 +48,15 @@ describe("ajoneuvohinta", () => {
 
 describe("projektiHinta", () => {
   it("returns correct price for pieni_muutto 0km", () => {
-    expect(projektiHinta("pieni_muutto", undefined, undefined, 0)).toBeCloseTo(poistaAlv(269), 2); // ~214.46
+    expect(projektiHinta("pieni_muutto", undefined, 0)).toBeCloseTo(poistaAlv(269), 2); // ~214.46
   });
-  it("returns correct price for kierratys_1", () => {
-    expect(projektiHinta("kierratys_1", undefined, undefined, 0, 0)).toBeCloseTo(poistaAlv(79), 2); // ~62.95
+  it("returns 269,00 € incl. VAT for pieni_muutto under 40 km", () => {
+    const alv0 = projektiHinta("pieni_muutto", undefined, 10)!;
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(269);
   });
-  it("returns 79,00 € incl. VAT for kierratys_1 under 40 km without asemamaksu", () => {
-    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 0)!;
-    expect(alv0).toBeCloseTo(62.95, 2);
-    expect(lisaaAlv(alv0)).toBeCloseTo(79, 2);
-    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(79);
-  });
-  it("adds asemamaksu to kierratys_1 when one is given", () => {
-    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 20)!;
-    expect(alv0).toBeCloseTo(62.95 + poistaAlv(20), 2); // 62.95 + 15.94 = 78.89
-    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(99);
+  it("adds km charge for pieni_muutto over 40 km", () => {
+    const alv0 = projektiHinta("pieni_muutto", undefined, 60)!;
+    expect(alv0).toBeCloseTo(poistaAlv(269) + 20 * poistaAlv(0.69), 2);
   });
   it("returns null for suuri_muutto", () => {
     expect(projektiHinta("suuri_muutto")).toBeNull();
@@ -148,11 +142,11 @@ describe("ALV-kanta tulee PriceConfigista eikä ole kiinteä", () => {
     expect(lisaaAlv(hinta24, oletus)).not.toBeCloseTo(129, 2);
   });
 
-  it("kierrätyksen hinta seuraa vat_rate-arvoa kaikissa laskentapoluissa", () => {
+  it("muuton hinta seuraa vat_rate-arvoa kaikissa laskentapoluissa", () => {
     const alv24 = config({ vat_rate: 24 });
-    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 0, alv24)!;
-    expect(alv0).toBeCloseTo(79 / 1.24, 2);
-    expect(pyoristaAsiakkaalle(lisaaAlv(alv0, alv24))).toBe(79);
+    const alv0 = projektiHinta("pieni_muutto", undefined, 10, alv24)!;
+    expect(alv0).toBeCloseTo(269 / 1.24, 2);
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0, alv24))).toBe(269);
   });
 
   it("kappaletavaran km-lisät käyttävät samaa kantaa", () => {
@@ -169,9 +163,9 @@ describe("ALV-kanta tulee PriceConfigista eikä ole kiinteä", () => {
     expect(lisaaAlv(100, legacy)).not.toBeCloseTo(100.26, 2);
   });
 
-  it("kierrätys pysyy 79,00 € oletuskannalla (25,5 %)", () => {
-    const alv0 = projektiHinta("kierratys_1", undefined, 0, 10, 0)!;
-    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(79);
+  it("muutto pysyy 269,00 € oletuskannalla (25,5 %)", () => {
+    const alv0 = projektiHinta("pieni_muutto", undefined, 10)!;
+    expect(pyoristaAsiakkaalle(lisaaAlv(alv0))).toBe(269);
   });
 });
 
