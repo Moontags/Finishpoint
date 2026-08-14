@@ -214,9 +214,9 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     valueProposition:
       "Helppo tapa päästä eroon ylimääräisestä tavarasta vastuullisesti.",
     includes: [
-      "Kodin tyhjennykset ja muuttosiivoukset",
+      "Kodin tyhjennykset ja muuttosiivous tavarat",
       "Vintti-, kellari- ja varastotyhjennykset",
-      "Sekajäte, puu, metalli, pahvi ja muut kierrätettävät jakeet",
+      "Sekajäte, puu, metalli, pahvi ja muu kierrätettävä jäte",
       "Isot ja painavat esineet, jotka eivät mahdu omaan autoon",
     ],
     pricingTitle: "Hinnoittelu",

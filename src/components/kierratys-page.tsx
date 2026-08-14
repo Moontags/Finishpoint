@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { ServiceList } from "@/components/ServiceList";
-import { CTA } from "@/components/CTA";
 import { KierratysQuoteForm } from "@/components/kierratys-quote-form";
 import { services } from "@/lib/services";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -66,7 +65,7 @@ export function KierratysPage() {
       title: t("kierratys.step6.title", "6. Jätemaksun maksaminen kierrätysasemalla"),
       description: t(
         "kierratys.step6.description",
-        "Kun noutoaika on vahvistettu, ohjaamme sinut Kiertokapulan verkkokauppaan, jossa maksat jätemaksun etukäteen. Muista syöttää maksun yhteydessä automme rekisterinumero — sen avulla pääsemme kierrätysasemalle ilman erillistä jonottamista.",
+        "Kun noutoaika on vahvistettu, ohjaamme sinut Kiertokapulan verkkokauppaan, jossa maksat jätemaksun etukäteen. Muista syöttää maksun yhteydessä automme rekisterinumero — sen avulla pääsemme kierrätysasemalle.",
       ),
     },
   ];
@@ -210,14 +209,6 @@ export function KierratysPage() {
       {/* Tarjouspyyntölomake */}
       <KierratysQuoteForm />
 
-      {/* Loppu-CTA */}
-      <CTA
-        title={t("kierratys.final_cta_title", "Tyhjätäänkö vintti, kellari tai varasto?")}
-        description={t(
-          "kierratys.final_cta_description",
-          "Pyydä tarjous kierrätyspalvelustamme — vastaamme yleensä saman päivän aikana.",
-        )}
-      />
     </ServicePageLayout>
   );
 }
