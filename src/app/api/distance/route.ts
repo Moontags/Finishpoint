@@ -6,6 +6,9 @@ type DistanceRequest = {
   origin: string;
   destination: string;
   waypoints?: string[];
+  // Kun tukikohdan osoite annetaan, haetaan lisäksi tyhjänä ajettavat osuudet
+  // tukikohta→nouto ja jättö→tukikohta positiointimaksun laskentaan.
+  positioningBase?: string;
 };
 
 function parseDistanceMeters(value: unknown): number | null {
@@ -96,6 +99,7 @@ export async function POST(request: Request) {
     const payload = (await request.json()) as Partial<DistanceRequest>;
     const origin = payload.origin?.trim();
     const destination = payload.destination?.trim();
+    const positioningBase = payload.positioningBase?.trim();
     const waypoints = (payload.waypoints ?? [])
       .map((waypoint) => waypoint?.trim())
       .filter((waypoint): waypoint is string => Boolean(waypoint));
@@ -169,12 +173,36 @@ export async function POST(request: Request) {
     const distanceText = `${distanceKm} km`;
     const durationMinutes = totalDurationSeconds > 0 ? Math.round(totalDurationSeconds / 60) : null;
 
+    // Positiointi on lisätieto reittihinnan päälle: jos jompikumpi haku
+    // epäonnistuu, palautetaan null eikä koko hintapyyntöä kaadeta. Laskuri
+    // hinnoittelee positioinnin silloin 0 €:na.
+    let positioning: { pickupKm: number; deliveryKm: number } | null = null;
+
+    if (positioningBase) {
+      try {
+        const [baseToPickup, deliveryToBase] = await Promise.all([
+          fetchLegDistance(apiKey, positioningBase, origin),
+          fetchLegDistance(apiKey, destination, positioningBase),
+        ]);
+
+        if (!("error" in baseToPickup) && !("error" in deliveryToBase)) {
+          positioning = {
+            pickupKm: Number((baseToPickup.meters / 1000).toFixed(1)),
+            deliveryKm: Number((deliveryToBase.meters / 1000).toFixed(1)),
+          };
+        }
+      } catch {
+        positioning = null;
+      }
+    }
+
     return NextResponse.json({
       ok: true,
       distanceKm,
       distanceText,
       durationMinutes,
       legs,
+      positioning,
     });
   } catch {
     return NextResponse.json(

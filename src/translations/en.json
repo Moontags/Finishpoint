@@ -49,6 +49,8 @@
   "calculator.price": "Price",
   "calculator.muutto_note": "The price of a small move consists of the base price",
   "calculator.muutto_note_km": "plus any distance over 40 km",
+  "calculator.kappaletavara_note": "The price depends on the distance travelled and on the location of the pickup and drop-off addresses.",
+  "calculator.positioning": "Includes positioning fee",
   "common.vat_incl": "incl. VAT {rate}%",
   "common.business_vat": "Business (VAT 0%)",
   "form.name": "Name",

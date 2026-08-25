@@ -6,6 +6,16 @@ const PRICE_CATEGORIES = {
     { key: "base_kappaletavara", label: "Perustaksa" },
     { key: "km_rate_tavara", label: "Km-hinta" },
   ],
+  // Positiointimaksu = tyhjänä ajo tukikohdasta noutopaikkaan ja jättöpaikasta
+  // takaisin. Porrasrajat (40/80/200/400/600 km) ovat koodissa kiinteitä,
+  // vain €/km-hinnat ovat säädettävissä täältä.
+  "Pikakuljetuksen positiointi (€/km)": [
+    { key: "positioning_rate_40_80", label: "40–80 km" },
+    { key: "positioning_rate_80_200", label: "80–200 km" },
+    { key: "positioning_rate_200_400", label: "200–400 km" },
+    { key: "positioning_rate_400_600", label: "400–600 km" },
+    { key: "positioning_rate_600_plus", label: "yli 600 km" },
+  ],
   "Muutto & kierrätys": [
     { key: "base_muutto", label: "Muuton perustaksa" },
     { key: "base_kierratys", label: "Kierrätyksen perustaksa" },

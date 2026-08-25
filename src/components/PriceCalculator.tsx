@@ -7,8 +7,10 @@ import { KalenteriVaraus } from "@/components/KalenteriVaraus";
 import { PriceSummary } from "@/components/PriceSummary";
 import {
   ajoneuvohinta,
+  HOME_BASE,
   kappaletavaraHinta,
   lisaaAlv,
+  positiointiYhteensa,
   pyoristaAsiakkaalle,
   projektiHinta,
 } from "@/lib/pricing";
@@ -47,6 +49,14 @@ type RouteSummary = {
   distanceKm: number;
   durationMinutes: number | null;
   calculatedAt: string;
+};
+
+// Tyhjänä ajettavat osuudet tukikohdasta noutopaikkaan ja jättöpaikasta
+// takaisin tukikohtaan. null tarkoittaa, ettei etäisyyttä saatu — positiointi
+// lasketaan silloin 0 €:na.
+type PositioningDistances = {
+  pickupKm: number;
+  deliveryKm: number;
 };
 
 function formatPrice(value: number) {
@@ -421,6 +431,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
   const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [distanceMessage, setDistanceMessage] = useState("");
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const [positioning, setPositioning] = useState<PositioningDistances | null>(null);
   const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
 
   useEffect(() => {
@@ -431,7 +442,17 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
     calculatorContext?.setDeliveryAddress(deliveryAddress);
   }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const hinta = useMemo(() => kappaletavaraHinta(km, prices), [km, prices]);
+  const positiointiHinta = useMemo(
+    () => positiointiYhteensa(positioning?.pickupKm, positioning?.deliveryKm, prices),
+    [positioning, prices],
+  );
+
+  // Reittihinta + tyhjänä ajon positiointimaksu. Summa menee sellaisenaan
+  // tilaukselle, joten ALV lisätään vasta tämän päälle.
+  const hinta = useMemo(
+    () => kappaletavaraHinta(km, prices) + positiointiHinta,
+    [km, prices, positiointiHinta],
+  );
 
   useEffect(() => {
     calculatorContext?.setEstimatedPriceVat0(hinta);
@@ -450,6 +471,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
       setDistanceStatus("error");
       setDistanceMessage(t('calculator.error_missing_address', 'Anna sekä nouto- että toimitusosoite.'));
       setRouteSummary(null);
+      setPositioning(null);
       return;
     }
 
@@ -463,6 +485,8 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         body: JSON.stringify({
           origin,
           destination,
+          // Tukikohta positiointimaksun laskentaan (tyhjänä ajo).
+          positioningBase: HOME_BASE,
         }),
       });
 
@@ -471,17 +495,30 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         error?: string;
         distanceKm?: number;
         durationMinutes?: number | null;
+        positioning?: { pickupKm?: number; deliveryKm?: number } | null;
       };
 
       if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
         setDistanceStatus("error");
         setDistanceMessage(result.error ?? t('calculator.error_distance', 'Matkan haku epäonnistui. Tarkista osoitteet.'));
         setRouteSummary(null);
+        setPositioning(null);
         return;
       }
 
       const roundedKm = Math.max(0, Math.round(result.distanceKm));
       setKm(roundedKm);
+      // Positiointietäisyys on vapaaehtoinen: jos sen haku ei onnistunut, hinta
+      // lasketaan ilman positiointimaksua eikä laskuri näytä virhettä.
+      setPositioning(
+        typeof result.positioning?.pickupKm === "number" &&
+          typeof result.positioning?.deliveryKm === "number"
+          ? {
+              pickupKm: result.positioning.pickupKm,
+              deliveryKm: result.positioning.deliveryKm,
+            }
+          : null,
+      );
       setDistanceStatus("success");
       setDistanceMessage("");
       setTimeout(slowScrollToQuote, 300);
@@ -498,6 +535,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
       setDistanceStatus("error");
       setDistanceMessage(t('calculator.error_connection', 'Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.'));
       setRouteSummary(null);
+      setPositioning(null);
     }
   };
 
@@ -575,7 +613,19 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         ) : null}
       </div>
 
-      <PriceSummary hintaAlv0={hinta} label="Pikakuljetus" prices={prices} />
+      <p className="mt-3 text-[13px] text-slate-900">
+        {t(
+          "calculator.kappaletavara_note",
+          "Hinta määräytyy matkan pituuden sekä nouto- ja jättöpaikan sijainnin mukaan.",
+        )}
+      </p>
+
+      <PriceSummary
+        hintaAlv0={hinta}
+        positiointiAlv0={positiointiHinta}
+        label="Pikakuljetus"
+        prices={prices}
+      />
     </section>
   );
 }

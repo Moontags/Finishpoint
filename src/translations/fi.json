@@ -32,6 +32,8 @@
   "calculator.price": "Hinta",
   "calculator.muutto_note": "Pienen muuton hinta muodostuu perushinnasta",
   "calculator.muutto_note_km": "sekä mahdollisesta yli 40 km osuudesta",
+  "calculator.kappaletavara_note": "Hinta määräytyy matkan pituuden sekä nouto- ja jättöpaikan sijainnin mukaan.",
+  "calculator.positioning": "Sisältää positiointimaksun",
   "common.vat_incl": "sis. ALV {rate} %",
   "common.business_vat": "Yritys (ALV 0 %)",
   "form.name": "Nimi",

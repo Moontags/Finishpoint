@@ -11,6 +11,16 @@ const PRICE_CATEGORIES: Record<string, { key: string; label: string }[]> = {
     { key: 'base_kappaletavara', label: 'Perustaksa' },
     { key: 'km_rate_tavara', label: 'Km-hinta' },
   ],
+  // Positiointimaksu = tyhjänä ajo tukikohdasta noutopaikkaan ja jättöpaikasta
+  // takaisin. Porrasrajat (40/80/200/400/600 km) ovat koodissa kiinteitä,
+  // vain €/km-hinnat ovat säädettävissä täältä.
+  'Pikakuljetuksen positiointi (€/km)': [
+    { key: 'positioning_rate_40_80', label: '40–80 km' },
+    { key: 'positioning_rate_80_200', label: '80–200 km' },
+    { key: 'positioning_rate_200_400', label: '200–400 km' },
+    { key: 'positioning_rate_400_600', label: '400–600 km' },
+    { key: 'positioning_rate_600_plus', label: 'yli 600 km' },
+  ],
   'Muutto & kierrätys': [
     { key: 'base_muutto', label: 'Muuton perustaksa' },
     { key: 'base_kierratys', label: 'Kierrätyksen perustaksa' },
@@ -63,6 +73,13 @@ export function HinnatView() {
         {Object.entries(PRICE_CATEGORIES).map(([category, items]) => (
           <div key={category} className="bg-zinc-800/50 rounded-lg p-6 border border-zinc-700">
             <h2 className="text-base font-semibold text-zinc-100 mb-4">{category}</h2>
+            {category.startsWith('Pikakuljetuksen positiointi') && (
+              <p className="mb-4 rounded border border-zinc-600 bg-zinc-700/40 px-3 py-2 text-sm text-zinc-300">
+                Tyhjänä ajo tukikohdasta noutopaikkaan ja jättöpaikasta takaisin.
+                Ensimmäiset 40 km ovat maksuttomia (sisältyvät perustaksaan), ja
+                jokainen porras laskuttaa vain omat kilometrinsä. Hinnat ovat €/km sis. ALV.
+              </p>
+            )}
             {category === 'Verotus' && (
               <p className="mb-4 rounded border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
                 ⚠ Muutos vaikuttaa kaikkiin hintoihin heti. Anna arvo prosenttilukuna (esim. 25,5), ei kertoimena (0,255).
