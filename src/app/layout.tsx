@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "kuljetuspalvelu",
     "tavarakuljetus",
     "muuttopalvelu",
-    "moottoripyöräkuljetus",
+    "apuvälinekuljetus",
     "kierrätys",
   ],
   metadataBase: new URL("https://www.pakuvie.fi"),

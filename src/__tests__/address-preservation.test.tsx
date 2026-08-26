@@ -62,7 +62,7 @@ describe('address preservation when switching service category', () => {
     window.localStorage.clear();
   });
 
-  it('preserves addresses when switching from kappaletavara to ajoneuvo', async () => {
+  it('preserves addresses when switching from kappaletavara to projekti', async () => {
     render(
       <Wrapper>
         <ServiceSelector initialCategory="kappaletavara" />
@@ -82,13 +82,13 @@ describe('address preservation when switching service category', () => {
     expect(pickupInput).toHaveValue('Testikatu 1, Helsinki');
     expect(deliveryInput).toHaveValue('Kohdekatu 2, Espoo');
 
-    // Switch to ajoneuvo category via the desktop tab
-    const ajoneuvoTab = screen.getByTestId('service-tab-ajoneuvo');
+    // Switch to projekti category via the desktop tab
+    const projektiTab = screen.getByTestId('service-tab-projekti');
     await act(async () => {
-      fireEvent.click(ajoneuvoTab);
+      fireEvent.click(projektiTab);
     });
 
-    // After switching, the ajoneuvo calculator should show the same addresses
+    // After switching, the projekti calculator should show the same addresses
     const pickupAfter = await screen.findByTestId('pickup-address-input');
     const deliveryAfter = await screen.findByTestId('delivery-address-input');
 
@@ -96,10 +96,10 @@ describe('address preservation when switching service category', () => {
     expect(deliveryAfter).toHaveValue('Kohdekatu 2, Espoo');
   });
 
-  it('preserves addresses when switching from ajoneuvo to projekti', async () => {
+  it('preserves addresses when switching from projekti to kappaletavara', async () => {
     render(
       <Wrapper>
-        <ServiceSelector initialCategory="ajoneuvo" />
+        <ServiceSelector initialCategory="projekti" />
       </Wrapper>
     );
 
@@ -114,9 +114,9 @@ describe('address preservation when switching service category', () => {
     expect(pickupInput).toHaveValue('Lähtöpaikka 5, Tampere');
     expect(deliveryInput).toHaveValue('Määränpää 10, Turku');
 
-    const projektiTab = screen.getByTestId('service-tab-projekti');
+    const kappaletavaraTab = screen.getByTestId('service-tab-kappaletavara');
     await act(async () => {
-      fireEvent.click(projektiTab);
+      fireEvent.click(kappaletavaraTab);
     });
 
     const pickupAfter = await screen.findByTestId('pickup-address-input');

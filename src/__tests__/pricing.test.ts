@@ -1,6 +1,5 @@
 import {
   kappaletavaraHinta,
-  ajoneuvohinta,
   projektiHinta,
   lisaaAlv,
   poistaAlv as poistaAlvConfig,
@@ -117,23 +116,6 @@ describe("Pikakuljetuksen kokonaishinta positioinnilla", () => {
   });
 });
 
-describe("ajoneuvohinta", () => {
-  it("returns correct price for 0-40km", () => {
-    expect(ajoneuvohinta(20, false)).toBeCloseTo(poistaAlv(129), 2); // ~102.79
-  });
-  it("returns correct price for 41-80km", () => {
-    expect(ajoneuvohinta(60, false)).toBeCloseTo(poistaAlv(169), 2); // ~134.66
-  });
-  it("returns correct price for over 80km", () => {
-    // 80km = 134.66, 100km = 134.66 + 20 * poistaAlv(1.29)
-    expect(ajoneuvohinta(100, false)).toBeCloseTo(poistaAlv(169) + 20 * poistaAlv(1.29), 2);
-  });
-  it("applies monipysahdys (multi-stop)", () => {
-    // 50km * poistaAlv(1.29)
-    expect(ajoneuvohinta(50, true)).toBeCloseTo(50 * poistaAlv(1.29), 2);
-  });
-});
-
 describe("projektiHinta", () => {
   it("returns correct price for pieni_muutto 0km", () => {
     expect(projektiHinta("pieni_muutto", undefined, 0)).toBeCloseTo(poistaAlv(269), 2); // ~214.46
@@ -217,17 +199,17 @@ describe("ALV-kanta tulee PriceConfigista eikä ole kiinteä", () => {
     const oletus = config();
     const alv24 = config({ vat_rate: 24 });
 
-    const hintaOletus = ajoneuvohinta(20, false, oletus);
-    const hinta24 = ajoneuvohinta(20, false, alv24);
+    const hintaOletus = kappaletavaraHinta(20, oletus);
+    const hinta24 = kappaletavaraHinta(20, alv24);
 
-    // Verollinen 129 € pysyy samana, joten pienempi ALV-kanta kasvattaa
+    // Verollinen 59 € pysyy samana, joten pienempi ALV-kanta kasvattaa
     // veroprosentitonta hintaa — ja verollinen hinta pysyy asiakkaan näkemänä.
     expect(hinta24).not.toBeCloseTo(hintaOletus, 2);
-    expect(hinta24).toBeCloseTo(129 / 1.24, 2);
-    expect(pyoristaAsiakkaalle(lisaaAlv(hinta24, alv24))).toBe(129);
+    expect(hinta24).toBeCloseTo(59 / 1.24, 2);
+    expect(pyoristaAsiakkaalle(lisaaAlv(hinta24, alv24))).toBe(59);
 
     // Ilman kytkentää tämä olisi jäänyt kiinteäksi 1.255-kertoimeen:
-    expect(lisaaAlv(hinta24, oletus)).not.toBeCloseTo(129, 2);
+    expect(lisaaAlv(hinta24, oletus)).not.toBeCloseTo(59, 2);
   });
 
   it("muuton hinta seuraa vat_rate-arvoa kaikissa laskentapoluissa", () => {

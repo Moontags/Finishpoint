@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Bike, Boxes, ChevronDown, Recycle, Truck } from "lucide-react";
+import { Boxes, ChevronDown, Recycle, Truck } from "lucide-react";
 import { PriceCalculator } from "@/components/PriceCalculator";
 import TruckDimensions from "@/components/TruckDimensions";
 import { useCalculatorContext } from "@/lib/calculator-context";
@@ -14,10 +14,9 @@ import type { ServiceCategory } from "@/lib/types";
 const categoryIcons = {
   kappaletavara: Boxes,
   projekti: Truck,
-  ajoneuvo: Bike,
 };
 
-const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Bike }> = serviceCategories.map(
+const categories: Array<{ id: ServiceCategory; label: string; icon: typeof Boxes }> = serviceCategories.map(
   ({ id, label }) => ({
     id,
     label,
@@ -36,7 +35,7 @@ const kierratysItem = {
 };
 
 function parseCategory(value: string | null): ServiceCategory | null {
-  if (value === "ajoneuvo" || value === "kappaletavara" || value === "projekti") {
+  if (value === "kappaletavara" || value === "projekti") {
     return value;
   }
   return null;
@@ -128,7 +127,7 @@ export default function ServiceSelector({
                   )}
                 </div>
               </div>
-              <div className="mb-4 hidden gap-2 sm:col-span-2 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mb-4 hidden gap-2 sm:col-span-2 sm:grid sm:grid-cols-2 lg:grid-cols-3">
                 {categories.map(({ id, label }) => (
                   <button
                     key={id}

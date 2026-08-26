@@ -21,11 +21,6 @@ const PRICE_CATEGORIES = {
     { key: "base_kierratys", label: "Kierrätyksen perustaksa" },
     { key: "km_rate_muutto", label: "Km-hinta" },
   ],
-  "Ajoneuvokuljetukset": [
-    { key: "base_ajoneuvo_40", label: "Perustaksa (4t)" },
-    { key: "base_ajoneuvo_80", label: "Perustaksa (8t)" },
-    { key: "km_rate_ajoneuvo", label: "Km-hinta" },
-  ],
   "Verotus": [{ key: "vat_rate", label: "ALV-prosentti (%)" }],
 };
 

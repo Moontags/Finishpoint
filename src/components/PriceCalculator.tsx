@@ -6,7 +6,6 @@ import { createPortal } from "react-dom";
 import { KalenteriVaraus } from "@/components/KalenteriVaraus";
 import { PriceSummary } from "@/components/PriceSummary";
 import {
-  ajoneuvohinta,
   HOME_BASE,
   kappaletavaraHinta,
   lisaaAlv,
@@ -249,175 +248,6 @@ function AddressAutocompleteField({
       </div>
 
     </label>
-  );
-}
-
-export function AjoneuvoCalculator({ serviceTabsSlot }: { serviceTabsSlot?: ReactNode }) {
-  const prices = usePrices();
-  const [km, setKm] = useState(60);
-  const calculatorContext = useCalculatorContext();
-  const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
-  const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
-  const [distanceStatus, setDistanceStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [distanceMessage, setDistanceMessage] = useState("");
-  const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
-  const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
-  const { t } = useLanguage();
-
-  useEffect(() => {
-    calculatorContext?.setPickupAddress(pickupAddress);
-  }, [pickupAddress]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    calculatorContext?.setDeliveryAddress(deliveryAddress);
-  }, [deliveryAddress]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const hinta = useMemo(() => ajoneuvohinta(km, false, prices), [km, prices]);
-
-  useEffect(() => {
-    calculatorContext?.setEstimatedPriceVat0(hinta);
-    calculatorContext?.setEstimatedPriceVatIncl(pyoristaAsiakkaalle(lisaaAlv(hinta, prices)));
-  }, [hinta]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    calculatorContext?.setBookingSelection(bookingSelection);
-  }, [bookingSelection]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const haeGoogleMatka = async () => {
-    const origin = pickupAddress.trim();
-    const destination = deliveryAddress.trim();
-
-    if (!origin || !destination) {
-      setDistanceStatus("error");
-      setDistanceMessage(t('calculator.error.missing.address', 'Anna sekä nouto- että toimitusosoite.'));
-      setRouteSummary(null);
-      return;
-    }
-
-    setDistanceStatus("loading");
-    setDistanceMessage("");
-
-    try {
-      const response = await fetch("/api/distance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          origin,
-          destination,
-        }),
-      });
-
-      const result = (await response.json()) as {
-        ok: boolean;
-        error?: string;
-        distanceKm?: number;
-        durationMinutes?: number | null;
-      };
-
-      if (!response.ok || !result.ok || typeof result.distanceKm !== "number") {
-        setDistanceStatus("error");
-        setDistanceMessage(result.error ?? t('calculator.error_distance', 'Matkan haku epäonnistui. Tarkista osoitteet.'));
-        setRouteSummary(null);
-        return;
-      }
-
-      const roundedKm = Math.max(0, Math.round(result.distanceKm));
-      setKm(roundedKm);
-      setDistanceStatus("success");
-      setDistanceMessage("");
-      setTimeout(slowScrollToQuote, 2000);
-      setRouteSummary({
-        distanceKm: roundedKm,
-        durationMinutes:
-          typeof result.durationMinutes === "number" ? result.durationMinutes : null,
-        calculatedAt: new Date().toLocaleTimeString("fi-FI", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      });
-    } catch {
-      setDistanceStatus("error");
-      setDistanceMessage(t('calculator.error_connection', 'Yhteysvirhe etäisyyspalveluun. Yritä uudelleen.'));
-      setRouteSummary(null);
-    }
-  };
-
-  const hintaSisAlv = pyoristaAsiakkaalle(lisaaAlv(hinta, prices));
-
-  return (
-    <section className="rounded-2xl bg-transparent">
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <AddressAutocompleteField
-          id="ajoneuvo-nouto-osoite"
-          name="ajoneuvoNoutoOsoite"
-          label="calculator.from"
-          value={pickupAddress}
-          onChange={setPickupAddress}
-          placeholder="calculator.address_placeholder"
-        />
-
-        <AddressAutocompleteField
-          id="ajoneuvo-toimitus-osoite"
-          name="ajoneuvoToimitusOsoite"
-          label="calculator.to"
-          value={deliveryAddress}
-          onChange={setDeliveryAddress}
-          placeholder="calculator.address_placeholder"
-        />
-
-        <KalenteriVaraus
-          lahto={pickupAddress}
-          kohde={deliveryAddress}
-          onDateTimeSelect={setBookingSelection}
-        />
-
-        {serviceTabsSlot}
-
-        <button
-          type="button"
-          data-testid="calculate-button"
-          onClick={haeGoogleMatka}
-          disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
-        >
-          {distanceStatus === "loading"
-            ? t('calculator.calculating', 'Lasketaan...')
-            : t('calculator.calculate_price', 'Laske hinta')}
-        </button>
-
-        {distanceStatus === "success" && routeSummary ? (
-          <div className="rounded-xl bg-white/10 px-4 py-4 shadow-sm backdrop-blur-sm sm:col-span-2" data-testid="price-result">
-            <p className="mb-3 text-[12px] font-medium text-slate-700">
-              {t('calculator.updated_now', 'Päivitetty juuri nyt')} ({routeSummary.calculatedAt})
-            </p>
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.kilometers', 'Kilometrit')}</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900">{routeSummary.distanceKm} km</p>
-              </div>
-              <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.duration', 'Ajoaika')}</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900">{formatDuration(routeSummary.durationMinutes)}</p>
-              </div>
-              <div className="rounded-lg bg-white/10 px-3 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700">{t('calculator.price', 'Hinta')}</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900">{formatPrice(hintaSisAlv)}</p>
-              </div>
-            </div>
-          </div>
-        ) : null}
-
-        {distanceStatus === "error" && distanceMessage ? (
-          <p
-            className="rounded-xl bg-rose-50 px-4 py-3 text-[13px] font-medium text-rose-700 sm:col-span-2"
-          >
-            {distanceMessage}
-          </p>
-        ) : null}
-      </div>
-
-      <PriceSummary hintaAlv0={hinta} label="Ajoneuvot" prices={prices} />
-    </section>
   );
 }
 
@@ -828,7 +658,6 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 }
 
 export function PriceCalculator({ category, serviceTabsSlot }: { category: ServiceCategory; serviceTabsSlot?: ReactNode }) {
-  if (category === "ajoneuvo") return <AjoneuvoCalculator serviceTabsSlot={serviceTabsSlot} />;
   if (category === "kappaletavara") return <KappaletavaraPriceCalculator serviceTabsSlot={serviceTabsSlot} />;
   return <ProjektiPriceCalculator serviceTabsSlot={serviceTabsSlot} />;
 }

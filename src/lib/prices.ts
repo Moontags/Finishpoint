@@ -5,11 +5,8 @@ export async function getPrices(): Promise<Record<string, number>> {
     base_kappaletavara: 59,
     base_muutto: 269,
     base_kierratys: 79,
-    base_ajoneuvo_40: 129,
-    base_ajoneuvo_80: 169,
     km_rate_tavara: 1.29,
     km_rate_muutto: 0.69,
-    km_rate_ajoneuvo: 1.29,
     vat_rate: 0.255,
   };
 

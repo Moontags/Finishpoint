@@ -34,15 +34,27 @@ export function SiteFooter({ className = "" }: { className?: string }) {
           {/* Oikea palsta: Palvelut — isot näytöt */}
           <div className="hidden lg:block">
             <div className="grid grid-cols-2 gap-x-8 gap-y-1">
-              {serviceFooterLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="rounded-md px-2 py-2 text-[15px] text-slate-600 transition hover:text-blue-600 hover:underline"
-                >
-                  {t(`service.${label}`, label)}
-                </Link>
-              ))}
+              {serviceFooterLinks.map(({ href, label, external }) =>
+                external ? (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-md px-2 py-2 text-[15px] text-slate-600 transition hover:text-blue-600 hover:underline"
+                  >
+                    {t(`service.${label}`, label)}
+                  </a>
+                ) : (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="rounded-md px-2 py-2 text-[15px] text-slate-600 transition hover:text-blue-600 hover:underline"
+                  >
+                    {t(`service.${label}`, label)}
+                  </Link>
+                ),
+              )}
             </div>
           </div>
 

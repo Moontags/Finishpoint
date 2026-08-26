@@ -1,4 +1,6 @@
-export type ServiceCategory = "ajoneuvo" | "kappaletavara" | "projekti";
+// Ajoneuvokuljetukset (moottoripyörä, mönkijä, vene) eivät enää ole Pakuvien
+// tarjontaa — moottoripyöräkuljetukset hoitaa mp-logistiikka.fi.
+export type ServiceCategory = "kappaletavara" | "projekti";
 
 // Kierrätys on oma pääpalvelunsa (/kierratys) ja tarjouspohjainen, joten se ei
 // enää ole muuttolaskurin alavalinta eikä osa projektihinnoittelua.

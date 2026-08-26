@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Zap } from "lucide-react";
 import { CalculatorProvider } from "@/lib/calculator-context";
 import ServiceSelector from "@/components/ServiceSelector";
 import { QuoteRequestForm } from "@/components/quote-request-form";
@@ -19,6 +20,11 @@ export function CalculatorFormSection({
       <section className="relative z-10">
         <section className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col px-4 py-8 max-[390px]:px-3 sm:px-6 lg:px-8 lg:py-12">
           <div className="mx-auto mb-6 max-w-150 text-center sm:mb-8">
+            {/* Erottautumistekijä: maksu suoraan laskurista ilman tarjouspyyntöä. */}
+            <p className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/70 px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-blue-700 backdrop-blur-sm sm:text-[13px] sm:tracking-[0.18em]">
+              <Zap className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
+              <span>{t("hero.promo_badge", "Tilaa ja maksa 2 minuutissa")}</span>
+            </p>
             <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl lg:text-[1.75rem]">
               {t("hero.promo_title", "Kuljetukset silloin kun tarvitset")}
             </h2>

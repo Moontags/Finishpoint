@@ -1,16 +1,12 @@
 import { serviceCategoryContentById } from "@/lib/service-categories";
 
 export type ServiceSlug =
-  | "pyorakuljetus"
-  | "monkijakuljetus"
   | "pesukone-kuljetus"
   | "sohvan-kuljetus"
   | "sangyn-kuljetus"
   | "apuvalinekuljetus"
-  | "veneen-kuljetus"
   | "kierratys"
-  | "muutot"
-  | "venesiirto";
+  | "muutot";
 
 export type ServiceContent = {
   slug: ServiceSlug;
@@ -24,58 +20,12 @@ export type ServiceContent = {
   metadataTitle: string;
   metadataDescription: string;
   keywords: string[];
-  calculatorCategory: "ajoneuvo" | "kappaletavara" | "projekti";
+  calculatorCategory: "kappaletavara" | "projekti";
   heroBackgroundImage?: string;
   seasonBanner?: string;
 };
 
 export const services: Record<ServiceSlug, ServiceContent> = {
-  pyorakuljetus: {
-    slug: "pyorakuljetus",
-    navLabel: "Moottoripyöräkuljetus",
-    title: "Moottoripyöräkuljetus",
-    description: "Nopea ja turvallinen moottoripyörän kuljetus koko Suomessa.",
-    valueProposition:
-      "Kuljetamme moottoripyörät huolellisesti sidottuna ja ajallaan  sovittuun osoitteeseen.",
-    includes: [
-      "Nouto sovitusta osoitteesta",
-      "Ammattimainen sidonta ja suojaus",
-      "Reaaliaikainen tilannepäivitys puhelimitse",
-      "Toimitus sovittuna ajankohtana",
-    ],
-    pricingTitle: "Hinnoittelu moottoripyörille",
-    pricingDescription:
-      `${serviceCategoryContentById.ajoneuvo.cardDescription} Lisäpyörän toimitus samaan toimipisteeseen 89 €.`,
-    metadataTitle: "Moottoripyörän kuljetus | Pakuvie",
-    metadataDescription:
-      "Nopea ja turvallinen moottoripyörän kuljetus. Pyydä tarjous Pakuvieilta.",
-    keywords: ["moottoripyöräkuljetus", "moottoripyörän kuljetus", "pyörän kuljetus"],
-    calculatorCategory: "ajoneuvo",
-    heroBackgroundImage: "/images/moottoripyörä.jpeg",
-  },
-  monkijakuljetus: {
-    slug: "monkijakuljetus",
-    navLabel: "Mönkijäkuljetus",
-    title: "Mönkijäkuljetus",
-    description: "Luotettava mönkijän kuljetus mökille, huoltoon tai myyntiin.",
-    valueProposition:
-      "Mönkijät kulkevat turvallisesti ja aikataulussa perille.",
-    includes: [
-      "Nouto pihasta, varastosta tai liikkeestä",
-      "Varmistettu kiinnitys kuljetuksen ajaksi",
-      "Toimitus sovittuun kohteeseen",
-      "Mahdollisuus lisäpysähdyksiin samalla reitillä",
-    ],
-    pricingTitle: "Hinta-arvio mönkijäkuljetukselle",
-    pricingDescription:
-      serviceCategoryContentById.ajoneuvo.cardDescription,
-    metadataTitle: "Mönkijän kuljetus | Pakuvie",
-    metadataDescription:
-      "Turvallinen mönkijän kuljetus joustavasti koko Suomessa. Pyydä tarjous nopeasti.",
-    keywords: ["mönkijäkuljetus", "mönkijän kuljetus", "atv kuljetus"],
-    calculatorCategory: "ajoneuvo",
-    heroBackgroundImage: "/images/paku1.png",
-  },
   "pesukone-kuljetus": {
     slug: "pesukone-kuljetus",
     navLabel: "Pesukoneen kuljetus",
@@ -175,36 +125,6 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     calculatorCategory: "kappaletavara",
     heroBackgroundImage: "/images/paku2.png",
   },
-  "veneen-kuljetus": {
-    slug: "veneen-kuljetus",
-    navLabel: "Veneen kuljetus",
-    title: "Veneen kuljetus",
-    description:
-      "Pakuvie kuljettaa veneitä – jollat, kumiveneet, pienet moottoriveneet ja niiden trailerit – turvallisesti ostajalta myyjälle, kesäpaikalle tai talvisäilytykseen.",
-    valueProposition:
-      "Kuljetamme veneet yksityishenkilöille kaupanteon yhteydessä, esimerkiksi Tori.fi- ja Nettivene-ostoissa ja -myynneissä, veneilijöille kausisiirroissa sekä venekerhoille.",
-    includes: [
-      "Nouto rannasta, pihalta tai telakalta",
-      "Trailerikuljetus sovittuun kohteeseen",
-      "Varovainen kiinnitys ja suojaus kuljetuksen ajaksi",
-      "Toimitus sovittuna aikana perille asti",
-    ],
-    pricingTitle: "Veneen kuljetuksen hinnoittelu",
-    pricingDescription:
-      "0–40 km 129 €, 41–80 km 169 €, sen jälkeen 1,29 €/km.",
-    metadataTitle: "Veneen kuljetus | Pakuvie",
-    metadataDescription:
-      "Pakuvie kuljettaa veneet, jollat ja kumiveneet trailerilla turvallisesti Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
-    keywords: [
-      "veneen kuljetus",
-      "jollan kuljetus",
-      "kumiveneen kuljetus",
-      "venetrailerin kuljetus",
-      "veneen siirto",
-    ],
-    calculatorCategory: "ajoneuvo",
-    heroBackgroundImage: "/images/paku2.png",
-  },
   kierratys: {
     slug: "kierratys",
     navLabel: "Kierrätys",
@@ -259,40 +179,13 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     calculatorCategory: "projekti",
     heroBackgroundImage: "/images/paku3.png",
   },
-  venesiirto: {
-    slug: "venesiirto",
-    navLabel: "Venesiirto",
-    title: "Venesiirto",
-    description: "Kausiluonteinen venesiirto turvallisesti satamasta toiseen.",
-    valueProposition:
-      "Kuljetamme veneet suunnitellusti kevään ja syksyn ruuhkahuippuina oikealla kalustolla.",
-    includes: [
-      "Nouto satamasta tai telakalta",
-      "Kuljetus sovitun reitin mukaan",
-      "Toimitus kohdesatamaan tai varastointiin",
-      "Aikataulutus sesongin mukaan",
-    ],
-    pricingTitle: "Venesiirron hinta-arvio",
-    pricingDescription:
-      "Hinta määräytyy veneen koon, reitin sekä nosto- ja laskujärjestelyjen perusteella. Kysy arvio kauden aikataulun mukaan.",
-    metadataTitle: "Venesiirto | Pakuvie",
-    metadataDescription:
-      "Venesiirrot sesonkiaikaan turvallisesti ja luotettavasti. Pyydä tarjous venekuljetukselle.",
-    keywords: ["venesiirto", "venekuljetus", "veneiden kuljetus"],
-    calculatorCategory: "ajoneuvo",
-    heroBackgroundImage: "/images/paku1.png",
-    seasonBanner: "Kausi käynnissä",
-  },
 };
 
 export const serviceNavigationOrder: ServiceSlug[] = [
-  "pyorakuljetus",
-  "monkijakuljetus",
   "pesukone-kuljetus",
   "sohvan-kuljetus",
   "sangyn-kuljetus",
   "apuvalinekuljetus",
-  "veneen-kuljetus",
   "kierratys",
   "muutot",
 ];
@@ -303,10 +196,19 @@ export const serviceNavigationLinks = serviceNavigationOrder.map((slug) => ({
   slug,
 }));
 
-export const serviceFooterLinks = serviceNavigationLinks.map(({ href, label }) => ({
-  href,
-  label,
-}));
+// Moottoripyöräkuljetukset hoitaa sisaryritys MP-Logistiikka, joten linkki
+// ohjaa suoraan ulos. Pakuvie ei enää tarjoa palvelua omanaan, mikä poistaa
+// samalla sisäisen avainsanakilpailun sivustojen väliltä.
+export const MP_LOGISTIIKKA_URL = "https://mp-logistiikka.fi";
+
+export const serviceFooterLinks: Array<{
+  href: string;
+  label: string;
+  external?: boolean;
+}> = [
+  ...serviceNavigationLinks.map(({ href, label }) => ({ href, label })),
+  { href: MP_LOGISTIIKKA_URL, label: "Moottoripyöräkuljetus", external: true },
+];
 
 export const quoteServiceOptions = [
   ...serviceNavigationOrder.map((slug) => services[slug].navLabel),

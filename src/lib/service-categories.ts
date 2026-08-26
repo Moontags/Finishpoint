@@ -32,17 +32,6 @@ export const serviceCategories: ServiceCategoryContent[] = [
     href: "/muutot",
     backgroundImage: "/images/paku3.png",
   },
-  {
-    id: "ajoneuvo",
-    label: "Ajoneuvokuljetukset",
-    cardTitle: "Ajoneuvokuljetukset",
-    cardDescription:
-      "Moottoripyörät, mönkijät, ruohonleikkurit ja mopot. 0-40 km 129 €, 41-80 km 169 €, sen jälkeen 1,29 €/km.",
-    cardAccent: "Siirtopalvelu",
-    href: "/pyorakuljetus",
-    backgroundImage: "/images/moottoripyörä.jpeg",
-    featured: true,
-  },
 ];
 
 export const serviceCategoryContentById = Object.fromEntries(

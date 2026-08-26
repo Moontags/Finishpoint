@@ -10,7 +10,6 @@ import { vatMultiplier } from "@/lib/pricing";
 import { usePrices } from "@/lib/use-prices";
 
 const serviceLabels: Record<string, string> = {
-  ajoneuvo: "Ajoneuvokuljetukset",
   kappaletavara: "Kappaletavarakuljetus",
   projekti: "Muutto",
 };

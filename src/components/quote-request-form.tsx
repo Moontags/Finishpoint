@@ -13,15 +13,13 @@ import { useVatRateText } from "@/lib/use-prices";
 import type { ServiceCategory } from "@/lib/types";
 
 const orderServiceTypeOptions = [
-  "Ajoneuvot",
   "Pikakuljetus",
   "Muutot",
 ] as const;
 
 const categoryDefaultServiceType: Record<ServiceCategory, string> = {
-  ajoneuvo: orderServiceTypeOptions[0],
-  kappaletavara: orderServiceTypeOptions[1],
-  projekti: orderServiceTypeOptions[2],
+  kappaletavara: orderServiceTypeOptions[0],
+  projekti: orderServiceTypeOptions[1],
 };
 
 export function QuoteRequestForm() {

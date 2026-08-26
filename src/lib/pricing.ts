@@ -18,9 +18,6 @@ export type PositioningRateKey =
   | "positioning_rate_600_plus";
 
 export type PriceConfig = {
-  base_ajoneuvo_40: number;
-  base_ajoneuvo_80: number;
-  km_rate_ajoneuvo: number;
   base_kappaletavara: number;
   km_rate_tavara: number;
   base_muutto: number;
@@ -30,9 +27,6 @@ export type PriceConfig = {
 } & Record<PositioningRateKey, number>;
 
 export const defaultPriceConfig: PriceConfig = {
-  base_ajoneuvo_40: 129,
-  base_ajoneuvo_80: 169,
-  km_rate_ajoneuvo: 1.29,
   base_kappaletavara: 59,
   km_rate_tavara: 1.29,
   base_muutto: 269,
@@ -102,18 +96,6 @@ export function lisaaAlv(hintaAlv0: number, prices: PriceConfig = defaultPriceCo
 
 export function pyoristaAsiakkaalle(hintaSisAlv: number): number {
   return Math.round(hintaSisAlv);
-}
-
-// Kategoria A
-export function ajoneuvohinta(km: number, monipysahdys: boolean, prices: PriceConfig = defaultPriceConfig): number {
-  const turvallinenKm = Math.max(0, km);
-  const kmHintaAlv0 = poistaAlv(prices.km_rate_ajoneuvo, prices);
-
-  if (monipysahdys) return pyoristaSentteihin(turvallinenKm * kmHintaAlv0);
-  if (turvallinenKm <= 40) return poistaAlv(prices.base_ajoneuvo_40, prices);
-  if (turvallinenKm <= 80) return poistaAlv(prices.base_ajoneuvo_80, prices);
-
-  return pyoristaSentteihin(poistaAlv(prices.base_ajoneuvo_80, prices) + (turvallinenKm - 80) * kmHintaAlv0);
 }
 
 // Kategoria B

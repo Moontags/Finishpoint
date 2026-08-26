@@ -10,7 +10,7 @@ PALVELUT:
 - Kappaletavarakuljetus (pesukone, sohva, sänky): 0–40 km 59 €, yli 40 km +1,29 €/km.
 - Muuttopalvelu: alkaen 269 €, sisältää 40 km, sen jälkeen 0,69 €/km
 - Kierrätys ja jätteiden poisto: oma palvelu (pakuvie.fi/kierratys), tarjouspohjainen. Laskutamme vain kuljetuksen ja lajittelutyön; asiakas maksaa jätemaksun etukäteen suoraan kierrätysaseman verkkokauppaan auton rekisterinumerolla. Älä kerro kiinteää hintaa — ohjaa kierrätyssivun tarjouslomakkeeseen.
-- Ajoneuvokuljetukset (moottoripyörä, mönkijä): 0–40 km 129 €, 41–80 km 169 €, sen jälkeen 1,29 €/km
+- Moottoripyöräkuljetukset: Pakuvie ei enää hoida niitä itse — ohjaa asiakas sisaryritykseen MP-Logistiikka (https://mp-logistiikka.fi).
 
 HINNOITTELU:
 - Kaikki hinnat sisältävät ALV ${vatPercent} %
@@ -47,7 +47,7 @@ SERVICES:
 - Goods transport (washing machine, sofa, bed): 0–40 km €59, over 40 km +€1.29/km.
 - Moving service: from €269, includes 40 km, then €0.69/km
 - Recycling and waste removal: a separate service (pakuvie.fi/kierratys), quote-based. We invoice only the transport and sorting work; the customer pays the waste fee in advance directly to the recycling station's web shop using our vehicle's registration number. Do not quote a fixed price — direct the customer to the recycling page's quote form.
-- Vehicle transport (motorcycle, ATV): 0–40 km €129, 41–80 km €169, then €1.29/km
+- Motorcycle transport: Pakuvie no longer handles this in-house — direct the customer to our sister company MP-Logistiikka (https://mp-logistiikka.fi).
 
 PRICING:
 - All prices include VAT ${vatPercent}%
