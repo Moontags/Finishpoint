@@ -74,4 +74,18 @@ afterAll(() => {
     expect(res.status).toBe(200);
     expect(mockSendMail).toHaveBeenCalledTimes(1);
   });
+
+  it('sets replyTo to the customer email so "Reply" goes to the customer', async () => {
+    mockSendMail.mockClear();
+    const req = new Request('http://localhost/api/quote', {
+      method: 'POST',
+      body: JSON.stringify({ email: 'maija@example.com', name: 'Maija', phone: '0401234567', serviceType: 'Kappaletavara', addresses: 'Nouto: Katu 1 -> Toimitus: Katu 2', message: '' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const res = await handler(req);
+    expect(res.status).toBe(200);
+    const mailOptions = mockSendMail.mock.calls[0][0];
+    expect(mailOptions.replyTo).toBe('maija@example.com');
+    expect(mailOptions.to).not.toBe('maija@example.com');
+  });
 });

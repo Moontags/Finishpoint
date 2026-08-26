@@ -107,6 +107,21 @@ async function createWebhook(token: string): Promise<void> {
   }
 
   console.log("Uusi webhook luotu:", JSON.stringify(data, null, 2));
+
+  // Vipps palauttaa webhookin salaisuuden VAIN luontivastauksessa. Ilman sitä
+  // /api/vipps/webhook hylkää kaikki kutsut (401), joten arvo pitää tallentaa
+  // heti ympäristömuuttujaan VIPPS_WEBHOOK_SECRET.
+  const secret = (data as Record<string, unknown>)?.secret;
+  if (typeof secret === "string" && secret) {
+    console.log("");
+    console.log("TÄRKEÄÄ: tallenna tämä arvo ympäristömuuttujaksi heti:");
+    console.log(`VIPPS_WEBHOOK_SECRET=${secret}`);
+    console.log("Salaisuutta ei saa enää myöhemmin uudelleen — vain uudella rekisteröinnillä.");
+  } else {
+    console.warn(
+      "HUOM: vastauksesta ei löytynyt secret-kenttää. Tarkista vastaus ja aseta VIPPS_WEBHOOK_SECRET manuaalisesti.",
+    );
+  }
 }
 
 async function main() {

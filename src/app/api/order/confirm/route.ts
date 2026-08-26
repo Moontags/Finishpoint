@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { sendEmail } from "@/lib/email";
+import { getOperatorRecipient, sendEmail } from "@/lib/email";
 import {
   calculateVat,
   generateInvoiceNumber,
+  generateOperatorOrderNotificationHtml,
   generateOrderConfirmationHtml,
 } from "../../../../lib/email-templates";
 import { markOrderEmailStatus, saveOrder } from "@/lib/order-store";
@@ -134,6 +135,11 @@ export async function POST(req: Request) {
     }
 
     const warnings: string[] = [];
+    const operatorRecipient = getOperatorRecipient();
+    // Kun varaus tallennetaan kalenteriin, sendBookingEmails lähettää meille
+    // jo oman ilmoituksensa. Silloin ei lähetetä toista ilmoitusta samasta
+    // tilauksesta.
+    let operatorNotified = false;
 
     if (payload.bookingSelection) {
       const booking = payload.bookingSelection;
@@ -185,9 +191,31 @@ export async function POST(req: Request) {
           hintaAlv: order.totalWithVat,
           hintaAlv0: order.netAmount,
         });
+        operatorNotified = true;
       } catch (error) {
         console.error("Booking emails failed in /api/order/confirm", error);
         warnings.push("Varausviestien lahetys epaonnistui.");
+      }
+    }
+
+    // Ilmoitus meille tilauksesta, jotta kuljetus voidaan aikatauluttaa.
+    // Reply-To on tilaajan osoite, jotta ilmoitukseen voi vastata suoraan.
+    if (!operatorNotified) {
+      try {
+        await sendEmail({
+          to: operatorRecipient,
+          subject: `Uusi tilaus ${order.orderId} - ${order.deliveryAddress}`,
+          html: generateOperatorOrderNotificationHtml(
+            { ...order, bookingSelection: payload.bookingSelection ?? null },
+            // Tässä vaiheessa maksua ei ole vielä vahvistettu (webhook
+            // merkitsee tilauksen maksetuksi ja lähettää kuitin).
+            { paymentState: "pending" },
+          ),
+          replyTo: order.customerEmail,
+        });
+      } catch (error) {
+        console.error("Operator order notification failed in /api/order/confirm", error);
+        warnings.push("Ilmoitus kuljetukselle epaonnistui.");
       }
     }
 
@@ -196,6 +224,8 @@ export async function POST(req: Request) {
         to: order.customerEmail,
         subject: `Tilausvahvistus ${order.orderId} - Pakuvie`,
         html: generateOrderConfirmationHtml(order),
+        // Asiakkaan vastaus ohjautuu meille, ei from-osoitteeseen.
+        replyTo: operatorRecipient,
       });
       await markOrderEmailStatus(order.orderId, "sent");
     } catch (error) {

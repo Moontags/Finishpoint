@@ -10,6 +10,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Yrityksen oma vastaanotto-osoite (Jari). Kaikki ilmoitusviestit menevät
+// tähän, ja asiakkaalle menevissä viesteissä tämä on Reply-To -osoite.
+export function getOperatorRecipient() {
+  return (
+    process.env.QUOTE_RECIPIENT?.trim() ||
+    process.env.SMTP_RECIPIENT?.trim() ||
+    "kuljetus@pakuvie.fi"
+  );
+}
+
 export async function sendEmail(options: {
   to: string;
   subject: string;

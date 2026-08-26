@@ -158,6 +158,102 @@ export function generateOrderConfirmationHtml(order: OrderData): string {
   `;
 }
 
+// Ilmoitus meille (kuljetus@pakuvie.fi) uudesta tilauksesta. Sisältää samat
+// tiedot kuin asiakkaan vahvistus, jotta kuljetus voidaan aikatauluttaa
+// suoraan viestistä.
+export function generateOperatorOrderNotificationHtml(
+  order: OrderData,
+  options: { paymentState: "paid" | "pending" },
+): string {
+  const dateStr = new Date(order.orderDate).toLocaleDateString("fi-FI");
+  const booking = order.bookingSelection;
+  const paymentMethodText =
+    order.paymentMethod === "mobilepay" ? "MobilePay / Vipps" : "Lasku 14 vrk";
+  const paymentStateText =
+    options.paymentState === "paid"
+      ? `MAKSETTU (${paymentMethodText})`
+      : `Maksu kesken (${paymentMethodText})`;
+
+  return `
+    <div style="${baseStyles}">
+      <div style="background:#1a1a2e;padding:20px;text-align:center;">
+        <h1 style="color:#ffffff;margin:0;font-size:20px;">Pakuvie</h1>
+      </div>
+
+      <div style="padding:24px;">
+        <h2 style="font-size:18px;margin:0 0 4px;">
+          ${options.paymentState === "paid" ? "Uusi maksettu tilaus" : "Uusi tilaus"}
+        </h2>
+        <p style="color:#555;margin-top:0;">
+          Tilausnumero: <strong>${escapeHtml(order.orderId)}</strong> | ${dateStr}
+        </p>
+
+        <table style="${tableStyles}">
+          <tr>
+            <th style="${thStyles}">Maksutila</th>
+            <td style="${tdStyles}"><strong>${paymentStateText}</strong></td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Asiakas</th>
+            <td style="${tdStyles}">${escapeHtml(order.customerName)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Puhelin</th>
+            <td style="${tdStyles}">${escapeHtml(order.customerPhone)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Sähköposti</th>
+            <td style="${tdStyles}">${escapeHtml(order.customerEmail)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Palvelu</th>
+            <td style="${tdStyles}">${escapeHtml(order.serviceDescription)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Nouto</th>
+            <td style="${tdStyles}">${escapeHtml(order.pickupAddress)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Toimitus</th>
+            <td style="${tdStyles}">${escapeHtml(order.deliveryAddress)}</td>
+          </tr>
+          ${booking
+            ? `<tr>
+            <th style="${thStyles}">Varausaika</th>
+            <td style="${tdStyles}">
+              ${escapeHtml(booking.reservationDate)}, saapuminen klo ${escapeHtml(booking.arrivalTime)}
+              (lähtö Riihimäeltä klo ${escapeHtml(booking.riihimakiDepartureTime)})
+            </td>
+          </tr>`
+            : ""}
+          <tr>
+            <th style="${thStyles}">Veroton hinta</th>
+            <td style="${tdStyles}">${asEuro(order.netAmount)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">ALV ${formatVatRate(order.vatRate)} %</th>
+            <td style="${tdStyles}">${asEuro(order.vatAmount)}</td>
+          </tr>
+          <tr>
+            <th style="${thStyles}">Yhteensä (sis. ALV)</th>
+            <td style="${tdStyles}"><strong>${asEuro(order.totalWithVat)}</strong></td>
+          </tr>
+          ${order.vippsReference
+            ? `<tr>
+            <th style="${thStyles}">Maksuviite</th>
+            <td style="${tdStyles}">${escapeHtml(order.vippsReference)}</td>
+          </tr>`
+            : ""}
+        </table>
+
+        <p style="font-size:13px;color:#555;">
+          Vastaamalla tähän viestiin vastaat suoraan asiakkaalle.
+        </p>
+      </div>
+    </div>
+  `;
+}
+
 export function generateReceiptHtml(order: OrderData): string {
   const dateStr = new Date(order.orderDate).toLocaleDateString("fi-FI");
   const showCustomerAddress = order.totalWithVat > 400;

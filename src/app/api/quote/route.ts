@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { saveQuoteRequest } from "../../../lib/quote-store";
+import { isValidEmail, normalizeEmail } from "@/lib/email-validation";
 import type { QuoteRequestData } from "@/lib/types";
 
 type QuotePayload = Omit<QuoteRequestData, "source" | "status">;
@@ -93,9 +94,18 @@ export async function POST(request: Request) {
       console.error("[quote] Tarjouspyynnön tallennus epäonnistui:", saveError);
     }
 
+    // Reply-To asetetaan asiakkaan osoitteeseen, jotta "Vastaa" ohjautuu
+    // asiakkaalle eikä takaisin omaan postilaatikkoon (from on pakko olla
+    // verifioitu lähettäjädomain). Jos osoite ei ole kelvollinen, kenttä
+    // jätetään pois eikä lähetys kaadu.
+    const customerReplyTo = isValidEmail(data.email)
+      ? normalizeEmail(data.email)
+      : undefined;
+
     await transporter.sendMail({
       from: fromAddress,
       to: recipient,
+      ...(customerReplyTo ? { replyTo: customerReplyTo } : {}),
       subject: `Tarjouspyynto: ${data.serviceType}`,
       text: [
         `Nimi: ${data.name}`,

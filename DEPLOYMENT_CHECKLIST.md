@@ -66,9 +66,16 @@ VIPPS_CURRENCY=EUR
 VIPPS_RETURN_URL=https://www.pakuvie.fi/kassa?success=1
 VIPPS_CANCEL_URL=https://www.pakuvie.fi/kassa?cancel=1
 VIPPS_CALLBACK_PREFIX=https://www.pakuvie.fi/api/vipps
+VIPPS_WEBHOOK_SECRET=<webhookin rekisteroinnin vastauksen "secret">
 MOBILEPAY_MERCHANT_ID=2090122
 MOBILEPAY_CURRENCY=EUR
 ```
+
+> `VIPPS_WEBHOOK_SECRET` on pakollinen: ilman sitä `/api/vipps/webhook` hylkää
+> kaikki kutsut (401) eikä maksukuitteja lähde. Salaisuus palautuu vain
+> webhookin luontivastauksessa — jos se on hukassa, aja
+> `npx tsx scripts/update-vipps-webhook.ts`, joka rekisteröi webhookin
+> uudelleen ja tulostaa uuden salaisuuden.
 
 ### 2. Domain-asetukset
 - [ ] `www.pakuvie.fi` osoittaa Verceliin

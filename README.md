@@ -113,7 +113,8 @@ Optional Vipps ePayment overrides:
 - `VIPPS_CURRENCY` (default `EUR`)
 - `VIPPS_DEFAULT_COUNTRY_CODE` (default `358`, used when customer enters local-format phone number)
 - `VIPPS_RETURN_URL`
-- `VIPPS_WEBHOOK_AUTH_TOKEN` (optional bearer token check for `/api/vipps/webhook`)
+- `VIPPS_WEBHOOK_SECRET` (**required**: the `secret` returned when the webhook is registered; used to verify the HMAC signature of `/api/vipps/webhook` calls)
+- `VIPPS_WEBHOOK_AUTH_TOKEN` (optional bearer token, for manual/test calls to `/api/vipps/webhook`)
 
 Security note: keep all `MOBILEPAY_*` secrets server-side only, never with `NEXT_PUBLIC_`.
 
@@ -123,7 +124,13 @@ Vipps webhook endpoint:
 
 - `POST /api/vipps/webhook`
 - Accepts JSON payloads and returns `{ ok: true }` when accepted.
-- If `VIPPS_WEBHOOK_AUTH_TOKEN` is set, include `Authorization: Bearer <token>` in webhook calls.
+- Every call is authenticated. Requests without a valid HMAC signature (or a valid bearer token) get `401` and never touch order state or send email.
+- Vipps signs each call per [Webhooks API request authentication](https://developer.vippsmobilepay.com/docs/APIs/webhooks-api/request-authentication/):
+  `authorization: HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature=<base64>`,
+  signed over `POST\n<pathAndQuery>\n<x-ms-date>;<host>;<x-ms-content-sha256>` with the webhook secret.
+- Set `VIPPS_WEBHOOK_SECRET` to the `secret` from the webhook registration response. The secret is only returned when the webhook is created — if it is lost, re-register the webhook with `npx tsx scripts/update-vipps-webhook.ts` and store the new secret.
+- If neither `VIPPS_WEBHOOK_SECRET` nor `VIPPS_WEBHOOK_AUTH_TOKEN` is configured, all webhook calls are rejected with `401` (fail closed).
+- `VIPPS_WEBHOOK_AUTH_TOKEN` is only for manual testing: include `Authorization: Bearer <token>`.
 
 Order persistence for receipt email:
 

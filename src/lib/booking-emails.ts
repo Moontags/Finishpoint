@@ -1,4 +1,5 @@
-import { sendEmail } from "@/lib/email";
+import { getOperatorRecipient, sendEmail } from "@/lib/email";
+import { isValidEmail, normalizeEmail } from "@/lib/email-validation";
 
 type BookingEmailPayload = {
   bookingId: string;
@@ -73,18 +74,23 @@ function operatorTemplate(payload: BookingEmailPayload) {
 }
 
 export async function sendBookingEmails(payload: BookingEmailPayload) {
-  const operatorRecipient = process.env.QUOTE_RECIPIENT?.trim() || "kuljetus@pakuvie.fi";
+  const operatorRecipient = getOperatorRecipient();
 
+  // Asiakkaalle: vastaus ohjautuu meille, ei from-osoitteeseen.
   await sendEmail({
     to: payload.customerEmail,
     subject: `Varausvahvistus - Kuljetus ${payload.reservationDate} klo ${payload.arrivalTime}`,
     html: customerTemplate(payload),
+    replyTo: operatorRecipient,
   });
 
+  // Meille: vastaus ohjautuu asiakkaalle (jos osoite on kelvollinen).
   await sendEmail({
     to: operatorRecipient,
     subject: `Uusi varaus ${payload.reservationDate} klo ${payload.arrivalTime} - ${payload.destinationAddress}`,
     html: operatorTemplate(payload),
-    replyTo: payload.customerEmail,
+    ...(isValidEmail(payload.customerEmail)
+      ? { replyTo: normalizeEmail(payload.customerEmail) }
+      : {}),
   });
 }

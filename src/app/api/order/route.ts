@@ -303,9 +303,12 @@ export async function POST(request: Request) {
       );
     }
 
+    // Reply-To asiakkaan osoitteeseen, jotta ilmoitukseen voi vastata suoraan
+    // tilaajalle. data.email on jo validoitu ja normalisoitu yllä.
     await transporter.sendMail({
       from: fromAddress,
       to: recipient,
+      ...(isValidEmail(data.email) ? { replyTo: data.email } : {}),
       subject: `Uusi tarjouspyynto / maksu kesken: ${data.serviceType}`,
       text: [
         "HUOM: Maksu on viela kesken. Tilaus vahvistuu kun asiakas maksaa.",
