@@ -139,11 +139,7 @@ export function KierratysQuoteForm() {
         </p>
 
         <div className="space-y-2.5 pt-2">
-          {[
-            t("form.response_same_day", "Vastaamme saman päivän aikana"),
-            t("kierratys.form.info_fee", "Jätemaksu maksetaan suoraan kierrätysasemalle"),
-            t("kierratys.form.info_invoice", "Laskutamme vain kuljetuksesta ja lajittelusta"),
-          ].map((line) => (
+          {[t("form.response_same_day", "Vastaamme saman päivän aikana")].map((line) => (
             <div key={line} className="flex items-start gap-2 text-[13px] text-slate-700">
               <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
               {line}

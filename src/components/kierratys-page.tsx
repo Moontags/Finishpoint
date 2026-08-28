@@ -37,14 +37,14 @@ export function KierratysPage() {
       title: t("kierratys.step2.title", "2. Sovimme ajankohdan"),
       description: t(
         "kierratys.step2.description",
-        "Vahvistamme noutoajan ja lähetämme sinulle ohjeet jätemaksun maksamiseen kierrätysaseman verkkokaupassa.",
+        "Vahvistamme sinulle sopivan noutoajan sähköpostitse tai puhelimitse.",
       ),
     },
     {
-      title: t("kierratys.step3.title", "3. Maksat jätemaksun suoraan kierrätysasemalle"),
+      title: t("kierratys.step3.title", "3. Maksat jätemaksun kierrätysasemalle"),
       description: t(
         "kierratys.step3.description",
-        "Jätemaksu maksetaan etukäteen kierrätysaseman omassa verkkokaupassa automme rekisterinumerolla — tämä ei kulje meidän kauttamme, joten maksu menee suoraan oikeaan paikkaan.",
+        "Maksu hoidetaan etukäteen Kiertokapulan verkkokaupassa. Muista syöttää maksun yhteydessä automme rekisterinumero — sen avulla pääsemme kierrätysasemalle. Maksu on voimassa 30 päivää maksuhetkestä.",
       ),
     },
     {
@@ -58,38 +58,7 @@ export function KierratysPage() {
       title: t("kierratys.step5.title", "5. Lasku vain työstä"),
       description: t(
         "kierratys.step5.description",
-        "Laskutamme sinua ainoastaan kuljetuksesta ja lajittelutyöstä — jätemaksu on jo hoidettu erikseen, joten laskusi on selkeä ja läpinäkyvä.",
-      ),
-    },
-    {
-      title: t("kierratys.step6.title", "6. Jätemaksun maksaminen kierrätysasemalla"),
-      description: t(
-        "kierratys.step6.description",
-        "Kun noutoaika on vahvistettu, ohjaamme sinut Kiertokapulan verkkokauppaan, jossa maksat jätemaksun etukäteen. Muista syöttää maksun yhteydessä automme rekisterinumero — sen avulla pääsemme kierrätysasemalle.",
-      ),
-    },
-  ];
-
-  const faqItems = [
-    {
-      question: t("kierratys.faq1.question", "Miksi maksan kahteen paikkaan?"),
-      answer: t(
-        "kierratys.faq1.answer",
-        "Jätemaksu menee suoraan kierrätysasemalle, koska se on lakisääteinen jätteenkäsittelymaksu, jota emme voi eikä saa laskuttaa itse. Meidän laskumme kattaa vain kuljetus- ja lajittelutyön.",
-      ),
-    },
-    {
-      question: t("kierratys.faq2.question", "Kuinka nopeasti jätemaksu pitää maksaa?"),
-      answer: t(
-        "kierratys.faq2.answer",
-        "Suosittelemme maksamaan vasta kun noutoaika on vahvistettu meidän kanssamme — maksu on voimassa 30 päivää maksuhetkestä.",
-      ),
-    },
-    {
-      question: t("kierratys.faq3.question", "Entä jos en tiedä tarkkaa määrää etukäteen?"),
-      answer: t(
-        "kierratys.faq3.answer",
-        "Ei haittaa — arvioimme yhdessä ja voit tarvittaessa lisätä jätemäärää kierrätysaseman verkkokaupassa vielä ennen noutopäivää.",
+        "Laskutamme vain kuljetuksesta ja lajittelutyöstä, joten laskusi on selkeä ja läpinäkyvä.",
       ),
     },
   ];
@@ -119,7 +88,7 @@ export function KierratysPage() {
           <ProcessSteps steps={steps} />
         </div>
 
-        {/* Kiertokapulan verkkokauppa liittyy vaiheeseen 6. ProcessSteps ottaa
+        {/* Kiertokapulan verkkokauppa liittyy vaiheeseen 3. ProcessSteps ottaa
             vastaan vain tekstiä, joten linkki ja huomautus ovat vaiheiden alla. */}
         <div className="mt-5 space-y-2">
           <a
@@ -135,7 +104,7 @@ export function KierratysPage() {
           <p className="max-w-3xl text-[13px] italic leading-[1.7] text-slate-600 sm:text-[14px]">
             {t(
               "kierratys.shop_note",
-              "Lähetämme sinulle myös tarkat ohjeet ja rekisterinumeron sähköpostitse noutoajan vahvistuksen yhteydessä.",
+              "Saat tarkat ohjeet ja rekisterinumeron sähköpostitse.",
             )}
           </p>
         </div>
@@ -189,21 +158,6 @@ export function KierratysPage() {
             "Ei sisällä vaarallista jätettä, esim. maaleja, kemikaaleja tai akkuja — kysy näistä erikseen.",
           )}
         </p>
-      </section>
-
-      {/* Usein kysyttyä */}
-      <section className={sectionClass}>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          {t("kierratys.faq_title", "Usein kysyttyä")}
-        </h2>
-        <div className="mt-6 grid gap-3">
-          {faqItems.map(({ question, answer }) => (
-            <article key={question} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="text-[15px] font-bold text-slate-900">{question}</h3>
-              <p className="mt-2 text-[14px] leading-6 text-slate-600">{answer}</p>
-            </article>
-          ))}
-        </div>
       </section>
 
       {/* Tarjouspyyntölomake */}

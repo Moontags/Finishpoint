@@ -1,18 +1,19 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Kierrätys page', () => {
-  test('page loads with hero, steps, pricing and FAQ', async ({ page }) => {
+  test('page loads with hero, steps and pricing', async ({ page }) => {
     await page.goto('/kierratys');
     await page.waitForLoadState('networkidle');
 
     await expect(page.locator('h1')).toContainText('Kierrätys ja jätteiden poisto');
     await expect(page.locator('h2', { hasText: 'Miten palvelu toimii' })).toBeVisible();
+    // Vaiheet 3 ja 6 on yhdistetty, joten viimeinen vaihe on 5.
+    await expect(page.locator('h3', { hasText: '3. Maksat jätemaksun' })).toBeVisible();
     await expect(page.locator('h3', { hasText: '5. Lasku vain työstä' })).toBeVisible();
-    await expect(
-      page.locator('h3', { hasText: '6. Jätemaksun maksaminen kierrätysasemalla' }),
-    ).toBeVisible();
+    await expect(page.locator('h3', { hasText: '6. Jätemaksun' })).toHaveCount(0);
     await expect(page.locator('h2', { hasText: 'Mitä otamme mukaan' })).toBeVisible();
-    await expect(page.locator('h2', { hasText: 'Usein kysyttyä' })).toBeVisible();
+    // Usein kysyttyä poistettu — sisältö oli jo katettu vaiheissa ja hinnoittelussa.
+    await expect(page.locator('h2', { hasText: 'Usein kysyttyä' })).toHaveCount(0);
   });
 
   test('shows the starting price and the filled-in example figures', async ({ page }) => {
@@ -36,7 +37,7 @@ test.describe('Kierrätys page', () => {
     await expect(link).toHaveAttribute('rel', /noreferrer/);
 
     await expect(
-      page.getByText('Lähetämme sinulle myös tarkat ohjeet ja rekisterinumeron'),
+      page.getByText('Saat tarkat ohjeet ja rekisterinumeron sähköpostitse.'),
     ).toBeVisible();
 
     // Estetään ulkoinen lataus, jotta testi ei riipu Kiertokapulan palvelusta.

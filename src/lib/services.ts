@@ -141,7 +141,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ],
     pricingTitle: "Hinnoittelu",
     pricingDescription:
-      "Kierrätyspalvelumme hinta perustuu kuljetukseen ja lajitteluun käytettyyn aikaan sekä matkaan — ei sisällä kierrätysaseman jätemaksua, joka maksetaan aina erikseen suoraan kierrätysasemalle.",
+      "Hinta perustuu kuljetukseen ja lajitteluun käytettyyn aikaan sekä matkaan.",
     metadataTitle: "Kierrätys ja jätteiden poisto — Pakuvie",
     metadataDescription:
       "Tuomme, lajittelemme ja kuljetamme jätteesi kierrätysasemalle. Kodin, vintin ja varaston tyhjennykset pääkaupunkiseudulla ja Riihimäen alueella.",

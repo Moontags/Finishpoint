@@ -32,8 +32,14 @@ export function CalculatorFormSection({
               {t(
                 "hero.promo_sub",
                 "Pikakuljetukset, apuvälinekuljetukset, pienmuutot, kierrätys ja tavarakuljetukset yhdellä yhteydenotolla.",
-              )}{" "}
-              <a href="#quote" className="underline-offset-2 hover:underline">
+              )}
+              {/* Headerin Tarjous-nappi näkyy vasta sm-breakpointista ylöspäin — sitä
+                  pienemmissä se on burger-valikon sisällä, joten hero-CTA jää
+                  näkyviin vain mobiiliin eikä duplikoi nappia työpöydällä. */}
+              <a
+                href="#quote"
+                className="ml-1 hidden underline-offset-2 hover:underline max-sm:inline"
+              >
                 {t("hero.promo_cta", "Pyydä tarjous jo tänään.")}
               </a>
             </p>
