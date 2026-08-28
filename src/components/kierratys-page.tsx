@@ -68,17 +68,6 @@ export function KierratysPage() {
       title={t("services.kierratys.title", service.title)}
       description={t("services.kierratys.description", service.description)}
     >
-      {/* Hero-CTA */}
-      <div>
-        <a
-          href="#quote"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98] sm:w-auto"
-        >
-          {t("kierratys.cta_quote", "Pyydä tarjous")}
-          <ArrowRight className="h-4 w-4" />
-        </a>
-      </div>
-
       {/* Miten palvelu toimii */}
       <section className={sectionClass}>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
