@@ -196,19 +196,10 @@ export const serviceNavigationLinks = serviceNavigationOrder.map((slug) => ({
   slug,
 }));
 
-// Moottoripyöräkuljetukset hoitaa sisaryritys MP-Logistiikka, joten linkki
-// ohjaa suoraan ulos. Pakuvie ei enää tarjoa palvelua omanaan, mikä poistaa
-// samalla sisäisen avainsanakilpailun sivustojen väliltä.
-export const MP_LOGISTIIKKA_URL = "https://mp-logistiikka.fi";
-
 export const serviceFooterLinks: Array<{
   href: string;
   label: string;
-  external?: boolean;
-}> = [
-  ...serviceNavigationLinks.map(({ href, label }) => ({ href, label })),
-  { href: MP_LOGISTIIKKA_URL, label: "Moottoripyöräkuljetus", external: true },
-];
+}> = serviceNavigationLinks.map(({ href, label }) => ({ href, label }));
 
 export const quoteServiceOptions = [
   ...serviceNavigationOrder.map((slug) => services[slug].navLabel),

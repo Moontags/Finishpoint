@@ -24,17 +24,11 @@ test.describe('Service pages', () => {
   });
 });
 
-// Ajoneuvokuljetukset poistuivat tarjonnasta: moottoripyöräkuljetukset hoitaa
-// MP-Logistiikka, mönkijä- ja venekuljetuksia ei enää tarjota. Vanhat osoitteet
-// eivät saa palauttaa 404:ää, koska niihin on kertynyt hakukonearvoa.
+// Ajoneuvokuljetukset (moottoripyörä, mönkijä, vene) poistuivat tarjonnasta.
+// Vanhat osoitteet eivät saa palauttaa 404:ää, koska niihin on kertynyt
+// hakukonearvoa.
 test.describe('Retired service pages redirect', () => {
-  test('/pyorakuljetus redirects to MP-Logistiikka', async ({ page }) => {
-    const response = await page.goto('/pyorakuljetus', { waitUntil: 'commit' });
-    expect(response?.status()).not.toBe(404);
-    expect(page.url()).toContain('mp-logistiikka.fi');
-  });
-
-  for (const path of ['/monkijakuljetus', '/veneen-kuljetus']) {
+  for (const path of ['/pyorakuljetus', '/monkijakuljetus', '/veneen-kuljetus']) {
     test(`${path} redirects to the front page`, async ({ page }) => {
       const response = await page.goto(path);
       expect(response?.status()).not.toBe(404);

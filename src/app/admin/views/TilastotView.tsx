@@ -26,7 +26,6 @@ function normalizeService(s: string | null): string {
   if (v.includes('kierr')) return 'kierratys'
   // Sekä "Muutto" että "Muutot" — pelkkä 'muutto' ei osu monikkomuotoon.
   if (v.includes('muutto') || v.includes('muutot')) return 'muutto'
-  if (v.includes('ajoneuvo')) return 'ajoneuvo'
   return 'muu'
 }
 
@@ -96,7 +95,7 @@ export function TilastotView() {
     monthMap.set(key, { key, label: monthLabel(d), count: 0, revenue: 0 })
   }
 
-  const serviceCounts: Record<string, number> = { kappaletavara: 0, muutto: 0, kierratys: 0, ajoneuvo: 0 }
+  const serviceCounts: Record<string, number> = { kappaletavara: 0, muutto: 0, kierratys: 0 }
   const statusCounts: Record<string, number> = { new: 0, confirmed: 0, completed: 0, cancelled: 0 }
   const weekdayCounts = [0, 0, 0, 0, 0, 0, 0]
 
@@ -177,7 +176,6 @@ export function TilastotView() {
               { label: 'Kappaletavara', value: serviceCounts.kappaletavara },
               { label: 'Muutto', value: serviceCounts.muutto },
               { label: 'Kierrätys', value: serviceCounts.kierratys },
-              { label: 'Ajoneuvo', value: serviceCounts.ajoneuvo },
             ].map(row => {
               const pct = totalBookings > 0 ? (row.value / totalBookings) * 100 : 0
               return (

@@ -59,11 +59,8 @@ INSERT INTO public.prices (key, value, label) VALUES
   ('base_kappaletavara', 89.00,  'Kappaletavara 0–40 km'),
   ('base_muutto',        269.00, 'Muutto 0–40 km'),
   ('base_kierratys',     79.00,  'Kierrätys 0–40 km'),
-  ('base_ajoneuvo_40',   129.00, 'Ajoneuvo 0–40 km'),
-  ('base_ajoneuvo_80',   169.00, 'Ajoneuvo 41–80 km'),
   ('km_rate_tavara',     1.29,   'Lisäkilometri tavara'),
   ('km_rate_muutto',     0.69,   'Lisäkilometri muutto'),
-  ('km_rate_ajoneuvo',   1.29,   'Lisäkilometri ajoneuvo'),
   -- ALV prosenttilukuna (25.50 = 25,5 %). EI murtolukua: value on
   -- numeric(8,2), joten 0.255 pyöristyisi arvoon 0.26.
   ('vat_rate',           25.50,  'ALV-prosentti (%)')

@@ -1,6 +1,6 @@
 # Pakuvie
 
-Single-page website for Pakuvie, a logistics company focused on motorcycle transport, moving services, and custom freight jobs.
+Website for Pakuvie, a logistics company focused on piece goods transport, moving services, recycling, and custom freight jobs.
 
 ## Stack
 
@@ -13,8 +13,8 @@ Single-page website for Pakuvie, a logistics company focused on motorcycle trans
 
 - Dark single-page landing page with electric blue accents
 - Sticky header with quick call action
-- Service cards with highlighted motorcycle transport offering
-- Interactive motorcycle transport calculator using VAT 0% pricing rules
+- Service cards for the piece goods, recycling, and moving offerings
+- Interactive transport calculator with VAT 0% pricing for businesses
 - Address autocomplete (Google Places) for piece goods transport addresses
 - Address-based distance lookup (Google Maps) with optional A-B-C multi-stop routing
 - Quote request form with backend API submission

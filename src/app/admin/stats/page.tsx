@@ -28,7 +28,6 @@ function normalizeService(serviceType: string | null): string {
   if (value.includes("kappale")) return "kappaletavara";
   if (value.includes("muutto")) return "muutto";
   if (value.includes("kierr")) return "kierratys";
-  if (value.includes("ajoneuvo")) return "ajoneuvo";
   return "muu";
 }
 
@@ -117,7 +116,6 @@ export default async function AdminStatsPage() {
     kappaletavara: 0,
     muutto: 0,
     kierratys: 0,
-    ajoneuvo: 0,
   };
   const statusCounts: Record<"new" | "confirmed" | "completed" | "cancelled", number> = {
     new: 0,
@@ -171,7 +169,6 @@ export default async function AdminStatsPage() {
     { label: "Kappaletavara", value: serviceCounts.kappaletavara },
     { label: "Muutto", value: serviceCounts.muutto },
     { label: "Kierratys", value: serviceCounts.kierratys },
-    { label: "Ajoneuvo", value: serviceCounts.ajoneuvo },
   ];
 
   const statusRows = [

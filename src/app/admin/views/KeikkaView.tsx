@@ -317,7 +317,6 @@ function VarausForm({
           <select value={form.palvelutyyppi} onChange={e => set('palvelutyyppi', e.target.value)} required
             className="w-full bg-zinc-700 text-zinc-100 border border-zinc-600 rounded px-3 py-2 text-sm">
             <option value="">Valitse...</option>
-            <option value="Ajoneuvokuljetukset">Ajoneuvokuljetukset</option>
             <option value="Kappaletavara">Kappaletavara</option>
             <option value="Muutot">Muutot</option>
             <option value="Kierrätys">Kierrätys</option>

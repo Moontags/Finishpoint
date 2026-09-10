@@ -40,7 +40,7 @@ describe("generateReceiptHtml — ALV-rivin näyttö", () => {
     customerName: "Janne Eteläaho",
     customerEmail: "janne.etelaaho@example.com",
     customerPhone: "0401234567",
-    serviceDescription: "Ajoneuvokuljetus",
+    serviceDescription: "Kappaletavarakuljetus",
     pickupAddress: "Helsinki",
     deliveryAddress: "Riihimäki",
     // Kuitilla käytetään laskurin summia sellaisenaan:

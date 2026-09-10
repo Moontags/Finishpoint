@@ -1,16 +1,12 @@
 {
   "calendar.booked": "Booked",
   "calculator.order_via_form": "Fill in the address and item details in the calculator to order and pay directly, or send a quote request using the form below.",
-  "service.motorcycle": "Motorcycle transport",
-  "service.atv": "ATV transport",
   "service.washing_machine": "Washing machine transport",
   "service.sofa": "Sofa transport",
   "service.bed": "Bed transport",
   "service.recycling": "Recycling",
   "service.moving": "Moving",
   "service.other": "Other transport"
-  "footer.atv": "ATV transport",
-  "footer.motorcycle": "Motorcycle transport",
   "checkout.confirming": "Confirming...",
   "checkout.confirm_and_pay": "Confirm order and proceed to payment",
   "steps.step1": "Submit a quote request by phone or form.",

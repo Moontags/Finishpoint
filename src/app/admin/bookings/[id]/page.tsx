@@ -55,7 +55,6 @@ export default async function BookingPage({
             <option value="muutto">Muutto</option>
             <option value="kierratys">Kierrätys</option>
             <option value="kappaletavara">Kappaletavara</option>
-            <option value="ajoneuvo">Ajoneuvo</option>
           </select>
         </div>
 
