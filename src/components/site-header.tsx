@@ -5,7 +5,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Mail, Menu, Phone } from "lucide-react";
+import { Building2, Mail, Menu, Phone } from "lucide-react";
 import { serviceNavigationLinks, serviceNavigationOrder } from "@/lib/services";
 import { siteContact, siteCta } from "@/lib/site-config";
 
@@ -170,6 +170,15 @@ export function SiteHeader({
                   >
                     {t("nav.areas")}
                   </Link>
+                  {/* Yritykset-linkki on desktopissa Tarjous-napin vasemmalla
+                      puolella, joten mobiilivalikossa se seuraa samaa järjestystä. */}
+                  <Link
+                    href="/yritysasiakkaat"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-slate-800 transition hover:bg-slate-100 hover:text-slate-900"
+                  >
+                    {t("nav.business", "Yritykset")}
+                  </Link>
                   <Link
                     href={quoteHref}
                     onClick={() => setMobileMenuOpen(false)}
@@ -180,6 +189,13 @@ export function SiteHeader({
                 </div>
               )}
             </div>
+            <Link
+              href="/yritysasiakkaat"
+              className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+            >
+              <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span>{t("nav.business", "Yritykset")}</span>
+            </Link>
             <Link
               href={quoteHref}
               className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"

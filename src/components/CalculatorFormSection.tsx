@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Zap } from "lucide-react";
 import { CalculatorProvider } from "@/lib/calculator-context";
 import ServiceSelector from "@/components/ServiceSelector";
@@ -42,6 +43,17 @@ export function CalculatorFormSection({
               >
                 {t("hero.promo_cta", "Pyydä tarjous jo tänään.")}
               </a>
+            </p>
+            {/* Toissijainen tekstilinkki yritysasiakkaille — tarkoituksella
+                kevyempi kuin pääsisältö, jotta pikakuljetus pysyy pääroolissa. */}
+            <p className="mt-2">
+              <Link
+                href="/yritysasiakkaat"
+                className="text-[12px] font-medium text-slate-500 underline-offset-2 transition hover:text-slate-700 hover:underline sm:text-[13px]"
+              >
+                {t("hero.business_link", "Yrityksille: kysy kuukausisopimusta")}{" "}
+                <span aria-hidden>→</span>
+              </Link>
             </p>
           </div>
           <ServiceSelector initialCategory={initialCategory} />

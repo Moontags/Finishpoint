@@ -9,10 +9,14 @@ export default function ServicePageLayout({
   title,
   description,
   children,
+  label,
 }: {
   title: string;
   description: string;
   children: ReactNode;
+  // Hero-osion yläotsikko. Oletuksena "Palvelu", mutta esim. yritysasiakassivu
+  // puhuttelee kävijää omalla otsikollaan.
+  label?: string;
 }) {
   const { t } = useLanguage();
   return (
@@ -43,7 +47,7 @@ export default function ServicePageLayout({
 
         <section className="relative z-10 mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6 lg:px-8 lg:pt-10">
           <div className="max-w-3xl space-y-3">
-            <p className="text-[13px] font-extrabold uppercase tracking-[0.28em] text-blue-600 sm:text-[15px]">{t('service_page.label', 'Palvelu')}</p>
+            <p className="text-[13px] font-extrabold uppercase tracking-[0.28em] text-blue-600 sm:text-[15px]">{label ?? t('service_page.label', 'Palvelu')}</p>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">{title}</h1>
             <p className="text-[15px] leading-7 text-slate-600 sm:text-lg sm:leading-8">{description}</p>
           </div>

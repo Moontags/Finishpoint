@@ -201,7 +201,12 @@ export const serviceFooterLinks: Array<{
   label: string;
 }> = serviceNavigationLinks.map(({ href, label }) => ({ href, label }));
 
+// Kuukausisopimus on tarjouspyynnön oma palvelutyyppi (ei omaa palvelusivua),
+// jotta /yritysasiakkaat-sivulta tulevat pyynnöt erottuvat kertakuljetuksista.
+export const MONTHLY_CONTRACT_SERVICE_TYPE = "Kuukausisopimus";
+
 export const quoteServiceOptions = [
   ...serviceNavigationOrder.map((slug) => services[slug].navLabel),
+  MONTHLY_CONTRACT_SERVICE_TYPE,
   "Muu kuljetus",
 ];

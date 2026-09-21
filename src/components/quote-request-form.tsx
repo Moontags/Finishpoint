@@ -22,7 +22,13 @@ const categoryDefaultServiceType: Record<ServiceCategory, string> = {
   projekti: orderServiceTypeOptions[1],
 };
 
-export function QuoteRequestForm() {
+export function QuoteRequestForm({
+  // Sivu voi esivalita palvelutyypin (esim. /yritysasiakkaat → Kuukausisopimus).
+  // Laskurin käyttö ylikirjoittaa valinnan, koska silloin kyse on kertatilauksesta.
+  initialServiceType = "Muu kuljetus",
+}: {
+  initialServiceType?: string;
+} = {}) {
   const { t } = useLanguage();
   const withVatRate = useVatRateText();
   const router = useRouter();
@@ -30,7 +36,7 @@ export function QuoteRequestForm() {
     name: "",
     phone: "",
     email: "",
-    serviceType: "Muu kuljetus",
+    serviceType: initialServiceType,
     pickupAddress: "",
     deliveryAddress: "",
     message: "",
@@ -155,7 +161,7 @@ export function QuoteRequestForm() {
         name: "",
         phone: "",
         email: "",
-        serviceType: "Muu kuljetus",
+        serviceType: initialServiceType,
         pickupAddress: "",
         deliveryAddress: "",
         message: "",
