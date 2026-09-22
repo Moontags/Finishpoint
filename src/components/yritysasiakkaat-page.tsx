@@ -14,22 +14,14 @@ export function YritysasiakkaatPage() {
   const { t } = useLanguage();
 
   const contractBenefits = [
-    t(
-      "yritys.contract.benefit1",
-      "Kiinteä nouto- ja toimitusaikataulu viikoittain tai kuukausittain",
-    ),
-    t(
-      "yritys.contract.benefit2",
-      "Sama kuljettaja ja tuttu kalusto — tarvetta ei tarvitse selittää joka kerta uudelleen",
-    ),
-    t(
-      "yritys.contract.benefit3",
-      "Joustava sopimus: määrää ja aikataulua voi muuttaa kesken kauden",
-    ),
+    t("yritys.contract.benefit1", "Sovitut nouto- ja toimitusajat"),
+    t("yritys.contract.benefit2", "Kuljetukset tarpeenne mukaan"),
+    t("yritys.contract.benefit3", "Helppo tilaus ja yhteydenpito"),
     t(
       "yritys.contract.benefit4",
-      "Kuljetukset laskulla, hinnat ALV 0 % eli verottomina",
+      "Mahdollisuus muuttaa kuljetusten määrää tarpeen mukaan",
     ),
+    t("yritys.contract.benefit5", "Laskutus yritykselle"),
   ];
 
   const faqItems = [
@@ -40,21 +32,28 @@ export function YritysasiakkaatPage() {
       ),
       answer: t(
         "yritys.faq.a1",
-        "Kyllä. Useimmat yritysasiakkaat aloittavat yhdellä kuljetuksella. Kun tarve toistuu, sovitaan kuukausisopimus samoilla yhteyshenkilöillä ja käytännöillä.",
+        "Kyllä. Voitte aloittaa yhdellä kuljetuksella ja sopia myöhemmin jatkuvasta palvelusta, jos kuljetustarve osoittautuu säännölliseksi.",
       ),
     },
     {
-      question: t("yritys.faq.q2", "Miten laskutus toimii?"),
+      question: t("yritys.faq.q2", "Mitä yrityksille voidaan kuljettaa?"),
       answer: t(
         "yritys.faq.a2",
-        "Yrityksille hinnat ilmoitetaan ALV 0 % eli verottomina, ja kuljetukset hoituvat laskulla. Yksittäisen kuljetuksen voi halutessaan maksaa myös heti verkossa etusivun laskurista.",
+        "Kuljetamme esimerkiksi tavaroita, koneita, kalusteita, moottoripyöriä ja muita kuljetettavia tuotteita. Jos olet epävarma, onnistuuko kuljetus, kysy rohkeasti.",
       ),
     },
     {
-      question: t("yritys.faq.q3", "Miten nopeasti pääsemme alkuun?"),
+      question: t("yritys.faq.q3", "Miten nopeasti kuljetus voidaan järjestää?"),
       answer: t(
         "yritys.faq.a3",
-        "Vastaamme tarjouspyyntöön yleensä saman päivän aikana. Yksittäinen kuljetus onnistuu usein jo seuraavaksi päiväksi, ja sopimuksen yksityiskohdat sovitaan yhdellä puhelulla.",
+        "Vastaamme tarjouspyyntöihin mahdollisimman nopeasti ja sovimme kuljetuksen aikataulun yrityksenne tarpeen mukaan. Kiireellisissä kuljetuksissa kannattaa olla yhteydessä suoraan.",
+      ),
+    },
+    {
+      question: t("yritys.faq.q4", "Miten laskutus toimii?"),
+      answer: t(
+        "yritys.faq.a4",
+        "Yritysasiakkaiden kuljetukset voidaan laskuttaa yritykselle. Yksittäisen kuljetuksen voi myös tilata ja maksaa verkkopalvelun kautta.",
       ),
     },
   ];
@@ -65,7 +64,11 @@ export function YritysasiakkaatPage() {
       title={t("yritys.hero.title", "Kuljetuspalvelut yrityksille")}
       description={t(
         "yritys.hero.description",
-        "Palvelemme yrityksiä sekä yksittäisissä kuljetuksissa että toistuvissa kuljetustarpeissa. Hinnat ilmoitetaan yrityksille ALV 0 % eli verottomina, ja kuljetukset hoituvat laskulla.",
+        "Tarjoamme yrityksille kuljetuspalvelua yksittäisiin tarpeisiin ja säännöllisiin kuljetuksiin. Hoidamme esimerkiksi tavaroiden, koneiden, kalusteiden ja muiden suurempien lähetysten noutoja ja toimituksia sovitusti.",
+      )}
+      secondaryDescription={t(
+        "yritys.hero.description2",
+        "Kun kuljetustarve toistuu, voimme sopia yrityksellenne jatkuvasta kuljetuspalvelusta. Näin kuljetukset hoituvat helposti ilman, että jokaista toimitusta tarvitsee järjestää alusta asti uudelleen.",
       )}
     >
       {/* Kuukausisopimus */}
@@ -76,7 +79,7 @@ export function YritysasiakkaatPage() {
         <p className="mt-3 max-w-3xl text-[14px] leading-[1.75] text-slate-700 sm:text-base">
           {t(
             "yritys.contract.description",
-            "Jos yrityksellänne on kiinteä kuljetustarve viikoittain tai kuukausittain, sovitaan siitä kuukausisopimus. Silloin kuljetukset kulkevat sovitulla aikataululla eikä jokaista kuljetusta tarvitse tilata erikseen.",
+            "Jos yrityksellänne on säännöllinen kuljetustarve, sovitaan yhdessä toimiva aikataulu ja käytännöt.",
           )}
         </p>
 

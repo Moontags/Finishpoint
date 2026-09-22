@@ -5,7 +5,7 @@ const PAGE_URL = "https://www.pakuvie.fi/yritysasiakkaat";
 
 const metadataTitle = "Kuljetuspalvelut yrityksille | Pakuvie";
 const metadataDescription =
-  "Kuljetukset yrityksille ALV 0 % -hintaan — yksittäiset kuljetukset ja kuukausisopimukset Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla. Laske hinta tai kysy tarjous.";
+  "Kuljetuspalvelut yrityksille — yksittäiset kuljetukset ja kuukausisopimukset Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla. Laske hinta tai kysy tarjous.";
 
 export const metadata: Metadata = {
   title: metadataTitle,
