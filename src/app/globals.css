@@ -8,11 +8,15 @@
   --card-border: #e2e8f0;
   --accent: #2563eb;
   --accent-strong: #3b82f6;
+  /* Laskuriosion ja footerin yhteinen taustasävy. Oletus on muun sivuston
+     pintaväri; etusivu ylikirjoittaa tämän (ks. .home-page). */
+  --surface-panel: #f5f6f8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface-panel: var(--surface-panel);
   --font-sans: var(--font-montserrat);
 }
 
@@ -337,7 +341,7 @@ button:focus-visible {
 }
 
 /* Homepage: light panels, intrinsic grids and comfortable touch targets. */
-.home-page { background: linear-gradient(180deg, #edf6ff 0, #fff 780px, #f5faff 100%); }
+.home-page { --surface-panel: #eaf4ff; background: linear-gradient(180deg, #edf6ff 0, #fff 780px, #f5faff 100%); }
 .home-container { width: min(100% - 48px, 1200px); margin-inline: auto; }
 .home-page h1, .home-page h2, .home-page h3 { color: #082252; }
 .home-page h2 { font-size: clamp(24px, 2.7vw, 34px); line-height: 1.2; font-weight: 750; letter-spacing: -.035em; }
@@ -348,13 +352,15 @@ button:focus-visible {
 .home-hero-image { position: relative; aspect-ratio: 1.55; }
 .home-primary { display: inline-flex; align-items: center; justify-content: center; gap: 24px; min-height: 48px; padding: 12px 24px; background: #163d68; color: white; border-radius: 8px; font-weight: 700; }
 .home-primary:hover { background: #0c2949; }
-.home-calculator { border: 1px solid #cdddF2; border-radius: 16px; background: #f6faff; box-shadow: 0 10px 30px #16396308; }
+.home-calculator { border: 1px solid #cdddF2; border-radius: 16px; background: var(--surface-panel); box-shadow: 0 10px 30px #16396308; }
 .home-calculator #calculator { padding: 24px; scroll-margin-top: 24px; }
 .home-calculator #calculator > p:first-child { font-size: clamp(19px, 2vw, 26px); text-transform: none; letter-spacing: -.02em; color: #082252; }
 .home-page input:not([type=checkbox]):not([type=radio]), .home-page select, .home-page textarea { background: white; min-width: 0; font-size: 16px; }
 .home-page input:not([type=checkbox]):not([type=radio]), .home-page select { min-height: 48px; }
 .home-calculator button { min-height: 44px; }
-.home-calculator button[aria-pressed=true] { background: #e4efff; border-color: #0060e5; color: #004bb6; }
+/* Valittu palvelu erottuu reunaviivalla ja tekstin värillä — tausta pysyy
+   samana kuin muilla lokeroilla ja "Varaa ajankohta" -laatikolla. */
+.home-calculator button[aria-pressed=true] { background: #fff; border-color: #0060e5; color: #004bb6; }
 .home-calculator .calculate-price-button { background: #163d68; color: #fff; border-color: #163d68; }
 .home-services { padding-block: 48px; }
 .home-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 22px; }

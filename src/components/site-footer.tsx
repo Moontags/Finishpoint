@@ -10,7 +10,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
   const { t } = useLanguage();
   const withVatRate = useVatRateText();
   return (
-    <footer className={`bg-[#f5f6f8] pb-16 ${className}`}>
+    <footer className={`bg-surface-panel pb-16 ${className}`}>
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
 

@@ -197,7 +197,7 @@ function AddressAutocompleteField({
             width: '100%',
             borderRadius: '12px',
             border: '1px solid #94a3b8',
-            background: 'transparent',
+            background: '#fff',
             padding: '12px 18px',
             fontSize: 15,
             color: '#1e293b',

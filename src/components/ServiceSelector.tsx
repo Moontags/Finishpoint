@@ -92,7 +92,7 @@ export default function ServiceSelector({
                     onClick={() => setOpen((v) => !v)}
                     aria-expanded={open}
                     aria-controls="service-options"
-                    className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-400 bg-transparent px-4 py-3 text-[14px] font-semibold text-slate-800"
+                    className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-400 bg-white px-4 py-3 text-[14px] font-semibold text-slate-800"
                   >
                     <span className="min-w-0 flex-1 wrap-break-word text-left leading-tight">
                       {(() => { const c = categories.find((c) => c.id === active); return c ? t(`serviceCategory.${c.id}.label`, c.label) : ""; })()}
@@ -139,7 +139,7 @@ export default function ServiceSelector({
                     data-testid={`service-tab-${id}`}
                     onClick={() => setActive(id)}
                     aria-pressed={active === id}
-                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold ${
+                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-white px-6 py-3.5 text-sm font-bold ${
                       active === id
                         ? "text-slate-900"
                         : "text-slate-900"
@@ -152,7 +152,7 @@ export default function ServiceSelector({
                 <Link
                   href={kierratysItem.href}
                   data-testid={`service-tab-${kierratysItem.id}`}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-center text-sm font-bold text-slate-900"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-white px-6 py-3.5 text-center text-sm font-bold text-slate-900"
                 >
                   <span>{t(`service.${kierratysItem.label}`, kierratysItem.label)}</span>
                 </Link>
