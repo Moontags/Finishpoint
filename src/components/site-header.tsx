@@ -32,6 +32,13 @@ export function SiteHeader({
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+        mobileMenuRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
     const handleOutside = (e: MouseEvent | TouchEvent) => {
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
         setMobileMenuOpen(false);
@@ -40,6 +47,7 @@ export function SiteHeader({
     document.addEventListener("mousedown", handleOutside);
     document.addEventListener("touchstart", handleOutside);
     return () => {
+      document.removeEventListener("keydown", handleEscape);
       document.removeEventListener("mousedown", handleOutside);
       document.removeEventListener("touchstart", handleOutside);
     };
@@ -86,15 +94,14 @@ export function SiteHeader({
               alt="Pakuvie"
               width={160}
               height={80}
-              className="h-auto w-32 object-contain hidden sm:block sm:w-44"
+              className="h-auto w-22 object-contain sm:w-28"
               priority
             />
-            <span className="flex shrink-0 flex-col leading-none sm:hidden">
-              <span className="text-[32px] font-black tracking-[0.04em] text-slate-900">pakuvie.fi</span>
-            </span>
+
           </Link>
 
-          <nav className="hidden min-w-0 items-center gap-1 text-[14px] font-medium text-slate-700 md:flex">
+          <nav className="hidden min-w-0 items-center gap-1 text-[14px] font-medium text-slate-700 lg:flex">
+            {pathname === "/" && <a href="#services" className="rounded-lg px-3.5 py-2">{language === "fi" ? "Palvelut" : "Services"}</a>}
             {/* md–xl: yksittäinen Alueet-linkki */}
             <Link
               href="/alueet"
@@ -138,21 +145,24 @@ export function SiteHeader({
               type="button"
               aria-label="Vaihda kieli"
               onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
-              className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-800 bg-transparent text-slate-800 transition hover:bg-slate-100 sm:hidden"
+              className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-800 bg-transparent text-slate-800 transition hover:bg-slate-100 lg:hidden"
               style={{ fontWeight: 700, fontSize: 15 }}
             >
               {language === "fi" ? "EN" : "FI"}
             </button>
-            <div ref={mobileMenuRef} className="relative translate-y-0.5 sm:translate-y-0 sm:hidden">
+            <div ref={mobileMenuRef} className="relative translate-y-0.5 sm:translate-y-0 lg:hidden">
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen((o) => !o)}
+                aria-label={mobileMenuOpen ? "Sulje valikko" : "Avaa valikko"}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation"
                 className="grid h-12 w-12 cursor-pointer place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50"
               >
                 <Menu className="h-6 w-6" />
               </button>
               {mobileMenuOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
+                <div id="mobile-navigation" className="absolute right-0 top-full z-50 mt-2 grid min-w-56 gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg backdrop-blur-xl">
                   {serviceNavigationLinks.map(({ href, label }) => (
                     <Link
                       key={href}
@@ -191,21 +201,21 @@ export function SiteHeader({
             </div>
             <Link
               href="/yritysasiakkaat"
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden lg:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("nav.business", "Yritykset")}</span>
             </Link>
             <Link
               href={quoteHref}
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden lg:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("nav.quote")}</span>
             </Link>
             <a
               href={siteContact.phoneHref}
-              className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
+              className="hidden lg:inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-transparent px-3 py-2 text-xs font-bold text-slate-900 transition hover:bg-slate-100 active:scale-[0.97] sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
             >
               <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("nav.call")}</span>
@@ -216,7 +226,7 @@ export function SiteHeader({
               aria-label={language === "fi" ? "Switch to English" : "Vaihda suomeksi"}
               data-testid="language-toggle"
               onClick={() => setLanguage(language === "fi" ? "en" : "fi")}
-              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-transparent border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 transition hover:bg-slate-100"
+              className="hidden lg:inline-flex items-center justify-center rounded-xl bg-transparent border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 transition hover:bg-slate-100"
               style={{ fontWeight: 700, fontSize: 15 }}
             >
               {language === "fi" ? "EN" : "FI"}

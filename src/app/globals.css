@@ -335,3 +335,134 @@ button:focus-visible {
   outline: 3px solid #2563eb;
   outline-offset: 2px;
 }
+
+/* Homepage: light panels, intrinsic grids and comfortable touch targets. */
+.home-page { background: linear-gradient(180deg, #edf6ff 0, #fff 780px, #f5faff 100%); }
+.home-container { width: min(100% - 48px, 1200px); margin-inline: auto; }
+.home-page h1, .home-page h2, .home-page h3 { color: #082252; }
+.home-page h2 { font-size: clamp(24px, 2.7vw, 34px); line-height: 1.2; font-weight: 750; letter-spacing: -.035em; }
+.home-hero { display: grid; grid-template-columns: 1fr 1.15fr; align-items: center; gap: 24px; padding-block: 24px 32px; }
+.home-eyebrow { color: #355987; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; margin-bottom: 16px; }
+.home-hero h1 { font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04; font-weight: 800; letter-spacing: -.05em; }
+.home-hero-copy > p:not(.home-eyebrow) { color: #466185; font-size: clamp(16px, 1.6vw, 21px); line-height: 1.55; margin-block: 20px; max-width: 440px; }
+.home-hero-image { position: relative; aspect-ratio: 1.55; }
+.home-primary { display: inline-flex; align-items: center; justify-content: center; gap: 24px; min-height: 48px; padding: 12px 24px; background: #163d68; color: white; border-radius: 8px; font-weight: 700; }
+.home-primary:hover { background: #0c2949; }
+.home-calculator { border: 1px solid #cdddF2; border-radius: 16px; background: #f6faff; box-shadow: 0 10px 30px #16396308; }
+.home-calculator #calculator { padding: 24px; scroll-margin-top: 24px; }
+.home-calculator #calculator > p:first-child { font-size: clamp(19px, 2vw, 26px); text-transform: none; letter-spacing: -.02em; color: #082252; }
+.home-page input:not([type=checkbox]):not([type=radio]), .home-page select, .home-page textarea { background: white; min-width: 0; font-size: 16px; }
+.home-page input:not([type=checkbox]):not([type=radio]), .home-page select { min-height: 48px; }
+.home-calculator button { min-height: 44px; }
+.home-calculator button[aria-pressed=true] { background: #e4efff; border-color: #0060e5; color: #004bb6; }
+.home-calculator .calculate-price-button { background: #163d68; color: #fff; border-color: #163d68; }
+.home-services { padding-block: 48px; }
+.home-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 22px; }
+.home-service-card { display: flex; flex-direction: column; min-width: 0; border: 1px solid #d6e3f4; border-radius: 10px; overflow: hidden; background: white; transition: box-shadow .2s, border-color .2s; }
+.home-service-card:hover { border-color: #7aa7e8; box-shadow: 0 8px 24px #183a6510; }
+.home-service-image { position: relative; aspect-ratio: 1.9; background: #edf5fc; }
+.home-service-image img { object-position: center 45%; }
+.home-service-copy { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 18px 20px; }
+.home-service-copy h3 { font-size: 18px; font-weight: 750; overflow-wrap: anywhere; }
+.home-service-copy p { color: #466185; line-height: 1.5; margin-block: 8px 14px; }
+.home-card-link { margin-top: auto; color: #0056ca; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.home-fleet { background: #eaf4ff; padding-block: 24px; }
+.home-fleet-grid { display: grid; grid-template-columns: 1fr 1fr .85fr; gap: 24px; align-items: center; }
+.home-fleet p { margin-top: 16px; line-height: 1.6; color: #466185; }
+.home-fleet-image { position: relative; aspect-ratio: 1.3; }
+.home-fleet-grid > div:last-child { margin: 0; padding: 0; }
+.home-fleet-grid > div:last-child > div { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.home-fleet-grid > div:last-child > div > div { background: white; min-height: 85px; border-color: #cddff5; }
+.home-fleet-grid > div:last-child span { font-size: 14px; }
+.home-fleet-grid > div:last-child span.font-bold { font-size: 20px; }
+.home-quote { padding-block: 36px; scroll-margin-top: 24px; }
+.home-quote > div, .home-quote > section { padding-inline: 0; }
+.home-page :is(input, select, textarea):focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .home-page header > div { padding-inline: 0; }
+  .home-page header img { width: 120px; }
+  .home-page header nav { display: none; }
+  .home-page header a, .home-page header button { padding-inline: 12px; }
+}
+@media (max-width: 1023px) {
+  .home-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-fleet-grid { grid-template-columns: 1fr 1fr; }
+  .home-fleet-grid > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .home-hero { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 20px; }
+  .home-hero-copy { max-width: 520px; }
+  .home-hero-image { width: min(100%, 460px); margin: 0 auto; aspect-ratio: 2; }
+}
+@media (max-width: 639px) {
+  .home-container { width: calc(100% - 32px); }
+  .home-calculator #calculator { padding: 16px; }
+  .home-services { padding-block: 32px; }
+  .home-service-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .home-fleet-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .home-fleet-image { max-height: 220px; }
+  .home-fleet-grid > div:last-child { padding-bottom: 16px; }
+  .home-page header a[aria-label="Etusivu"] span.text-\[32px\] { font-size: 27px; }
+  .home-quote { padding-block: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+.home-calculator > h2 { margin: 24px 24px 0; font-size: clamp(21px, 2.3vw, 28px); }
+.home-calculator #calculator > p:first-child { display: none; }
+.home-calculator #calculator > div { margin-top: 0; }
+.home-calculator .calculate-price-button:disabled { opacity: .65; }
+.home-page header a[aria-label="Etusivu"] > img { display: block; width: 110px; }
+.home-page header a[aria-label="Etusivu"] > span { display: none; }
+.home-page #quote > div:first-child h2 { display: block; }
+@media (max-width: 639px) {
+  .home-calculator > h2 { margin: 20px 16px 0; }
+  .home-page header a[aria-label="Etusivu"] > img { width: 88px; }
+}
+
+/* Shared finishing touches for the public booking flow. */
+.calculate-price-button { background: #163d68; color: #fff; border-color: #163d68; min-height: 48px; transition: background-color .18s, box-shadow .18s; }
+.calculate-price-button:hover:not(:disabled), .home-calculator .calculate-price-button:hover:not(:disabled) { background: #0c2949; border-color: #0c2949; box-shadow: 0 4px 12px #163d681a; }
+.home-primary { transition: background-color .18s, box-shadow .18s; }
+.home-service-card:focus-visible { outline-offset: 4px; }
+.home-calculator input:not([type=checkbox]):not([type=radio]), .home-quote input, .home-quote textarea, .home-quote select { border-color: #c3d2e3; border-radius: 10px; }
+.home-calculator, .home-service-card { border-color: #d3dfed; }
+.booking-calendar { border-color: #d0dce9; background: #fff; }
+.booking-calendar button:disabled { opacity: .45; cursor: not-allowed; }
+.booking-calendar button[aria-pressed=true], .home-calculator .booking-calendar button[aria-pressed=true] { color: #163d68; background: #eaf1f9; border-color: #163d68; box-shadow: inset 0 0 0 1px #163d68; }
+.booking-period { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px; margin-block: 8px 12px; }
+.booking-period > span { order: -1; width: 100%; text-align: center; text-transform: capitalize; color: #334e6b; font-size: 14px; font-weight: 650; }
+.booking-period button { display: inline-flex; align-items: center; justify-content: center; gap: 3px; min-height: 44px; border: 0; border-radius: 8px; padding: 6px 8px; color: #163d68; font-size: 13px; font-weight: 600; }
+.booking-period button:hover:not(:disabled) { background: #edf3fa; }
+.booking-days { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.booking-days button { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; padding: 14px 6px; background: white; border: 1px solid #ccd9e7; border-radius: 12px; color: #334e6b; }
+.booking-days button > span { font-size: 13px; text-transform: capitalize; }
+.booking-days strong { font-size: 24px; line-height: 1.2; }
+.booking-days small { font-size: 11px; }
+.booking-time { margin-top: 18px; }
+.booking-time label { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 650; color: #163d68; }
+.booking-time > p { margin-block: 6px 10px; font-size: 13px; color: #52677e; text-transform: capitalize; }
+.booking-time select { width: 100%; min-height: 50px; padding: 12px; border: 1px solid #b9cbe0; border-radius: 10px; background: #fff; color: #163d68; font: inherit; font-size: 16px; }
+.booking-time .booking-confirmation { background: #edf4fb; border-radius: 8px; padding: 10px; line-height: 1.6; text-transform: none; }
+.booking-hint { margin-top: 12px; font-size: 12px; line-height: 1.6; color: #52677e; }
+.booking-time select:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+
+.service-page { background: #f5f9fe; }
+.service-page h1, .service-page h2, .service-page h3 { color: #082252; }
+.service-page > div > .pointer-events-none { opacity: .12; }
+.service-page section.rounded-2xl, .service-page section > .rounded-2xl, .service-page section a.rounded-2xl { background-color: #fffffff2; border-color: #d3dfed; box-shadow: 0 3px 12px #163d6808; }
+.service-page a[href="/#quote"], .service-page button[type="submit"] { background: #163d68; color: #fff; border-color: #163d68; }
+.service-page a[href="/#quote"]:hover, .service-page button[type="submit"]:hover:not(:disabled) { background: #0c2949; }
+.service-page input:not([type="checkbox"]):not([type="radio"]), .service-page select, .service-page textarea { font-size: 16px; border-color: #c3d2e3; background: #fff; }
+.service-page input:not([type="checkbox"]):not([type="radio"]), .service-page select { min-height: 48px; }
+.btn:not(.btn--outline-light), .btn:not(.btn--outline-light):hover { filter: none; }
+.btn--primary { background: #163d68; }
+.btn--primary:hover { background: #0c2949; }
+
+.public-area { background: #f5f9fe; }
+.public-area > div > .pointer-events-none { opacity: .12; }
+.public-area h2, .public-area h3 { color: #082252; }
+.public-area a.group { background: #fff; border: 1px solid #d3dfed; box-shadow: 0 3px 12px #163d6808; }
+.public-area .area-order-button { background: #163d68; color: #fff; }
+.public-area .area-order-button:hover { background: #0c2949; }

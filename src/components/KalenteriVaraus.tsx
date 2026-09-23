@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   addDays,
   addMinutes,
@@ -10,7 +10,8 @@ import {
   parse,
   startOfDay,
 } from "date-fns";
-import { fi } from "date-fns/locale";
+import { fi, enGB } from "date-fns/locale";
+import { ChevronLeft, ChevronRight, Clock3 } from "lucide-react";
 import type { BookingSelectionData } from "@/lib/types";
 import { isSlotBeforeMinLeadTime } from "@/components/calendar-utils";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -86,7 +87,9 @@ export function KalenteriVaraus({
   kohde: string;
   onDateTimeSelect: (selection: BookingSelectionData | null) => void;
 }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const timeSelectId = useId();
+  const calendarLocale = language === "en" ? enGB : fi;
   const [weekStart, setWeekStart] = useState(getInitialWeekStart);
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
@@ -310,14 +313,6 @@ export function KalenteriVaraus({
     return isSlotUnavailableForDate(slot, dayIso, bookings);
   };
 
-  const isTimeSlotUnavailableForDay = (slot: string, day: Date): boolean => {
-    const dayIso = format(day, "yyyy-MM-dd");
-    if (suljetutPaivat.includes(dayIso)) return true;
-    if (isSlotBeforeMinLeadTime(slot, dayIso, new Date())) return true;
-    const bookings = varausAjat[dayIso] ?? [];
-    return isSlotUnavailableForDate(slot, dayIso, bookings);
-  };
-
   useEffect(() => {
     if (!selectedDay || !selectedTime) return;
     if (isTimeSlotUnavailable(selectedTime)) {
@@ -362,7 +357,7 @@ export function KalenteriVaraus({
     return (
       <div
         data-testid="calendar"
-        className="rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5"
+        className="booking-calendar rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5"
       >
         <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">
@@ -375,7 +370,7 @@ export function KalenteriVaraus({
   }
 
   return (
-    <div data-testid="calendar" className="rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5">
+    <div data-testid="calendar" className="booking-calendar rounded-xl border border-slate-400 bg-transparent p-3 sm:col-span-2 sm:p-5 lg:p-3.5">
       <div className="mb-2 flex items-center justify-between gap-2 lg:mb-1.5">
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-600">{t("calendar.book_time", "Varaa ajankohta")}</p>
@@ -386,122 +381,64 @@ export function KalenteriVaraus({
       </div>
 
       {isMobile ? (
-        <>
-          <div className="mb-2 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => canGoBack && setWeekStart((current) => addDays(current, -navStep))}
-              disabled={!canGoBack}
-              className="shrink-0 rounded-lg border border-slate-400 bg-transparent px-4 py-2 text-slate-700 disabled:cursor-not-allowed"
-              aria-label={t("calendar.previous_period", "Edellinen jakso")}
-            >
-              ←
+        <div className="booking-mobile">
+          <div className="booking-period">
+            <button type="button" disabled={!canGoBack}
+              onClick={() => canGoBack && setWeekStart(current => addDays(current, -navStep))}
+              aria-label={t("calendar.previous_period", "Edellinen jakso")}>
+              <ChevronLeft size={18} aria-hidden="true" />
+              {language === "en" ? "Previous" : "Edelliset"}
             </button>
-            <div className="flex-1 rounded-lg border border-slate-400 bg-transparent px-2 py-2 text-center text-[14px] font-semibold text-[#1a2e4a]">
-              {format(weekDays[0], "d.M.", { locale: fi })} – {format(weekDays[weekDays.length - 1], "d.M.", { locale: fi })}
-            </div>
-            <button
-              type="button"
-              onClick={() => canGoForward && setWeekStart((current) => addDays(current, navStep))}
-              disabled={!canGoForward}
-              className="shrink-0 rounded-lg border border-slate-400 bg-transparent px-4 py-2 text-slate-700 disabled:cursor-not-allowed"
-              aria-label={t("calendar.next_period", "Seuraava jakso")}
-            >
-              →
+            <span aria-live="polite">{format(weekDays[0], "LLLL yyyy", { locale: calendarLocale })}</span>
+            <button type="button" disabled={!canGoForward}
+              onClick={() => canGoForward && setWeekStart(current => addDays(current, navStep))}
+              aria-label={t("calendar.next_period", "Seuraava jakso")}>
+              {language === "en" ? "Next" : "Seuraavat"}
+              <ChevronRight size={18} aria-hidden="true" />
             </button>
           </div>
-
-          <div
-            className="grid grid-cols-2 gap-2"
-            style={{ touchAction: "pan-y" }}
-            onTouchStart={handleDayGridTouchStart}
-            onTouchEnd={handleDayGridTouchEnd}
-          >
-            {weekDays.map((day) => {
+          <div className="booking-days" style={{ touchAction: "pan-y" }}
+            onTouchStart={handleDayGridTouchStart} onTouchEnd={handleDayGridTouchEnd}>
+            {weekDays.map(day => {
               const past = isPast(day);
               const reserved = isPaivaVarattu(day);
-              const isSelectedDay = selectedDay ? isSameDay(selectedDay, day) : false;
-              const showSlots = !!selectedDay && !isPast(selectedDay) && !selectedTime;
-
+              const selected = !!selectedDay && isSameDay(selectedDay, day);
               return (
-                <div key={day.toISOString()} className="flex flex-col gap-1.5">
-                  <button
-                    type="button"
-                    disabled={past}
-                    onClick={() => {
-                      setSelectedDay(day);
-                      setSelectedTime("");
-                      setIsTimeMenuOpen(false);
-                    }}
-                    className={`rounded-lg border border-slate-400 bg-transparent px-2 py-3 text-center ${
-                      past
-                        ? "cursor-not-allowed text-slate-400"
-                        : isSelectedDay
-                        ? "text-[#1a2e4a] font-semibold"
-                        : "text-[#1a2e4a]"
-                    }`}
-                  >
-                    <span className="block text-[14px] font-semibold capitalize">
-                      {format(day, "EEEEEE", { locale: fi })} {format(day, "d.M.", { locale: fi })}
-                    </span>
-                    <span className="mt-1 block h-4 text-[10px]">
-                      {reserved && !past ? (
-                        <span className="inline-block rounded-full border border-slate-400 bg-transparent px-1.5 py-0.5 text-[10px] text-slate-600">
-                          {t("calendar.reserved", "Varattu")}
-                        </span>
-                      ) : null}
-                    </span>
-                  </button>
-
-                  {showSlots ? (
-                    past ? (
-                      <div className="rounded-lg border border-slate-300 bg-transparent px-2 py-3 text-center text-[12px] text-slate-500">—</div>
-                    ) : reserved ? (
-                      <div className="rounded-lg border border-slate-300 bg-transparent px-2 py-3 text-center text-[12px] text-slate-600">{t("calendar.reserved", "Varattu")}</div>
-                    ) : (
-                      timeSlots.map((slot) => {
-                        const unavailable = isTimeSlotUnavailableForDay(slot, day);
-                        const isCurrentSelection = isSelectedDay && selectedTime === slot;
-
-                        return (
-                          <button
-                            key={slot}
-                            type="button"
-                            disabled={unavailable}
-                            onClick={() => {
-                              setSelectedDay(day);
-                              setSelectedTime(slot);
-                              setIsTimeMenuOpen(false);
-                            }}
-                            className={`flex w-full items-center justify-between rounded-lg border bg-transparent px-3 py-2.5 text-left ${
-                              unavailable
-                                ? "cursor-not-allowed border-slate-300 text-slate-400 line-through"
-                                : isCurrentSelection
-                                ? "border-[#1a2e4a] text-[#1a2e4a] font-semibold"
-                                : "border-[#1a2e4a]/20 text-[#1a2e4a]"
-                            }`}
-                          >
-                            <span className="text-[15px] font-semibold">{slot}</span>
-                            <span className="text-[14px]">›</span>
-                          </button>
-                        );
-                      })
-                    )
-                  ) : null}
-                </div>
+                <button key={day.toISOString()} type="button" disabled={past}
+                  aria-pressed={selected}
+                  aria-label={format(day, "EEEE d. MMMM", { locale: calendarLocale })}
+                  onClick={() => { setSelectedDay(day); setSelectedTime(""); setIsTimeMenuOpen(false); }}>
+                  <span>{format(day, "EEEE", { locale: calendarLocale })}</span>
+                  <strong>{format(day, "d.M.")}</strong>
+                  <small>{reserved ? t("calendar.reserved", "Varattu") : selected ? (language === "en" ? "Selected" : "Valittu") : (language === "en" ? "Select day" : "Valitse päivä")}</small>
+                </button>
               );
             })}
           </div>
-
-          {selectedDay && selectedTime && !isPast(selectedDay) && driveToDestinationMinutes !== null && driveFromRiihimakiMinutes !== null ? (
-            <div className="mt-3 rounded-[10px] bg-transparent px-2 py-3 text-[13px] leading-7 text-[#1a2e4a]">
-              <p>📍 {t("calendar.arrival_at_destination", "Saapuminen kohteeseen")}: ~{selectedTime}</p>
-              <p>
-                ⏱ {t("calendar.estimated_total_duration", "Arvioitu kuljetuksen kokonaiskesto")}: {durationLabel(WORK_DURATION_MINUTES + driveToDestinationMinutes)}
-              </p>
+          {selectedDay && !isPast(selectedDay) ? (
+            <div className="booking-time">
+              <label htmlFor={timeSelectId}><Clock3 size={17} aria-hidden="true" />
+                {t("calendar.select_transport_time", "Valitse kuljetusaika")}
+              </label>
+              <p>{format(selectedDay, "EEEE d.M.", { locale: calendarLocale })}</p>
+              <select id={timeSelectId} value={selectedTime}
+                onChange={event => setSelectedTime(event.target.value)}>
+                <option value="">{language === "en" ? "Select a time" : "Valitse kellonaika"}</option>
+                {timeSlots.map(slot => (
+                  <option key={slot} value={slot} disabled={isTimeSlotUnavailable(slot)}>
+                    {slot}{isTimeSlotUnavailable(slot) ? ` – ${t("calendar.reserved", "Varattu")}` : ""}
+                  </option>
+                ))}
+              </select>
+              {selectedTime && driveToDestinationMinutes !== null && driveFromRiihimakiMinutes !== null ? (
+                <p className="booking-confirmation" role="status">
+                  {t("calendar.arrival_at_destination", "Saapuminen kohteeseen")}: ~{selectedTime}<br />
+                  {t("calendar.estimated_total_duration", "Arvioitu kuljetuksen kokonaiskesto")}: {durationLabel(WORK_DURATION_MINUTES + driveToDestinationMinutes)}
+                </p>
+              ) : null}
             </div>
-          ) : null}
-        </>
+          ) : <p className="booking-hint">{language === "en" ? "Select a day to see available times." : "Valitse päivä, niin näet vapaat kellonajat."}</p>}
+        </div>
       ) : (
         <>
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -527,6 +464,7 @@ export function KalenteriVaraus({
                   <button
                     key={day.toISOString()}
                     type="button"
+                    aria-pressed={selected}
                     disabled={disabled}
                     onClick={() => {
                       setSelectedDay(day);

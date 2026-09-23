@@ -52,7 +52,7 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
 
   return (
     <>
-      <main className="overflow-x-clip">
+      <main className="public-area overflow-x-clip">
         <div className="relative w-full overflow-hidden">
           {/* Background image — fills the full container, fades to #f5f6f8 toward bottom */}
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -106,7 +106,7 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
             <div className="mt-3 mb-8">
               <Link
                 href={`/${siteCta.calculatorHref}`}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98]"
+                className="area-order-button inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white/30 px-6 py-3.5 text-sm font-bold text-slate-900 backdrop-blur-sm transition duration-200 hover:bg-white/60 active:scale-[0.98]"
               >
                 {t('service_page.order', 'Tilaa')}
               </Link>

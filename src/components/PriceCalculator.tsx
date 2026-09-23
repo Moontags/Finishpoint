@@ -405,7 +405,7 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
           data-testid="calculate-button"
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
+          className="calculate-price-button inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
         >
           {distanceStatus === "loading"
             ? t('calculator.calculating_price', 'Lasketaan hintaa...')
@@ -591,7 +591,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
           type="button"
           onClick={haeGoogleMatka}
           disabled={distanceStatus === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
+          className="calculate-price-button inline-flex items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold text-slate-900 disabled:cursor-not-allowed sm:col-span-2"
         >
           {distanceStatus === "loading" ? t('calculator.calculating_price', 'Lasketaan hintaa...') : t('calculator.calculate_price', 'Laske hinta')}
         </button>

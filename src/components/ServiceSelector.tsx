@@ -43,8 +43,10 @@ function parseCategory(value: string | null): ServiceCategory | null {
 
 export default function ServiceSelector({
   initialCategory,
+  showDimensions = true,
 }: {
   initialCategory?: ServiceCategory;
+  showDimensions?: boolean;
 }) {
   const resolvedInitial = parseCategory(initialCategory ?? null) ?? "kappaletavara";
   const { t } = useLanguage();
@@ -88,6 +90,8 @@ export default function ServiceSelector({
                   <button
                     type="button"
                     onClick={() => setOpen((v) => !v)}
+                    aria-expanded={open}
+                    aria-controls="service-options"
                     className="flex w-full min-w-0 items-center justify-between rounded-xl border border-slate-400 bg-transparent px-4 py-3 text-[14px] font-semibold text-slate-800"
                   >
                     <span className="min-w-0 flex-1 wrap-break-word text-left leading-tight">
@@ -96,7 +100,7 @@ export default function ServiceSelector({
                     <ChevronDown className={`h-5 w-5 ${open ? "rotate-180" : ""}`} />
                   </button>
                   {open && (
-                    <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-y-auto max-h-60 rounded-2xl bg-white shadow-xl">
+                    <div id="service-options" className="absolute left-0 right-0 top-full z-50 mt-2 overflow-y-auto max-h-60 rounded-2xl bg-white shadow-xl">
                       {categories.map(({ id, label, icon: Icon }) => (
                         <button
                           key={id}
@@ -134,6 +138,7 @@ export default function ServiceSelector({
                     type="button"
                     data-testid={`service-tab-${id}`}
                     onClick={() => setActive(id)}
+                    aria-pressed={active === id}
                     className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400 bg-transparent px-6 py-3.5 text-sm font-bold ${
                       active === id
                         ? "text-slate-900"
@@ -157,7 +162,7 @@ export default function ServiceSelector({
         />
       </div>
 
-      <TruckDimensions />
+      {showDimensions && <TruckDimensions />}
     </div>
   );
 }

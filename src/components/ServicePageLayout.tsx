@@ -23,7 +23,7 @@ export default function ServicePageLayout({
 }) {
   const { t } = useLanguage();
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
+    <main className="service-page min-h-screen overflow-x-clip bg-[#f5f6f8] text-slate-900">
       <SiteHeader opaque noShadow />
 
       <div className="relative w-full min-h-80 overflow-hidden sm:min-h-125 md:min-h-150 lg:min-h-175 xl:min-h-[820px] 2xl:min-h-[920px]">
