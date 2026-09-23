@@ -9,12 +9,12 @@ import TruckDimensions from "@/components/TruckDimensions";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 
 const cards = [
-  { title: "Pienkuljetukset", en: "Small deliveries", description: "Yksittäiset tavarat luotettavasti perille.", descriptionEn: "Reliable delivery for individual items.", href: "/pesukone-kuljetus", image: "/images/pienkuljetus.png" },
+  { title: "Pikakuljetukset", en: "Express deliveries", description: "Yksittäiset tavarat luotettavasti perille.", descriptionEn: "Reliable delivery for individual items.", href: "/pesukone-kuljetus", image: "/images/pienkuljetus.png" },
   { title: "Muutot", en: "Moving", description: "Apua pieniin ja suurempiin muuttoihin.", descriptionEn: "Help with small and larger moves.", href: "/muutot", image: "/images/muutto.jpeg" },
   { title: "Apuvälinekuljetukset", en: "Mobility aid transport", description: "Huolellisesti ja turvallisesti perille.", descriptionEn: "Careful and safe transport.", href: "/apuvalinekuljetus", image: "/images/paku3.png" },
   { title: "Kierrätys", en: "Recycling", description: "Vastuullista kierrätystä helposti.", descriptionEn: "Responsible recycling made easy.", href: "/kierratys", image: "/images/kierratys.png" },
-  { title: "Yrityskuljetukset", en: "Business deliveries", description: "Joustavat kuljetukset yrityksesi arkeen.", descriptionEn: "Flexible transport for your business.", href: "/yritysasiakkaat", image: "/images/yritys.png" },
-  { title: "Tavarakuljetukset", en: "Goods transport", description: "Monipuoliset kuljetusratkaisut tarpeesi mukaan.", descriptionEn: "Versatile transport tailored to your needs.", href: "/sohvan-kuljetus", image: "/images/tavara.png" },
+  { title: "Sopimuskuljetukset", en: "Contract transport", description: "Joustavat kuljetukset yrityksesi arkeen.", descriptionEn: "Flexible transport for your business.", href: "/yritysasiakkaat", image: "/images/yritys.png" },
+  { title: "Pitkän matkan kuljetukset", en: "Long-distance transport", description: "Tavarat perille myös kaupunkien välillä.", descriptionEn: "Goods delivered between cities, too.", href: "#quote", image: "/images/tavara.png" },
 ];
 
 export function HomeContent() {
@@ -40,7 +40,7 @@ export function HomeContent() {
       </div>
 
       <section id="services" className="home-container home-services" aria-labelledby="services-title">
-        <h2 id="services-title">{english ? "Our popular services" : "Suosituimmat palvelumme"}</h2>
+        <h2 id="services-title">{english ? "Our services" : "Palvelumme"}</h2>
         <div className="home-service-grid">
           {cards.map(card => (
             <Link className="home-service-card" key={card.href} href={card.href}>

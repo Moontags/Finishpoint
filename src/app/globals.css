@@ -383,8 +383,10 @@ button:focus-visible {
 .home-fleet-grid > div:last-child > div > div { background: white; min-height: 85px; border-color: #cddff5; }
 .home-fleet-grid > div:last-child span { font-size: 14px; }
 .home-fleet-grid > div:last-child span.font-bold { font-size: 20px; }
-.home-quote { padding-block: 36px; scroll-margin-top: 24px; }
+.home-quote { padding-block: 36px; scroll-margin-top: 24px; background: #fff; }
+.home-container.home-quote { width: 100%; padding-inline: max(24px, calc((100% - 1200px) / 2)); }
 .home-quote > div, .home-quote > section { padding-inline: 0; }
+#quote button[type="submit"] { background: #ffffff; color: #0f172a; }
 .home-page :is(input, select, textarea):focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 @media (min-width: 640px) and (max-width: 1023px) {
   .home-page header > div { padding-inline: 0; }
@@ -412,6 +414,7 @@ button:focus-visible {
   .home-fleet-grid > div:last-child { padding-bottom: 16px; }
   .home-page header a[aria-label="Etusivu"] span.text-\[32px\] { font-size: 27px; }
   .home-quote { padding-block: 24px; }
+  .home-container.home-quote { padding-inline: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
