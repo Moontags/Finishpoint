@@ -131,7 +131,7 @@ export default function ServiceSelector({
                   )}
                 </div>
               </div>
-              <div className="mb-4 hidden gap-2 sm:col-span-2 sm:grid sm:grid-cols-2 lg:grid-cols-3">
+              <div className="service-tabs mb-4 hidden gap-2 sm:col-span-2 sm:grid sm:grid-cols-2 lg:grid-cols-3">
                 {categories.map(({ id, label }) => (
                   <button
                     key={id}

@@ -414,7 +414,7 @@ export function QuoteRequestForm({
               type="submit"
               data-testid="quote-submit"
               disabled={status === "loading" || !emailIsValid}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? t('form.sending', 'Lähetetään...') : t('form.send_quote', 'Lähetä tarjouspyyntö')}
               <ArrowUpRight className="h-4 w-4" />

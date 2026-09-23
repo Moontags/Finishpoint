@@ -71,7 +71,7 @@ export function CalculatorFormSection({
             className="object-cover object-center"
           />
           {/* Vaalea overlay päälle, jotta lomake pysyy selkeänä */}
-          <div className="absolute inset-0 bg-white/65" />
+          <div className="absolute inset-0 bg-white/30" />
           <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#f5f6f8] to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#f5f6f8] to-transparent" />
         </div>

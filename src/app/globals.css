@@ -352,16 +352,18 @@ button:focus-visible {
 .home-hero-image { position: relative; aspect-ratio: 1.55; }
 .home-primary { display: inline-flex; align-items: center; justify-content: center; gap: 24px; min-height: 48px; padding: 12px 24px; background: #163d68; color: white; border-radius: 8px; font-weight: 700; }
 .home-primary:hover { background: #0c2949; }
-.home-calculator { border: 1px solid #cdddF2; border-radius: 16px; background: var(--surface-panel); box-shadow: 0 10px 30px #16396308; }
+.home-calculator { border: 1px solid #cdddF2; border-radius: 16px; background: transparent; box-shadow: 0 10px 30px #16396308; }
 .home-calculator #calculator { padding: 24px; scroll-margin-top: 24px; }
 .home-calculator #calculator > p:first-child { font-size: clamp(19px, 2vw, 26px); text-transform: none; letter-spacing: -.02em; color: #082252; }
 .home-page input:not([type=checkbox]):not([type=radio]), .home-page select, .home-page textarea { background: white; min-width: 0; font-size: 16px; }
 .home-page input:not([type=checkbox]):not([type=radio]), .home-page select { min-height: 48px; }
 .home-calculator button { min-height: 44px; }
-/* Valittu palvelu erottuu reunaviivalla ja tekstin värillä — tausta pysyy
-   samana kuin muilla lokeroilla ja "Varaa ajankohta" -laatikolla. */
-.home-calculator button[aria-pressed=true] { background: #fff; border-color: #0060e5; color: #004bb6; }
-.home-calculator .calculate-price-button { background: #163d68; color: #fff; border-color: #163d68; }
+.home-calculator .service-tabs button,
+.home-calculator .service-tabs a { transition: background-color .15s, border-color .15s, transform .15s; }
+.home-calculator .service-tabs button:hover,
+.home-calculator .service-tabs a:hover { background: #f1f5f9; border-color: #94a3b8; transform: translateY(-1px); }
+.home-calculator .service-tabs button[aria-pressed=true] { background: #fff; border-color: #94a3b8; color: #0f172a; }
+.home-calculator .calculate-price-button { background: #334155; color: #fff; border-color: #334155; }
 .home-services { padding-block: 48px; }
 .home-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 22px; }
 .home-service-card { display: flex; flex-direction: column; min-width: 0; border: 1px solid #d6e3f4; border-radius: 10px; overflow: hidden; background: white; transition: box-shadow .2s, border-color .2s; }
