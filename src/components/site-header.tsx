@@ -90,7 +90,7 @@ export function SiteHeader({
             }}
           >
             <Image
-              src="/images/pakuvie-logo.png"
+              src="/images/pakuvie_logo.png"
               alt="Pakuvie"
               width={160}
               height={80}
