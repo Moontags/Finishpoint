@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS prices (
 
 -- Default values (skip if already exists)
 INSERT INTO prices (key, value, label) VALUES
-  ('base_kappaletavara', 89.00,  'Kappaletavara 0–40 km'),
+  ('base_kappaletavara', 99.00,  'Kappaletavara 0–40 km'),
   ('base_muutto',        269.00, 'Muutto 0–40 km'),
   ('base_kierratys',     79.00,  'Kierrätys 0–40 km'),
   ('km_rate_tavara',     1.29,   'Lisäkilometri tavara'),

@@ -31,6 +31,9 @@ export function ServicePage({
           </h2>
           <p className="max-w-xl text-[14px] leading-[1.75] text-slate-700 sm:text-base">
             {t('service_page.flexible', 'Palvelemme joustavasti myös viikonloppuisin.')}
+            {service.slug === 'muutot' && (
+              <> {t('services.muutot.trailer', 'Isommissa muutoissa voimme käyttää myös kuomullista peräkärryä, joka tuo lisää kuljetustilaa tavaroillesi.')}</>
+            )}
           </p>
         </div>
 

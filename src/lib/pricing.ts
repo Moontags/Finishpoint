@@ -27,7 +27,7 @@ export type PriceConfig = {
 } & Record<PositioningRateKey, number>;
 
 export const defaultPriceConfig: PriceConfig = {
-  base_kappaletavara: 59,
+  base_kappaletavara: 99,
   km_rate_tavara: 1.29,
   base_muutto: 269,
   base_kierratys: 79,

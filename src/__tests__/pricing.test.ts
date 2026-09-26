@@ -20,13 +20,13 @@ function poistaAlv(hintaSisAlv: number) {
 
 describe("kappaletavaraHinta", () => {
   it("returns correct price for 0-40km", () => {
-    expect(kappaletavaraHinta(20)).toBeCloseTo(poistaAlv(59), 2); // ~47.01
+    expect(kappaletavaraHinta(20)).toBeCloseTo(poistaAlv(99), 2); // ~78.88
   });
   it("returns correct price for over 40km", () => {
     // base + 10km extra
-    const base = poistaAlv(59); // ~47.01
+    const base = poistaAlv(99); // ~78.88
     const extra = 10 * poistaAlv(1.29); // 10 * 1.03 = ~10.30
-    expect(kappaletavaraHinta(50)).toBeCloseTo(base + extra, 2); // ~57.31
+    expect(kappaletavaraHinta(50)).toBeCloseTo(base + extra, 2); // ~89.18
   });
 });
 
@@ -98,13 +98,13 @@ describe("Pikakuljetuksen kokonaishinta positioinnilla", () => {
     const reitti = kappaletavaraHinta(180);
     const positiointi = positiointiYhteensa(100, 70);
 
-    expect(reitti).toBeCloseTo(191.21, 2);
+    expect(reitti).toBeCloseTo(223.08, 2);
     expect(positiointi).toBeCloseTo(34.4, 2);
-    expect(pyoristaAsiakkaalle(lisaaAlv(reitti + positiointi))).toBe(283);
+    expect(pyoristaAsiakkaalle(lisaaAlv(reitti + positiointi))).toBe(323);
 
-    // Ilman positiointia sama reitti olisi 240 € — 43 € tyhjänä ajosta jäi
+    // Ilman positiointia sama reitti olisi 280 € — 43 € tyhjänä ajosta jäi
     // aiemmin kokonaan laskuttamatta.
-    expect(pyoristaAsiakkaalle(lisaaAlv(reitti))).toBe(240);
+    expect(pyoristaAsiakkaalle(lisaaAlv(reitti))).toBe(280);
   });
 
   it("lähikuljetus perustaksan sisällä ei saa positiointilisää", () => {
@@ -112,7 +112,7 @@ describe("Pikakuljetuksen kokonaishinta positioinnilla", () => {
     const positiointi = positiointiYhteensa(15, 25);
 
     expect(positiointi).toBe(0);
-    expect(pyoristaAsiakkaalle(lisaaAlv(reitti + positiointi))).toBe(59);
+    expect(pyoristaAsiakkaalle(lisaaAlv(reitti + positiointi))).toBe(99);
   });
 });
 
@@ -202,14 +202,14 @@ describe("ALV-kanta tulee PriceConfigista eikä ole kiinteä", () => {
     const hintaOletus = kappaletavaraHinta(20, oletus);
     const hinta24 = kappaletavaraHinta(20, alv24);
 
-    // Verollinen 59 € pysyy samana, joten pienempi ALV-kanta kasvattaa
+    // Verollinen 99 € pysyy samana, joten pienempi ALV-kanta kasvattaa
     // veroprosentitonta hintaa — ja verollinen hinta pysyy asiakkaan näkemänä.
     expect(hinta24).not.toBeCloseTo(hintaOletus, 2);
-    expect(hinta24).toBeCloseTo(59 / 1.24, 2);
-    expect(pyoristaAsiakkaalle(lisaaAlv(hinta24, alv24))).toBe(59);
+    expect(hinta24).toBeCloseTo(99 / 1.24, 2);
+    expect(pyoristaAsiakkaalle(lisaaAlv(hinta24, alv24))).toBe(99);
 
     // Ilman kytkentää tämä olisi jäänyt kiinteäksi 1.255-kertoimeen:
-    expect(lisaaAlv(hinta24, oletus)).not.toBeCloseTo(59, 2);
+    expect(lisaaAlv(hinta24, oletus)).not.toBeCloseTo(99, 2);
   });
 
   it("muuton hinta seuraa vat_rate-arvoa kaikissa laskentapoluissa", () => {
@@ -221,7 +221,7 @@ describe("ALV-kanta tulee PriceConfigista eikä ole kiinteä", () => {
 
   it("kappaletavaran km-lisät käyttävät samaa kantaa", () => {
     const alv24 = config({ vat_rate: 24 });
-    const odotettu = 59 / 1.24 + 10 * +(1.29 / 1.24).toFixed(2);
+    const odotettu = 99 / 1.24 + 10 * +(1.29 / 1.24).toFixed(2);
     expect(kappaletavaraHinta(50, alv24)).toBeCloseTo(odotettu, 1);
   });
 
