@@ -406,7 +406,8 @@ button:focus-visible {
 }
 @media (max-width: 639px) {
   .home-container { width: calc(100% - 32px); }
-  .home-calculator #calculator { padding: 16px; }
+  .home-calculator { border: 0; border-radius: 0; box-shadow: none; }
+  .home-calculator #calculator { padding: 16px 0; }
   .home-services { padding-block: 32px; }
   .home-service-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .home-fleet-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
@@ -428,7 +429,7 @@ button:focus-visible {
 .home-page header a[aria-label="Etusivu"] > span { display: none; }
 .home-page #quote > div:first-child h2 { display: block; }
 @media (max-width: 639px) {
-  .home-calculator > h2 { margin: 20px 16px 0; }
+  .home-calculator > h2 { margin: 20px 0 0; }
   .home-page header a[aria-label="Etusivu"] > img { width: 88px; }
 }
 
