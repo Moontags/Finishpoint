@@ -18,7 +18,7 @@ const cards = [
 ];
 
 export function HomeContent() {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const english = language === "en";
   return (
     <CalculatorProvider>
@@ -27,7 +27,6 @@ export function HomeContent() {
           <p className="home-eyebrow">{english ? "Delivered with care" : "Luotettavasti perille"}</p>
           <h1 id="home-title">{english ? "Transport when you need it" : "Kuljetukset silloin kun tarvitset"}</h1>
           <p>{english ? "Fast, reliable transport for individuals and businesses." : "Nopeat ja luotettavat kuljetukset yksityisille ja yrityksille."}</p>
-          <a className="home-primary" href="#calculator">{t("calculator.calculate_price", "Laske hinta")} <span aria-hidden="true">→</span></a>
         </div>
         <div className="home-hero-image">
           <Image src="/images/paku.png" alt={english ? "Pakuvie's transport van" : "Pakuvien kuljetusauto"} fill priority sizes="(max-width: 767px) 100vw, 55vw" className="object-contain" />
