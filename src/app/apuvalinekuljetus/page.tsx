@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/service-page";
 import { services } from "@/lib/services";
@@ -8,11 +9,11 @@ export const metadata: Metadata = {
   title: service.metadataTitle,
   description: service.metadataDescription,
   keywords: service.keywords,
-  alternates: { canonical: "https://www.pakuvie.fi/apuvalinekuljetus" },
+  alternates: { canonical: `${SITE_URL}/apuvalinekuljetus` },
   openGraph: {
     title: service.metadataTitle,
     description: service.metadataDescription,
-    url: "https://www.pakuvie.fi/apuvalinekuljetus",
+    url: `${SITE_URL}/apuvalinekuljetus`,
     images: [
       {
         url: "/images/paku2.png",

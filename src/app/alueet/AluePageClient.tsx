@@ -31,7 +31,7 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
           : `Home and apartment moves in ${config.kaupunki}. ${t("area.moving_body_suffix")}`,
     },
     {
-      href: "/laskuri",
+      href: `/${siteCta.calculatorHref}`,
       title: t("area.freight_title"),
       body:
         language === "fi"
@@ -44,7 +44,7 @@ export function AluePageClient({ config }: { config: AlueConfig }) {
       body: t("area.business_body"),
     },
     {
-      href: "/laskuri",
+      href: `/${siteCta.calculatorHref}`,
       title: t("area.small_loads_title"),
       body: t("area.small_loads_body"),
     },

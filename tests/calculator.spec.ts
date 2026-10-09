@@ -2,13 +2,13 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Calculator', () => {
   test('Calculator loads with service type selector', async ({ page }) => {
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('[data-testid="calculate-button"]')).toBeVisible();
   });
 
   test('Can enter pickup and delivery address', async ({ page }) => {
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     await page.waitForLoadState('networkidle');
     await page.locator('[data-testid="pickup-address-input"]').scrollIntoViewIfNeeded();
     await page.locator('[data-testid="pickup-address-input"]').fill('Petsamonkatu 27, Riihimäki');
@@ -20,7 +20,7 @@ test.describe('Calculator', () => {
   });
 
   test('calendar section is present on page', async ({ page }) => {
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     await page.waitForLoadState('networkidle');
     // Try testid first, fallback to heading
     const calendar = page.locator('[data-testid="calendar"]');
@@ -40,7 +40,7 @@ test.describe('Calculator', () => {
       });
     });
 
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     await page.waitForLoadState('networkidle');
     await page.locator('[data-testid="pickup-address-input"]').scrollIntoViewIfNeeded();
     await page.locator('[data-testid="pickup-address-input"]').fill('Petsamonkatu 27, Riihimäki');

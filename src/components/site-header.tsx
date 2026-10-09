@@ -6,7 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Building2, Mail, Menu, Phone } from "lucide-react";
-import { serviceNavigationLinks, serviceNavigationOrder } from "@/lib/services";
+import { serviceNavigationLinks } from "@/lib/services";
+import { areas } from "@/lib/areas";
 import { siteContact, siteCta } from "@/lib/site-config";
 
 export function SiteHeader({
@@ -57,7 +58,7 @@ export function SiteHeader({
 
   const quoteHref = useMemo(() => {
     const hasLocalQuoteSection =
-      pathname === "/" || serviceNavigationOrder.some((slug) => pathname === `/${slug}`);
+      pathname === "/" || pathname === "/kierratys" || pathname === "/yritysasiakkaat";
 
     return hasLocalQuoteSection ? siteCta.quoteSectionHref : `/${siteCta.quoteSectionHref}`;
   }, [pathname]);
@@ -116,15 +117,7 @@ export function SiteHeader({
 
             {/* 2xl+: kaupunkilinkit vierekkäin */}
             <span className="hidden 2xl:block mx-1 h-4 w-px bg-slate-300" />
-            {[
-              { nimi: "Riihimäki", slug: "riihimaki" },
-              { nimi: "Hyvinkää", slug: "hyvinkaa" },
-              { nimi: "Järvenpää", slug: "jarvenpaa" },
-              { nimi: "Hämeenlinna", slug: "hameenlinna" },
-              { nimi: "Tuusula", slug: "tuusula" },
-              { nimi: "Vantaa", slug: "vantaa" },
-              { nimi: "Helsinki", slug: "helsinki" },
-            ].map((a) => (
+            {areas.map((a) => (
               <Link
                 key={a.slug}
                 href={`/alueet/${a.slug}`}

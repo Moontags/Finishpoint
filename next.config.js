@@ -2,16 +2,17 @@
 const nextConfig = {
   async redirects() {
     return [
+      { source: "/laskuri", destination: "/#calculator", permanent: true },
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'finishpoint.fi' }],
-        destination: 'https://pakuvie.fi/:path*',
+        destination: 'https://www.pakuvie.fi/:path*',
         permanent: true,
       },
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.finishpoint.fi' }],
-        destination: 'https://pakuvie.fi/:path*',
+        destination: 'https://www.pakuvie.fi/:path*',
         permanent: true,
       },
       // Moottoripyörä-, mönkijä- ja venekuljetus poistuivat tarjonnasta —

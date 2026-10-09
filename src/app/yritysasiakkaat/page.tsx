@@ -1,7 +1,8 @@
+import { SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
 import { YritysasiakkaatPage } from "@/components/yritysasiakkaat-page";
 
-const PAGE_URL = "https://www.pakuvie.fi/yritysasiakkaat";
+const PAGE_URL = `${SITE_URL}/yritysasiakkaat`;
 
 const metadataTitle = "Kuljetuspalvelut yrityksille | Pakuvie";
 const metadataDescription =

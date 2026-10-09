@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/site";
 import type { OrderData } from "@/lib/types";
 import { ALV_PROSENTTI, normalizeVatRate } from "@/lib/pricing";
 
@@ -152,7 +153,7 @@ export function generateOrderConfirmationHtml(order: OrderData): string {
       <div style="background:#f5f5f5;padding:16px;text-align:center;font-size:12px;color:#888;">
         Pakuvie |
         Y-tunnus: 3163260-9 |
-        <a href="https://pakuvie.fi">pakuvie.fi</a>
+        <a href="${SITE_URL}">pakuvie.fi</a>
       </div>
     </div>
   `;
@@ -361,7 +362,7 @@ export function generateReceiptHtml(order: OrderData): string {
 
       <div style="background:#f5f5f5;padding:16px;text-align:center;font-size:12px;color:#888;">
         Pakuvie | Y-tunnus: 3163260-9 |
-        <a href="https://pakuvie.fi">pakuvie.fi</a> |
+        <a href="${SITE_URL}">pakuvie.fi</a> |
         kuljetus@pakuvie.fi | 050 354 7763
       </div>
     </div>

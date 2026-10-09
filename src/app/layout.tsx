@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import Script from "next/script";
@@ -27,11 +28,12 @@ export const metadata: Metadata = {
     "apuvälinekuljetus",
     "kierrätys",
   ],
-  metadataBase: new URL("https://www.pakuvie.fi"),
+  verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION },
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "fi_FI",
-    url: "https://www.pakuvie.fi",
+    url: SITE_URL,
     title: "Pakuvie | Kuljetukset ja muutot",
     description: "Pakuvie hoitaa kuljetukset puolestasi. Paku- ja tavarakuljetukset, muutot ja kierrätys Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
     siteName: "Pakuvie",

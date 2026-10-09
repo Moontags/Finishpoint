@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Pakuvie saavutettavuus', () => {
   test('kaikki lomakekentät ovat saavutettavia', async ({ page }) => {
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     // Fokusoidaan suoraan kenttiin, koska Tab ei välttämättä toimi odotetusti Next.js-sivulla
     await page.focus('input[name="kappaletavaraNoutoOsoite"]');
     await expect(page.locator('input[name="kappaletavaraNoutoOsoite"]')).toBeFocused();
@@ -13,14 +13,14 @@ test.describe('Pakuvie saavutettavuus', () => {
   });
 
   test('virheilmoitukset ovat näkyviä ja selkeitä', async ({ page }) => {
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     // Yritä laskea hinta ilman osoitteita
     await page.click('button:has-text("Laske hinta")');
     await expect(page.getByText(/anna sekä nouto- että toimitusosoite/i)).toBeVisible();
   });
 
   test('kalenteri toimii ruudunlukijalla', async ({ page }) => {
-    await page.goto('/laskuri/kappaletavara');
+    await page.goto('/#calculator');
     // Kalenterin päivät: etsitään "Varaa ajankohta" -otsikon jälkeen tulevasta gridistä
     const calendarSection = page.getByText('Varaa ajankohta').locator('..').locator('..');
     const dayButtons = calendarSection.locator('div.grid button');

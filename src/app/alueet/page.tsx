@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/lib/site";
+import { areas } from "@/lib/areas";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -9,52 +11,14 @@ export const metadata: Metadata = {
   title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Pakuvie",
   description:
     "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa, Tuusulassa, Vantaalla ja Helsingissä. Muuttokuljetukset, tavarankuljetus ja pienkuormat.",
-  alternates: { canonical: "https://www.pakuvie.fi/alueet" },
+  alternates: { canonical: `${SITE_URL}/alueet` },
   openGraph: {
     title: "Palvelualueet – Kuljetuspalvelu lähellä sinua | Pakuvie",
     description:
       "Pakuvie tarjoaa luotettavaa kuljetuspalvelua Riihimäellä, Hyvinkäällä, Järvenpäässä, Hämeenlinnassa, Tuusulassa, Vantaalla ja Helsingissä.",
-    url: "https://www.pakuvie.fi/alueet",
+    url: `${SITE_URL}/alueet`,
   },
 };
-
-const ALUEET = [
-  {
-    nimi: "Riihimäki",
-    slug: "riihimaki",
-    kuvaus: "Muuttokuljetukset, tavarankuljetus ja pienkuormat Riihimäellä ja lähialueilla.",
-  },
-  {
-    nimi: "Hyvinkää",
-    slug: "hyvinkaa",
-    kuvaus: "Luotettava kuljetuspalvelu Hyvinkäällä – muutot, rahti ja yrityskuljetukset.",
-  },
-  {
-    nimi: "Järvenpää",
-    slug: "jarvenpaa",
-    kuvaus: "Nopea kuljetus Järvenpäässä. Muuttokuljetukset, pienkuormat ja nouto.",
-  },
-  {
-    nimi: "Hämeenlinna",
-    slug: "hameenlinna",
-    kuvaus: "Kuljetuspalvelu Hämeenlinnassa – muutot, yrityskuljetukset ja tavarankuljetus.",
-  },
-  {
-    nimi: "Tuusula",
-    slug: "tuusula",
-    kuvaus: "Kuljetukset Tuusulassa ja lähialueilla: Hyrylä, Kellokoski, Jokela ja ympäristö.",
-  },
-  {
-    nimi: "Vantaa",
-    slug: "vantaa",
-    kuvaus: "Kuljetuspalvelu Vantaalla – muutot, tavarankuljetus ja pienkuormat koko Vantaan alueella.",
-  },
-  {
-    nimi: "Helsinki",
-    slug: "helsinki",
-    kuvaus: "Kuljetuspalvelu Helsingissä – muutot, tavarankuljetus ja pienkuormat koko Helsingin alueella.",
-  },
-];
 
 export default function AlueetPage() {
   return (
@@ -101,7 +65,7 @@ export default function AlueetPage() {
             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-600">Kaikki alueet</p>
             <h2 className="mb-8 text-2xl font-extrabold text-slate-900 sm:text-3xl">Missä palvelemme?</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {ALUEET.map((a) => (
+              {areas.map((a) => (
                 <Link
                   key={a.slug}
                   href={`/alueet/${a.slug}`}
