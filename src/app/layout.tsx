@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   title: "Pakuvie | Kuljetukset ja muutot",
   description: "Pakuvie hoitaa kuljetukset puolestasi. Paku- ja tavarakuljetukset, muutot ja kierrätys Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
   applicationName: "Pakuvie",
+  icons: {
+    icon: { url: "/images/pakuvie-favicon.png", type: "image/png", sizes: "558x558" },
+    apple: "/images/pakuvie-favicon.png",
+  },
   keywords: [
     "kuljetuspalvelu",
     "tavarakuljetus",
