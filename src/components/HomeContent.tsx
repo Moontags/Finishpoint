@@ -58,7 +58,7 @@ export function HomeContent() {
 
       <section className="home-fleet" aria-labelledby="fleet-title">
         <div className="home-container home-fleet-grid">
-          <div><h2 id="fleet-title">{english ? "Our van and cargo space" : "Kalusto ja tavaratila"}</h2><p>{english ? "A spacious Ford Transit for everyday deliveries and larger loads." : "Tilava Ford Transit sopii niin pieniin kuljetuksiin kuin suurempiinkin tarpeisiin."}</p></div>
+          <div><h2 id="fleet-title">{english ? "Our van and cargo space" : "Kalusto ja tavaratila"}</h2><p>{english ? "Our spacious Ford Transit is ideal for both small deliveries and larger loads. A trailer is also available when needed, allowing even a larger move to be completed in a single trip." : "Tilava Ford Transit sopii niin pieniin kuljetuksiin kuin suurempiinkin tarpeisiin. Tarvittaessa mukaan saa myös peräkärryn, jolloin isompikin muutto hoituu yhdellä kertaa."}</p></div>
           <div className="home-fleet-image"><Image src="/images/paku.png" alt={english ? "Ford Transit van" : "Ford Transit -pakettiauto"} fill sizes="(max-width: 767px) 100vw, 35vw" className="object-contain" /></div>
           <TruckDimensions />
         </div>
