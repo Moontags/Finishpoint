@@ -24,40 +24,6 @@ export function YritysasiakkaatPage() {
     t("yritys.contract.benefit5", "Laskutus yritykselle"),
   ];
 
-  const faqItems = [
-    {
-      question: t(
-        "yritys.faq.q1",
-        "Voinko aloittaa yhdellä kuljetuksella ja siirtyä myöhemmin sopimukseen?",
-      ),
-      answer: t(
-        "yritys.faq.a1",
-        "Kyllä. Voitte aloittaa yhdellä kuljetuksella ja sopia myöhemmin jatkuvasta palvelusta, jos kuljetustarve osoittautuu säännölliseksi.",
-      ),
-    },
-    {
-      question: t("yritys.faq.q2", "Mitä yrityksille voidaan kuljettaa?"),
-      answer: t(
-        "yritys.faq.a2",
-        "Kuljetamme esimerkiksi tavaroita, koneita, kalusteita, moottoripyöriä ja muita kuljetettavia tuotteita. Jos olet epävarma, onnistuuko kuljetus, kysy rohkeasti.",
-      ),
-    },
-    {
-      question: t("yritys.faq.q3", "Miten nopeasti kuljetus voidaan järjestää?"),
-      answer: t(
-        "yritys.faq.a3",
-        "Vastaamme tarjouspyyntöihin mahdollisimman nopeasti ja sovimme kuljetuksen aikataulun yrityksenne tarpeen mukaan. Kiireellisissä kuljetuksissa kannattaa olla yhteydessä suoraan.",
-      ),
-    },
-    {
-      question: t("yritys.faq.q4", "Miten laskutus toimii?"),
-      answer: t(
-        "yritys.faq.a4",
-        "Yritysasiakkaiden kuljetukset voidaan laskuttaa yritykselle. Yksittäisen kuljetuksen voi myös tilata ja maksaa verkkopalvelun kautta.",
-      ),
-    },
-  ];
-
   return (
     <ServicePageLayout
       label={t("yritys.hero.label", "Yrityksille")}
@@ -97,21 +63,6 @@ export function YritysasiakkaatPage() {
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
-      </section>
-
-      {/* UKK yritysostajalle */}
-      <section className={sectionClass}>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          {t("yritys.faq.title", "Usein kysyttyä")}
-        </h2>
-        <dl className="mt-6 grid gap-3">
-          {faqItems.map(({ question, answer }) => (
-            <div key={question} className="rounded-xl bg-white px-4 py-4">
-              <dt className="text-[15px] font-bold text-slate-900">{question}</dt>
-              <dd className="mt-2 text-[14px] leading-[1.75] text-slate-700">{answer}</dd>
-            </div>
-          ))}
-        </dl>
       </section>
 
       {/* Tarjouslomake — sama komponentti kuin etusivulla, palvelutyyppi

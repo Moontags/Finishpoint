@@ -100,27 +100,26 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     navLabel: "Apuvälinekuljetus",
     title: "Apuvälinekuljetus",
     description:
-      "Pakuvie kuljettaa apuvälineitä – pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet – kotien, hoivakotien ja kotihoidon välillä.",
+      "Pakuvie kuljettaa apuvälineitä – pyörätuolit, rollaattorit, sähkömopot ja nostolaitteet – kotien, hoivakotien ja kotihoidon välillä.",
     valueProposition:
       "Kuljetamme apuvälineet yksityishenkilöille, omaisille, kotihoidolle, hoivakodeille ja vammaispalveluille.",
     includes: [
       "Nouto kotoa, hoivakodista tai varastosta",
       "Varovainen käsittely ja huolellinen suojaus kuljetuksen ajaksi",
       "Toimitus sovittuna aikana perille asti",
-      "Pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt ja nostolaitteet",
+      "Pyörätuolit, rollaattorit, sähkömopot ja nostolaitteet",
     ],
     pricingTitle: "Apuvälinekuljetuksen hinnoittelu",
     pricingDescription:
       serviceCategoryContentById.kappaletavara.cardDescription,
     metadataTitle: "Apuvälinekuljetus | Pakuvie",
     metadataDescription:
-      "Pakuvie kuljettaa apuvälineet — pyörätuolit, rollaattorit, sähkömopot, sairaalasängyt — turvallisesti Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
+      "Pakuvie kuljettaa apuvälineet — pyörätuolit, rollaattorit, sähkömopot — turvallisesti Riihimäellä, Hyvinkäällä, Järvenpäässä ja lähialueilla.",
     keywords: [
       "apuvälinekuljetus",
       "pyörätuolin kuljetus",
       "rollaattorin kuljetus",
       "sähkömopon kuljetus",
-      "sairaalasängyn kuljetus",
     ],
     calculatorCategory: "kappaletavara",
     heroBackgroundImage: "/images/paku2.png",
