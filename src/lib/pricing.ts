@@ -4,6 +4,7 @@ import type { ProjektiTyyppi } from "@/lib/types";
 // prices.vat_rate-kannassa ja orders.vat_rate-sarakkeessa. Käytetään vain
 // fallbackina, jos kannasta ei saada arvoa.
 export const ALV_PROSENTTI = 25.5;
+export const KAKSIO_MUUTTO_PERUSHINTA = 449;
 
 // Tukikohta, josta kalusto lähtee ja jonne se palaa. Pikakuljetuksen
 // positiointimaksu (tyhjänä ajo) lasketaan tästä osoitteesta noutopaikkaan ja
@@ -156,8 +157,9 @@ export function projektiHinta(
   const turvallinenKm = Math.max(0, projektiKm ?? 0);
   const kmLisat = pyoristaSentteihin(Math.max(0, turvallinenKm - 40) * kmHintaAlv0);
 
-  if (tyyppi === "pieni_muutto") {
-    return pyoristaSentteihin(poistaAlv(prices.base_muutto, prices) + kmLisat);
+  if (tyyppi === "pieni_muutto" || tyyppi === "kaksio_muutto") {
+    const perushinta = tyyppi === "kaksio_muutto" ? KAKSIO_MUUTTO_PERUSHINTA : prices.base_muutto;
+    return pyoristaSentteihin(poistaAlv(perushinta, prices) + kmLisat);
   }
 
   return null;

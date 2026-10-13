@@ -7,6 +7,7 @@ import { KalenteriVaraus } from "@/components/KalenteriVaraus";
 import { PriceSummary } from "@/components/PriceSummary";
 import {
   HOME_BASE,
+  KAKSIO_MUUTTO_PERUSHINTA,
   kappaletavaraHinta,
   lisaaAlv,
   positiointiYhteensa,
@@ -464,9 +465,11 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
   const { t } = useLanguage();
   const prices = usePrices();
   const calculatorContext = useCalculatorContext();
-  // Kierrätys on siirtynyt omaksi pääpalvelukseen (/kierratys) ja on
-  // tarjouspohjainen, joten muuttolaskuri hinnoittelee vain pienen muuton.
-  const tyyppi: ProjektiTyyppi = "pieni_muutto";
+  const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
+  const perushinta = tyyppi === "kaksio_muutto" ? KAKSIO_MUUTTO_PERUSHINTA : prices.base_muutto;
+  useEffect(() => {
+    calculatorContext?.setMovingServiceType(tyyppi === "kaksio_muutto" ? "Kaksion muutto – kaksi kantajaa ja peräkärry" : "Muutot");
+  }, [tyyppi]); // eslint-disable-line react-hooks/exhaustive-deps
   const [muuttoKm, setMuuttoKm] = useState(20);
   const [pickupAddress, setPickupAddress] = useState(calculatorContext?.pickupAddress ?? "");
   const [deliveryAddress, setDeliveryAddress] = useState(calculatorContext?.deliveryAddress ?? "");
@@ -560,6 +563,13 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
   return (
     <section className={cardClass}>
+      <div className="mt-4">
+        <label htmlFor="muuton-koko" className="text-sm font-bold text-slate-900">{t('calculator.move_size', 'Muuton koko')}</label>
+        <select id="muuton-koko" value={tyyppi} onChange={(event) => setTyyppi(event.target.value === "kaksio_muutto" ? "kaksio_muutto" : "pieni_muutto")} className="mt-2 block w-full rounded-xl border border-slate-400 bg-white px-4 py-3 text-sm text-slate-900">
+          <option value="pieni_muutto">{t('calculator.small_move', 'Pieni muutto')} – {formatPrice(prices.base_muutto)}</option>
+          <option value="kaksio_muutto">{t('calculator.two_room_move', 'Kaksion muutto – kaksi kantajaa ja peräkärry')} – {formatPrice(KAKSIO_MUUTTO_PERUSHINTA)}</option>
+        </select>
+      </div>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <AddressAutocompleteField
           id="projekti-nouto-osoite"
@@ -630,10 +640,10 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
 
       <p className="mt-3 text-[13px] text-slate-900">
         {t(
-          "calculator.muutto_note",
-          "Pienen muuton hinta muodostuu perushinnasta",
+          "calculator.move_base_note",
+          "Muuton hinta muodostuu perushinnasta",
         )}{" "}
-        {formatPrice(prices.base_muutto)}{" "}
+        {formatPrice(perushinta)}{" "}
         {t("calculator.muutto_note_km", "sekä mahdollisesta yli 40 km osuudesta")}{" "}
         ({formatPrice(prices.km_rate_muutto)}/km).{" "}
         {t(

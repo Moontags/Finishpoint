@@ -117,6 +117,14 @@ describe("Pikakuljetuksen kokonaishinta positioinnilla", () => {
 });
 
 describe("projektiHinta", () => {
+  it.each([0, 40])("includes the first 40 km in a two-room move (%i km)", (km) => {
+    const price = projektiHinta("kaksio_muutto", undefined, km)!;
+    expect(lisaaAlv(price)).toBe(449);
+  });
+  it("charges only the distance above 40 km for a two-room move", () => {
+    const price = projektiHinta("kaksio_muutto", undefined, 60)!;
+    expect(lisaaAlv(price)).toBeCloseTo(449 + 20 * 0.69, 1);
+  });
   it("returns correct price for pieni_muutto 0km", () => {
     expect(projektiHinta("pieni_muutto", undefined, 0)).toBeCloseTo(poistaAlv(269), 2); // ~214.46
   });

@@ -234,5 +234,9 @@
   "services.muutot.twoRoom.description": "Moving help when there is more to carry. Two movers also carry sofas, beds and other large furniture on stairs. A trailer is always included for one-bedroom homes and larger moves.",
   "services.muutot.twoRoom.estimate": "Estimated total price €449 incl. VAT",
   "services.muutot.twoRoom.note": "This estimate covers moves of up to 40 km. The final price is confirmed based on the volume of belongings, carrying requirements, estimated duration and driving distance. Include the addresses, floors, lift availability and estimated volume in your quote request.",
-  "services.muutot.twoRoom.cta": "Request a quote for your move"
+  "services.muutot.twoRoom.cta": "Request a quote for your move",
+  "calculator.move_size": "Move size",
+  "calculator.small_move": "Small move",
+  "calculator.two_room_move": "One-bedroom home – two movers and a trailer",
+  "calculator.move_base_note": "The moving price consists of a base price"
 }

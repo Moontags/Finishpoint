@@ -4,7 +4,7 @@ export type ServiceCategory = "kappaletavara" | "projekti";
 
 // Kierrätys on oma pääpalvelunsa (/kierratys) ja tarjouspohjainen, joten se ei
 // enää ole muuttolaskurin alavalinta eikä osa projektihinnoittelua.
-export type ProjektiTyyppi = "tunti" | "pieni_muutto" | "suuri_muutto";
+export type ProjektiTyyppi = "tunti" | "pieni_muutto" | "kaksio_muutto" | "suuri_muutto";
 
 export type OrderData = {
   orderId: string;

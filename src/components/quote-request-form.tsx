@@ -15,6 +15,7 @@ import type { ServiceCategory } from "@/lib/types";
 const orderServiceTypeOptions = [
   "Pikakuljetus",
   "Muutot",
+  "Kaksion muutto – kaksi kantajaa ja peräkärry",
 ] as const;
 
 const categoryDefaultServiceType: Record<ServiceCategory, string> = {
@@ -64,11 +65,11 @@ export function QuoteRequestForm({
       pickupAddress: pickupAddress || current.pickupAddress,
       deliveryAddress: deliveryAddress || current.deliveryAddress,
       serviceType: serviceCategory
-        ? (categoryDefaultServiceType[serviceCategory] ?? current.serviceType)
+        ? (serviceCategory === "projekti" ? calculatorContext.movingServiceType : categoryDefaultServiceType[serviceCategory])
         : current.serviceType,
     }));
     setHasCalculatorData(true);
-  }, [calculatorContext?.pickupAddress, calculatorContext?.deliveryAddress, calculatorContext?.serviceCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [calculatorContext?.pickupAddress, calculatorContext?.deliveryAddress, calculatorContext?.serviceCategory, calculatorContext?.movingServiceType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if ((status !== "success" && status !== "error") || !feedback) {

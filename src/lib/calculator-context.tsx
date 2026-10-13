@@ -7,6 +7,8 @@ type CalculatorContextValue = {
   pickupAddress: string;
   deliveryAddress: string;
   serviceCategory: ServiceCategory | null;
+  movingServiceType: string;
+  setMovingServiceType: (v: string) => void;
   estimatedPriceVat0: number | null;
   estimatedPriceVatIncl: number | null;
   bookingSelection: BookingSelectionData | null;
@@ -24,6 +26,7 @@ export function CalculatorProvider({ children }: { children: React.ReactNode }) 
   const [pickupAddress, setPickupAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [serviceCategory, setServiceCategory] = useState<ServiceCategory | null>(null);
+  const [movingServiceType, setMovingServiceType] = useState("Muutot");
   const [estimatedPriceVat0, setEstimatedPriceVat0] = useState<number | null>(null);
   const [estimatedPriceVatIncl, setEstimatedPriceVatIncl] = useState<number | null>(null);
   const [bookingSelection, setBookingSelection] = useState<BookingSelectionData | null>(null);
@@ -34,6 +37,8 @@ export function CalculatorProvider({ children }: { children: React.ReactNode }) 
         pickupAddress,
         deliveryAddress,
         serviceCategory,
+        movingServiceType,
+        setMovingServiceType,
         estimatedPriceVat0,
         estimatedPriceVatIncl,
         bookingSelection,
