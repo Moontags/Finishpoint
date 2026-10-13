@@ -635,7 +635,11 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
         )}{" "}
         {formatPrice(prices.base_muutto)}{" "}
         {t("calculator.muutto_note_km", "sekä mahdollisesta yli 40 km osuudesta")}{" "}
-        ({formatPrice(prices.km_rate_muutto)}/km).
+        ({formatPrice(prices.km_rate_muutto)}/km).{" "}
+        {t(
+          "calculator.muutto_note_two_room",
+          "Hoidamme myös kaksion muutot kahdella muuttomiehellä, pakettiautolla ja peräkärryllä. Muuttomiehet auttavat kalusteiden ja laatikoiden kantamisessa.",
+        )}
       </p>
 
       {hinta === null ? (

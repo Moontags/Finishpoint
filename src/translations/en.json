@@ -45,6 +45,7 @@
   "calculator.price": "Price",
   "calculator.muutto_note": "The price of a small move consists of the base price",
   "calculator.muutto_note_km": "plus any distance over 40 km",
+  "calculator.muutto_note_two_room": "We also move one-bedroom homes with two movers, a van and a trailer. Our movers help carry furniture and boxes.",
   "calculator.kappaletavara_note": "The price depends on the distance travelled and on the location of the pickup and drop-off addresses.",
   "calculator.positioning": "Includes positioning fee",
   "common.vat_incl": "incl. VAT {rate}%",
@@ -187,8 +188,8 @@
   "yritys.contract.benefit5": "Invoicing to the company",
   "yritys.contract.cta": "Ask for a monthly contract quote",
   "services.muutot.title": "Moving services",
-  "services.muutot.description": "Flexible moving for homes and small businesses from €269 incl. VAT. Starting price includes 40 km.",
-  "services.muutot.trailer": "For larger moves, we can also use an enclosed trailer to provide extra space for your belongings.",
+  "services.muutot.description": "Flexible moving for homes and small businesses. One-bedroom homes, too, with two movers, a van and a trailer. Small moves from €269 incl. VAT, including 40 km.",
+  "services.muutot.trailer": "A trailer is always included for moves of one-bedroom homes and larger homes, providing extra space for your belongings.",
   "services.muutot.valueProposition": "You focus on your new home – we handle the move.",
   "services.muutot.includes.0": "Pickup from old address",
   "services.muutot.includes.1": "Transport of furniture and boxes",
@@ -228,5 +229,10 @@
   "truck.length": "Length",
   "truck.width": "Width",
   "truck.height": "Height",
-  "truck.volume": "Volume"
+  "truck.volume": "Volume",
+  "services.muutot.twoRoom.title": "Moving a one-bedroom home – two movers, a van and a trailer",
+  "services.muutot.twoRoom.description": "Moving help when there is more to carry. Two movers also carry sofas, beds and other large furniture on stairs. A trailer is always included for one-bedroom homes and larger moves.",
+  "services.muutot.twoRoom.estimate": "Estimated total price €449 incl. VAT",
+  "services.muutot.twoRoom.note": "This estimate covers moves of up to 40 km. The final price is confirmed based on the volume of belongings, carrying requirements, estimated duration and driving distance. Include the addresses, floors, lift availability and estimated volume in your quote request.",
+  "services.muutot.twoRoom.cta": "Request a quote for your move"
 }

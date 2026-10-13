@@ -159,7 +159,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "muutot",
     navLabel: "Muutot",
     title: "Muuttopalvelut",
-    description: "Joustavat muutot koteihin ja pienyrityksille alkaen 269 € sis. ALV. Aloitushintaan sisältyy 40 km.",
+    description: "Joustavat muutot koteihin ja pienyrityksille. Myös kaksioiden muutot kahdella kantajalla, pakettiautolla ja peräkärryllä. Pienet muutot alkaen 269 € sis. ALV, sisältäen 40 km.",
     valueProposition:
       "Sinä keskityt uuteen kotiin – me hoidamme muuton.",
     includes: [
@@ -173,8 +173,8 @@ export const services: Record<ServiceSlug, ServiceContent> = {
       serviceCategoryContentById.projekti.cardDescription,
     metadataTitle: "Muuttopalvelu | Pakuvie",
     metadataDescription:
-      "Muuttopalvelut koteihin ja pienyrityksille. Selkeä hinnoittelu ja luotettava toteutus.",
-    keywords: ["muuttopalvelu", "muutto", "muuttokuljetus"],
+      "Myös kaksioiden muutot: kaksi kantajaa, pakettiauto ja peräkärry. Pyydä tarjous muutosta ja kalusteiden kantamisesta portaissa.",
+    keywords: ["muuttopalvelu", "muutto", "muuttokuljetus", "kaksion muutto", "kantoapu"],
     calculatorCategory: "projekti",
     heroBackgroundImage: "/images/paku3.png",
   },

@@ -10,7 +10,7 @@ import { QuoteRequestForm } from "@/components/quote-request-form";
 
 const cards = [
   { title: "Pikakuljetukset", en: "Express deliveries", description: "Yksittäiset tavarat luotettavasti perille.", descriptionEn: "Reliable delivery for individual items.", href: "/pesukone-kuljetus", image: "/images/pienkuljetus.png" },
-  { title: "Muutot", en: "Moving", description: "Apua pieniin ja suurempiin muuttoihin.", descriptionEn: "Help with small and larger moves.", href: "/muutot", image: "/images/muutto.jpeg" },
+  { title: "Muutot", en: "Moving", description: "Myös kaksioiden muutot: kaksi kantajaa, pakettiauto ja peräkärry.", descriptionEn: "Moving one-bedroom homes, too: two movers, a van and a trailer.", href: "/muutot", image: "/images/muutto.jpeg" },
   { title: "Apuvälinekuljetukset", en: "Mobility aid transport", description: "Huolellisesti ja turvallisesti perille.", descriptionEn: "Careful and safe transport.", href: "/apuvalinekuljetus", image: "/images/paku3.png" },
   { title: "Kierrätys", en: "Recycling", description: "Vastuullista kierrätystä helposti.", descriptionEn: "Responsible recycling made easy.", href: "/kierratys", image: "/images/kierratys.png" },
   { title: "Sopimuskuljetukset", en: "Contract transport", description: "Joustavat kuljetukset yrityksesi arkeen.", descriptionEn: "Flexible transport for your business.", href: "/yritysasiakkaat", image: "/images/yritys.png" },
