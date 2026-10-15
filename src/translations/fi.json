@@ -32,7 +32,7 @@
   "calculator.price": "Hinta",
   "calculator.muutto_note": "Pienen muuton hinta muodostuu perushinnasta",
   "calculator.muutto_note_km": "sekä mahdollisesta yli 40 km osuudesta",
-  "calculator.muutto_note_two_room": "Hoidamme myös kaksion muutot kahdella muuttomiehellä, pakettiautolla ja peräkärryllä. Muuttomiehet auttavat kalusteiden ja laatikoiden kantamisessa.",
+  "calculator.muutto_note_two_room": "Hoidamme myös isommat muutot kahdella muuttomiehellä, pakettiautolla ja peräkärryllä. Muuttomiehet auttavat kalusteiden ja laatikoiden kantamisessa.",
   "calculator.kappaletavara_note": "Hinta määräytyy matkan pituuden sekä nouto- ja jättöpaikan sijainnin mukaan.",
   "calculator.positioning": "Sisältää positiointimaksun",
   "common.vat_incl": "sis. ALV {rate} %",

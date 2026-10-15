@@ -649,7 +649,7 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
         ({formatPrice(prices.km_rate_muutto)}/km).{" "}
         {t(
           "calculator.muutto_note_two_room",
-          "Hoidamme myös kaksion muutot kahdella muuttomiehellä, pakettiautolla ja peräkärryllä. Muuttomiehet auttavat kalusteiden ja laatikoiden kantamisessa.",
+          "Hoidamme myös isommat muutot kahdella muuttomiehellä, pakettiautolla ja peräkärryllä. Muuttomiehet auttavat kalusteiden ja laatikoiden kantamisessa.",
         )}
       </p>
 
