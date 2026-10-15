@@ -593,8 +593,8 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
         <div className="sm:col-span-2">
           <label htmlFor="muuton-koko" className="text-sm font-bold text-slate-900">{t('calculator.move_size', 'Muuton koko')}</label>
           <select id="muuton-koko" value={tyyppi} onChange={(event) => setTyyppi(event.target.value === "kaksio_muutto" ? "kaksio_muutto" : "pieni_muutto")} className="mt-2 block w-full rounded-xl border border-slate-400 bg-white px-4 py-3 text-sm text-slate-900">
-            <option value="pieni_muutto">{t('calculator.small_move', 'Pieni muutto')} – {formatPrice(prices.base_muutto)}</option>
-            <option value="kaksio_muutto">{t('calculator.two_room_move', 'Kaksion muutto – kaksi kantajaa ja peräkärry')} – {formatPrice(KAKSIO_MUUTTO_PERUSHINTA)}</option>
+            <option value="pieni_muutto">{t('calculator.small_move', 'Pakettiauto + 1 muuttomies')} – {formatPrice(prices.base_muutto)}</option>
+            <option value="kaksio_muutto">{t('calculator.two_room_move', 'Pakettiauto + 2 muuttomiestä')} – {formatPrice(KAKSIO_MUUTTO_PERUSHINTA)}</option>
           </select>
         </div>
 

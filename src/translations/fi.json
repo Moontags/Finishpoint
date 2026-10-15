@@ -222,7 +222,7 @@
   "truck.height": "Korkeus",
   "truck.volume": "Tilavuus",
   "calculator.move_size": "Muuton koko",
-  "calculator.small_move": "Pieni muutto",
-  "calculator.two_room_move": "Kaksion muutto – kaksi kantajaa ja peräkärry",
+  "calculator.small_move": "Pakettiauto + 1 muuttomies",
+  "calculator.two_room_move": "Pakettiauto + 2 muuttomiestä",
   "calculator.move_base_note": "Muuton hinta muodostuu perushinnasta"
 }
