@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { KalenteriVaraus } from "@/components/KalenteriVaraus";
@@ -59,10 +60,11 @@ type PositioningDistances = {
   deliveryKm: number;
 };
 
-function formatPrice(value: number) {
+function formatPrice(value: number, minimumFractionDigits = 2) {
   return new Intl.NumberFormat("fi-FI", {
     style: "currency",
     currency: "EUR",
+    minimumFractionDigits,
     maximumFractionDigits: 2,
   }).format(value);
 }
@@ -466,6 +468,21 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
   const prices = usePrices();
   const calculatorContext = useCalculatorContext();
   const [tyyppi, setTyyppi] = useState<ProjektiTyyppi>("pieni_muutto");
+  const [moveSizeOpen, setMoveSizeOpen] = useState(false);
+  const moveSizeRef = useRef<HTMLDivElement>(null);
+  const moveSizeButtonRef = useRef<HTMLButtonElement>(null);
+  const moveSizes = [
+    { value: "pieni_muutto" as const, label: t('calculator.small_move', 'Pakettiauto + 1 muuttomies'), price: prices.base_muutto },
+    { value: "kaksio_muutto" as const, label: t('calculator.two_room_move', 'Pakettiauto + 2 muuttomiestä'), price: KAKSIO_MUUTTO_PERUSHINTA },
+  ];
+  useEffect(() => {
+    if (!moveSizeOpen) return;
+    function closeOutside(event: PointerEvent) {
+      if (!moveSizeRef.current?.contains(event.target as Node)) setMoveSizeOpen(false);
+    }
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, [moveSizeOpen]);
   const perushinta = tyyppi === "kaksio_muutto" ? KAKSIO_MUUTTO_PERUSHINTA : prices.base_muutto;
   useEffect(() => {
     calculatorContext?.setMovingServiceType(tyyppi === "kaksio_muutto" ? "Kaksion muutto – kaksi kantajaa ja peräkärry" : "Muutot");
@@ -591,11 +608,62 @@ export function ProjektiPriceCalculator({ serviceTabsSlot }: { serviceTabsSlot?:
         {serviceTabsSlot}
 
         <div className="sm:col-span-2">
-          <label htmlFor="muuton-koko" className="text-sm font-bold text-slate-900">{t('calculator.move_size', 'Muuton koko')}</label>
-          <select id="muuton-koko" value={tyyppi} onChange={(event) => setTyyppi(event.target.value === "kaksio_muutto" ? "kaksio_muutto" : "pieni_muutto")} className="mt-2 block w-full rounded-xl border border-slate-400 bg-white px-4 py-3 text-sm text-slate-900">
-            <option value="pieni_muutto">{t('calculator.small_move', 'Pakettiauto + 1 muuttomies')} – {formatPrice(prices.base_muutto)}</option>
-            <option value="kaksio_muutto">{t('calculator.two_room_move', 'Pakettiauto + 2 muuttomiestä')} – {formatPrice(KAKSIO_MUUTTO_PERUSHINTA)}</option>
-          </select>
+          <label id="muuton-koko-label" htmlFor="muuton-koko" className="text-sm font-bold text-slate-900">{t('calculator.move_size', 'Muuton koko')}</label>
+          <div
+            ref={moveSizeRef}
+            className="relative mt-2 sm:hidden"
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setMoveSizeOpen(false);
+                moveSizeButtonRef.current?.focus();
+              }
+            }}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setMoveSizeOpen(false);
+            }}
+          >
+            <button
+              ref={moveSizeButtonRef}
+              id="muuton-koko-mobile"
+              type="button"
+              aria-labelledby="muuton-koko-label muuton-koko-value"
+              aria-expanded={moveSizeOpen}
+              aria-controls="muuton-koko-options"
+              onClick={() => setMoveSizeOpen((open) => !open)}
+              className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl border border-slate-400 bg-white px-4 py-3 text-left text-sm text-slate-900"
+            >
+              <span id="muuton-koko-value" className="min-w-0 flex-1">
+                {moveSizes.find((size) => size.value === tyyppi)?.label} – {formatPrice(perushinta, 0)}
+              </span>
+              <ChevronDown aria-hidden="true" className={`h-5 w-5 shrink-0 text-slate-800 ${moveSizeOpen ? "rotate-180" : ""}`} />
+            </button>
+            {moveSizeOpen && (
+              <div id="muuton-koko-options" className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+                {moveSizes.map((size) => (
+                  <button
+                    key={size.value}
+                    type="button"
+                    aria-pressed={tyyppi === size.value}
+                    onClick={() => {
+                      setTyyppi(size.value);
+                      setMoveSizeOpen(false);
+                      moveSizeButtonRef.current?.focus();
+                    }}
+                    className={`block w-full px-4 py-3 text-left text-sm text-slate-900 hover:bg-slate-100 focus-visible:bg-slate-100 ${tyyppi === size.value ? "bg-slate-100 font-semibold" : "bg-white"}`}
+                  >
+                    {size.label} – {formatPrice(size.price, 0)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="relative mt-2 hidden sm:block">
+            <select id="muuton-koko" value={tyyppi} onChange={(event) => setTyyppi(event.target.value === "kaksio_muutto" ? "kaksio_muutto" : "pieni_muutto")} className="block w-full appearance-none rounded-xl border border-slate-400 bg-white py-3 pl-4 pr-12 text-sm text-slate-900">
+              <option value="pieni_muutto">{t('calculator.small_move', 'Pakettiauto + 1 muuttomies')} – {formatPrice(prices.base_muutto, 0)}</option>
+              <option value="kaksio_muutto">{t('calculator.two_room_move', 'Pakettiauto + 2 muuttomiestä')} – {formatPrice(KAKSIO_MUUTTO_PERUSHINTA, 0)}</option>
+            </select>
+            <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-800" />
+          </div>
         </div>
 
         <button
