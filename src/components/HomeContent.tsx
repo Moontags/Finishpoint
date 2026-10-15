@@ -9,7 +9,7 @@ import TruckDimensions from "@/components/TruckDimensions";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 
 const cards = [
-  { title: "Pikakuljetukset", en: "Express deliveries", description: "Yksittäiset tavarat luotettavasti perille.", descriptionEn: "Reliable delivery for individual items.", href: "/pesukone-kuljetus", image: "/images/pienkuljetus.png" },
+  { title: "Pikakuljetukset", en: "Express deliveries", description: "Yksittäiset tavarat luotettavasti perille.", descriptionEn: "Reliable delivery for individual items.", href: "/pesukone-kuljetus", image: "/images/antiikki.png" },
   { title: "Muutot", en: "Moving", description: "Myös kaksioiden muutot: kaksi kantajaa, pakettiauto ja peräkärry.", descriptionEn: "Moving one-bedroom homes, too: two movers, a van and a trailer.", href: "/muutot", image: "/images/muutto.jpeg" },
   { title: "Apuvälinekuljetukset", en: "Mobility aid transport", description: "Huolellisesti ja turvallisesti perille.", descriptionEn: "Careful and safe transport.", href: "/apuvalinekuljetus", image: "/images/paku3.png" },
   { title: "Kierrätys", en: "Recycling", description: "Vastuullista kierrätystä helposti.", descriptionEn: "Responsible recycling made easy.", href: "/kierratys", image: "/images/kierratys.png" },
