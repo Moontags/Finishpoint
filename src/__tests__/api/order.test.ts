@@ -34,7 +34,6 @@ vi.mock('@/lib/order-store', () => ({
 }));
 
 import { POST as handler } from '../../app/api/order/route';
-import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
 
 beforeAll(() => {
   process.env.SMTP_HOST = 'smtp.test.com';
@@ -55,30 +54,30 @@ afterAll(() => {
 
 describe('/api/order', () => {
   it('returns 400 if price is missing', async () => {
-    const req = new NodeRequest('http://localhost/api/order', {
+    const req = new Request('http://localhost/api/order', {
       method: 'POST',
       body: JSON.stringify({ email: 'test@example.com', name: 'Test', phone: '123', pickupAddress: 'A', deliveryAddress: 'B' }),
-      headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);
     expect(res.status).toBe(400);
   });
 
   it('returns 400 if email is invalid', async () => {
-    const req = new NodeRequest('http://localhost/api/order', {
+    const req = new Request('http://localhost/api/order', {
       method: 'POST',
       body: JSON.stringify({ email: 'invalid', name: 'Test', phone: '123', pickupAddress: 'A', deliveryAddress: 'B', estimatedPriceVat0: 100 }),
-      headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);
     expect(res.status).toBe(400);
   });
 
   it('returns 200 with paymentUrl on valid payload', async () => {
-    const req = new NodeRequest('http://localhost/api/order', {
+    const req = new Request('http://localhost/api/order', {
       method: 'POST',
       body: JSON.stringify({ email: 'test@example.com', name: 'Test User', phone: '0401234567', serviceType: 'Kappaletavara', addresses: 'Nouto: Katu 1 -> Toimitus: Katu 2', pickupAddress: 'Katu 1', deliveryAddress: 'Katu 2', message: '', estimatedPriceVat0: 78.88, estimatedPriceVatIncl: 99 }),
-      headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);
     expect(res.status).toBe(200);

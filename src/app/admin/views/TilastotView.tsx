@@ -72,7 +72,6 @@ export function TilastotView() {
       .from('varaukset')
       .select('*')
       .order('created_at', { ascending: true })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then(({ data }: { data: any }) => {
         setList((data ?? []) as VarausRow[])
         setLoading(false)

@@ -30,7 +30,6 @@ export function PaivamaatatView() {
     e.preventDefault()
     if (!date) return
     setSaving(true)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (getSupabaseAdmin() as any)
       .from('blocked_dates')
       .insert({ blocked_date: date, reason: reason || null })

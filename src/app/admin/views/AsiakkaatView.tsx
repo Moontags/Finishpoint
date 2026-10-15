@@ -34,7 +34,6 @@ export function AsiakkaatView() {
       .select('*')
       .not('asiakas_email', 'is', null)
       .order('created_at', { ascending: false })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then(({ data }: { data: any }) => {
         const varaukset = (data ?? []) as VarausRow[]
         const grouped: Record<string, Customer> = {}

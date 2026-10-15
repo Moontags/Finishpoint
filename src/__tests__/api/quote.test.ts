@@ -1,18 +1,4 @@
 import { vi } from 'vitest';
-import { TextDecoder, TextEncoder } from 'util';
-if (!globalThis.TextDecoder) globalThis.TextDecoder = TextDecoder;
-if (!globalThis.TextEncoder) globalThis.TextEncoder = TextEncoder;
-import { Request as NodeRequest, Response as NodeResponse, Headers as NodeHeaders } from 'undici';
-
-if (!globalThis.Request) {
-  // @ts-ignore
-  globalThis.Request = NodeRequest;
-  // @ts-ignore
-  globalThis.Response = NodeResponse;
-  // @ts-ignore
-  globalThis.Headers = NodeHeaders;
-}
-
 const mockSendMail = vi.hoisted(() => vi.fn().mockResolvedValue({ messageId: 'mock-id' }));
 
 vi.mock('@/lib/supabase-admin', () => ({

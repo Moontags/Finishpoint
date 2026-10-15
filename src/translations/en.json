@@ -46,7 +46,6 @@
   "calculator.muutto_note": "The price of a small move consists of the base price",
   "calculator.muutto_note_km": "plus any distance over 40 km",
   "calculator.muutto_note_two_room": "We also move one-bedroom homes with two movers, a van and a trailer. Our movers help carry furniture and boxes.",
-  "calculator.kappaletavara_note": "The price depends on the distance travelled and on the location of the pickup and drop-off addresses.",
   "calculator.positioning": "Includes positioning fee",
   "common.vat_incl": "incl. VAT {rate}%",
   "common.business_vat": "Business (VAT 0%)",
@@ -238,5 +237,7 @@
   "calculator.move_size": "Move size",
   "calculator.small_move": "Small move",
   "calculator.two_room_move": "One-bedroom home – two movers and a trailer",
-  "calculator.move_base_note": "The moving price consists of a base price"
+  "calculator.move_base_note": "The moving price consists of a base price",
+  "calculator.express_carrying_note": "Express delivery is handled by one person. The goods must be movable by one person, or carrying assistance must be arranged on site.",
+  "form.express_carrying_confirmation": "The goods can be moved by one person, or carrying assistance has been arranged."
 }

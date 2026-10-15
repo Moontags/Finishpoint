@@ -44,6 +44,9 @@ export function QuoteRequestForm({
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
+  const [carryingConfirmed, setCarryingConfirmed] = useState(false);
+  const isExpressDelivery = formData.serviceType === "Pikakuljetus";
+  const carryingRequirementMet = !isExpressDelivery || carryingConfirmed;
   const [emailTouched, setEmailTouched] = useState(false);
   const [hasCalculatorData, setHasCalculatorData] = useState(false);
   const [activeAction, setActiveAction] = useState<"quote" | "order" | null>(null);
@@ -59,7 +62,6 @@ export function QuoteRequestForm({
     const { pickupAddress, deliveryAddress, serviceCategory } = calculatorContext;
     if (!pickupAddress && !deliveryAddress) return;
     // Sync calculator values into the order form fields when calculator data changes.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData((current) => ({
       ...current,
       pickupAddress: pickupAddress || current.pickupAddress,
@@ -115,6 +117,7 @@ export function QuoteRequestForm({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!carryingRequirementMet) return;
 
     if (!isValidEmail(formData.email)) {
       setStatus("error");
@@ -158,6 +161,7 @@ export function QuoteRequestForm({
       setFeedback(t('form.success', 'Tarjouspyyntö lähetettiin onnistuneesti.'));
       setActiveAction(null);
       setHasCalculatorData(false);
+      setCarryingConfirmed(false);
       setFormData({
         name: "",
         phone: "",
@@ -175,6 +179,7 @@ export function QuoteRequestForm({
   };
 
   const handleOrderAndPayment = async () => {
+    if (!carryingRequirementMet) return;
     if (isOrderFlow && !addressesMatchCalculator) {
       setStatus("error");
       setFeedback(t('form.error_address_match', 'Nouto- ja toimitusosoitteen tulee olla samat kuin laskurissa.'));
@@ -409,12 +414,31 @@ export function QuoteRequestForm({
           />
         </label>
 
+        {isExpressDelivery ? (
+          <div className="space-y-3 rounded-xl border border-slate-300 bg-white/60 p-4">
+            <p className="text-[13px] leading-relaxed text-slate-700">
+              {t('calculator.express_carrying_note', 'Pikakuljetus hoidetaan yksin. Tavaran tulee olla yhden henkilön siirrettävissä tai kantoapu on järjestettävä paikan päälle.')}
+            </p>
+            <label className="flex items-start gap-3 text-[13px] font-semibold text-slate-700">
+              <input
+                type="checkbox"
+                name="carryingConfirmed"
+                required
+                checked={carryingConfirmed}
+                onChange={(event) => setCarryingConfirmed(event.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 accent-blue-600"
+              />
+              {t('form.express_carrying_confirmation', 'Tavara on yhden henkilön siirrettävissä tai kantoapu on järjestetty.')}
+            </label>
+          </div>
+        ) : null}
+
         <div className="grid gap-3 sm:grid-cols-2">
           {!isOrderFlow ? (
             <button
               type="submit"
               data-testid="quote-submit"
-              disabled={status === "loading" || !emailIsValid}
+              disabled={status === "loading" || !emailIsValid || !carryingRequirementMet}
               className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-slate-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "quote" ? t('form.sending', 'Lähetetään...') : t('form.send_quote', 'Lähetä tarjouspyyntö')}
@@ -424,7 +448,7 @@ export function QuoteRequestForm({
             <button
               type="button"
               onClick={handleOrderAndPayment}
-              disabled={status === "loading" || !canAttemptOrder}
+              disabled={status === "loading" || !canAttemptOrder || !carryingRequirementMet}
               className="inline-flex items-center justify-center gap-2 rounded-xl border-[0.5px] border-slate-400 bg-white/30 backdrop-blur-sm px-6 py-3.5 text-sm font-bold text-slate-900 transition duration-200 hover:bg-white/60 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
             >
               {status === "loading" && activeAction === "order" ? t('form.redirecting', 'Siirrytään...') : t('form.order_checkout', 'Tilaa ja jatka kassaan')}

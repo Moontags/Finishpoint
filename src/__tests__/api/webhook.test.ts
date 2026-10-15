@@ -22,7 +22,6 @@ vi.mock('@/lib/bookings', () => ({
 }));
 
 import { POST as handler } from '../../app/api/vipps/webhook/route';
-import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
 import { createHash, createHmac } from 'node:crypto';
 
 const WEBHOOK_SECRET = 'test-webhook-secret';
@@ -37,10 +36,10 @@ function signedRequest(body: string, secret = WEBHOOK_SECRET) {
   const stringToSign = `POST\n${url.pathname}${url.search}\n${date};${url.host};${contentHash}`;
   const signature = createHmac('sha256', secret).update(stringToSign, 'utf8').digest('base64');
 
-  return new NodeRequest(WEBHOOK_URL, {
+  return new Request(WEBHOOK_URL, {
     method: 'POST',
     body,
-    headers: new NodeHeaders({
+    headers: new Headers({
       'Content-Type': 'application/json',
       host: url.host,
       'x-ms-date': date,
@@ -121,10 +120,10 @@ describe('/api/vipps/webhook', () => {
 
   it('rejects a request without authentication headers', async () => {
     const payload = { reference: 'FP-TEST-001', name: 'AUTHORIZED' };
-    const req = new NodeRequest('http://localhost/api/vipps/webhook', {
+    const req = new Request('http://localhost/api/vipps/webhook', {
       method: 'POST',
       body: JSON.stringify(payload),
-      headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);
     expect(res.status).toBe(401);
@@ -143,7 +142,7 @@ describe('/api/vipps/webhook', () => {
   it('rejects a tampered body even with a valid signature header', async () => {
     const original = JSON.stringify({ reference: 'FP-TEST-001', name: 'AUTHORIZED' });
     const signed = signedRequest(original);
-    const tampered = new NodeRequest('http://localhost/api/vipps/webhook', {
+    const tampered = new Request('http://localhost/api/vipps/webhook', {
       method: 'POST',
       body: JSON.stringify({ reference: 'FP-TEST-999', name: 'AUTHORIZED' }),
       headers: signed.headers,
@@ -172,10 +171,10 @@ describe('/api/vipps/webhook', () => {
     process.env.VIPPS_WEBHOOK_AUTH_TOKEN = 'manual-test-token';
     try {
       const payload = { reference: 'FP-TEST-001', name: 'AUTHORIZED' };
-      const req = new NodeRequest('http://localhost/api/vipps/webhook', {
+      const req = new Request('http://localhost/api/vipps/webhook', {
         method: 'POST',
         body: JSON.stringify(payload),
-        headers: new NodeHeaders({
+        headers: new Headers({
           'Content-Type': 'application/json',
           authorization: 'Bearer manual-test-token',
         }),

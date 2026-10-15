@@ -1,6 +1,5 @@
 import { vi } from 'vitest';
 import { GET as handler } from '../../app/api/varatut-paivat/route';
-import { Request as NodeRequest } from 'undici';
 
 vi.mock('@/lib/supabase-admin', () => ({
   getSupabaseAdminClient: () => ({
@@ -22,7 +21,7 @@ vi.mock('@/lib/supabase-admin', () => ({
 
 describe('/api/varatut-paivat', () => {
   it('returns empty arrays if no alku param', async () => {
-    const req = new NodeRequest('http://localhost/api/varatut-paivat', { method: 'GET' });
+    const req = new Request('http://localhost/api/varatut-paivat', { method: 'GET' });
     const res = await handler(req);
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -33,7 +32,7 @@ describe('/api/varatut-paivat', () => {
 
   it('returns varausAjat and suljetutPaivat for date range', async () => {
     const url = 'http://localhost/api/varatut-paivat?alku=2026-01-01&loppu=2026-01-07';
-    const req = new NodeRequest(url, { method: 'GET' });
+    const req = new Request(url, { method: 'GET' });
     const res = await handler(req);
     expect(res.status).toBe(200);
     const json = await res.json();

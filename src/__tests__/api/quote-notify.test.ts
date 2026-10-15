@@ -12,7 +12,6 @@ vi.mock('nodemailer', () => ({
 // Reitin pitaa loytya polusta app/api/quote/notify/route.ts, muuten
 // ChatWidgetin POST /api/quote/notify palauttaa 404.
 import { POST as handler } from '../../app/api/quote/notify/route';
-import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
 
 beforeAll(() => {
   process.env.SMTP_HOST = 'smtp.test.com';
@@ -33,10 +32,10 @@ afterAll(() => {
 });
 
 function notifyRequest(body: unknown) {
-  return new NodeRequest('http://localhost/api/quote/notify', {
+  return new Request('http://localhost/api/quote/notify', {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+    headers: new Headers({ 'Content-Type': 'application/json' }),
   });
 }
 

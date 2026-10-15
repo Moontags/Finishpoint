@@ -33,7 +33,6 @@
   "calculator.muutto_note": "Pienen muuton hinta muodostuu perushinnasta",
   "calculator.muutto_note_km": "sekä mahdollisesta yli 40 km osuudesta",
   "calculator.muutto_note_two_room": "Hoidamme myös isommat muutot kahdella muuttomiehellä, pakettiautolla ja peräkärryllä. Muuttomiehet auttavat kalusteiden ja laatikoiden kantamisessa.",
-  "calculator.kappaletavara_note": "Hinta määräytyy matkan pituuden sekä nouto- ja jättöpaikan sijainnin mukaan.",
   "calculator.positioning": "Sisältää positiointimaksun",
   "common.vat_incl": "sis. ALV {rate} %",
   "common.business_vat": "Yritys (ALV 0 %)",
@@ -224,5 +223,7 @@
   "calculator.move_size": "Muuton koko",
   "calculator.small_move": "Pakettiauto + 1 muuttomies",
   "calculator.two_room_move": "Pakettiauto + 2 muuttomiestä",
-  "calculator.move_base_note": "Muuton hinta muodostuu perushinnasta"
+  "calculator.move_base_note": "Muuton hinta muodostuu perushinnasta",
+  "calculator.express_carrying_note": "Pikakuljetus hoidetaan yksin. Tavaran tulee olla yhden henkilön siirrettävissä tai kantoapu on järjestettävä paikan päälle.",
+  "form.express_carrying_confirmation": "Tavara on yhden henkilön siirrettävissä tai kantoapu on järjestetty."
 }

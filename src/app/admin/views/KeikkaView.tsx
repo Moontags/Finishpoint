@@ -258,7 +258,6 @@ function VarausForm({
       updated_at: new Date().toISOString(),
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const db = getSupabaseAdmin() as any
     let error
     if (isNew) {

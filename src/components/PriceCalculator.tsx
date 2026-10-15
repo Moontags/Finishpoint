@@ -446,11 +446,8 @@ export function KappaletavaraPriceCalculator({ serviceTabsSlot }: { serviceTabsS
         ) : null}
       </div>
 
-      <p className="mt-3 text-[13px] text-slate-900">
-        {t(
-          "calculator.kappaletavara_note",
-          "Hinta määräytyy matkan pituuden sekä nouto- ja jättöpaikan sijainnin mukaan.",
-        )}
+      <p className="mt-2 text-[13px] text-slate-900">
+        {t('calculator.express_carrying_note', 'Pikakuljetus hoidetaan yksin. Tavaran tulee olla yhden henkilön siirrettävissä tai kantoapu on järjestettävä paikan päälle.')}
       </p>
 
       <PriceSummary

@@ -46,7 +46,6 @@ export function HinnatView() {
   useEffect(() => { loadPrices() }, [])
 
   async function updatePrice(key: string, value: number, label: string) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (getSupabaseAdmin() as any)
       .from('prices')
       .update({ value, updated_at: new Date().toISOString() })

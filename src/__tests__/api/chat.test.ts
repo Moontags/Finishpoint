@@ -1,6 +1,6 @@
+import { NextRequest } from 'next/server';
 import { vi } from 'vitest';
 import { POST as handler } from '../../app/api/chat/route';
-import { Request as NodeRequest, Headers as NodeHeaders } from 'undici';
 
 beforeAll(() => {
   process.env.ANTHROPIC_API_KEY = 'test-key';
@@ -18,13 +18,13 @@ afterAll(() => {
 
 describe('/api/chat', () => {
   it('returns reply for fi language', async () => {
-    const req = new NodeRequest('http://localhost/api/chat', {
+    const req = new NextRequest('http://localhost/api/chat', {
       method: 'POST',
       body: JSON.stringify({
         messages: [{ role: 'user', content: 'Hei' }],
         language: 'fi'
       }),
-      headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);
     expect(res.status).toBe(200);
@@ -32,13 +32,13 @@ describe('/api/chat', () => {
     expect(json.reply).toBe('Mocked AI reply');
   });
   it('returns reply for en language', async () => {
-    const req = new NodeRequest('http://localhost/api/chat', {
+    const req = new NextRequest('http://localhost/api/chat', {
       method: 'POST',
       body: JSON.stringify({
         messages: [{ role: 'user', content: 'Hello' }],
         language: 'en'
       }),
-      headers: new NodeHeaders({ 'Content-Type': 'application/json' }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const res = await handler(req);
     expect(res.status).toBe(200);
