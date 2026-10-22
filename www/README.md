@@ -40,4 +40,4 @@ Unsplash-kuvituskuvat (ei kuvia yrityksen kalustosta):
 - `/public/images/excavator.jpg`: https://images.unsplash.com/photo-1580901368919-7738efb0f87e
 - `/public/images/tractor.jpg`: https://images.unsplash.com/photo-1530267981375-f0de937f5f13
 
-Kuvat säilytetään paikallisesti ja tarjoillaan Next.js:n kuvaoptimoinnin kautta. Muut resurssit ovat paikallisia; ei ulkoisia fontteja, analytiikkaa tai evästetyökaluja.
+Kuvat säilytetään paikallisesti ja tarjoillaan Next.js:n kuvaoptimoinnin kautta. Otsikoissa Barlow Condensed ja leipätekstissä Inter (`next/font/google`): fontit ladataan rakennusvaiheessa ja tarjoillaan sivuston omista tiedostoista. Vierailijan selain ei ota yhteyttä Google Fontsiin. Ei analytiikkaa tai evästetyökaluja.
