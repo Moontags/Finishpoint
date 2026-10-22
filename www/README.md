@@ -26,9 +26,13 @@ Tarkistukset: `npm run typecheck` ja `npm run build`.
 
 ## Vercel
 
-Luo oma Vercel-projekti ja valitse Root Directoryksi `www`, Framework Presetiksi Next.js ja Node.js-versioksi 24.x. Tavalliset build- ja install-asetukset riittävät. Projektia ei ole julkaistu.
+Julkaistu: https://hyttihuolto.vercel.app
 
-Vercel CLI oli ympäristössä versiossa 62.2.0. Päivitä ennen käyttöönottoa: `npm i -g vercel@latest`.
+Vercel-projekti: `hyttihuolto`, tili: `jaris-projects-ed391ebc`. GitHub: `Moontags/Finishpoint`, tuotantohaara: `main`. Root Directory: `www`, Framework: Next.js, Node.js: 24.x. GitHubin main-haaraan lähetetyt muutokset julkaistaan automaattisesti.
+
+Suosi Git-julkaisuja. Vercelin rootDirectory-asetus on suhteessa koko repositorioon; älä julkaise pelkkää www-kansiota komentoriviltä tämän asetuksen kanssa.
+
+Julkaisu tehtiin Vercel CLI 65.1.0:lla (`npx --yes vercel@latest`). Globaalin 62.2.0-version voi päivittää: `npm i -g vercel@latest`.
 
 ## Kuvat
 
