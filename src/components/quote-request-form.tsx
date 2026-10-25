@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AddressAutocompleteField, inputClass } from "@/components/form-fields";
 import { useCalculatorContext } from "@/lib/calculator-context";
@@ -365,19 +365,22 @@ export function QuoteRequestForm({
           </label>
           <label htmlFor="quote-service-type" className="grid gap-1.5 text-[13px] font-semibold text-slate-700">
             {t('form.service_type', 'Palvelutyyppi')}
-            <select
-              id="quote-service-type"
-              name="serviceType"
-              value={formData.serviceType}
-              onChange={handleChange}
-              className={inputClass}
-            >
-              {serviceTypeOptions.map((option) => (
-                <option key={option} value={option}>
-                  {t(`service.${option}`, option)}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="quote-service-type"
+                name="serviceType"
+                value={formData.serviceType}
+                onChange={handleChange}
+                className={`${inputClass} appearance-none pr-12`}
+              >
+                {serviceTypeOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {t(`service.${option}`, option)}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-800" />
+            </div>
           </label>
         </div>
 
