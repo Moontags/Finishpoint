@@ -478,3 +478,6 @@ button:focus-visible {
 .public-area a.group { background: #fff; border: 1px solid #d3dfed; box-shadow: 0 3px 12px #163d6808; }
 .public-area .area-order-button { background: #163d68; color: #fff; }
 .public-area .area-order-button:hover { background: #0c2949; }
+
+.home-helper { padding-bottom: 40px; }
+.home-helper .home-service-copy { padding: clamp(20px, 4vw, 36px); }

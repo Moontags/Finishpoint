@@ -1,4 +1,5 @@
 "use client";
+import { HelperService } from "@/components/HelperService";
 import Link from "next/link";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { ServiceList } from "@/components/ServiceList";
@@ -65,6 +66,8 @@ export function ServicePage({
           </Link>
         </section>
       ) : null}
+
+      {service.slug === "muutot" ? <div id="apumies" className="scroll-mt-24"><HelperService /></div> : null}
 
       <section className="rounded-2xl border border-slate-300 bg-white/30 p-5 shadow-sm backdrop-blur-sm sm:p-8">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{t(`services.${service.slug}.pricingTitle`, service.pricingTitle)}</h2>

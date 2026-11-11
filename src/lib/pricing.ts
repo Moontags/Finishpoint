@@ -6,6 +6,27 @@ import type { ProjektiTyyppi } from "@/lib/types";
 export const ALV_PROSENTTI = 25.5;
 export const KAKSIO_MUUTTO_PERUSHINTA = 449;
 
+// Apumiespalvelun hinnat verollisina. ALV 0 -muunnoksiin käytetään poistaAlv-funktiota.
+export const APUMIES = {
+  minimumHours: 4,
+  minimumPrice: 149,
+  additionalHourPrice: 35,
+  eveningWeekendSurchargePercent: 25,
+  eveningStartHour: 18,
+} as const;
+
+export function apumiesPriceSummary(english = false): string {
+  return english
+    ? `Helper ${APUMIES.minimumHours} h €${APUMIES.minimumPrice} (incl. VAT), additional hours €${APUMIES.additionalHourPrice}/h`
+    : `Apumies ${APUMIES.minimumHours} h ${APUMIES.minimumPrice} € (sis. alv), lisätunnit ${APUMIES.additionalHourPrice} €/h`;
+}
+
+export function apumiesPriceTerms(english = false): string {
+  return english
+    ? `Minimum charge ${APUMIES.minimumHours} h. Additional hours are charged per started hour. Weekdays after ${APUMIES.eveningStartHour}:00 and weekends (Sat–Sun): +${APUMIES.eveningWeekendSurchargePercent}%. Public holidays are quoted separately. All prices include VAT ${ALV_PROSENTTI}%.`
+    : `Minimiveloitus ${APUMIES.minimumHours} h. Lisätunnit veloitetaan alkavilta tunneilta. Ilta arkisin klo ${APUMIES.eveningStartHour} jälkeen ja viikonloput (la–su): +${APUMIES.eveningWeekendSurchargePercent} %. Arkipyhät hinnoitellaan erikseen tarjouksella. Kaikki hinnat sisältävät alv ${ALV_PROSENTTI.toLocaleString("fi-FI")} %.`;
+}
+
 // Tukikohta, josta kalusto lähtee ja jonne se palaa. Pikakuljetuksen
 // positiointimaksu (tyhjänä ajo) lasketaan tästä osoitteesta noutopaikkaan ja
 // jättöpaikasta takaisin tähän.

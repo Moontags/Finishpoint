@@ -1,5 +1,6 @@
 "use client";
 
+import { HelperService } from "@/components/HelperService";
 import Image from "next/image";
 import Link from "next/link";
 import { CalculatorProvider } from "@/lib/calculator-context";
@@ -10,7 +11,7 @@ import { QuoteRequestForm } from "@/components/quote-request-form";
 
 const cards = [
   { title: "Pikakuljetukset", en: "Express deliveries", description: "Yksittäiset tavarat luotettavasti perille.", descriptionEn: "Reliable delivery for individual items.", href: "/pesukone-kuljetus", image: "/images/antiikki.png" },
-  { title: "Muutot", en: "Moving", description: "Myös kaksioiden muutot: kaksi kantajaa, pakettiauto ja peräkärry.", descriptionEn: "Moving one-bedroom homes, too: two movers, a van and a trailer.", href: "/muutot", image: "/images/muutto.jpeg" },
+  { title: "Muutot", en: "Moving", description: "Myös kaksioiden muutot: kaksi kantajaa, pakettiauto ja peräkärry. Saatavilla myös apumies kantoavuksi.", descriptionEn: "Moving one-bedroom homes, too: two movers, a van and a trailer. A helper is also available for heavy lifting.", href: "/muutot", image: "/images/muutto.jpeg" },
   { title: "Apuvälinekuljetukset", en: "Mobility aid transport", description: "Huolellisesti ja turvallisesti perille.", descriptionEn: "Careful and safe transport.", href: "/apuvalinekuljetus", image: "/images/paku3.png" },
   { title: "Kierrätys", en: "Recycling", description: "Vastuullista kierrätystä helposti.", descriptionEn: "Responsible recycling made easy.", href: "/kierratys", image: "/images/kierratys.png" },
   { title: "Sopimuskuljetukset", en: "Contract transport", description: "Joustavat kuljetukset yrityksesi arkeen.", descriptionEn: "Flexible transport for your business.", href: "/yritysasiakkaat", image: "/images/yritys.png" },
@@ -55,6 +56,8 @@ export function HomeContent() {
           ))}
         </div>
       </section>
+
+      <HelperService home />
 
       <section className="home-fleet" aria-labelledby="fleet-title">
         <div className="home-container home-fleet-grid">

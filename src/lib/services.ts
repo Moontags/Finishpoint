@@ -1,3 +1,4 @@
+import { apumiesPriceSummary } from "@/lib/pricing";
 import { serviceCategoryContentById } from "@/lib/service-categories";
 
 export type ServiceSlug =
@@ -173,7 +174,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
       serviceCategoryContentById.projekti.cardDescription,
     metadataTitle: "Muuttopalvelu | Pakuvie",
     metadataDescription:
-      "Myös kaksioiden muutot: kaksi kantajaa, pakettiauto ja peräkärry. Pyydä tarjous muutosta ja kalusteiden kantamisesta portaissa.",
+      `Muutot ja kantoapu. ${apumiesPriceSummary()}. Pyydä tarjous muutosta.`,
     keywords: ["muuttopalvelu", "muutto", "muuttokuljetus", "kaksion muutto", "kantoapu"],
     calculatorCategory: "projekti",
     heroBackgroundImage: "/images/paku3.png",
